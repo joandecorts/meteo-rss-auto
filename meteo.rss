@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>MeteoCat RSS</title>
+  <link>https://www.meteo.cat</link>
+  <description>Dades meteorologiques automàtiques</description>
+  <lastBuildDate>Sat, 01 Nov 2025 20:00:00 GMT</lastBuildDate>
+  <item>
+    <title>METEOCAT | 18:00-18:30 | Temp:17.9C | Max:18.2C | Min:17.2C | Hum:73% | Vent:4.7km/h | Rafega:9.4km/h | Precip:0.0mm | Pres:1016hPa</title>
+    <link>https://www.meteo.cat</link>
+    <pubDate>Sat, 01 Nov 2025 20:00:00 GMT</pubDate>
+  </item>
+</channel>
+</rss>
