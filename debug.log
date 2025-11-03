@@ -1,17 +1,17 @@
 === DIAGNÒSTIC TAULA METEO.CAT ===
-Data: 2025-11-03 22:28:49.539837
+Data: 2025-11-03 22:38:06.395679
 Estació: XJ (Girona)
 ============================================================
 🚀 INICIANT DIAGNÒSTIC...
 ============================================================
 🔍 DIAGNÒSTIC DETALLAT DE LA TAULA
-⏰ Hora: 2025-11-03 22:28:49.539932
+⏰ Hora: 2025-11-03 22:38:06.395776
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
 ✅ HTML parsejat correctament
 ✅ Taula 'tblperiode' trobada
-📊 Files a la taula: 45
+📊 Files a la taula: 46
 
 ==================================================
 📋 ANALITZANT CAPÇALERA (fila 0)
@@ -107,20 +107,6 @@ Nombre d'elements (td/th) a la fila 5: 11
 📊 ANALITZANT ÚLTIMES 5 FILES DE DADES
 ==================================================
 
---- FILA 40 ---
-Nombre d'elements (td/th) a la fila 40: 11
-  Element 0: etiqueta='th', text='19:30 - 20:00'
-  Element 1: etiqueta='td', text='10.8'
-  Element 2: etiqueta='td', text='11.5'
-  Element 3: etiqueta='td', text='10.2'
-  Element 4: etiqueta='td', text='100'
-  Element 5: etiqueta='td', text='0.0'
-  Element 6: etiqueta='td', text='1.8'
-  Element 7: etiqueta='td', text='300'
-  Element 8: etiqueta='td', text='4.0'
-  Element 9: etiqueta='td', text='1024.2'
-  Element 10: etiqueta='td', text='0'
-
 --- FILA 41 ---
 Nombre d'elements (td/th) a la fila 41: 11
   Element 0: etiqueta='th', text='20:00 - 20:30'
@@ -176,6 +162,20 @@ Nombre d'elements (td/th) a la fila 44: 11
   Element 8: etiqueta='td', text='2.9'
   Element 9: etiqueta='td', text='1024.8'
   Element 10: etiqueta='td', text='0'
+
+--- FILA 45 ---
+Nombre d'elements (td/th) a la fila 45: 11
+  Element 0: etiqueta='th', text='22:00 - 22:30'
+  Element 1: etiqueta='td', text='(s/d)'
+  Element 2: etiqueta='td', text='(s/d)'
+  Element 3: etiqueta='td', text='(s/d)'
+  Element 4: etiqueta='td', text='(s/d)'
+  Element 5: etiqueta='td', text='(s/d)'
+  Element 6: etiqueta='td', text='(s/d)'
+  Element 7: etiqueta='td', text='(s/d)'
+  Element 8: etiqueta='td', text='(s/d)'
+  Element 9: etiqueta='td', text='(s/d)'
+  Element 10: etiqueta='td', text='(s/d)'
 
 🎉 DIAGNÒSTIC COMPLETAT
 ============================================================
