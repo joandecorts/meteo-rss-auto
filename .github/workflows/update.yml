@@ -2,23 +2,42 @@ name: Update RSS Every 5 Minutes
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/5 * * * *'  # Cada 5 minutos
+  push:
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   update-rss:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
+    
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
-      - run: pip install -r requirements.txt
-      - run: python update_rss.py
-      - name: Commit and push
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add meteo.rss
-          git commit -m "🔄 Actualització automàtica - $(date +'%H:%M')" || echo "No changes to commit"
-          git push
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
+        
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+        
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        
+    - name: Update RSS with timestamp
+      run: |
+        echo "🕒 Starting update at $(date)"
+        python update_rss.py
+        echo "✅ Update completed at $(date)"
+        
+    - name: Commit and push changes
+      run: |
+        git config --global user.email "action@github.com"
+        git config --global user.name "GitHub Action"
+        git add meteo.rss
+        git commit -m "🔄 Auto-update $(date +'%H:%M:%S')" || echo "No changes to commit"
+        git push
