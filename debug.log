@@ -1,204 +1,182 @@
-=== DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-Inici: 2025-11-03 22:23:55.791172
+=== DIAGNÒSTIC TAULA METEO.CAT ===
+Data: 2025-11-03 22:28:49.539837
+Estació: XJ (Girona)
 ============================================================
-🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
-🐍 Versió Python: 3.10.19 (main, Oct 10 2025, 01:01:37) [GCC 13.3.0]
-
+🚀 INICIANT DIAGNÒSTIC...
 ============================================================
-🚀 INICIANT GENERACIÓ RSS
-============================================================
-🚀 INICIANT get_meteo_data()
-⏰ Hora: 2025-11-03 22:23:55.791307
+🔍 DIAGNÒSTIC DETALLAT DE LA TAULA
+⏰ Hora: 2025-11-03 22:28:49.539932
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
-📄 Codi resposta: 200
 ✅ HTML parsejat correctament
 ✅ Taula 'tblperiode' trobada
 📊 Files a la taula: 45
-📋 CAPÇALERES: ['PeríodeTU', 'TM°C', 'TX°C', 'TN°C', 'HRM%', 'PPTmm', 'VVM (10 m)km/h', 'DVM (10 m)graus', 'VVX (10 m)km/h', 'PMhPa', 'RSW/m2']
-📋 Número de columnes: 11
 
-🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
+==================================================
+📋 ANALITZANT CAPÇALERA (fila 0)
+==================================================
+Nombre d'elements (th/td) a la fila 0: 11
+  Element 0: etiqueta='th', text='PeríodeTU'
+  Element 1: etiqueta='th', text='TM°C'
+  Element 2: etiqueta='th', text='TX°C'
+  Element 3: etiqueta='th', text='TN°C'
+  Element 4: etiqueta='th', text='HRM%'
+  Element 5: etiqueta='th', text='PPTmm'
+  Element 6: etiqueta='th', text='VVM (10 m)km/h'
+  Element 7: etiqueta='th', text='DVM (10 m)graus'
+  Element 8: etiqueta='th', text='VVX (10 m)km/h'
+  Element 9: etiqueta='th', text='PMhPa'
+  Element 10: etiqueta='th', text='RSW/m2'
 
---- FILA 44 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 43 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 42 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 41 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 40 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 39 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 38 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 37 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 36 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 35 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 34 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 33 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 32 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 31 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 30 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 29 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 28 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 27 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 26 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 25 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 24 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 23 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 22 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 21 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 20 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 19 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 18 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 17 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 16 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 15 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 14 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 13 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 12 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 11 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 10 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 9 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 8 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 7 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 6 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 5 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 4 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 3 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-
---- FILA 2 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
+==================================================
+📊 ANALITZANT PRIMERES 5 FILES DE DADES
+==================================================
 
 --- FILA 1 ---
-   Cel·les: 10
-   ❌ No té suficients columnes (necessitem 11)
-❌ CAP FILA TE DADES VÀLIDES
-❌ NO S'HAN POGUT OBTENIR DADES
-💤 NO S'ACTUALITZA RSS
-💤 FALLADA - NO S'HA ACTUALITZAT RSS
+Nombre d'elements (td/th) a la fila 1: 11
+  Element 0: etiqueta='th', text='00:00 - 00:30'
+  Element 1: etiqueta='td', text='8.8'
+  Element 2: etiqueta='td', text='9.2'
+  Element 3: etiqueta='td', text='8.5'
+  Element 4: etiqueta='td', text='100'
+  Element 5: etiqueta='td', text='0.0'
+  Element 6: etiqueta='td', text='1.1'
+  Element 7: etiqueta='td', text='327'
+  Element 8: etiqueta='td', text='2.9'
+  Element 9: etiqueta='td', text='1023.0'
+  Element 10: etiqueta='td', text='0'
+
+--- FILA 2 ---
+Nombre d'elements (td/th) a la fila 2: 11
+  Element 0: etiqueta='th', text='00:30 - 01:00'
+  Element 1: etiqueta='td', text='8.2'
+  Element 2: etiqueta='td', text='8.6'
+  Element 3: etiqueta='td', text='7.9'
+  Element 4: etiqueta='td', text='100'
+  Element 5: etiqueta='td', text='0.0'
+  Element 6: etiqueta='td', text='0.7'
+  Element 7: etiqueta='td', text='344'
+  Element 8: etiqueta='td', text='2.9'
+  Element 9: etiqueta='td', text='1023.1'
+  Element 10: etiqueta='td', text='0'
+
+--- FILA 3 ---
+Nombre d'elements (td/th) a la fila 3: 11
+  Element 0: etiqueta='th', text='01:00 - 01:30'
+  Element 1: etiqueta='td', text='8.4'
+  Element 2: etiqueta='td', text='8.8'
+  Element 3: etiqueta='td', text='8.0'
+  Element 4: etiqueta='td', text='100'
+  Element 5: etiqueta='td', text='0.0'
+  Element 6: etiqueta='td', text='0.0'
+  Element 7: etiqueta='td', text='9'
+  Element 8: etiqueta='td', text='1.1'
+  Element 9: etiqueta='td', text='1023.2'
+  Element 10: etiqueta='td', text='0'
+
+--- FILA 4 ---
+Nombre d'elements (td/th) a la fila 4: 11
+  Element 0: etiqueta='th', text='01:30 - 02:00'
+  Element 1: etiqueta='td', text='8.9'
+  Element 2: etiqueta='td', text='9.3'
+  Element 3: etiqueta='td', text='8.8'
+  Element 4: etiqueta='td', text='100'
+  Element 5: etiqueta='td', text='0.0'
+  Element 6: etiqueta='td', text='0.4'
+  Element 7: etiqueta='td', text='9'
+  Element 8: etiqueta='td', text='2.9'
+  Element 9: etiqueta='td', text='1023.2'
+  Element 10: etiqueta='td', text='0'
+
+--- FILA 5 ---
+Nombre d'elements (td/th) a la fila 5: 11
+  Element 0: etiqueta='th', text='02:00 - 02:30'
+  Element 1: etiqueta='td', text='9.3'
+  Element 2: etiqueta='td', text='9.4'
+  Element 3: etiqueta='td', text='9.1'
+  Element 4: etiqueta='td', text='100'
+  Element 5: etiqueta='td', text='0.0'
+  Element 6: etiqueta='td', text='1.1'
+  Element 7: etiqueta='td', text='303'
+  Element 8: etiqueta='td', text='4.0'
+  Element 9: etiqueta='td', text='1023.1'
+  Element 10: etiqueta='td', text='0'
+
+==================================================
+📊 ANALITZANT ÚLTIMES 5 FILES DE DADES
+==================================================
+
+--- FILA 40 ---
+Nombre d'elements (td/th) a la fila 40: 11
+  Element 0: etiqueta='th', text='19:30 - 20:00'
+  Element 1: etiqueta='td', text='10.8'
+  Element 2: etiqueta='td', text='11.5'
+  Element 3: etiqueta='td', text='10.2'
+  Element 4: etiqueta='td', text='100'
+  Element 5: etiqueta='td', text='0.0'
+  Element 6: etiqueta='td', text='1.8'
+  Element 7: etiqueta='td', text='300'
+  Element 8: etiqueta='td', text='4.0'
+  Element 9: etiqueta='td', text='1024.2'
+  Element 10: etiqueta='td', text='0'
+
+--- FILA 41 ---
+Nombre d'elements (td/th) a la fila 41: 11
+  Element 0: etiqueta='th', text='20:00 - 20:30'
+  Element 1: etiqueta='td', text='10.0'
+  Element 2: etiqueta='td', text='10.2'
+  Element 3: etiqueta='td', text='9.8'
+  Element 4: etiqueta='td', text='100'
+  Element 5: etiqueta='td', text='0.0'
+  Element 6: etiqueta='td', text='2.5'
+  Element 7: etiqueta='td', text='289'
+  Element 8: etiqueta='td', text='6.5'
+  Element 9: etiqueta='td', text='1024.3'
+  Element 10: etiqueta='td', text='0'
+
+--- FILA 42 ---
+Nombre d'elements (td/th) a la fila 42: 11
+  Element 0: etiqueta='th', text='20:30 - 21:00'
+  Element 1: etiqueta='td', text='9.7'
+  Element 2: etiqueta='td', text='10.0'
+  Element 3: etiqueta='td', text='9.3'
+  Element 4: etiqueta='td', text='100'
+  Element 5: etiqueta='td', text='0.0'
+  Element 6: etiqueta='td', text='0.7'
+  Element 7: etiqueta='td', text='302'
+  Element 8: etiqueta='td', text='3.6'
+  Element 9: etiqueta='td', text='1024.5'
+  Element 10: etiqueta='td', text='0'
+
+--- FILA 43 ---
+Nombre d'elements (td/th) a la fila 43: 11
+  Element 0: etiqueta='th', text='21:00 - 21:30'
+  Element 1: etiqueta='td', text='9.0'
+  Element 2: etiqueta='td', text='9.3'
+  Element 3: etiqueta='td', text='8.6'
+  Element 4: etiqueta='td', text='100'
+  Element 5: etiqueta='td', text='0.0'
+  Element 6: etiqueta='td', text='0.0'
+  Element 7: etiqueta='td', text='318'
+  Element 8: etiqueta='td', text='1.1'
+  Element 9: etiqueta='td', text='1024.6'
+  Element 10: etiqueta='td', text='0'
+
+--- FILA 44 ---
+Nombre d'elements (td/th) a la fila 44: 11
+  Element 0: etiqueta='th', text='21:30 - 22:00'
+  Element 1: etiqueta='td', text='8.4'
+  Element 2: etiqueta='td', text='8.6'
+  Element 3: etiqueta='td', text='8.2'
+  Element 4: etiqueta='td', text='100'
+  Element 5: etiqueta='td', text='0.0'
+  Element 6: etiqueta='td', text='0.4'
+  Element 7: etiqueta='td', text='318'
+  Element 8: etiqueta='td', text='2.9'
+  Element 9: etiqueta='td', text='1024.8'
+  Element 10: etiqueta='td', text='0'
+
+🎉 DIAGNÒSTIC COMPLETAT
 ============================================================
-🏁 FI DE L'EXECUCIÓ
+🏁 FI DEL DIAGNÒSTIC
