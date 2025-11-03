@@ -27,6 +27,27 @@ def safe_float(value, default=0.0):
     
     return default
 
+def is_valid_data_row(cells):
+    """Verifica si una fila tiene datos válidos (no todos '(s/d)')"""
+    if len(cells) < 11:
+        return False
+    
+    # Verificar las columnas clave para ver si tienen datos reales
+    temp = safe_float(cells[1].text, None)  # TM
+    hum = safe_float(cells[4].text, None)   # HR
+    
+    # Si tanto temp como hum son None (o 0.0 por '(s/d)'), la fila no es válida
+    if temp is None and hum is None:
+        return False
+    
+    # Verificar rangos razonables
+    if temp is not None and not (-20 <= temp <= 50):
+        return False
+    if hum is not None and not (0 <= hum <= 100):
+        return False
+        
+    return True
+
 def get_meteo_data():
     try:
         print("🌐 Conectando a Meteo.cat...")
@@ -50,15 +71,7 @@ def get_meteo_data():
         rows = table.find_all('tr')
         print(f"📊 Total de filas en la tabla: {len(rows)}")
         
-        # DIAGNÓSTICO: Mostrar la estructura real de las primeras filas
-        print("🔍 ESTRUCTURA DE LA TABLA (primeras 3 filas de datos):")
-        for i in range(1, min(4, len(rows))):
-            data_row = rows[i]
-            cells = data_row.find_all('td')
-            if len(cells) >= 11:
-                print(f"📝 Fila {i}: {cells[0].text.strip()} | TM:{cells[1].text} | TX:{cells[2].text} | TN:{cells[3].text} | HR:{cells[4].text} | PPT:{cells[5].text} | VVM:{cells[6].text} | VVX:{cells[8].text} | PM:{cells[9].text}")
-        
-        # Buscar desde la PRIMERA fila de datos (más reciente) hacia abajo
+        # Buscar el PRIMER período con datos válidos (puede no ser el más reciente)
         for i in range(1, min(10, len(rows))):
             data_row = rows[i]
             cells = data_row.find_all('td')
@@ -70,52 +83,46 @@ def get_meteo_data():
                 if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', hora):
                     print(f"🔍 Revisando fila {i} - Período: {hora}")
                     
-                    # ⚡ ESTRUCTURA DEFINITIVA SEGÚN TU ESPECIFICACIÓN
-                    # 0: Período, 1:TM, 2:TX, 3:TN, 4:HR, 5:PPT, 6:VVM, 7:DVM(no), 8:VVX, 9:PM, 10:RS(no)
-                    temp = safe_float(cells[1].text, None)      # TM - Temperatura media (Actual)
-                    max_temp = safe_float(cells[2].text, None)  # TX - Temperatura máxima
-                    min_temp = safe_float(cells[3].text, None)  # TN - Temperatura mínima
-                    hum = safe_float(cells[4].text, None)       # HR - Humedad relativa
-                    precip = safe_float(cells[5].text, None)    # PPT - Precipitación
-                    wind = safe_float(cells[6].text, None)      # VVM - Viento medio
-                    # DVM (7) no se usa - Dirección del viento
-                    gust = safe_float(cells[8].text, None)      # VVX - Ráfagas máximas
-                    pressure = safe_float(cells[9].text, None)  # PM - Presión atmosférica
-                    # RS (10) no se usa - Radiación solar
-                    
-                    # Verificar si esta fila tiene datos válidos (no "(s/d)")
-                    if temp is not None and hum is not None:
-                        if 5 <= temp <= 40 and 10 <= hum <= 100:
-                            print(f"✅ Fila {i} seleccionada - PERÍODO MÁS RECIENTE CON DATOS")
-                            
-                            print("📊 DATOS EXTRAÍDOS (estructura definitiva):")
-                            print(f"   Período: {hora}")
-                            print(f"   TM (Actual): {temp}°C")
-                            print(f"   TX (Máxima): {max_temp}°C")
-                            print(f"   TN (Mínima): {min_temp}°C")
-                            print(f"   HR (Humedad): {hum}%")
-                            print(f"   PPT (Precipitación): {precip}mm")
-                            print(f"   VVM (Viento): {wind}km/h")
-                            print(f"   VVX (Ráfagas): {gust}km/h")
-                            print(f"   PM (Presión): {pressure}hPa")
-                            
-                            return {
-                                'hora': hora,
-                                'temp': temp,
-                                'max_temp': max_temp,
-                                'min_temp': min_temp,
-                                'hum': hum,
-                                'precip': precip,
-                                'wind': wind,
-                                'gust': gust,
-                                'pressure': pressure
-                            }
-                        else:
-                            print(f"⚠️ Fila {i} tiene datos fuera de rango, buscando siguiente...")
+                    # Verificar si esta fila tiene datos válidos
+                    if is_valid_data_row(cells):
+                        print(f"✅ Fila {i} tiene datos VÁLIDOS")
+                        
+                        # Extraer todos los datos
+                        temp = safe_float(cells[1].text)
+                        max_temp = safe_float(cells[2].text)
+                        min_temp = safe_float(cells[3].text)
+                        hum = safe_float(cells[4].text)
+                        precip = safe_float(cells[5].text)
+                        wind = safe_float(cells[6].text)
+                        gust = safe_float(cells[8].text)
+                        pressure = safe_float(cells[9].text)
+                        
+                        print("📊 DATOS METEOROLÓGICOS VÁLIDOS ENCONTRADOS:")
+                        print(f"   Período oficial: {hora}")
+                        print(f"   TM (Actual): {temp}°C")
+                        print(f"   TX (Máxima): {max_temp}°C")
+                        print(f"   TN (Mínima): {min_temp}°C")
+                        print(f"   HR (Humedad): {hum}%")
+                        print(f"   PPT (Precipitación): {precip}mm")
+                        print(f"   VVM (Viento): {wind}km/h")
+                        print(f"   VVX (Ráfagas): {gust}km/h")
+                        print(f"   PM (Presión): {pressure}hPa")
+                        
+                        return {
+                            'hora': hora,
+                            'temp': temp,
+                            'max_temp': max_temp,
+                            'min_temp': min_temp,
+                            'hum': hum,
+                            'precip': precip,
+                            'wind': wind,
+                            'gust': gust,
+                            'pressure': pressure
+                        }
                     else:
-                        print(f"❌ Fila {i} tiene datos INCOMPLETOS (s/d), buscando siguiente...")
+                        print(f"❌ Fila {i} tiene datos INCOMPLETOS (s/d), buscando siguiente período...")
         
-        print("❌ No se encontró ninguna fila con datos válidos")
+        print("❌ No se encontró ningún período con datos válidos")
         return None
         
     except Exception as e:
@@ -131,44 +138,47 @@ def generate_rss():
     current_time = now.strftime("%H:%M")
     
     if not data:
-        print("❌ No se pudieron obtener datos válidos")
-        # Usar datos del período más reciente
-        data = {
-            'hora': '16:30-17:00',
-            'temp': 17.2,
-            'max_temp': 17.6,
-            'min_temp': 16.9,
-            'hum': 73,
-            'precip': 0.0,
-            'wind': 5.0,
-            'gust': 12.2,
-            'pressure': 1023.1
-        }
-        print("📊 Usando datos del período 16:30-17:00 (más reciente)")
-    
-    # 🎯 FORMATO DEFINITIVO - ESTRUCTURA FINAL
-    title = (
-        f"[CAT] Actualitzat {current_time} | {data['hora']} | "
-        f"Actual:{data['temp']}°C | "
-        f"Màx:{data['max_temp']}°C | "
-        f"Mín:{data['min_temp']}°C | "
-        f"Hum:{data['hum']}% | "
-        f"Precip:{data['precip']}mm | "
-        f"Vent:{data['wind']}km/h | "
-        f"Ràfegues:{data['gust']}km/h | "
-        f"Pressió:{data['pressure']}hPa | "
-        f"[GB] Updated {current_time} | {data['hora']} | "
-        f"Current:{data['temp']}°C | "
-        f"Max:{data['max_temp']}°C | "
-        f"Min:{data['min_temp']}°C | "
-        f"Hum:{data['hum']}% | "
-        f"Precip:{data['precip']}mm | "
-        f"Wind:{data['wind']}km/h | "
-        f"Gusts:{data['gust']}km/h | "
-        f"Pressure:{data['pressure']}hPa"
-    )
-    
-    rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
+        print("❌ No se pudieron obtener datos válidos de ningún período")
+        # Generar mensaje de error
+        title = "[CAT] Actualitzat {current_time} | Dades no disponibles | [GB] Updated {current_time} | Data not available"
+        rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>MeteoCat RSS</title>
+  <link>https://www.meteo.cat</link>
+  <description>Automated meteorological data - Dades meteorològiques automàtiques</description>
+  <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
+  <item>
+    <title>{title}</title>
+    <link>https://www.meteo.cat</link>
+    <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
+  </item>
+</channel>
+</rss>'''
+    else:
+        # 🎯 FORMATO DEFINITIVO - MANTENIENDO LO QUE ESTÁ BIEN
+        title = (
+            f"[CAT] Actualitzat {current_time} | {data['hora']} | "
+            f"Actual:{data['temp']}°C | "
+            f"Màx:{data['max_temp']}°C | "
+            f"Mín:{data['min_temp']}°C | "
+            f"Hum:{data['hum']}% | "
+            f"Precip:{data['precip']}mm | "
+            f"Vent:{data['wind']}km/h | "
+            f"Ràfegues:{data['gust']}km/h | "
+            f"Pressió:{data['pressure']}hPa | "
+            f"[GB] Updated {current_time} | {data['hora']} | "
+            f"Current:{data['temp']}°C | "
+            f"Max:{data['max_temp']}°C | "
+            f"Min:{data['min_temp']}°C | "
+            f"Hum:{data['hum']}% | "
+            f"Precip:{data['precip']}mm | "
+            f"Wind:{data['wind']}km/h | "
+            f"Gusts:{data['gust']}km/h | "
+            f"Pressure:{data['pressure']}hPa"
+        )
+        
+        rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
   <title>MeteoCat RSS</title>
