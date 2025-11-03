@@ -7,7 +7,7 @@ from io import StringIO
 def update_rss():
     # Configuración
     csv_url = "https://www.meteo.cat/observacions/xarxa/dades/mesures.csv"
-    rss_file = "rss.xml"
+    rss_file = "meteo.rss"
     
     try:
         # Descargar CSV
@@ -21,26 +21,33 @@ def update_rss():
         if len(lines) < 2:
             raise ValueError("CSV vacío o con formato incorrecto")
         
-        # Tomar la última línea (datos más recientes)
-        last_line = lines[-1]
+        # Buscar la última línea con datos válidos (ignorando líneas con "s/d")
+        last_valid_line = None
+        for line in reversed(lines):
+            if line.strip() and "s/d" not in line:
+                last_valid_line = line
+                break
+        
+        if not last_valid_line:
+            raise ValueError("No se encontraron líneas con datos válidos")
         
         # Parsear CSV
-        reader = csv.reader(StringIO(last_line))
+        reader = csv.reader(StringIO(last_valid_line))
         row = next(reader)
         
         if len(row) < 10:
             raise ValueError(f"Fila con menos columnas de las esperadas: {len(row)}")
         
         # Extraer datos con índices corregidos
-        periodo = row[0] if row[0] else "Dades no disponibles"
-        tm = row[1] if row[1] else "N/A"
-        tx = row[2] if row[2] else "N/A" 
-        tn = row[3] if row[3] else "N/A"
-        hrm = row[4] if row[4] else "N/A"
-        ppt = row[6] if row[6] else "0.0"  # Columna 7
-        vvm = row[5] if row[5] else "0.0"  # Columna 6 - Viento
-        vvx = row[7] if row[7] else "0.0"  # Columna 8 - Ráfagas  
-        pm = row[8] if row[8] else "0.0"   # Columna 9 - Presión
+        periodo = row[0] if row[0] and row[0] != "s/d" else "Dades no disponibles"
+        tm = row[1] if row[1] and row[1] != "s/d" else "N/A"
+        tx = row[2] if row[2] and row[2] != "s/d" else "N/A" 
+        tn = row[3] if row[3] and row[3] != "s/d" else "N/A"
+        hrm = row[4] if row[4] and row[4] != "s/d" else "N/A"
+        ppt = row[6] if row[6] and row[6] != "s/d" else "0.0"
+        vvm = row[5] if row[5] and row[5] != "s/d" else "0.0"
+        vvx = row[7] if row[7] and row[7] != "s/d" else "0.0"
+        pm = row[8] if row[8] and row[8] != "s/d" else "0.0"
         
         # Hora actual para el título
         current_time = datetime.now().strftime("%H:%M")
@@ -54,8 +61,9 @@ def update_rss():
     except Exception as e:
         # En caso de error, mostrar mensaje de datos no disponibles
         current_time = datetime.now().strftime("%H:%M")
-        title_cat = f"[CAT] Actualitzat {current_time} | Dades no disponibles"
-        title_gb = f"[GB] Updated {current_time} | Data not available"
+        error_msg = f"Dades no disponibles (Error: {str(e)})"
+        title_cat = f"[CAT] Actualitzat {current_time} | {error_msg}"
+        title_gb = f"[GB] Updated {current_time} | {error_msg}"
         full_title = f"{title_cat} | {title_gb}"
     
     # Generar RSS
