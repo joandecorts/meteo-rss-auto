@@ -6,7 +6,7 @@ import re
 import sys
 import os
 
-def safe_float(value, default=None):
+def safe_float(value, default=0.0):
     """Convierte seguridad un valor a float"""
     if value is None or value == '':
         return default
@@ -88,13 +88,12 @@ def get_meteo_data():
         rows = table.find_all('tr')
         print(f"📊 Total de filas en la tabla: {len(rows)}")
         
-        # 🎯 LECTURA ESPECÍFICA DE LAS 5 ÚLTIMAS FILAS
-        print("🔍 ANALIZANDO LAS 5 ÚLTIMAS FILAS:")
-        last_5_rows = []
+        # 🎯 BUSCAR DESDE LA ÚLTIMA FILA HACIA ARRIBA HASTA ENCONTRAR DATOS VÁLIDOS
+        print("🔍 BUSCANDO LA ÚLTIMA FILA CON DATOS VÁLIDOS:")
+        valid_data = None
         
-        # Obtener índices de las últimas 5 filas (excluyendo la cabecera)
-        start_index = max(1, len(rows) - 5)
-        for i in range(start_index, len(rows)):
+        # Recorrer desde la última fila hasta la primera (excluyendo cabecera)
+        for i in range(len(rows)-1, 0, -1):
             data_row = rows[i]
             cells = data_row.find_all('td')
             
@@ -103,6 +102,8 @@ def get_meteo_data():
                 
                 # Verificar si es una fila de datos válida (formato de hora)
                 if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', hora):
+                    print(f"🔍 Revisando fila {i} - Período: {hora}")
+                    
                     # Extraer datos
                     temp = safe_float(cells[1].text, None)
                     max_temp = safe_float(cells[2].text, None)
@@ -113,63 +114,50 @@ def get_meteo_data():
                     gust = safe_float(cells[8].text, 0.0)
                     pressure = safe_float(cells[9].text, 0.0)
                     
-                    # 🎯 CRITERIOS MÁS FLEXIBLES: Aceptar filas aunque algunos datos sean None
-                    # Solo requerimos que al menos temperatura o humedad tengan datos
-                    tiene_datos_esenciales = temp is not None or hum is not None
+                    print(f"   Valores: temp={temp}, hum={hum}, precip={precip}")
                     
-                    # Guardar información de la fila
-                    row_data = {
-                        'index': i,
-                        'hora': hora,
-                        'temp': temp,
-                        'max_temp': max_temp,
-                        'min_temp': min_temp,
-                        'hum': hum,
-                        'precip': precip,
-                        'wind': wind,
-                        'gust': gust,
-                        'pressure': pressure,
-                        'es_valida': tiene_datos_esenciales
-                    }
-                    
-                    last_5_rows.append(row_data)
-                    
-                    estado = "✅ VÁLIDA" if row_data['es_valida'] else "❌ INVÁLIDA"
-                    print(f"📝 Fila {i}: {hora} | TM:{temp}°C | HR:{hum}% | {estado}")
-        
-        # 🎯 SELECCIONAR LA ÚLTIMA FILA VÁLIDA
-        valid_data = None
-        for row_data in reversed(last_5_rows):  # Recorrer de más reciente a más antigua
-            if row_data['es_valida']:
-                valid_data = row_data
-                print(f"🎯 SELECCIONADA: Fila {row_data['index']} - Período: {row_data['hora']}")
-                break
+                    # 🎯 CRITERIO: Aceptar si tiene al menos temperatura o humedad
+                    if temp is not None or hum is not None:
+                        print(f"✅ Fila {i} VÁLIDA - Período: {hora}")
+                        valid_data = {
+                            'hora': hora,
+                            'temp': temp,
+                            'max_temp': max_temp,
+                            'min_temp': min_temp,
+                            'hum': hum,
+                            'precip': precip,
+                            'wind': wind,
+                            'gust': gust,
+                            'pressure': pressure
+                        }
+                        break  # 🎯 PARAMOS AL ENCONTRAR LA PRIMERA VÁLIDA
+                    else:
+                        print(f"❌ Fila {i} SIN DATOS - Continuando búsqueda...")
         
         if valid_data:
             # 🎯 AJUSTAR EL PERÍODO A HORA LOCAL
             adjusted_hora = adjust_period_time(valid_data['hora'])
+            valid_data['hora'] = adjusted_hora
             
-            print("🎯 VALORES EXTRAÍDOS DE LA FILA SELECCIONADA:")
-            print(f"   Hora (original): {valid_data['hora']}")
-            print(f"   Hora (ajustada): {adjusted_hora}")
-            print(f"   TM: {valid_data['temp']}")
-            print(f"   TX: {valid_data['max_temp']}")
-            print(f"   TN: {valid_data['min_temp']}")
-            print(f"   HR: {valid_data['hum']}")
-            print(f"   PPT: {valid_data['precip']}")
-            print(f"   VVM: {valid_data['wind']}")
-            print(f"   VVX: {valid_data['gust']}")
-            print(f"   PM: {valid_data['pressure']}")
-
-            # 🎯 VALORES POR DEFECTO MÁS INTELIGENTES
+            # 🎯 VALORES POR DEFECTO INTELIGENTES
             temp_final = valid_data['temp'] if valid_data['temp'] is not None else 0.0
             max_temp_final = valid_data['max_temp'] if valid_data['max_temp'] is not None else temp_final
             min_temp_final = valid_data['min_temp'] if valid_data['min_temp'] is not None else temp_final
             hum_final = valid_data['hum'] if valid_data['hum'] is not None else 0.0
-
-            # Devolver solo los datos necesarios
+            
+            print("🎯 ÚLTIMA FILA VÁLIDA ENCONTRADA:")
+            print(f"   Período: {valid_data['hora']}")
+            print(f"   TM (Actual): {temp_final}°C")
+            print(f"   TX (Máxima): {max_temp_final}°C") 
+            print(f"   TN (Mínima): {min_temp_final}°C")
+            print(f"   HR (Humedad): {hum_final}%")
+            print(f"   PPT (Precipitación): {valid_data['precip']}mm")
+            print(f"   VVM (Viento): {valid_data['wind']}km/h")
+            print(f"   VVX (Ráfagas): {valid_data['gust']}km/h")
+            print(f"   PM (Presión): {valid_data['pressure']}hPa")
+            
             return {
-                'hora': adjusted_hora,
+                'hora': valid_data['hora'],
                 'temp': temp_final,
                 'max_temp': max_temp_final,
                 'min_temp': min_temp_final,
@@ -180,7 +168,7 @@ def get_meteo_data():
                 'pressure': valid_data['pressure']
             }
         else:
-            print("❌ No se encontró ninguna fila con datos válidos en las últimas 5 filas")
+            print("❌ No se encontró ninguna fila con datos válidos")
             return None
         
     except Exception as e:
@@ -197,12 +185,11 @@ def generate_rss():
     
     if not data:
         print("❌ No se pudieron obtener datos válidos")
-        # 🎯 MEJOR: No usar datos de respaldo fijos, sino intentar calcular el período actual
-        # y mostrar que no hay datos disponibles
+        # 🎯 SI NO HAY DATOS, USAR EL ÚLTIMO PERÍODO VÁLIDO CON DATOS POR DEFECTO
+        # Calcular período actual aproximado
         current_hour = now.hour
         current_minute = now.minute
         
-        # Calcular período actual aproximado
         if current_minute >= 30:
             period_start = f"{current_hour:02d}:30"
             period_end = f"{(current_hour + 1) % 24:02d}:00"
@@ -215,16 +202,16 @@ def generate_rss():
         
         data = {
             'hora': adjusted_period,
-            'temp': "N/A",
-            'max_temp': "N/A",
-            'min_temp': "N/A",
-            'hum': "N/A",
-            'precip': "N/A",
-            'wind': "N/A",
-            'gust': "N/A",
-            'pressure': "N/A"
+            'temp': 0.0,
+            'max_temp': 0.0,
+            'min_temp': 0.0,
+            'hum': 0.0,
+            'precip': 0.0,
+            'wind': 0.0,
+            'gust': 0.0,
+            'pressure': 0.0
         }
-        print(f"📊 No hay datos disponibles para el período {adjusted_period}")
+        print(f"📊 No hay datos disponibles, usando valores por defecto para {adjusted_period}")
     
     # 🎯 FORMATO DEFINITIVO - ESTRUCTURA FINAL
     title = (
