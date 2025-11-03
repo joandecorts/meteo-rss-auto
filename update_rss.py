@@ -54,6 +54,8 @@ def get_meteo_data():
         print("\n🔍 DIAGNÓSTICO COMPLETO DE LA TABLA:")
         print("=" * 80)
         
+        valid_periods = []
+        
         for i in range(1, min(15, len(rows))):
             data_row = rows[i]
             cells = data_row.find_all('td')
@@ -77,75 +79,60 @@ def get_meteo_data():
                     status = "✅ VÁLIDO" if (has_valid_data and in_range and not has_s_d) else "❌ INVÁLIDO"
                     
                     print(f"Fila {i:2}: {hora} | TM:'{temp_text}'→{temp} | HR:'{hum_text}'→{hum} | {status}")
-                    if has_s_d:
-                        print(f"         ⚠️  Contiene '(s/d)'")
-                    if not in_range and has_valid_data:
-                        print(f"         ⚠️  Fuera de rango: temp={temp}, hum={hum}")
+                    
+                    if has_valid_data and in_range and not has_s_d:
+                        valid_periods.append({
+                            'index': i,
+                            'hora': hora,
+                            'cells': cells
+                        })
         
         print("=" * 80)
+        print(f"📋 Períodos válidos encontrados: {len(valid_periods)}")
         
-        # Buscar el PRIMER período con datos válidos
-        for i in range(1, min(15, len(rows))):
-            data_row = rows[i]
-            cells = data_row.find_all('td')
+        # ⚡ CORRECCIÓN CRÍTICA: Seleccionar el PRIMER período válido (más reciente)
+        if valid_periods:
+            selected = valid_periods[0]  # ⚡ SIEMPRE el primero (más reciente)
+            i = selected['index']
+            cells = selected['cells']
+            hora = selected['hora']
             
-            if len(cells) >= 11:
-                hora = cells[0].text.strip()
-                
-                # Verificar si es una fila de datos válida (formato de hora)
-                if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', hora):
-                    # Verificar si tiene "(s/d)"
-                    temp_text = cells[1].text.strip()
-                    hum_text = cells[4].text.strip()
-                    
-                    has_s_d = '(s/d)' in temp_text or '(s/d)' in hum_text
-                    
-                    if has_s_d:
-                        print(f"❌ Fila {i} tiene '(s/d)', saltando...")
-                        continue
-                    
-                    # Extraer datos
-                    temp = safe_float(cells[1].text)
-                    max_temp = safe_float(cells[2].text)
-                    min_temp = safe_float(cells[3].text)
-                    hum = safe_float(cells[4].text)
-                    precip = safe_float(cells[5].text)
-                    wind = safe_float(cells[6].text)
-                    gust = safe_float(cells[8].text)
-                    pressure = safe_float(cells[9].text)
-                    
-                    # Verificar si tenemos datos válidos
-                    if temp is not None and hum is not None:
-                        if 5 <= temp <= 40 and 10 <= hum <= 100:
-                            print(f"\n🎯 PERÍODO VÁLIDO ENCONTRADO: Fila {i} - {hora}")
-                            print("📊 DATOS EXTRAÍDOS:")
-                            print(f"   Período oficial: {hora}")
-                            print(f"   TM (Actual): {temp}°C")
-                            print(f"   TX (Máxima): {max_temp}°C")
-                            print(f"   TN (Mínima): {min_temp}°C")
-                            print(f"   HR (Humedad): {hum}%")
-                            print(f"   PPT (Precipitación): {precip}mm")
-                            print(f"   VVM (Viento): {wind}km/h")
-                            print(f"   VVX (Ráfagas): {gust}km/h")
-                            print(f"   PM (Presión): {pressure}hPa")
-                            
-                            return {
-                                'hora': hora,
-                                'temp': temp,
-                                'max_temp': max_temp,
-                                'min_temp': min_temp,
-                                'hum': hum,
-                                'precip': precip,
-                                'wind': wind,
-                                'gust': gust,
-                                'pressure': pressure
-                            }
-                        else:
-                            print(f"⚠️ Fila {i} tiene datos fuera de rango")
-                    else:
-                        print(f"❌ Fila {i} no tiene datos convertibles")
+            print(f"🎯 SELECCIONADO: Fila {i} - Período MÁS RECIENTE: {hora}")
+            
+            # Extraer todos los datos
+            temp = safe_float(cells[1].text)
+            max_temp = safe_float(cells[2].text)
+            min_temp = safe_float(cells[3].text)
+            hum = safe_float(cells[4].text)
+            precip = safe_float(cells[5].text)
+            wind = safe_float(cells[6].text)
+            gust = safe_float(cells[8].text)
+            pressure = safe_float(cells[9].text)
+            
+            print("📊 DATOS DEL PERÍODO MÁS RECIENTE:")
+            print(f"   Período oficial: {hora}")
+            print(f"   TM (Actual): {temp}°C")
+            print(f"   TX (Máxima): {max_temp}°C")
+            print(f"   TN (Mínima): {min_temp}°C")
+            print(f"   HR (Humedad): {hum}%")
+            print(f"   PPT (Precipitación): {precip}mm")
+            print(f"   VVM (Viento): {wind}km/h")
+            print(f"   VVX (Ráfagas): {gust}km/h")
+            print(f"   PM (Presión): {pressure}hPa")
+            
+            return {
+                'hora': hora,
+                'temp': temp,
+                'max_temp': max_temp,
+                'min_temp': min_temp,
+                'hum': hum,
+                'precip': precip,
+                'wind': wind,
+                'gust': gust,
+                'pressure': pressure
+            }
         
-        print("\n❌ No se encontró ningún período con datos válidos")
+        print("❌ No se encontró ningún período con datos válidos")
         return None
         
     except Exception as e:
@@ -162,43 +149,46 @@ def generate_rss():
     
     if not data:
         print("❌ No se pudieron obtener datos válidos de ningún período")
-        # Usar datos de ejemplo como último recurso
-        data = {
-            'hora': '16:30-17:00',
-            'temp': 17.2,
-            'max_temp': 17.6,
-            'min_temp': 16.9,
-            'hum': 73,
-            'precip': 0.0,
-            'wind': 5.0,
-            'gust': 12.2,
-            'pressure': 1023.1
-        }
-        print("📊 Usando datos de ejemplo del período 16:30-17:00")
-    
-    # FORMATO DEFINITIVO
-    title = (
-        f"[CAT] Actualitzat {current_time} | {data['hora']} | "
-        f"Actual:{data['temp']}°C | "
-        f"Màx:{data['max_temp']}°C | "
-        f"Mín:{data['min_temp']}°C | "
-        f"Hum:{data['hum']}% | "
-        f"Precip:{data['precip']}mm | "
-        f"Vent:{data['wind']}km/h | "
-        f"Ràfegues:{data['gust']}km/h | "
-        f"Pressió:{data['pressure']}hPa | "
-        f"[GB] Updated {current_time} | {data['hora']} | "
-        f"Current:{data['temp']}°C | "
-        f"Max:{data['max_temp']}°C | "
-        f"Min:{data['min_temp']}°C | "
-        f"Hum:{data['hum']}% | "
-        f"Precip:{data['precip']}mm | "
-        f"Wind:{data['wind']}km/h | "
-        f"Gusts:{data['gust']}km/h | "
-        f"Pressure:{data['pressure']}hPa"
-    )
-    
-    rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
+        # Generar mensaje de error
+        title = f"[CAT] Actualitzat {current_time} | Dades no disponibles | [GB] Updated {current_time} | Data not available"
+        rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+  <title>MeteoCat RSS</title>
+  <link>https://www.meteo.cat</link>
+  <description>Automated meteorological data - Dades meteorològiques automàtiques</description>
+  <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
+  <item>
+    <title>{title}</title>
+    <link>https://www.meteo.cat</link>
+    <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
+  </item>
+</channel>
+</rss>'''
+    else:
+        # 🎯 FORMATO DEFINITIVO - MANTENIENDO LO QUE ESTÁ BIEN
+        title = (
+            f"[CAT] Actualitzat {current_time} | {data['hora']} | "
+            f"Actual:{data['temp']}°C | "
+            f"Màx:{data['max_temp']}°C | "
+            f"Mín:{data['min_temp']}°C | "
+            f"Hum:{data['hum']}% | "
+            f"Precip:{data['precip']}mm | "
+            f"Vent:{data['wind']}km/h | "
+            f"Ràfegues:{data['gust']}km/h | "
+            f"Pressió:{data['pressure']}hPa | "
+            f"[GB] Updated {current_time} | {data['hora']} | "
+            f"Current:{data['temp']}°C | "
+            f"Max:{data['max_temp']}°C | "
+            f"Min:{data['min_temp']}°C | "
+            f"Hum:{data['hum']}% | "
+            f"Precip:{data['precip']}mm | "
+            f"Wind:{data['wind']}km/h | "
+            f"Gusts:{data['gust']}km/h | "
+            f"Pressure:{data['pressure']}hPa"
+        )
+        
+        rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
   <title>MeteoCat RSS</title>
