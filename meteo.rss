@@ -3,12 +3,12 @@
 <channel>
   <title>MeteoCat RSS</title>
   <link>https://www.meteo.cat</link>
-  <description>Automated meteorological data - Dades meteorològiques automàtiques - Timestamp: 1762178070</description>
-  <lastBuildDate>Mon, 03 Nov 2025 14:54:30 CET</lastBuildDate>
+  <description>Automated meteorological data - Dades meteorològiques automàtiques - Timestamp: 1762181666</description>
+  <lastBuildDate>Mon, 03 Nov 2025 15:54:26 CET</lastBuildDate>
   <item>
-    <title>METEOCAT CET  |  14:00 - 14:30  |  Temp:21.1C  |  Max:21.4C  |  Min:20.3C  |  Hum:49%  |  Vent:4.7km/h  |  Rafega:12.6km/h  |  Precip:0.0mm  |  Pres:1023.2hPa  |  |  Temp:21.1C  |  Max:21.4C  |  Min:20.3C  |  Hum:49%  |  Wind:4.7km/h  |  Gust:12.6km/h  |  Precip:0.0mm  |  Press:1023.2hPa  |  ⌚ 1762178070</title>
+    <title>METEOCAT CET  |  15:00 - 15:30  |  Temp:21.2C  |  Max:21.7C  |  Min:20.8C  |  Hum:54%  |  Vent:6.1km/h  |  Rafega:16.6km/h  |  Precip:0.0mm  |  Pres:1022.7hPa  |  |  Temp:21.2C  |  Max:21.7C  |  Min:20.8C  |  Hum:54%  |  Wind:6.1km/h  |  Gust:16.6km/h  |  Precip:0.0mm  |  Press:1022.7hPa  |  ⌚ 1762181666</title>
     <link>https://www.meteo.cat</link>
-    <pubDate>Mon, 03 Nov 2025 14:54:30 CET</pubDate>
+    <pubDate>Mon, 03 Nov 2025 15:54:26 CET</pubDate>
   </item>
 </channel>
 </rss>
