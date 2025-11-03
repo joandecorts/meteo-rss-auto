@@ -159,4 +159,4 @@ class MeteoCatRSS:
 
 if __name__ == "__main__":
     meteo = MeteoCatRSS()
-    meteo.generar_rss_complet()﻿
+    meteo.generar_rss_complet()
