@@ -1,5 +1,5 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-Inici: 2025-11-03 22:17:11.557411
+Inici: 2025-11-03 22:23:55.791172
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
 🐍 Versió Python: 3.10.19 (main, Oct 10 2025, 01:01:37) [GCC 13.3.0]
@@ -8,7 +8,7 @@ Inici: 2025-11-03 22:17:11.557411
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
-⏰ Hora: 2025-11-03 22:17:11.557554
+⏰ Hora: 2025-11-03 22:23:55.791307
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
@@ -19,86 +19,184 @@ Inici: 2025-11-03 22:17:11.557411
 📋 CAPÇALERES: ['PeríodeTU', 'TM°C', 'TX°C', 'TN°C', 'HRM%', 'PPTmm', 'VVM (10 m)km/h', 'DVM (10 m)graus', 'VVX (10 m)km/h', 'PMhPa', 'RSW/m2']
 📋 Número de columnes: 11
 
-🔍 INVESTIGANT ESTRUCTURA DE LA TAULA:
+🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
 
-📋 PRIMERES 3 FILES:
-Fila 0: 11 cel·les
-   Columna 0: 'PeríodeTU'
-   Columna 1: 'TM°C'
-   Columna 2: 'TX°C'
-   Columna 3: 'TN°C'
-   Columna 4: 'HRM%'
-   Columna 5: 'PPTmm'
-   Columna 6: 'VVM (10 m)km/h'
-   Columna 7: 'DVM (10 m)graus'
-   Columna 8: 'VVX (10 m)km/h'
-   Columna 9: 'PMhPa'
-   Columna 10: 'RSW/m2'
-Fila 1: 11 cel·les
-   Columna 0: '00:00 - 00:30'
-   Columna 1: '8.8'
-   Columna 2: '9.2'
-   Columna 3: '8.5'
-   Columna 4: '100'
-   Columna 5: '0.0'
-   Columna 6: '1.1'
-   Columna 7: '327'
-   Columna 8: '2.9'
-   Columna 9: '1023.0'
-   Columna 10: '0'
-Fila 2: 11 cel·les
-   Columna 0: '00:30 - 01:00'
-   Columna 1: '8.2'
-   Columna 2: '8.6'
-   Columna 3: '7.9'
-   Columna 4: '100'
-   Columna 5: '0.0'
-   Columna 6: '0.7'
-   Columna 7: '344'
-   Columna 8: '2.9'
-   Columna 9: '1023.1'
-   Columna 10: '0'
+--- FILA 44 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
 
-📋 ÚLTIMES 3 FILES:
-Fila 42: 11 cel·les
-   Columna 0: '20:30 - 21:00'
-   Columna 1: '9.7'
-   Columna 2: '10.0'
-   Columna 3: '9.3'
-   Columna 4: '100'
-   Columna 5: '0.0'
-   Columna 6: '0.7'
-   Columna 7: '302'
-   Columna 8: '3.6'
-   Columna 9: '1024.5'
-   Columna 10: '0'
-Fila 43: 11 cel·les
-   Columna 0: '21:00 - 21:30'
-   Columna 1: '9.0'
-   Columna 2: '9.3'
-   Columna 3: '8.6'
-   Columna 4: '100'
-   Columna 5: '0.0'
-   Columna 6: '0.0'
-   Columna 7: '318'
-   Columna 8: '1.1'
-   Columna 9: '1024.6'
-   Columna 10: '0'
-Fila 44: 11 cel·les
-   Columna 0: '21:30 - 22:00'
-   Columna 1: '8.4'
-   Columna 2: '8.6'
-   Columna 3: '8.2'
-   Columna 4: '100'
-   Columna 5: '0.0'
-   Columna 6: '0.4'
-   Columna 7: '318'
-   Columna 8: '2.9'
-   Columna 9: '1024.8'
-   Columna 10: '0'
+--- FILA 43 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
 
-🔍 CERCANT PERÍODES VÀLIDS A TOTES LES FILES...
-❌ Cap període vàlid trobat?
+--- FILA 42 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 41 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 40 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 39 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 38 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 37 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 36 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 35 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 34 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 33 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 32 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 31 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 30 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 29 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 28 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 27 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 26 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 25 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 24 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 23 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 22 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 21 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 20 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 19 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 18 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 17 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 16 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 15 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 14 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 13 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 12 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 11 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 10 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 9 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 8 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 7 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 6 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 5 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 4 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 3 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 2 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+
+--- FILA 1 ---
+   Cel·les: 10
+   ❌ No té suficients columnes (necessitem 11)
+❌ CAP FILA TE DADES VÀLIDES
 ❌ NO S'HAN POGUT OBTENIR DADES
 💤 NO S'ACTUALITZA RSS
 💤 FALLADA - NO S'HA ACTUALITZAT RSS
