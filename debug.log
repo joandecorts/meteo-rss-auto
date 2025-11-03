@@ -1,11 +1,14 @@
-=== DIAGNÒSTIC TAULA METEO.CAT ===
-Data: 2025-11-03 22:38:06.395679
-Estació: XJ (Girona)
+=== DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
+Inici: 2025-11-03 22:46:58.322249
 ============================================================
-🚀 INICIANT DIAGNÒSTIC...
+🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
+🐍 Versió Python: 3.10.19 (main, Oct 10 2025, 01:01:37) [GCC 13.3.0]
+
 ============================================================
-🔍 DIAGNÒSTIC DETALLAT DE LA TAULA
-⏰ Hora: 2025-11-03 22:38:06.395776
+🚀 INICIANT GENERACIÓ RSS
+============================================================
+🚀 INICIANT get_meteo_data()
+⏰ Hora: 2025-11-03 22:46:58.322391
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
@@ -13,170 +16,82 @@ Estació: XJ (Girona)
 ✅ Taula 'tblperiode' trobada
 📊 Files a la taula: 46
 
-==================================================
-📋 ANALITZANT CAPÇALERA (fila 0)
-==================================================
-Nombre d'elements (th/td) a la fila 0: 11
-  Element 0: etiqueta='th', text='PeríodeTU'
-  Element 1: etiqueta='th', text='TM°C'
-  Element 2: etiqueta='th', text='TX°C'
-  Element 3: etiqueta='th', text='TN°C'
-  Element 4: etiqueta='th', text='HRM%'
-  Element 5: etiqueta='th', text='PPTmm'
-  Element 6: etiqueta='th', text='VVM (10 m)km/h'
-  Element 7: etiqueta='th', text='DVM (10 m)graus'
-  Element 8: etiqueta='th', text='VVX (10 m)km/h'
-  Element 9: etiqueta='th', text='PMhPa'
-  Element 10: etiqueta='th', text='RSW/m2'
+🔍 ANALITZANT ESTRUCTURA REAL DE LES FILES...
 
-==================================================
-📊 ANALITZANT PRIMERES 5 FILES DE DADES
-==================================================
+--- FILA 0 (estructura) ---
+   Total elements (td+th): 11
+   Element 0 (th): 'PeríodeTU'
+   Element 1 (th): 'TM°C'
+   Element 2 (th): 'TX°C'
+   Element 3 (th): 'TN°C'
+   Element 4 (th): 'HRM%'
+   Element 5 (th): 'PPTmm'
+   Element 6 (th): 'VVM (10 m)km/h'
+   Element 7 (th): 'DVM (10 m)graus'
+   Element 8 (th): 'VVX (10 m)km/h'
+   Element 9 (th): 'PMhPa'
+   Element 10 (th): 'RSW/m2'
 
---- FILA 1 ---
-Nombre d'elements (td/th) a la fila 1: 11
-  Element 0: etiqueta='th', text='00:00 - 00:30'
-  Element 1: etiqueta='td', text='8.8'
-  Element 2: etiqueta='td', text='9.2'
-  Element 3: etiqueta='td', text='8.5'
-  Element 4: etiqueta='td', text='100'
-  Element 5: etiqueta='td', text='0.0'
-  Element 6: etiqueta='td', text='1.1'
-  Element 7: etiqueta='td', text='327'
-  Element 8: etiqueta='td', text='2.9'
-  Element 9: etiqueta='td', text='1023.0'
-  Element 10: etiqueta='td', text='0'
+--- FILA 1 (estructura) ---
+   Total elements (td+th): 11
+   Element 0 (th): '00:00 - 00:30'
+   Element 1 (td): '8.8'
+   Element 2 (td): '9.2'
+   Element 3 (td): '8.5'
+   Element 4 (td): '100'
+   Element 5 (td): '0.0'
+   Element 6 (td): '1.1'
+   Element 7 (td): '327'
+   Element 8 (td): '2.9'
+   Element 9 (td): '1023.0'
+   Element 10 (td): '0'
 
---- FILA 2 ---
-Nombre d'elements (td/th) a la fila 2: 11
-  Element 0: etiqueta='th', text='00:30 - 01:00'
-  Element 1: etiqueta='td', text='8.2'
-  Element 2: etiqueta='td', text='8.6'
-  Element 3: etiqueta='td', text='7.9'
-  Element 4: etiqueta='td', text='100'
-  Element 5: etiqueta='td', text='0.0'
-  Element 6: etiqueta='td', text='0.7'
-  Element 7: etiqueta='td', text='344'
-  Element 8: etiqueta='td', text='2.9'
-  Element 9: etiqueta='td', text='1023.1'
-  Element 10: etiqueta='td', text='0'
+--- FILA 2 (estructura) ---
+   Total elements (td+th): 11
+   Element 0 (th): '00:30 - 01:00'
+   Element 1 (td): '8.2'
+   Element 2 (td): '8.6'
+   Element 3 (td): '7.9'
+   Element 4 (td): '100'
+   Element 5 (td): '0.0'
+   Element 6 (td): '0.7'
+   Element 7 (td): '344'
+   Element 8 (td): '2.9'
+   Element 9 (td): '1023.1'
+   Element 10 (td): '0'
 
---- FILA 3 ---
-Nombre d'elements (td/th) a la fila 3: 11
-  Element 0: etiqueta='th', text='01:00 - 01:30'
-  Element 1: etiqueta='td', text='8.4'
-  Element 2: etiqueta='td', text='8.8'
-  Element 3: etiqueta='td', text='8.0'
-  Element 4: etiqueta='td', text='100'
-  Element 5: etiqueta='td', text='0.0'
-  Element 6: etiqueta='td', text='0.0'
-  Element 7: etiqueta='td', text='9'
-  Element 8: etiqueta='td', text='1.1'
-  Element 9: etiqueta='td', text='1023.2'
-  Element 10: etiqueta='td', text='0'
+🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
+ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)
 
---- FILA 4 ---
-Nombre d'elements (td/th) a la fila 4: 11
-  Element 0: etiqueta='th', text='01:30 - 02:00'
-  Element 1: etiqueta='td', text='8.9'
-  Element 2: etiqueta='td', text='9.3'
-  Element 3: etiqueta='td', text='8.8'
-  Element 4: etiqueta='td', text='100'
-  Element 5: etiqueta='td', text='0.0'
-  Element 6: etiqueta='td', text='0.4'
-  Element 7: etiqueta='td', text='9'
-  Element 8: etiqueta='td', text='2.9'
-  Element 9: etiqueta='td', text='1023.2'
-  Element 10: etiqueta='td', text='0'
-
---- FILA 5 ---
-Nombre d'elements (td/th) a la fila 5: 11
-  Element 0: etiqueta='th', text='02:00 - 02:30'
-  Element 1: etiqueta='td', text='9.3'
-  Element 2: etiqueta='td', text='9.4'
-  Element 3: etiqueta='td', text='9.1'
-  Element 4: etiqueta='td', text='100'
-  Element 5: etiqueta='td', text='0.0'
-  Element 6: etiqueta='td', text='1.1'
-  Element 7: etiqueta='td', text='303'
-  Element 8: etiqueta='td', text='4.0'
-  Element 9: etiqueta='td', text='1023.1'
-  Element 10: etiqueta='td', text='0'
-
-==================================================
-📊 ANALITZANT ÚLTIMES 5 FILES DE DADES
-==================================================
-
---- FILA 41 ---
-Nombre d'elements (td/th) a la fila 41: 11
-  Element 0: etiqueta='th', text='20:00 - 20:30'
-  Element 1: etiqueta='td', text='10.0'
-  Element 2: etiqueta='td', text='10.2'
-  Element 3: etiqueta='td', text='9.8'
-  Element 4: etiqueta='td', text='100'
-  Element 5: etiqueta='td', text='0.0'
-  Element 6: etiqueta='td', text='2.5'
-  Element 7: etiqueta='td', text='289'
-  Element 8: etiqueta='td', text='6.5'
-  Element 9: etiqueta='td', text='1024.3'
-  Element 10: etiqueta='td', text='0'
-
---- FILA 42 ---
-Nombre d'elements (td/th) a la fila 42: 11
-  Element 0: etiqueta='th', text='20:30 - 21:00'
-  Element 1: etiqueta='td', text='9.7'
-  Element 2: etiqueta='td', text='10.0'
-  Element 3: etiqueta='td', text='9.3'
-  Element 4: etiqueta='td', text='100'
-  Element 5: etiqueta='td', text='0.0'
-  Element 6: etiqueta='td', text='0.7'
-  Element 7: etiqueta='td', text='302'
-  Element 8: etiqueta='td', text='3.6'
-  Element 9: etiqueta='td', text='1024.5'
-  Element 10: etiqueta='td', text='0'
-
---- FILA 43 ---
-Nombre d'elements (td/th) a la fila 43: 11
-  Element 0: etiqueta='th', text='21:00 - 21:30'
-  Element 1: etiqueta='td', text='9.0'
-  Element 2: etiqueta='td', text='9.3'
-  Element 3: etiqueta='td', text='8.6'
-  Element 4: etiqueta='td', text='100'
-  Element 5: etiqueta='td', text='0.0'
-  Element 6: etiqueta='td', text='0.0'
-  Element 7: etiqueta='td', text='318'
-  Element 8: etiqueta='td', text='1.1'
-  Element 9: etiqueta='td', text='1024.6'
-  Element 10: etiqueta='td', text='0'
-
---- FILA 44 ---
-Nombre d'elements (td/th) a la fila 44: 11
-  Element 0: etiqueta='th', text='21:30 - 22:00'
-  Element 1: etiqueta='td', text='8.4'
-  Element 2: etiqueta='td', text='8.6'
-  Element 3: etiqueta='td', text='8.2'
-  Element 4: etiqueta='td', text='100'
-  Element 5: etiqueta='td', text='0.0'
-  Element 6: etiqueta='td', text='0.4'
-  Element 7: etiqueta='td', text='318'
-  Element 8: etiqueta='td', text='2.9'
-  Element 9: etiqueta='td', text='1024.8'
-  Element 10: etiqueta='td', text='0'
-
---- FILA 45 ---
-Nombre d'elements (td/th) a la fila 45: 11
-  Element 0: etiqueta='th', text='22:00 - 22:30'
-  Element 1: etiqueta='td', text='(s/d)'
-  Element 2: etiqueta='td', text='(s/d)'
-  Element 3: etiqueta='td', text='(s/d)'
-  Element 4: etiqueta='td', text='(s/d)'
-  Element 5: etiqueta='td', text='(s/d)'
-  Element 6: etiqueta='td', text='(s/d)'
-  Element 7: etiqueta='td', text='(s/d)'
-  Element 8: etiqueta='td', text='(s/d)'
-  Element 9: etiqueta='td', text='(s/d)'
-  Element 10: etiqueta='td', text='(s/d)'
-
-🎉 DIAGNÒSTIC COMPLETAT
+--- ANALITZANT FILA 45 ---
+   Cel·les (td+th): 11
+   Període: '22:00 - 22:30'
+   ✅ FORMAT DE PERÍODE VÀLID
+   📊 CONTINGUT DE LES 11 COLUMNES:
+      Columna 0 (th): '22:00 - 22:30'
+      Columna 1 (td): '8.0'
+      Columna 2 (td): '8.4'
+      Columna 3 (td): '7.8'
+      Columna 4 (td): '100'
+      Columna 5 (td): '0.0'
+      Columna 6 (td): '0.4'
+      Columna 7 (td): '318'
+      Columna 8 (td): '2.9'
+      Columna 9 (td): '1024.9'
+      Columna 10 (td): '0'
+   🎯 TE DADES VÀLIDES - PROCESSANT...
+   📊 DADES EXTRAÏDES:
+      TM: '8.0' | TX: '8.4' | TN: '7.8'
+      HR: '100' | PPT: '0.0' | VVM: '0.4'
+      DVM: '318' | VVX: '2.9' | PM: '1024.9'
+      RS: '0'
+   🕒 Ajustant període: 22:00 - 22:30
+   🕒 PERÍODE AJUSTAT: 22:00 - 22:30 TU → 23:00-23:30
+   ✅ DADES OBTINGUDES CORRECTAMENT
+   🕒 Període ajustat: 22:00 - 22:30 → 23:00-23:30
+✅ DADES OBTINGUDES - GENERANT RSS
+📝 Títol generat (324 caràcters)
+✅ RSS guardat a 'meteo.rss'
+🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
 ============================================================
-🏁 FI DEL DIAGNÒSTIC
+🏁 FI DE L'EXECUCIÓ
