@@ -25,7 +25,7 @@ jobs:
         run: pip install requests beautifulsoup4 pytz
 
       - name: Run update script
-        run: python meteo_update.py
+        run: python update_rss.py    # ⚡ NOMBRE CORREGIDO
 
       - name: Commit and push if changed
         run: |
