@@ -1,191 +1,85 @@
 import requests
-from bs4 import BeautifulSoup
-import pytz
-from datetime import datetime
-import re
-import sys
+import csv
 import os
+from datetime import datetime
+from io import StringIO
 
-def safe_float(value, default=None):
-    """Convierte seguridad un valor a float"""
-    if value is None or value == '':
-        return default
-        
-    value_str = str(value).strip()
+def update_rss():
+    # Configuración
+    csv_url = "https://www.meteo.cat/observacions/xarxa/dades/mesures.csv"
+    rss_file = "rss.xml"
     
-    # Manejar "(s/d)" - Sin Datos
-    if '(s/d)' in value_str or value_str == 's/d' or value_str == 'N/A':
-        return default
-    
-    # Extraer números
-    match = re.search(r'([-]?\d+\.?\d*)', value_str.replace(',', '.'))
-    if match:
-        try:
-            return float(match.group(1))
-        except (ValueError, TypeError):
-            return default
-    
-    return default
-
-def get_meteo_data():
     try:
-        print("🌐 Conectando a Meteo.cat...")
-        url = "https://www.meteo.cat/observacions/xema/dades?codi=Z6"
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        }
-        
-        response = requests.get(url, headers=headers, timeout=10)
+        # Descargar CSV
+        response = requests.get(csv_url)
+        response.encoding = 'utf-8'
         response.raise_for_status()
-        print("✅ Conexión exitosa a Meteo.cat")
         
-        soup = BeautifulSoup(response.content, 'html.parser')
+        # Leer todas las líneas
+        lines = response.text.strip().split('\n')
         
-        # Buscar la tabla por la clase 'tblperiode'
-        table = soup.find('table', {'class': 'tblperiode'})
-        if not table:
-            print("❌ No se encontró tabla 'tblperiode'")
-            return None
-            
-        rows = table.find_all('tr')
-        print(f"📊 Total de filas en la tabla: {len(rows)}")
+        if len(lines) < 2:
+            raise ValueError("CSV vacío o con formato incorrecto")
         
-        # Buscar el PRIMER período con datos válidos (más reciente)
-        for i in range(1, min(10, len(rows))):
-            data_row = rows[i]
-            cells = data_row.find_all('td')
-            
-            if len(cells) >= 11:
-                hora = cells[0].text.strip()
-                
-                # Verificar si es una fila de datos válida (formato de hora)
-                if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', hora):
-                    print(f"🔍 Revisando fila {i} - Período: {hora}")
-                    
-                    # ⚡ ESTRUCTURA CORREGIDA SEGÚN TU ESPECIFICACIÓN
-                    # 0: Período, 1:TM, 2:TX, 3:TN, 4:HRM, 5:PPT, 6:VVM, 7:DVM(no), 8:VVX, 9:PM, 10:RS(no)
-                    temp = safe_float(cells[1].text, None)      # TM - Temperatura media
-                    max_temp = safe_float(cells[2].text, None)  # TX - Temperatura máxima
-                    min_temp = safe_float(cells[3].text, None)  # TN - Temperatura mínima
-                    hum = safe_float(cells[4].text, None)       # HRM - Humedad
-                    precip = safe_float(cells[5].text, None)    # PPT - Precipitación
-                    wind = safe_float(cells[6].text, None)      # VVM - Viento medio
-                    gust = safe_float(cells[8].text, None)      # VVX - Ráfagas máximas
-                    pressure = safe_float(cells[9].text, None)  # PM - Presión
-                    
-                    # Verificar si esta fila tiene datos válidos
-                    if temp is not None and hum is not None:
-                        if 5 <= temp <= 40 and 0 <= hum <= 100:
-                            print(f"✅ Fila {i} tiene datos VÁLIDOS")
-                            
-                            print("📊 DATOS EXTRAÍDOS (estructura corregida):")
-                            print(f"   Período oficial: {hora}")
-                            print(f"   TM (Actual): {temp}°C")
-                            print(f"   TX (Máxima): {max_temp}°C")
-                            print(f"   TN (Mínima): {min_temp}°C")
-                            print(f"   HRM (Humedad): {hum}%")
-                            print(f"   PPT (Precipitación): {precip}mm")
-                            print(f"   VVM (Viento): {wind}km/h")
-                            print(f"   VVX (Ráfagas): {gust}km/h")
-                            print(f"   PM (Presión): {pressure}hPa")
-                            
-                            return {
-                                'hora': hora,
-                                'temp': temp,
-                                'max_temp': max_temp,
-                                'min_temp': min_temp,
-                                'hum': hum,
-                                'precip': precip,
-                                'wind': wind,
-                                'gust': gust,
-                                'pressure': pressure
-                            }
-                        else:
-                            print(f"⚠️ Fila {i} tiene datos fuera de rango: temp={temp}, hum={hum}")
-                    else:
-                        print(f"❌ Fila {i} tiene datos INCOMPLETOS (s/d), buscando siguiente período...")
+        # Tomar la última línea (datos más recientes)
+        last_line = lines[-1]
         
-        print("❌ No se encontró ningún período con datos válidos")
-        return None
+        # Parsear CSV
+        reader = csv.reader(StringIO(last_line))
+        row = next(reader)
+        
+        if len(row) < 10:
+            raise ValueError(f"Fila con menos columnas de las esperadas: {len(row)}")
+        
+        # Extraer datos con índices corregidos
+        periodo = row[0] if row[0] else "Dades no disponibles"
+        tm = row[1] if row[1] else "N/A"
+        tx = row[2] if row[2] else "N/A" 
+        tn = row[3] if row[3] else "N/A"
+        hrm = row[4] if row[4] else "N/A"
+        ppt = row[6] if row[6] else "0.0"  # Columna 7
+        vvm = row[5] if row[5] else "0.0"  # Columna 6 - Viento
+        vvx = row[7] if row[7] else "0.0"  # Columna 8 - Ráfagas  
+        pm = row[8] if row[8] else "0.0"   # Columna 9 - Presión
+        
+        # Hora actual para el título
+        current_time = datetime.now().strftime("%H:%M")
+        
+        # Crear título bilingüe
+        title_cat = f"[CAT] Actualitzat {current_time} | {periodo} | Actual:{tm}°C | Màx:{tx}°C | Mín:{tn}°C | Hum:{hrm}% | Precip:{ppt}mm | Vent:{vvm}km/h | Ràfegues:{vvx}km/h | Pressió:{pm}hPa"
+        title_gb = f"[GB] Updated {current_time} | {periodo} | Current:{tm}°C | Max:{tx}°C | Min:{tn}°C | Hum:{hrm}% | Precip:{ppt}mm | Wind:{vvm}km/h | Gusts:{vvx}km/h | Pressure:{pm}hPa"
+        
+        full_title = f"{title_cat} | {title_gb}"
         
     except Exception as e:
-        print(f"❌ Error obteniendo datos: {e}")
-        return None
-
-def generate_rss():
-    data = get_meteo_data()
+        # En caso de error, mostrar mensaje de datos no disponibles
+        current_time = datetime.now().strftime("%H:%M")
+        title_cat = f"[CAT] Actualitzat {current_time} | Dades no disponibles"
+        title_gb = f"[GB] Updated {current_time} | Data not available"
+        full_title = f"{title_cat} | {title_gb}"
     
-    # Obtener hora actual para ACTUALITZAT/UPDATED
-    cet = pytz.timezone('CET')
-    now = datetime.now(cet)
-    current_time = now.strftime("%H:%M")
-    
-    if not data:
-        print("❌ No se pudieron obtener datos válidos")
-        # Generar mensaje de error
-        title = f"[CAT] Actualitzat {current_time} | Dades no disponibles | [GB] Updated {current_time} | Data not available"
-        rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
+    # Generar RSS
+    rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
   <title>MeteoCat RSS</title>
   <link>https://www.meteo.cat</link>
   <description>Automated meteorological data - Dades meteorològiques automàtiques</description>
-  <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
+  <lastBuildDate>{datetime.now().strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
   <item>
-    <title>{title}</title>
+    <title>{full_title}</title>
     <link>https://www.meteo.cat</link>
-    <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
-  </item>
-</channel>
-</rss>'''
-    else:
-        # 🎯 FORMATO DEFINITIVO - ESTRUCTURA CORREGIDA
-        title = (
-            f"[CAT] Actualitzat {current_time} | {data['hora']} | "
-            f"Actual:{data['temp']}°C | "
-            f"Màx:{data['max_temp']}°C | "
-            f"Mín:{data['min_temp']}°C | "
-            f"Hum:{data['hum']}% | "
-            f"Precip:{data['precip']}mm | "
-            f"Vent:{data['wind']}km/h | "
-            f"Ràfegues:{data['gust']}km/h | "
-            f"Pressió:{data['pressure']}hPa | "
-            f"[GB] Updated {current_time} | {data['hora']} | "
-            f"Current:{data['temp']}°C | "
-            f"Max:{data['max_temp']}°C | "
-            f"Min:{data['min_temp']}°C | "
-            f"Hum:{data['hum']}% | "
-            f"Precip:{data['precip']}mm | "
-            f"Wind:{data['wind']}km/h | "
-            f"Gusts:{data['gust']}km/h | "
-            f"Pressure:{data['pressure']}hPa"
-        )
-        
-        rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
-<channel>
-  <title>MeteoCat RSS</title>
-  <link>https://www.meteo.cat</link>
-  <description>Automated meteorological data - Dades meteorològiques automàtiques</description>
-  <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
-  <item>
-    <title>{title}</title>
-    <link>https://www.meteo.cat</link>
-    <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
+    <pubDate>{datetime.now().strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
   </item>
 </channel>
 </rss>'''
     
-    # Guardar archivo RSS
-    with open('meteo.rss', 'w', encoding='utf-8') as f:
+    # Guardar archivo
+    with open(rss_file, 'w', encoding='utf-8') as f:
         f.write(rss_content)
     
-    print("✅ RSS generado exitosamente")
-    return True
+    return full_title
 
 if __name__ == "__main__":
-    print("🚀 Iniciando actualización de RSS meteorológico...")
-    success = generate_rss()
-    if success:
-        print("🎉 Proceso completado")
-    sys.exit(0)
+    result = update_rss()
+    print("RSS actualizado:", result)
