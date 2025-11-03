@@ -4,11 +4,11 @@
   <title>MeteoCat RSS</title>
   <link>https://www.meteo.cat</link>
   <description>Automated meteorological data - Dades meteorològiques automàtiques</description>
-  <lastBuildDate>Mon, 03 Nov 2025 17:14:39 CET</lastBuildDate>
+  <lastBuildDate>Mon, 03 Nov 2025 17:21:47 CET</lastBuildDate>
   <item>
     <title>[CAT] -0.9 | Temp:-0.8°C | Màx:-0.9°C | Mín:97.0°C | Hum:0.0% | Vent:0.0km/h | Ràfegues:8.6km/h | Precip:317.0mm | Pressió:20.2hPa | [GB] -0.9 | Temp:-0.8°C | Max:-0.9°C | Min:97.0°C | Hum:0.0% | Wind:0.0km/h | Gusts:8.6km/h | Precip:317.0mm | Pressure:20.2hPa</title>
     <link>https://www.meteo.cat</link>
-    <pubDate>Mon, 03 Nov 2025 17:14:39 CET</pubDate>
+    <pubDate>Mon, 03 Nov 2025 17:21:47 CET</pubDate>
   </item>
 </channel>
 </rss>
