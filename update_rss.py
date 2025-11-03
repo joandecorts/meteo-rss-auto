@@ -1,69 +1,53 @@
 import requests
 import csv
-import os
 from datetime import datetime
 from io import StringIO
 
 def update_rss():
-    # Configuración
+    # URL que funcionava abans
     csv_url = "https://www.meteo.cat/observacions/xarxa/dades/mesures.csv"
     rss_file = "meteo.rss"
     
     try:
-        # Descargar CSV
+        # Descarregar CSV
         response = requests.get(csv_url)
         response.encoding = 'utf-8'
         response.raise_for_status()
         
-        # Leer todas las líneas
+        # Llegir dades - AQUESTA PART FUNCIONAVA
         lines = response.text.strip().split('\n')
+        last_line = lines[-1]  # Última línia
         
-        if len(lines) < 2:
-            raise ValueError("CSV vacío o con formato incorrecto")
-        
-        # Buscar la última línea con datos válidos (ignorando líneas con "s/d")
-        last_valid_line = None
-        for line in reversed(lines):
-            if line.strip() and "s/d" not in line:
-                last_valid_line = line
-                break
-        
-        if not last_valid_line:
-            raise ValueError("No se encontraron líneas con datos válidos")
-        
-        # Parsear CSV
-        reader = csv.reader(StringIO(last_valid_line))
+        # Parsejar CSV
+        reader = csv.reader(StringIO(last_line))
         row = next(reader)
         
-        if len(row) < 10:
-            raise ValueError(f"Fila con menos columnas de las esperadas: {len(row)}")
+        # ÍNDEXS ORIGINALS QUE FUNCIONAVEN:
+        # 0=Període, 1=TM, 2=TX, 3=TN, 4=HRM, 5=VVM, 6=PPT, 7=VVX, 8=PM
+        periodo = row[0]
+        tm = row[1]    # Temperatura actual
+        tx = row[2]    # Temperatura màxima  
+        tn = row[3]    # Temperatura mínima
+        hrm = row[4]   # Humitat
+        vvm = row[5]   # Vent mitjà
+        ppt = row[6]   # Precipitació
+        vvx = row[7]   # Ràfegues
+        pm = row[8]    # Pressió
         
-        # Extraer datos con índices corregidos
-        periodo = row[0] if row[0] and row[0] != "s/d" else "Dades no disponibles"
-        tm = row[1] if row[1] and row[1] != "s/d" else "N/A"
-        tx = row[2] if row[2] and row[2] != "s/d" else "N/A" 
-        tn = row[3] if row[3] and row[3] != "s/d" else "N/A"
-        hrm = row[4] if row[4] and row[4] != "s/d" else "N/A"
-        ppt = row[6] if row[6] and row[6] != "s/d" else "0.0"
-        vvm = row[5] if row[5] and row[5] != "s/d" else "0.0"
-        vvx = row[7] if row[7] and row[7] != "s/d" else "0.0"
-        pm = row[8] if row[8] and row[8] != "s/d" else "0.0"
-        
-        # Hora actual para el título
+        # Hora actual
         current_time = datetime.now().strftime("%H:%M")
         
-        # Crear título bilingüe
+        # Crear títol bilingüe
         title_cat = f"[CAT] Actualitzat {current_time} | {periodo} | Actual:{tm}°C | Màx:{tx}°C | Mín:{tn}°C | Hum:{hrm}% | Precip:{ppt}mm | Vent:{vvm}km/h | Ràfegues:{vvx}km/h | Pressió:{pm}hPa"
         title_gb = f"[GB] Updated {current_time} | {periodo} | Current:{tm}°C | Max:{tx}°C | Min:{tn}°C | Hum:{hrm}% | Precip:{ppt}mm | Wind:{vvm}km/h | Gusts:{vvx}km/h | Pressure:{pm}hPa"
         
         full_title = f"{title_cat} | {title_gb}"
         
     except Exception as e:
-        # En caso de error, mostrar mensaje de datos no disponibles
+        # En cas d'error
         current_time = datetime.now().strftime("%H:%M")
-        error_msg = f"Dades no disponibles (Error: {str(e)})"
-        title_cat = f"[CAT] Actualitzat {current_time} | {error_msg}"
-        title_gb = f"[GB] Updated {current_time} | {error_msg}"
+        title_cat = f"[CAT] Actualitzat {current_time} | Error: {str(e)}"
+        title_gb = f"[GB] Updated {current_time} | Error: {str(e)}"
         full_title = f"{title_cat} | {title_gb}"
     
     # Generar RSS
@@ -82,7 +66,7 @@ def update_rss():
 </channel>
 </rss>'''
     
-    # Guardar archivo
+    # Guardar arxiu
     with open(rss_file, 'w', encoding='utf-8') as f:
         f.write(rss_content)
     
