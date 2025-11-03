@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pytz
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 import sys
 import os
@@ -113,6 +113,10 @@ def get_meteo_data():
                     gust = safe_float(cells[8].text, 0.0)
                     pressure = safe_float(cells[9].text, 0.0)
                     
+                    # 🎯 CRITERIOS MÁS FLEXIBLES: Aceptar filas aunque algunos datos sean None
+                    # Solo requerimos que al menos temperatura o humedad tengan datos
+                    tiene_datos_esenciales = temp is not None or hum is not None
+                    
                     # Guardar información de la fila
                     row_data = {
                         'index': i,
@@ -125,7 +129,7 @@ def get_meteo_data():
                         'wind': wind,
                         'gust': gust,
                         'pressure': pressure,
-                        'es_valida': temp is not None and hum is not None
+                        'es_valida': tiene_datos_esenciales
                     }
                     
                     last_5_rows.append(row_data)
@@ -144,26 +148,32 @@ def get_meteo_data():
         if valid_data:
             # 🎯 AJUSTAR EL PERÍODO A HORA LOCAL
             adjusted_hora = adjust_period_time(valid_data['hora'])
-            valid_data['hora'] = adjusted_hora
             
-            print("🎯 PERÍODO MÁS RECIENTE CON DATOS VÁLIDOS:")
-            print(f"   Período: {valid_data['hora']}")
-            print(f"   TM (Actual): {valid_data['temp']}°C")
-            print(f"   TX (Máxima): {valid_data['max_temp']}°C") 
-            print(f"   TN (Mínima): {valid_data['min_temp']}°C")
-            print(f"   HR (Humedad): {valid_data['hum']}%")
-            print(f"   PPT (Precipitación): {valid_data['precip']}mm")
-            print(f"   VVM (Viento): {valid_data['wind']}km/h")
-            print(f"   VVX (Ráfagas): {valid_data['gust']}km/h")
-            print(f"   PM (Presión): {valid_data['pressure']}hPa")
-            
+            print("🎯 VALORES EXTRAÍDOS DE LA FILA SELECCIONADA:")
+            print(f"   Hora (original): {valid_data['hora']}")
+            print(f"   Hora (ajustada): {adjusted_hora}")
+            print(f"   TM: {valid_data['temp']}")
+            print(f"   TX: {valid_data['max_temp']}")
+            print(f"   TN: {valid_data['min_temp']}")
+            print(f"   HR: {valid_data['hum']}")
+            print(f"   PPT: {valid_data['precip']}")
+            print(f"   VVM: {valid_data['wind']}")
+            print(f"   VVX: {valid_data['gust']}")
+            print(f"   PM: {valid_data['pressure']}")
+
+            # 🎯 VALORES POR DEFECTO MÁS INTELIGENTES
+            temp_final = valid_data['temp'] if valid_data['temp'] is not None else 0.0
+            max_temp_final = valid_data['max_temp'] if valid_data['max_temp'] is not None else temp_final
+            min_temp_final = valid_data['min_temp'] if valid_data['min_temp'] is not None else temp_final
+            hum_final = valid_data['hum'] if valid_data['hum'] is not None else 0.0
+
             # Devolver solo los datos necesarios
             return {
-                'hora': valid_data['hora'],
-                'temp': valid_data['temp'],
-                'max_temp': valid_data['max_temp'] if valid_data['max_temp'] is not None else valid_data['temp'],
-                'min_temp': valid_data['min_temp'] if valid_data['min_temp'] is not None else valid_data['temp'],
-                'hum': valid_data['hum'],
+                'hora': adjusted_hora,
+                'temp': temp_final,
+                'max_temp': max_temp_final,
+                'min_temp': min_temp_final,
+                'hum': hum_final,
                 'precip': valid_data['precip'],
                 'wind': valid_data['wind'],
                 'gust': valid_data['gust'],
@@ -187,21 +197,34 @@ def generate_rss():
     
     if not data:
         print("❌ No se pudieron obtener datos válidos")
-        # Usar datos del período más reciente con hora ajustada
-        base_period = "18:30-19:00"  # Período más reciente que mencionaste
+        # 🎯 MEJOR: No usar datos de respaldo fijos, sino intentar calcular el período actual
+        # y mostrar que no hay datos disponibles
+        current_hour = now.hour
+        current_minute = now.minute
+        
+        # Calcular período actual aproximado
+        if current_minute >= 30:
+            period_start = f"{current_hour:02d}:30"
+            period_end = f"{(current_hour + 1) % 24:02d}:00"
+        else:
+            period_start = f"{current_hour:02d}:00"
+            period_end = f"{current_hour:02d}:30"
+        
+        base_period = f"{period_start}-{period_end}"
         adjusted_period = adjust_period_time(base_period)
+        
         data = {
             'hora': adjusted_period,
-            'temp': 17.2,
-            'max_temp': 17.6,
-            'min_temp': 16.9,
-            'hum': 73,
-            'precip': 0.0,
-            'wind': 5.0,
-            'gust': 12.2,
-            'pressure': 1023.1
+            'temp': "N/A",
+            'max_temp': "N/A",
+            'min_temp': "N/A",
+            'hum': "N/A",
+            'precip': "N/A",
+            'wind': "N/A",
+            'gust': "N/A",
+            'pressure': "N/A"
         }
-        print(f"📊 Usando datos de respaldo para período {adjusted_period}")
+        print(f"📊 No hay datos disponibles para el período {adjusted_period}")
     
     # 🎯 FORMATO DEFINITIVO - ESTRUCTURA FINAL
     title = (
