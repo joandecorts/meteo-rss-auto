@@ -4,11 +4,11 @@
   <title>MeteoCat RSS</title>
   <link>https://www.meteo.cat</link>
   <description>Automated meteorological data - Dades meteorològiques automàtiques</description>
-  <lastBuildDate>Mon, 03 Nov 2025 18:39:06 CET</lastBuildDate>
+  <lastBuildDate>Mon, 03 Nov 2025 18:45:33 CET</lastBuildDate>
   <item>
-    <title>[CAT] Actualitzat 18:39 | Dades no disponibles (Error: 404 Client Error: 404 for url: https://www.meteo.cat/observacions/xarxa/dades/mesures.csv) | [GB] Updated 18:39 | Dades no disponibles (Error: 404 Client Error: 404 for url: https://www.meteo.cat/observacions/xarxa/dades/mesures.csv)</title>
+    <title>[CAT] Actualitzat 18:45 | Dades no disponibles (Error: 404 Client Error: 404 for url: https://www.meteo.cat/observacions/xarxa/dades/mesures.csv) | [GB] Updated 18:45 | Dades no disponibles (Error: 404 Client Error: 404 for url: https://www.meteo.cat/observacions/xarxa/dades/mesures.csv)</title>
     <link>https://www.meteo.cat</link>
-    <pubDate>Mon, 03 Nov 2025 18:39:06 CET</pubDate>
+    <pubDate>Mon, 03 Nov 2025 18:45:33 CET</pubDate>
   </item>
 </channel>
 </rss>
