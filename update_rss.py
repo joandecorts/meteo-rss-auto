@@ -7,173 +7,189 @@ import sys
 
 def get_meteo_data():
     try:
-        print("🌐 Conectando a Meteo.cat...")
+        print("🌐 Connectant a Meteo.cat...")
         url = "https://www.meteo.cat/observacions/xema/dades?codi=Z6"
-        response = requests.get(url, timeout=10)
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+        
+        response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
-        print("✅ Conexión exitosa")
+        print("✅ Connexió exitosa")
         
         soup = BeautifulSoup(response.content, 'html.parser')
         table = soup.find('table', {'class': 'tblperiode'})
         if not table:
-            print("❌ No se encontró la tabla")
+            print("❌ No s'ha trobat la taula")
             return None
             
         rows = table.find_all('tr')
-        print(f"📊 Total filas: {len(rows)}")
+        print(f"📊 Files trobades: {len(rows)}")
         
-        # Recorrer desde la ÚLTIMA fila hasta la PRIMERA
+        # Recórrer des de l'última fila (més recent) fins a la primera
         for i in range(len(rows)-1, 0, -1):
             cells = rows[i].find_all('td')
-            if len(cells) >= 11:
-                periodo = cells[0].get_text(strip=True)
+            
+            if len(cells) >= 11:  # Assegurar que tenim les 11 columnes
+                periode = cells[0].get_text(strip=True)
                 
-                # Verificar si es un período válido
-                if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periodo):
-                    print(f"\n🔍 Analizando período: {periodo}")
+                # Verificar si és un període vàlid
+                if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periode):
+                    print(f"\n🔍 ANALITZANT PERÍODE: {periode}")
                     
-                    # Leer TODOS los valores en bruto
-                    temp_text = cells[1].get_text(strip=True)
-                    max_temp_text = cells[2].get_text(strip=True)
-                    min_temp_text = cells[3].get_text(strip=True)
-                    hum_text = cells[4].get_text(strip=True)
-                    precip_text = cells[5].get_text(strip=True)
-                    wind_text = cells[6].get_text(strip=True)
-                    gust_text = cells[8].get_text(strip=True)
+                    # LLEGIR LES 11 COLUMNES EN L'ORDRE EXACTE
+                    tm = cells[1].get_text(strip=True)   # TM
+                    tx = cells[2].get_text(strip=True)   # TX
+                    tn = cells[3].get_text(strip=True)   # TN
+                    hr = cells[4].get_text(strip=True)   # HR
+                    ppt = cells[5].get_text(strip=True)  # PPT
+                    vvm = cells[6].get_text(strip=True)  # VVM
+                    dvm = cells[7].get_text(strip=True)  # DVM
+                    vvx = cells[8].get_text(strip=True)  # VVX
+                    pm = cells[9].get_text(strip=True)   # PM
+                    rs = cells[10].get_text(strip=True)  # RS
                     
-                    print(f"   📊 VALORES CRUDOS:")
-                    print(f"   TM: '{temp_text}' | TX: '{max_temp_text}' | TN: '{min_temp_text}'")
-                    print(f"   HR: '{hum_text}' | PPT: '{precip_text}'")
-                    print(f"   VVM: '{wind_text}' | VVX: '{gust_text}'")
+                    print("📊 LES 11 DADES EN BRUT:")
+                    print(f"   Període: {periode}")
+                    print(f"   TM: '{tm}' | TX: '{tx}' | TN: '{tn}'")
+                    print(f"   HR: '{hr}' | PPT: '{ppt}' | VVM: '{vvm}'")
+                    print(f"   DVM: '{dvm}' | VVX: '{vvx}' | PM: '{pm}' | RS: '{rs}'")
                     
-                    # Verificar si hay datos válidos (no vacíos y no s/d)
-                    tiene_datos = (temp_text and temp_text != '(s/d)') or (hum_text and hum_text != '(s/d)')
+                    # Verificar si hi ha dades vàlides (no buides ni "s/d")
+                    dades_valides = any([
+                        tm and tm != '(s/d)', tx and tx != '(s/d)', tn and tn != '(s/d)',
+                        hr and hr != '(s/d)', ppt and ppt != '(s/d)', vvm and vvm != '(s/d)',
+                        dvm and dvm != '(s/d)', vvx and vvx != '(s/d)', pm and pm != '(s/d)',
+                        rs and rs != '(s/d)'
+                    ])
                     
-                    if tiene_datos:
-                        print("✅ PERÍODO CON DATOS VÁLIDOS")
+                    if dades_valides:
+                        print("✅ PERÍODE AMB DADES VÀLIDES - PROCESSANT...")
                         
-                        # Convertir a números, usando 0.0 si hay s/d
-                        try:
-                            temp = float(temp_text.replace(',', '.')) if temp_text and temp_text != '(s/d)' else 0.0
-                            max_temp = float(max_temp_text.replace(',', '.')) if max_temp_text and max_temp_text != '(s/d)' else temp
-                            min_temp = float(min_temp_text.replace(',', '.')) if min_temp_text and min_temp_text != '(s/d)' else temp
-                            hum = float(hum_text.replace(',', '.')) if hum_text and hum_text != '(s/d)' else 0.0
-                            precip = float(precip_text.replace(',', '.')) if precip_text and precip_text != '(s/d)' else 0.0
-                            wind = float(wind_text.replace(',', '.')) if wind_text and wind_text != '(s/d)' else 0.0
-                            gust = float(gust_text.replace(',', '.')) if gust_text and gust_text != '(s/d)' else 0.0
-                            pressure = 0.0  # No disponible en esta tabla
-                            
-                            # Ajustar período a hora local
-                            periodo_ajustado = adjust_period_time(periodo)
-                            
-                            return {
-                                'periodo': periodo_ajustado,
-                                'temp': temp,
-                                'max_temp': max_temp,
-                                'min_temp': min_temp,
-                                'hum': hum,
-                                'precip': precip,
-                                'wind': wind,
-                                'gust': gust,
-                                'pressure': pressure
-                            }
-                            
-                        except ValueError as e:
-                            print(f"❌ Error convirtiendo números: {e}")
-                            continue
+                        # Convertir tots els valors a números
+                        def a_numero(text, default=0.0):
+                            if not text or text == '(s/d)':
+                                return default
+                            try:
+                                return float(text.replace(',', '.'))
+                            except:
+                                return default
+                        
+                        # Aplicar conversions a les 11 dades
+                        tm_num = a_numero(tm)
+                        tx_num = a_numero(tx, tm_num)
+                        tn_num = a_numero(tn, tm_num)
+                        hr_num = a_numero(hr)
+                        ppt_num = a_numero(ppt)
+                        vvm_num = a_numero(vvm)
+                        dvm_num = a_numero(dvm)
+                        vvx_num = a_numero(vvx)
+                        pm_num = a_numero(pm)
+                        rs_num = a_numero(rs)
+                        
+                        # Ajustar període TU a hora local
+                        periode_ajustat = ajustar_periode(periode)
+                        
+                        return {
+                            'periode': periode_ajustat,
+                            'tm': tm_num, 'tx': tx_num, 'tn': tn_num,
+                            'hr': hr_num, 'ppt': ppt_num, 'vvm': vvm_num,
+                            'dvm': dvm_num, 'vvx': vvx_num, 'pm': pm_num,
+                            'rs': rs_num
+                        }
                     else:
-                        print("❌ PERÍODO SIN DATOS - Buscando anterior...")
+                        print("❌ PERÍODE SENSE DADES - CERCANT ANTERIOR...")
                         continue
         
-        print("❌ No se encontró ningún período con datos")
+        print("❌ No s'ha trobat cap període amb dades vàlides")
         return None
         
     except Exception as e:
-        print(f"❌ Error general: {e}")
+        print(f"❌ Error: {e}")
         return None
 
-def adjust_period_time(period_str):
-    """Ajusta período UTC a hora local"""
+def ajustar_periode(periode_str):
+    """Ajusta període TU (UTC) a hora local"""
     try:
-        match = re.match(r'(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})', period_str)
+        match = re.match(r'(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})', periode_str)
         if match:
-            start_hour = int(match.group(1))
-            start_minute = int(match.group(2))
-            end_hour = int(match.group(3))
-            end_minute = int(match.group(4))
+            hora_inici = int(match.group(1))
+            minut_inici = int(match.group(2))
+            hora_fi = int(match.group(3))
+            minut_fi = int(match.group(4))
             
-            # Determinar diferencia horaria
+            # Determinar diferència horària
             cet = pytz.timezone('CET')
-            now_utc = datetime.utcnow().replace(tzinfo=pytz.utc)
-            now_cet = now_utc.astimezone(cet)
+            ara_utc = datetime.utcnow().replace(tzinfo=pytz.utc)
+            ara_cet = ara_utc.astimezone(cet)
             
-            is_dst = now_cet.dst() != timedelta(0)
-            offset_hours = 2 if is_dst else 1
+            es_dst = ara_cet.dst() != timedelta(0)
+            hores_diferencia = 2 if es_dst else 1
             
-            start_adj = (start_hour + offset_hours) % 24
-            end_adj = (end_hour + offset_hours) % 24
+            hora_inici_ajustada = (hora_inici + hores_diferencia) % 24
+            hora_fi_ajustada = (hora_fi + hores_diferencia) % 24
             
-            adjusted = f"{start_adj:02d}:{start_minute:02d}-{end_adj:02d}:{end_minute:02d}"
-            print(f"🕒 AJUSTE: {period_str} UTC → {adjusted} {'CEST' if is_dst else 'CET'}")
-            return adjusted
+            periode_ajustat = f"{hora_inici_ajustada:02d}:{minut_inici:02d}-{hora_fi_ajustada:02d}:{minut_fi:02d}"
+            print(f"🕒 PERÍODE AJUSTAT: {periode_str} TU → {periode_ajustat} {'CEST' if es_dst else 'CET'}")
+            return periode_ajustat
             
     except Exception as e:
-        print(f"❌ Error ajustando período: {e}")
+        print(f"❌ Error ajustant període: {e}")
     
-    return period_str
+    return periode_str
 
-def generate_rss():
-    data = get_meteo_data()
+def generar_rss():
+    dades = get_meteo_data()
     
     # Hora actual
     cet = pytz.timezone('CET')
-    now = datetime.now(cet)
-    current_time = now.strftime("%H:%M")
+    ara = datetime.now(cet)
+    hora_actual = ara.strftime("%H:%M")
     
-    if not data:
-        print("❌ No se pudieron obtener datos - NO se actualiza RSS")
+    if not dades:
+        print("❌ No s'han pogut obtenir dades - NO s'actualitza RSS")
         return False
     
-    # Crear título
-    title = (
-        f"[CAT] Actualitzat {current_time} | {data['periodo']} | "
-        f"Actual:{data['temp']}°C | Màx:{data['max_temp']}°C | Mín:{data['min_temp']}°C | "
-        f"Hum:{data['hum']}% | Precip:{data['precip']}mm | Vent:{data['wind']}km/h | "
-        f"Ràfegues:{data['gust']}km/h | Pressió:{data['pressure']}hPa | "
-        f"[GB] Updated {current_time} | {data['periodo']} | "
-        f"Current:{data['temp']}°C | Max:{data['max_temp']}°C | Min:{data['min_temp']}°C | "
-        f"Hum:{data['hum']}% | Precip:{data['precip']}mm | Wind:{data['wind']}km/h | "
-        f"Gusts:{data['gust']}km/h | Pressure:{data['pressure']}hPa"
+    # Crear títol amb les 11 dades en l'ordre exacte
+    titol = (
+        f"[CAT] Actualitzat {hora_actual} | {dades['periode']} | "
+        f"TM:{dades['tm']}°C | TX:{dades['tx']}°C | TN:{dades['tn']}°C | "
+        f"HR:{dades['hr']}% | PPT:{dades['ppt']}mm | VVM:{dades['vvm']}km/h | "
+        f"DVM:{dades['dvm']}° | VVX:{dades['vvx']}km/h | PM:{dades['pm']}hPa | RS:{dades['rs']}W/m2 | "
+        f"[GB] Updated {hora_actual} | {dades['periode']} | "
+        f"TM:{dades['tm']}°C | TX:{dades['tx']}°C | TN:{dades['tn']}°C | "
+        f"HR:{dades['hr']}% | PPT:{dades['ppt']}mm | VVM:{dades['vvm']}km/h | "
+        f"DVM:{dades['dvm']}° | VVX:{dades['vvx']}km/h | PM:{dades['pm']}hPa | RS:{dades['rs']}W/m2"
     )
     
     # Generar RSS
-    rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
+    contingut_rss = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
   <title>MeteoCat RSS</title>
   <link>https://www.meteo.cat</link>
   <description>Automated meteorological data - Dades meteorològiques automàtiques</description>
-  <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
+  <lastBuildDate>{ara.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
   <item>
-    <title>{title}</title>
+    <title>{titol}</title>
     <link>https://www.meteo.cat</link>
-    <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
+    <pubDate>{ara.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
   </item>
 </channel>
 </rss>'''
     
-    # Guardar archivo
+    # Guardar arxiu
     with open('meteo.rss', 'w', encoding='utf-8') as f:
-        f.write(rss_content)
+        f.write(contingut_rss)
     
-    print("✅ RSS ACTUALIZADO CORRECTAMENTE")
+    print("✅ RSS ACTUALITZAT CORRECTAMENT AMB LES 11 DADES")
     return True
 
 if __name__ == "__main__":
-    print("🚀 Iniciando actualización RSS...")
-    success = generate_rss()
-    if success:
-        print("🎉 COMPLETADO - RSS ACTUALIZADO")
+    print("🚀 Iniciant actualització RSS...")
+    exit = generar_rss()
+    if exit:
+        print("🎉 COMPLETAT - RSS ACTUALITZAT")
     else:
-        print("💤 NO SE ACTUALIZÓ - Sin datos válidos")
+        print("💤 NO S'HA ACTUALITZAT - Sense dades vàlides")
     sys.exit(0)
