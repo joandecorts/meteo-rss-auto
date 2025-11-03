@@ -42,14 +42,14 @@ def get_meteo_data():
                     
                     print(f"   TM: '{temp_text}', HR: '{hum_text}'")
                     
-                    # Si hay datos en TM o HRM, usar esta fila
-                    if temp_text and temp_text != '(s/d)' and hum_text and hum_text != '(s/d)':
+                    # 🎯 CANVI: Aceptar si al menos uno de los dos tiene datos
+                    if (temp_text and temp_text != '(s/d)') or (hum_text and hum_text != '(s/d)'):
                         print("✅ PERÍODO VÁLIDO CON DATOS")
                         
-                        # Convertir a números
+                        # Convertir a números, si alguno es (s/d) o vacío, usar 0.0 o None?
                         try:
-                            temp = float(temp_text.replace(',', '.'))
-                            hum = float(hum_text.replace(',', '.'))
+                            temp = float(temp_text.replace(',', '.')) if temp_text and temp_text != '(s/d)' else 0.0
+                            hum = float(hum_text.replace(',', '.')) if hum_text and hum_text != '(s/d)' else 0.0
                             max_temp = float(cells[2].get_text(strip=True).replace(',', '.')) if cells[2].get_text(strip=True) not in ['', '(s/d)'] else temp
                             min_temp = float(cells[3].get_text(strip=True).replace(',', '.')) if cells[3].get_text(strip=True) not in ['', '(s/d)'] else temp
                             precip = float(cells[5].get_text(strip=True).replace(',', '.')) if cells[5].get_text(strip=True) not in ['', '(s/d)'] else 0.0
@@ -75,10 +75,10 @@ def get_meteo_data():
                             print(f"❌ Error convirtiendo números: {e}")
                             continue
                     else:
-                        print("❌ Período sin datos, buscando anterior...")
+                        print("❌ Período sin datos en TM y HR, buscando anterior...")
                         continue
         
-        print("❌ No se encontraron datos válidos")
+        print("❌ No se encontraron datos válidos en ninguna fila")
         return None
         
     except Exception as e:
