@@ -55,16 +55,14 @@ def get_meteo_data():
             data_row = rows[i]
             cells = data_row.find_all('td')
             
-            if len(cells) >= 11:  # ⚡ AHORA SON 11 COLUMNAS
+            if len(cells) >= 11:  # ⚡ SON 11 COLUMNAS
                 hora = cells[0].text.strip()
                 
                 # Verificar si es una fila de datos válida (formato de hora)
                 if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', hora):
                     print(f"✅ Fila {i} seleccionada - Hora: {hora}")
                     
-                    # ⚡ NUEVA ESTRUCTURA CON 11 COLUMNAS:
-                    # 0: Hora, 1: Temp, 2: Max, 3: Min, 4: Hum, 5: Viento, 
-                    # 6: Ráfagas, 7: Precip, 8: Presión
+                    # ⚡ ESTRUCTURA CON 11 COLUMNAS:
                     temp = safe_float(cells[1].text)
                     max_temp = safe_float(cells[2].text)
                     min_temp = safe_float(cells[3].text)
@@ -86,7 +84,7 @@ def get_meteo_data():
                     print(f"   Presión: {pressure}hPa")
                     
                     # Validar que los datos sean razonables
-                    if 10 <= temp <= 40 and 20 <= hum <= 100:  # Rangos más realistas para Catalunya
+                    if 10 <= temp <= 40 and 20 <= hum <= 100:
                         return {
                             'hora': hora,
                             'temp': temp,
@@ -114,10 +112,12 @@ def generate_rss():
     # Obtener timestamp actual
     cet = pytz.timezone('CET')
     now = datetime.now(cet)
+    current_time = now.strftime("%H:%M")  # Hora actual en formato 16:45
+    timestamp = int(now.timestamp())      # Timestamp para el final
     
     if not data:
         print("❌ No se pudieron obtener datos válidos")
-        # Usar datos de ejemplo basados en lo que viste en la web
+        # Usar datos de ejemplo
         data = {
             'hora': '15:30-16:00',
             'temp': 19.3,
@@ -129,11 +129,11 @@ def generate_rss():
             'precip': 0.0,
             'pressure': 1022.8
         }
-        print("📊 Usando datos de ejemplo basados en la web oficial")
+        print("📊 Usando datos de ejemplo")
     
-    # FORMATO CORREGIDO CON [CAT] y [GB]
+    # 🎯 FORMATO MEJORADO CON "ACTUALITZAT", "UPDATED" Y TIMESTAMP
     title = (
-        f"[CAT] {data['hora']} | "
+        f"[CAT] ACTUALITZAT {current_time} | {data['hora']} | "
         f"Temp:{data['temp']}°C | "
         f"Màx:{data['max_temp']}°C | "
         f"Mín:{data['min_temp']}°C | "
@@ -142,7 +142,7 @@ def generate_rss():
         f"Ràfegues:{data['gust']}km/h | "
         f"Precip:{data['precip']}mm | "
         f"Pressió:{data['pressure']}hPa | "
-        f"[GB] {data['hora']} | "
+        f"[GB] UPDATED {current_time} | {data['hora']} | "
         f"Temp:{data['temp']}°C | "
         f"Max:{data['max_temp']}°C | "
         f"Min:{data['min_temp']}°C | "
@@ -150,7 +150,8 @@ def generate_rss():
         f"Wind:{data['wind']}km/h | "
         f"Gusts:{data['gust']}km/h | "
         f"Precip:{data['precip']}mm | "
-        f"Pressure:{data['pressure']}hPa"
+        f"Pressure:{data['pressure']}hPa | "
+        f"⌚ {timestamp}"
     )
     
     rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
