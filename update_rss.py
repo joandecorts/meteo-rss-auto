@@ -50,16 +50,18 @@ def get_meteo_data():
         rows = table.find_all('tr')
         print(f"📊 Total de filas en la tabla: {len(rows)}")
         
-        # DIAGNÓSTICO: Mostrar la estructura real de las primeras filas
-        print("🔍 ESTRUCTURA DE LA TABLA (primeras 3 filas de datos):")
-        for i in range(1, min(4, len(rows))):
+        # DIAGNÓSTICO: Mostrar la estructura real de las últimas 5 filas
+        print("🔍 ESTRUCTURA DE LA TABLA (últimas 5 filas de datos):")
+        start_index = max(1, len(rows) - 5)
+        for i in range(start_index, len(rows)):
             data_row = rows[i]
             cells = data_row.find_all('td')
             if len(cells) >= 11:
                 print(f"📝 Fila {i}: {cells[0].text.strip()} | TM:{cells[1].text} | TX:{cells[2].text} | TN:{cells[3].text} | HR:{cells[4].text} | PPT:{cells[5].text} | VVM:{cells[6].text} | VVX:{cells[8].text} | PM:{cells[9].text}")
         
-        # Buscar desde la PRIMERA fila de datos (más reciente) hacia abajo
-        for i in range(1, min(10, len(rows))):
+        # 🎯 CANVI CLAU: Buscar desde la ÚLTIMA fila hacia arriba (para encontrar la más reciente)
+        valid_data = None
+        for i in range(len(rows)-1, 0, -1):  # Recorrer de abajo hacia arriba
             data_row = rows[i]
             cells = data_row.find_all('td')
             
@@ -86,20 +88,8 @@ def get_meteo_data():
                     # Verificar si esta fila tiene datos válidos (no "(s/d)")
                     if temp is not None and hum is not None:
                         if 5 <= temp <= 40 and 10 <= hum <= 100:
-                            print(f"✅ Fila {i} seleccionada - PERÍODO MÁS RECIENTE CON DATOS")
-                            
-                            print("📊 DATOS EXTRAÍDOS (estructura definitiva):")
-                            print(f"   Período: {hora}")
-                            print(f"   TM (Actual): {temp}°C")
-                            print(f"   TX (Máxima): {max_temp}°C")
-                            print(f"   TN (Mínima): {min_temp}°C")
-                            print(f"   HR (Humedad): {hum}%")
-                            print(f"   PPT (Precipitación): {precip}mm")
-                            print(f"   VVM (Viento): {wind}km/h")
-                            print(f"   VVX (Ráfagas): {gust}km/h")
-                            print(f"   PM (Presión): {pressure}hPa")
-                            
-                            return {
+                            print(f"✅ Fila {i} VÁLIDA - Período: {hora}")
+                            valid_data = {
                                 'hora': hora,
                                 'temp': temp,
                                 'max_temp': max_temp,
@@ -110,13 +100,28 @@ def get_meteo_data():
                                 'gust': gust,
                                 'pressure': pressure
                             }
+                            # 🎯 NO PARAMOS AQUÍ - Seguimos buscando hacia arriba para encontrar la MÁS RECIENTE
                         else:
-                            print(f"⚠️ Fila {i} tiene datos fuera de rango, buscando siguiente...")
+                            print(f"⚠️ Fila {i} tiene datos fuera de rango")
                     else:
-                        print(f"❌ Fila {i} tiene datos INCOMPLETOS (s/d), buscando siguiente...")
+                        print(f"❌ Fila {i} tiene datos INCOMPLETOS (s/d)")
         
-        print("❌ No se encontró ninguna fila con datos válidos")
-        return None
+        # 🎯 CANVI CLAU: Si encontramos datos válidos, devolvemos el ÚLTIMO (más reciente)
+        if valid_data:
+            print("🎯 PERÍODO MÁS RECIENTE CON DATOS VÁLIDOS:")
+            print(f"   Período: {valid_data['hora']}")
+            print(f"   TM (Actual): {valid_data['temp']}°C")
+            print(f"   TX (Máxima): {valid_data['max_temp']}°C") 
+            print(f"   TN (Mínima): {valid_data['min_temp']}°C")
+            print(f"   HR (Humedad): {valid_data['hum']}%")
+            print(f"   PPT (Precipitación): {valid_data['precip']}mm")
+            print(f"   VVM (Viento): {valid_data['wind']}km/h")
+            print(f"   VVX (Ráfagas): {valid_data['gust']}km/h")
+            print(f"   PM (Presión): {valid_data['pressure']}hPa")
+            return valid_data
+        else:
+            print("❌ No se encontró ninguna fila con datos válidos")
+            return None
         
     except Exception as e:
         print(f"❌ Error obteniendo datos: {e}")
