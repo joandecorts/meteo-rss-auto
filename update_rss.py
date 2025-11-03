@@ -5,74 +5,6 @@ from datetime import datetime
 import re
 import sys
 
-def debug_meteo_page():
-    """Función para diagnosticar qué hay en la página"""
-    try:
-        url = "https://www.meteo.cat/observacions/xema/dades?codi=Z6"
-        print(f"🔍 Accediendo a: {url}")
-        
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-        }
-        
-        response = requests.get(url, headers=headers, timeout=10)
-        response.raise_for_status()
-        print(f"✅ Página cargada - Status: {response.status_code}")
-        
-        soup = BeautifulSoup(response.content, 'html.parser')
-        
-        # Buscar TODAS las tablas para diagnóstico
-        tables = soup.find_all('table')
-        print(f"📊 Tablas encontradas: {len(tables)}")
-        
-        for i, table in enumerate(tables):
-            print(f"  Tabla {i}: Clases: {table.get('class', ['sin-clase'])}")
-            rows = table.find_all('tr')
-            print(f"    Filas: {len(rows)}")
-            if rows:
-                cells = rows[0].find_all(['td', 'th'])
-                print(f"    Celdas en primera fila: {len(cells)}")
-                if len(cells) > 0:
-                    print(f"    Primera celda: {cells[0].text.strip()[:50]}...")
-        
-        # Buscar específicamente la tabla de datos
-        target_table = soup.find('table', {'class': 'taula-dades'})
-        if target_table:
-            print("🎯 TABLA 'taula-dades' ENCONTRADA")
-            rows = target_table.find_all('tr')
-            print(f"   Filas en taula-dades: {len(rows)}")
-            
-            if len(rows) >= 2:
-                data_row = rows[1]
-                cells = data_row.find_all('td')
-                print(f"   Celdas en fila de datos: {len(cells)}")
-                
-                for j, cell in enumerate(cells):
-                    print(f"     Celda {j}: '{cell.text.strip()}'")
-                
-                if len(cells) >= 9:
-                    return {
-                        'hora': cells[0].text.strip(),
-                        'temp': cells[1].text.strip(),
-                        'max_temp': cells[2].text.strip(), 
-                        'min_temp': cells[3].text.strip(),
-                        'hum': cells[4].text.strip(),
-                        'wind': cells[5].text.strip(),
-                        'gust': cells[6].text.strip(),
-                        'precip': cells[7].text.strip(),
-                        'pressure': cells[8].text.strip()
-                    }
-            else:
-                print("❌ No hay suficientes filas en taula-dades")
-        else:
-            print("❌ NO se encontró tabla con clase 'taula-dades'")
-            
-        return None
-        
-    except Exception as e:
-        print(f"🚨 Error en diagnóstico: {e}")
-        return None
-
 def safe_float(value, default=None):
     """Convierte seguridad un valor a float"""
     if value is None or value == '':
@@ -95,63 +27,114 @@ def safe_float(value, default=None):
     return default
 
 def get_meteo_data():
-    print("🌤️ Iniciando obtención de datos meteorológicos...")
-    raw_data = debug_meteo_page()
-    
-    if not raw_data:
-        print("❌ No se pudieron obtener datos en crudo")
+    try:
+        url = "https://www.meteo.cat/observacions/xema/dades?codi=Z6"
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+        
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Buscar la tabla de datos
+        table = soup.find('table', {'class': 'taula-dades'})
+        if not table:
+            print("❌ No se encontró tabla 'taula-dades'")
+            return None
+            
+        rows = table.find_all('tr')
+        if len(rows) < 2:
+            print("❌ No hay suficientes filas en la tabla")
+            return None
+        
+        # La segunda fila generalmente contiene los datos más recientes
+        data_row = rows[1]
+        cells = data_row.find_all('td')
+        
+        if len(cells) < 9:
+            print(f"❌ No hay suficientes celdas: {len(cells)}")
+            return None
+        
+        # Extraer datos
+        hora = cells[0].text.strip()
+        temp = safe_float(cells[1].text)
+        max_temp = safe_float(cells[2].text)
+        min_temp = safe_float(cells[3].text)
+        hum = safe_float(cells[4].text)
+        wind = safe_float(cells[5].text)
+        gust = safe_float(cells[6].text)
+        precip = safe_float(cells[7].text)
+        pressure = safe_float(cells[8].text)
+        
+        # Verificar si tenemos al menos algunos datos válidos
+        valid_data = [val for val in [temp, max_temp, min_temp, hum, wind, gust, precip, pressure] if val is not None]
+        
+        if len(valid_data) < 3:  # Si menos de 3 valores son válidos
+            print("⚠️ Demasiados datos inválidos, usando valores por defecto")
+            return {
+                'hora': hora,
+                'temp': 0.0,
+                'max_temp': 0.0,
+                'min_temp': 0.0,
+                'hum': 0.0,
+                'wind': 0.0,
+                'gust': 0.0,
+                'precip': 0.0,
+                'pressure': 0.0,
+                'note': '⚠️ DADES TEMPORALMENT NO DISPONIBLES'
+            }
+        
+        print("✅ Datos obtenidos exitosamente de Meteo.cat")
+        return {
+            'hora': hora,
+            'temp': temp if temp is not None else 0.0,
+            'max_temp': max_temp if max_temp is not None else 0.0,
+            'min_temp': min_temp if min_temp is not None else 0.0,
+            'hum': hum if hum is not None else 0.0,
+            'wind': wind if wind is not None else 0.0,
+            'gust': gust if gust is not None else 0.0,
+            'precip': precip if precip is not None else 0.0,
+            'pressure': pressure if pressure is not None else 0.0,
+            'note': None
+        }
+        
+    except Exception as e:
+        print(f"❌ Error obteniendo datos: {e}")
         return None
-    
-    print("📦 Datos en crudo obtenidos:")
-    for key, value in raw_data.items():
-        print(f"   {key}: '{value}'")
-    
-    # Convertir a valores numéricos
-    temp = safe_float(raw_data['temp'])
-    max_temp = safe_float(raw_data['max_temp']) 
-    min_temp = safe_float(raw_data['min_temp'])
-    hum = safe_float(raw_data['hum'])
-    wind = safe_float(raw_data['wind'])
-    gust = safe_float(raw_data['gust'])
-    precip = safe_float(raw_data['precip'])
-    pressure = safe_float(raw_data['pressure'])
-    
-    # Verificar si tenemos datos válidos
-    valid_data = any(val is not None for val in [temp, max_temp, min_temp, hum, wind, gust, precip, pressure])
-    
-    if not valid_data:
-        print("❌ No hay valores numéricos válidos después de la conversión")
-        return None
-    
-    print("✅ Datos convertidos exitosamente")
-    return {
-        'hora': raw_data['hora'],
-        'temp': temp if temp is not None else 0.0,
-        'max_temp': max_temp if max_temp is not None else 0.0,
-        'min_temp': min_temp if min_temp is not None else 0.0,
-        'hum': hum if hum is not None else 0.0,
-        'wind': wind if wind is not None else 0.0,
-        'gust': gust if gust is not None else 0.0,
-        'precip': precip if precip is not None else 0.0,
-        'pressure': pressure if pressure is not None else 0.0
-    }
 
 def generate_rss():
     data = get_meteo_data()
-    
-    if not data:
-        print("🚨 No se generará RSS por falta de datos válidos")
-        # No generamos RSS para evitar valores 0.0
-        return False
     
     # Obtener timestamp actual
     cet = pytz.timezone('CET')
     now = datetime.now(cet)
     timestamp = int(now.timestamp())
     
-    # Formatear datos
-    title_ca = f"METEOCAT CET  |  {data['hora']}  |  Temp:{data['temp']}C  |  Max:{data['max_temp']}C  |  Min:{data['min_temp']}C  |  Hum:{data['hum']}%  |  Vent:{data['wind']}km/h  |  Rafega:{data['gust']}km/h  |  Precip:{data['precip']}mm  |  Pres:{data['pressure']}hPa"
-    title_en = f" |  Temp:{data['temp']}C  |  Max:{data['max_temp']}C  |  Min:{data['min_temp']}C  |  Hum:{data['hum']}%  |  Wind:{data['wind']}km/h  |  Gust:{data['gust']}km/h  |  Precip:{data['precip']}mm  |  Press:{data['pressure']}hPa"
+    # Si no hay datos, usar valores por defecto pero con nota
+    if not data:
+        data = {
+            'hora': 'Última hora',
+            'temp': 0.0,
+            'max_temp': 0.0,
+            'min_temp': 0.0,
+            'hum': 0.0,
+            'wind': 0.0,
+            'gust': 0.0,
+            'precip': 0.0,
+            'pressure': 0.0,
+            'note': '⚠️ DADES TEMPORALMENT NO DISPONIBLES - RETORNANT EN 5 MIN'
+        }
+        print("⚠️ Usando datos por defecto por fallo temporal")
+    
+    # Formatear título
+    if data.get('note'):
+        title_ca = f"METEOCAT CET  |  {data['hora']}  |  {data['note']}"
+        title_en = f" |  {data['note']}"
+    else:
+        title_ca = f"METEOCAT CET  |  {data['hora']}  |  Temp:{data['temp']}C  |  Max:{data['max_temp']}C  |  Min:{data['min_temp']}C  |  Hum:{data['hum']}%  |  Vent:{data['wind']}km/h  |  Rafega:{data['gust']}km/h  |  Precip:{data['precip']}mm  |  Pres:{data['pressure']}hPa"
+        title_en = f" |  Temp:{data['temp']}C  |  Max:{data['max_temp']}C  |  Min:{data['min_temp']}C  |  Hum:{data['hum']}%  |  Wind:{data['wind']}km/h  |  Gust:{data['gust']}km/h  |  Precip:{data['precip']}mm  |  Press:{data['pressure']}hPa"
     
     rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -179,8 +162,7 @@ if __name__ == "__main__":
     print("🚀 Iniciando actualización de RSS meteorológico...")
     success = generate_rss()
     if success:
-        print("🎉 Actualización completada con éxito")
+        print("🎉 Actualización completada - meteo.rss generado")
     else:
-        print("💤 No se actualizó el RSS (sin datos válidos)")
-    # Siempre salir con éxito para evitar emails de error
+        print("❌ Fallo en la actualización")
     sys.exit(0)
