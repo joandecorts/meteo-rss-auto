@@ -1,167 +1,131 @@
 import requests
 from bs4 import BeautifulSoup
-from datetime import datetime, timedelta
-import time
-import os
+import pytz
+from datetime import datetime
+import re
 
-try:
-    import pytz
-    PYTZ_DISPONIBLE = True
-except ImportError:
-    PYTZ_DISPONIBLE = False
-    print("⚠️  pytz no disponible - utilitzant conversió manual d'hora")
-
-class MeteoCatRSS:
-    def __init__(self, codi_estacio="XJ"):
-        self.codi_estacio = codi_estacio
-        self.base_url = "https://www.meteo.cat/observacions/xema/dades"
+def safe_float(value, default=0.0):
+    """
+    Convierte seguridad un valor a float, manejando (s/d) y otros casos
+    """
+    if value is None:
+        return default
+        
+    value_str = str(value).strip()
     
-    def obtenir_hora_oficial_espanya(self):
-        """Retorna la hora oficial espanyola (CET/CEST)"""
-        if PYTZ_DISPONIBLE:
-            utc_ara = datetime.utcnow().replace(tzinfo=pytz.utc)
-            zona_espanya = pytz.timezone('Europe/Madrid')
-            hora_espanya = utc_ara.astimezone(zona_espanya)
-            es_horari_estiu = hora_espanya.dst() != timedelta(0)
-            zona_horaria = "CEST" if es_horari_estiu else "CET"
-            return hora_espanya, zona_horaria
-        else:
-            utc_ara = datetime.utcnow()
-            any_actual = utc_ara.year
-            inici_estiu = datetime(any_actual, 3, 31) - timedelta(days=(datetime(any_actual, 3, 31).weekday() + 1) % 7)
-            fi_estiu = datetime(any_actual, 10, 31) - timedelta(days=(datetime(any_actual, 10, 31).weekday() + 1) % 7)
-            
-            es_horari_estiu = inici_estiu <= utc_ara.replace(tzinfo=None) < fi_estiu
-            zona_horaria = "CEST" if es_horari_estiu else "CET"
-            diferencia = timedelta(hours=2) if es_horari_estiu else timedelta(hours=1)
-            
-            hora_espanya = utc_ara + diferencia
-            return hora_espanya, zona_horaria
-
-    def convertir_periode_gmt_a_local(self, periode_gmt):
-        """Converteix un període GMT a hora local espanyola"""
-        try:
-            hora_inici_gmt, hora_fi_gmt = periode_gmt.split(' - ')
-            
-            avui = datetime.utcnow().date()
-            dt_inici_gmt = datetime.combine(avui, datetime.strptime(hora_inici_gmt, '%H:%M').time())
-            dt_fi_gmt = datetime.combine(avui, datetime.strptime(hora_fi_gmt, '%H:%M').time())
-            
-            if PYTZ_DISPONIBLE:
-                zona_espanya = pytz.timezone('Europe/Madrid')
-                dt_inici_local = pytz.utc.localize(dt_inici_gmt).astimezone(zona_espanya)
-                dt_fi_local = pytz.utc.localize(dt_fi_gmt).astimezone(zona_espanya)
-            else:
-                es_horari_estiu = self.obtenir_hora_oficial_espanya()[1] == "CEST"
-                diferencia = timedelta(hours=2) if es_horari_estiu else timedelta(hours=1)
-                dt_inici_local = dt_inici_gmt + diferencia
-                dt_fi_local = dt_fi_gmt + diferencia
-            
-            periode_local = f"{dt_inici_local.strftime('%H:%M')} - {dt_fi_local.strftime('%H:%M')}"
-            return periode_local
-            
-        except Exception as e:
-            print(f"⚠️  Error convertint període: {e}")
-            return periode_gmt
+    # Manejar "(s/d)" - Sin Datos
+    if '(s/d)' in value_str or value_str == 's/d':
+        return default
     
-    def obtenir_dades_meteo(self):
+    # Manejar valores vacíos
+    if not value_str or value_str == '':
+        return default
+    
+    # Extraer números de cadenas como "21.2°C"
+    match = re.search(r'([-]?\d+\.?\d*)', value_str)
+    if match:
         try:
-            data_avui = datetime.now().strftime("%Y-%m-%d")
-            params = {'codi': self.codi_estacio, 'dia': f"{data_avui}T09:30Z"}
-            
-            print(f"🔗 Consultant Meteo.cat...")
-            response = requests.get(self.base_url, params=params, timeout=10)
-            soup = BeautifulSoup(response.content, 'html.parser')
-            taules = soup.find_all('table')
-            
-            if len(taules) < 3:
-                return None
-                
-            taula_dades = taules[2]
-            dades = []
-            files = taula_dades.find_all('tr')[1:]
-            
-            for fila in files:
-                elements = fila.find_all(['td', 'th'])
-                if len(elements) >= 11:
-                    periode = elements[0].get_text(strip=True)
-                    tm = elements[1].get_text(strip=True)
-                    
-                    if not periode or ':' not in periode or '(s/d)' in tm or 's/d' in tm.lower():
-                        continue
-                    
-                    dades.append({
-                        'periode': periode, 'tm': tm,
-                        'tx': elements[2].get_text(strip=True),
-                        'tn': elements[3].get_text(strip=True),
-                        'hrm': elements[4].get_text(strip=True),
-                        'ppt': elements[5].get_text(strip=True),
-                        'vvm': elements[6].get_text(strip=True),
-                        'vvx': elements[8].get_text(strip=True),
-                        'pm': elements[9].get_text(strip=True).replace('.0', '')
-                    })
-            
-            if dades:
-                print(f"📊 {len(dades)} períodes vàlids")
-                return dades[-1]
-            
-            print("ℹ️  No s'han trobat dades vàlides")
+            return float(match.group(1))
+        except (ValueError, TypeError):
+            return default
+    
+    return default
+
+def get_meteo_data():
+    try:
+        url = "https://www.meteo.cat/observacions/xema/dades?codi=Z6"
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Buscar la tabla de datos
+        table = soup.find('table', {'class': 'taula-dades'})
+        if not table:
             return None
             
-        except Exception as e:
-            print(f"❌ Error obtenint dades: {e}")
+        rows = table.find_all('tr')
+        if len(rows) < 2:
             return None
+        
+        # La segunda fila generalmente contiene los datos más recientes
+        data_row = rows[1]
+        cells = data_row.find_all('td')
+        
+        if len(cells) < 9:
+            return None
+        
+        # Extraer datos con manejo seguro de (s/d)
+        hora = cells[0].text.strip()
+        temp = safe_float(cells[1].text)
+        max_temp = safe_float(cells[2].text)
+        min_temp = safe_float(cells[3].text)
+        hum = safe_float(cells[4].text)
+        wind = safe_float(cells[5].text)
+        gust = safe_float(cells[6].text)
+        precip = safe_float(cells[7].text)
+        pressure = safe_float(cells[8].text)
+        
+        return {
+            'hora': hora,
+            'temp': temp,
+            'max_temp': max_temp,
+            'min_temp': min_temp,
+            'hum': hum,
+            'wind': wind,
+            'gust': gust,
+            'precip': precip,
+            'pressure': pressure
+        }
+        
+    except Exception as e:
+        print(f"Error obteniendo datos: {e}")
+        return None
+
+def generate_rss():
+    data = get_meteo_data()
     
-    def generar_rss_alternant(self):
-        dades = self.obtenir_dades_meteo()
-        hora_espanya, zona_horaria = self.obtenir_hora_oficial_espanya()
-        data_rss = hora_espanya.strftime('%a, %d %b %Y %H:%M:%S') + ' ' + zona_horaria
-        
-        # TIMESTAMP ÚNIC per forçar canvis cada execució
-        timestamp = int(time.time())
-        
-        # ALTERNAR ENTRE IDIOMES cada 30 segons (basat en el minut actual)
-        minut_actual = hora_espanya.minute
-        segon_actual = hora_espanya.second
-        alternar_idioma = (minut_actual % 2 == 0) or (segon_actual >= 30)
-        
-        if not dades:
-            if alternar_idioma:
-                title = f"METEOCAT  |  Esperant dades actuals...  |  Waiting for current data...  |  ⌚ {timestamp}"
-            else:
-                title = f"METEOCAT  |  Waiting for current data...  |  Esperant dades actuals...  |  ⌚ {timestamp}"
-        else:
-            periode = self.convertir_periode_gmt_a_local(dades['periode'])
-            
-            if alternar_idioma:
-                # Primer català, després anglès
-                title = f"METEOCAT {zona_horaria}  |  {periode}  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Vent:{dades['vvm']}km/h  |  Rafega:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Pres:{dades['pm']}hPa  |  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Wind:{dades['vvm']}km/h  |  Gust:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Press:{dades['pm']}hPa  |  ⌚ {timestamp}"
-            else:
-                # Primer anglès, després català
-                title = f"METEOCAT {zona_horaria}  |  {periode}  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Wind:{dades['vvm']}km/h  |  Gust:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Press:{dades['pm']}hPa  |  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Vent:{dades['vvm']}km/h  |  Rafega:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Pres:{dades['pm']}hPa  |  ⌚ {timestamp}"
-        
-        rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
+    if not data:
+        # Datos de respaldo si no se pueden obtener
+        data = {
+            'hora': 'Última hora',
+            'temp': 0.0,
+            'max_temp': 0.0,
+            'min_temp': 0.0,
+            'hum': 0.0,
+            'wind': 0.0,
+            'gust': 0.0,
+            'precip': 0.0,
+            'pressure': 0.0
+        }
+    
+    # Obtener timestamp actual
+    cet = pytz.timezone('CET')
+    now = datetime.now(cet)
+    timestamp = int(now.timestamp())
+    
+    # Formatear datos
+    title_ca = f"METEOCAT CET  |  {data['hora']}  |  Temp:{data['temp']}C  |  Max:{data['max_temp']}C  |  Min:{data['min_temp']}C  |  Hum:{data['hum']}%  |  Vent:{data['wind']}km/h  |  Rafega:{data['gust']}km/h  |  Precip:{data['precip']}mm  |  Pres:{data['pressure']}hPa"
+    title_en = f" |  Temp:{data['temp']}C  |  Max:{data['max_temp']}C  |  Min:{data['min_temp']}C  |  Hum:{data['hum']}%  |  Wind:{data['wind']}km/h  |  Gust:{data['gust']}km/h  |  Precip:{data['precip']}mm  |  Press:{data['pressure']}hPa"
+    
+    rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
   <title>MeteoCat RSS</title>
   <link>https://www.meteo.cat</link>
   <description>Automated meteorological data - Dades meteorològiques automàtiques - Timestamp: {timestamp}</description>
-  <lastBuildDate>{data_rss}</lastBuildDate>
+  <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
   <item>
-    <title>{title}</title>
+    <title>{title_ca}{title_en}  |  ⌚ {timestamp}</title>
     <link>https://www.meteo.cat</link>
-    <pubDate>{data_rss}</pubDate>
+    <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
   </item>
 </channel>
 </rss>'''
-        
-        with open('meteo.rss', 'w', encoding='utf-8') as f:
-            f.write(rss_content)
-        
-        print(f"✅ RSS actualitzat amb timestamp: {timestamp}")
-        print(f"📝 Titol: {title[:100]}...")
-        return True
+    
+    # Guardar archivo RSS
+    with open('meteo.rss', 'w', encoding='utf-8') as f:
+        f.write(rss_content)
 
 if __name__ == "__main__":
-    meteo = MeteoCatRSS()
-    meteo.generar_rss_alternant()
+    generate_rss()
