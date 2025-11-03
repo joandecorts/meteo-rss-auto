@@ -18,8 +18,9 @@ def get_meteo_data():
         write_log("🚀 INICIANT get_meteo_data()")
         write_log(f"⏰ Hora: {datetime.now()}")
         
-        write_log("🌐 Connectant a Meteo.cat...")
-        url = "https://www.meteo.cat/observacions/xema/dades?codi=Z6"
+        # ✅ ESTACIÓ CORRECTA: XJ (Girona)
+        write_log("🌐 Connectant a Meteo.cat - Estació Girona [XJ]...")
+        url = "https://www.meteo.cat/observacions/xema/dades?codi=XJ"
         write_log(f"🔗 URL: {url}")
         
         headers = {
@@ -30,36 +31,19 @@ def get_meteo_data():
         response.raise_for_status()
         write_log("✅ Connexió exitosa")
         write_log(f"📄 Codi resposta: {response.status_code}")
-        write_log(f"📊 Mida contingut: {len(response.text)} caràcters")
         
         soup = BeautifulSoup(response.content, 'html.parser')
         write_log("✅ HTML parsejat correctament")
         
-        # Buscar TOTES les taules
-        tables = soup.find_all('table')
-        write_log(f"📊 Taules trobades: {len(tables)}")
-        
-        for i, table in enumerate(tables):
-            classes = table.get('class', [])
-            write_log(f"   Taula {i}: classes = {classes}")
-        
-        target_table = None
-        for table in tables:
-            if 'tblperiode' in table.get('class', []):
-                target_table = table
-                write_log("✅ Taula 'tblperiode' trobada!")
-                break
-        
-        if not target_table:
-            write_log("❌ No s'ha trobat taula 'tblperiode'")
-            if tables:
-                write_log("⚠️  Utilitzant la primera taula disponible")
-                target_table = tables[0]
-            else:
-                write_log("❌ NO HI HA TAULES A LA PÀGINA")
-                return None
+        # Buscar la taula 'tblperiode'
+        table = soup.find('table', {'class': 'tblperiode'})
+        if not table:
+            write_log("❌ No s'ha trobat la taula 'tblperiode'")
+            return None
             
-        rows = target_table.find_all('tr')
+        write_log("✅ Taula 'tblperiode' trobada")
+            
+        rows = table.find_all('tr')
         write_log(f"📊 Files a la taula: {len(rows)}")
         
         if not rows:
@@ -72,34 +56,33 @@ def get_meteo_data():
         write_log(f"📋 CAPÇALERES: {header_texts}")
         write_log(f"📋 Número de columnes: {len(header_texts)}")
         
-        # Analitzar les 5 files més recents
-        write_log("\n🔍 ANALITZANT LES 5 FILES MÉS RECENTS:")
-        start_index = max(1, len(rows) - 5)
+        # Recórrer des de l'última fila (més recent) fins a la primera
+        write_log("\n🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...")
         
-        for i in range(start_index, len(rows)):
+        for i in range(len(rows)-1, 0, -1):
             write_log(f"\n--- FILA {i} ---")
             cells = rows[i].find_all('td')
             write_log(f"   Cel·les: {len(cells)}")
             
-            if not cells:
-                write_log("   ❌ Sense cel·les")
+            if not cells or len(cells) < 11:
+                write_log("   ❌ No té suficients columnes")
                 continue
                 
             periode = cells[0].get_text(strip=True)
             write_log(f"   Període: '{periode}'")
             
-            # Mostrar totes les cel·les d'aquesta fila
-            for idx, cell in enumerate(cells[:11]):  # Mostrar les 11 primeres columnes
-                text = cell.get_text(strip=True)
-                write_log(f"   Columna {idx}: '{text}'")
-            
-            # Verificar si és un període vàlid
+            # Verificar si és un període vàlid (format hh:mm-hh:mm)
             if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periode):
                 write_log(f"   ✅ FORMAT DE PERÍODE VÀLID")
                 
+                # Mostrar totes les cel·les d'aquesta fila
+                for idx, cell in enumerate(cells[:11]):
+                    text = cell.get_text(strip=True)
+                    write_log(f"   Columna {idx}: '{text}'")
+                
                 # Verificar si té dades vàlides
                 dades_valides = False
-                for idx in range(1, min(11, len(cells))):
+                for idx in range(1, 11):
                     text = cells[idx].get_text(strip=True)
                     if text and text != '(s/d)':
                         dades_valides = True
@@ -109,16 +92,16 @@ def get_meteo_data():
                     write_log(f"   🎯 TE DADES VÀLIDES!")
                     
                     # Llegir les 11 columnes
-                    tm = cells[1].get_text(strip=True) if len(cells) > 1 else ""
-                    tx = cells[2].get_text(strip=True) if len(cells) > 2 else ""
-                    tn = cells[3].get_text(strip=True) if len(cells) > 3 else ""
-                    hr = cells[4].get_text(strip=True) if len(cells) > 4 else ""
-                    ppt = cells[5].get_text(strip=True) if len(cells) > 5 else ""
-                    vvm = cells[6].get_text(strip=True) if len(cells) > 6 else ""
-                    dvm = cells[7].get_text(strip=True) if len(cells) > 7 else ""
-                    vvx = cells[8].get_text(strip=True) if len(cells) > 8 else ""
-                    pm = cells[9].get_text(strip=True) if len(cells) > 9 else ""
-                    rs = cells[10].get_text(strip=True) if len(cells) > 10 else ""
+                    tm = cells[1].get_text(strip=True)
+                    tx = cells[2].get_text(strip=True)
+                    tn = cells[3].get_text(strip=True)
+                    hr = cells[4].get_text(strip=True)
+                    ppt = cells[5].get_text(strip=True)
+                    vvm = cells[6].get_text(strip=True)
+                    dvm = cells[7].get_text(strip=True)
+                    vvx = cells[8].get_text(strip=True)
+                    pm = cells[9].get_text(strip=True)
+                    rs = cells[10].get_text(strip=True)
                     
                     write_log("   📊 DADES EXTRAÏDES:")
                     write_log(f"      TM: '{tm}' | TX: '{tx}' | TN: '{tn}'")
@@ -157,9 +140,9 @@ def get_meteo_data():
                         'rs': rs_num
                     }
                 else:
-                    write_log(f"   ❌ NO TE DADES VÀLIDES")
+                    write_log(f"   ❌ NO TE DADES VÀLIDES - Cercant anterior...")
             else:
-                write_log(f"   ❌ FORMAT DE PERÍODE INVÀLID")
+                write_log(f"   ❌ FORMAT DE PERÍODE INVÀLID - Cercant anterior...")
         
         write_log("❌ CAP FILA TE DADES VÀLIDES")
         return None
@@ -191,7 +174,7 @@ def ajustar_periode(periode_str):
             end_adj = (hora_fi + offset_hours) % 24
             
             adjusted = f"{start_adj:02d}:{minut_inici:02d}-{end_adj:02d}:{minut_fi:02d}"
-            write_log(f"   🕒 PERÍODE AJUSTAT: {periode_str} → {adjusted}")
+            write_log(f"   🕒 PERÍODE AJUSTAT: {periode_str} TU → {adjusted}")
             return adjusted
             
     except Exception as e:
@@ -202,10 +185,6 @@ def ajustar_periode(periode_str):
 def generar_rss():
     write_log("\n" + "="*60)
     write_log("🚀 INICIANT GENERACIÓ RSS")
-    
-    # Verificar directori actual
-    write_log(f"📁 Directori actual: {os.getcwd()}")
-    write_log(f"📁 Contingut del directori: {os.listdir('.')}")
     
     dades = get_meteo_data()
     
@@ -253,23 +232,6 @@ def generar_rss():
     
     write_log("✅ RSS guardat a 'meteo.rss'")
     
-    # Verificar que s'ha creat el fitxer
-    if os.path.exists('meteo.rss'):
-        write_log("✅ Fitxer 'meteo.rss' existeix")
-        with open('meteo.rss', 'r', encoding='utf-8') as f:
-            content = f.read()
-            write_log(f"📄 Mida de 'meteo.rss': {len(content)} caràcters")
-    else:
-        write_log("❌ Fitxer 'meteo.rss' NO existeix")
-    
-    if os.path.exists('debug.log'):
-        write_log("✅ Fitxer 'debug.log' existeix")
-        with open('debug.log', 'r', encoding='utf-8') as f:
-            lines = f.readlines()
-            write_log(f"📄 Línies a 'debug.log': {len(lines)}")
-    else:
-        write_log("❌ Fitxer 'debug.log' NO existeix")
-    
     return True
 
 if __name__ == "__main__":
@@ -278,11 +240,11 @@ if __name__ == "__main__":
         os.remove('debug.log')
     
     with open('debug.log', 'w', encoding='utf-8') as f:
-        f.write("=== DEBUG LOG METEO.CAT ===\n")
+        f.write("=== DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===\n")
         f.write(f"Inici: {datetime.now()}\n")
         f.write("="*60 + "\n")
     
-    write_log("🚀 SCRIPT INICIAT")
+    write_log("🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)")
     write_log(f"🐍 Versió Python: {sys.version}")
     
     exit = generar_rss()
@@ -295,5 +257,4 @@ if __name__ == "__main__":
     write_log("="*60)
     write_log("🏁 FI DE L'EXECUCIÓ")
     
-    # Forçar sortida
     sys.exit(0 if exit else 1)
