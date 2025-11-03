@@ -1,4 +1,4 @@
-﻿import requests
+import requests
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import time
@@ -19,7 +19,6 @@ class MeteoCatRSS:
     def obtenir_hora_oficial_espanya(self):
         """Retorna la hora oficial espanyola (CET/CEST)"""
         if PYTZ_DISPONIBLE:
-            # Versió amb pytz (més precisa)
             utc_ara = datetime.utcnow().replace(tzinfo=pytz.utc)
             zona_espanya = pytz.timezone('Europe/Madrid')
             hora_espanya = utc_ara.astimezone(zona_espanya)
@@ -27,9 +26,7 @@ class MeteoCatRSS:
             zona_horaria = "CEST" if es_horari_estiu else "CET"
             return hora_espanya, zona_horaria
         else:
-            # Versió manual (sense pytz)
             utc_ara = datetime.utcnow()
-            # Càlcul aproximat horari d'estiu (últim diumenge març a octubre)
             any_actual = utc_ara.year
             inici_estiu = datetime(any_actual, 3, 31) - timedelta(days=(datetime(any_actual, 3, 31).weekday() + 1) % 7)
             fi_estiu = datetime(any_actual, 10, 31) - timedelta(days=(datetime(any_actual, 10, 31).weekday() + 1) % 7)
@@ -40,6 +37,32 @@ class MeteoCatRSS:
             
             hora_espanya = utc_ara + diferencia
             return hora_espanya, zona_horaria
+
+    def convertir_periode_gmt_a_local(self, periode_gmt):
+        """Converteix un període GMT a hora local espanyola"""
+        try:
+            hora_inici_gmt, hora_fi_gmt = periode_gmt.split(' - ')
+            
+            avui = datetime.utcnow().date()
+            dt_inici_gmt = datetime.combine(avui, datetime.strptime(hora_inici_gmt, '%H:%M').time())
+            dt_fi_gmt = datetime.combine(avui, datetime.strptime(hora_fi_gmt, '%H:%M').time())
+            
+            if PYTZ_DISPONIBLE:
+                zona_espanya = pytz.timezone('Europe/Madrid')
+                dt_inici_local = pytz.utc.localize(dt_inici_gmt).astimezone(zona_espanya)
+                dt_fi_local = pytz.utc.localize(dt_fi_gmt).astimezone(zona_espanya)
+            else:
+                es_horari_estiu = self.obtenir_hora_oficial_espanya()[1] == "CEST"
+                diferencia = timedelta(hours=2) if es_horari_estiu else timedelta(hours=1)
+                dt_inici_local = dt_inici_gmt + diferencia
+                dt_fi_local = dt_fi_gmt + diferencia
+            
+            periode_local = f"{dt_inici_local.strftime('%H:%M')} - {dt_fi_local.strftime('%H:%M')}"
+            return periode_local
+            
+        except Exception as e:
+            print(f"⚠️  Error convertint període: {e}")
+            return periode_gmt
     
     def obtenir_dades_meteo(self):
         try:
@@ -80,7 +103,7 @@ class MeteoCatRSS:
             
             if dades:
                 print(f"📊 {len(dades)} períodes vàlids")
-                return dades[-1]  # Últim període
+                return dades[-1]
             
             print("ℹ️  No s'han trobat dades vàlides")
             return None
@@ -94,16 +117,13 @@ class MeteoCatRSS:
         hora_espanya, zona_horaria = self.obtenir_hora_oficial_espanya()
         data_rss = hora_espanya.strftime('%a, %d %b %Y %H:%M:%S') + ' ' + zona_horaria
         
-        # Timestamp per evitar cache (millora velocitat)
-        timestamp = int(time.time())
-        
         if not dades:
             title_ca = f"METEOCAT {zona_horaria}  |  Esperant dades actuals..."
             title_en = f"METEOCAT {zona_horaria}  |  Waiting for current data..."
         else:
-            periode = dades['periode']
+            # CONVERTIR el període de GMT a hora local
+            periode = self.convertir_periode_gmt_a_local(dades['periode'])
             
-            # FORMAT MILLORAT - MÉS ESPAIS
             title_ca = f"METEOCAT {zona_horaria}  |  {periode}  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Vent:{dades['vvm']}km/h  |  Rafega:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Pres:{dades['pm']}hPa"
             title_en = f"METEOCAT {zona_horaria}  |  {periode}  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Wind:{dades['vvm']}km/h  |  Gust:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Press:{dades['pm']}hPa"
         
@@ -131,15 +151,12 @@ class MeteoCatRSS:
 </channel>
 </rss>'''
         
-        # Guardar arxiu
         with open('meteo.rss', 'w', encoding='utf-8') as f:
             f.write(rss_content)
         
         print(f"✅ RSS actualitzat: {title_ca}")
-        print(f"🕒 Timestamp: {timestamp}")
         return True
 
-# Executar
 if __name__ == "__main__":
     meteo = MeteoCatRSS()
-    meteo.generar_rss_complet()
+    meteo.generar_rss_complet()﻿
