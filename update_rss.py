@@ -18,96 +18,67 @@ def get_meteo_data():
         print("✅ Conexión exitosa")
         
         soup = BeautifulSoup(response.content, 'html.parser')
-        
-        # Buscar TODAS las tablas por si ha cambiado la clase
-        tables = soup.find_all('table')
-        print(f"📊 Tablas encontradas: {len(tables)}")
-        
-        target_table = None
-        for table in tables:
-            if 'tblperiode' in table.get('class', []):
-                target_table = table
-                break
-        
-        if not target_table:
-            print("❌ No se encontró tabla 'tblperiode', probando con cualquier tabla...")
-            target_table = tables[0] if tables else None
-            
-        if not target_table:
-            print("❌ No hay tablas en la página")
+        table = soup.find('table', {'class': 'tblperiode'})
+        if not table:
+            print("❌ No se encontró la tabla")
             return None
             
-        rows = target_table.find_all('tr')
-        print(f"📊 Filas en la tabla: {len(rows)}")
+        rows = table.find_all('tr')
+        print(f"📊 Filas encontradas: {len(rows)}")
         
-        # DIAGNÓSTICO: Mostrar las primeras 3 filas para ver la estructura
-        print("🔍 Mostrando estructura de las primeras 3 filas:")
-        for i in range(min(3, len(rows))):
-            cells = rows[i].find_all(['td', 'th'])
-            cell_texts = [cell.get_text(strip=True) for cell in cells]
-            print(f"   Fila {i}: {cell_texts}")
-        
-        # Buscar desde la ÚLTIMA fila hacia arriba
+        # Buscar desde la ÚLTIMA fila (la más reciente)
         for i in range(len(rows)-1, 0, -1):
             cells = rows[i].find_all('td')
-            
-            if len(cells) >= 6:  # Menos columnas requeridas
-                periodo_cell = cells[0].get_text(strip=True)
+            if len(cells) >= 11:  # Debe tener todas las columnas
+                periodo = cells[0].get_text(strip=True)
                 
-                # Verificar si es un período válido
-                if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periodo_cell):
-                    print(f"🔍 Analizando fila {i}: {periodo_cell}")
+                # Verificar que sea un período válido
+                if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periodo):
+                    print(f"🔍 Analizando período: {periodo}")
                     
-                    # Función simple para extraer números
-                    def extract_number(cell_index):
+                    # Extraer los valores directamente
+                    temp_text = cells[1].get_text(strip=True)  # TM
+                    hum_text = cells[4].get_text(strip=True)   # HRM
+                    
+                    print(f"   TM: '{temp_text}', HR: '{hum_text}'")
+                    
+                    # Si hay datos en TM o HRM, usar esta fila
+                    if temp_text and temp_text != '(s/d)' and hum_text and hum_text != '(s/d)':
+                        print("✅ PERÍODO VÁLIDO CON DATOS")
+                        
+                        # Convertir a números
                         try:
-                            text = cells[cell_index].get_text(strip=True)
-                            if not text or '(s/d)' in text:
-                                return None
-                            # Buscar el primer número en el texto
-                            match = re.search(r'(-?\d+\.?\d*)', text.replace(',', '.'))
-                            return float(match.group(1)) if match else None
-                        except:
-                            return None
-                    
-                    # Extraer datos básicos
-                    temp = extract_number(1)  # Temperatura
-                    hum = extract_number(4)   # Humedad
-                    
-                    print(f"   📊 Datos crudos - Temp: {temp}, Hum: {hum}")
-                    
-                    # Si tenemos al menos un dato, usar esta fila
-                    if temp is not None or hum is not None:
-                        print(f"✅ FILA VÁLIDA ENCONTRADA: {periodo_cell}")
-                        
-                        # Extraer el resto de datos
-                        max_temp = extract_number(2) or temp
-                        min_temp = extract_number(3) or temp
-                        precip = extract_number(5) or 0.0
-                        wind = extract_number(6) or 0.0
-                        
-                        # Para ráfagas y presión, intentar con índices variables
-                        gust = extract_number(7) or extract_number(8) or 0.0
-                        pressure = extract_number(9) or extract_number(10) or 0.0
-                        
-                        # Ajustar período a hora local
-                        periodo_ajustado = adjust_period_time(periodo_cell)
-                        
-                        return {
-                            'periodo': periodo_ajustado,
-                            'temp': temp or 0.0,
-                            'max_temp': max_temp or 0.0,
-                            'min_temp': min_temp or 0.0,
-                            'hum': hum or 0.0,
-                            'precip': precip,
-                            'wind': wind,
-                            'gust': gust,
-                            'pressure': pressure
-                        }
+                            temp = float(temp_text.replace(',', '.'))
+                            hum = float(hum_text.replace(',', '.'))
+                            max_temp = float(cells[2].get_text(strip=True).replace(',', '.')) if cells[2].get_text(strip=True) not in ['', '(s/d)'] else temp
+                            min_temp = float(cells[3].get_text(strip=True).replace(',', '.')) if cells[3].get_text(strip=True) not in ['', '(s/d)'] else temp
+                            precip = float(cells[5].get_text(strip=True).replace(',', '.')) if cells[5].get_text(strip=True) not in ['', '(s/d)'] else 0.0
+                            wind = float(cells[6].get_text(strip=True).replace(',', '.')) if cells[6].get_text(strip=True) not in ['', '(s/d)'] else 0.0
+                            gust = float(cells[8].get_text(strip=True).replace(',', '.')) if cells[8].get_text(strip=True) not in ['', '(s/d)'] else 0.0
+                            pressure = float(cells[9].get_text(strip=True).replace(',', '.')) if cells[9].get_text(strip=True) not in ['', '(s/d)'] else 0.0
+                            
+                            # Ajustar período a hora local
+                            periodo_ajustado = adjust_period_time(periodo)
+                            
+                            return {
+                                'periodo': periodo_ajustado,
+                                'temp': temp,
+                                'max_temp': max_temp,
+                                'min_temp': min_temp,
+                                'hum': hum,
+                                'precip': precip,
+                                'wind': wind,
+                                'gust': gust,
+                                'pressure': pressure
+                            }
+                        except ValueError as e:
+                            print(f"❌ Error convirtiendo números: {e}")
+                            continue
                     else:
-                        print(f"❌ Fila sin datos válidos, continuando...")
+                        print("❌ Período sin datos, buscando anterior...")
+                        continue
         
-        print("❌ No se encontró ninguna fila con datos")
+        print("❌ No se encontraron datos válidos")
         return None
         
     except Exception as e:
@@ -136,7 +107,7 @@ def adjust_period_time(period_str):
             end_hour_adj = (end_hour + offset_hours) % 24
             
             adjusted = f"{start_hour_adj:02d}:{start_minute:02d}-{end_hour_adj:02d}:{end_minute:02d}"
-            print(f"🕒 Período ajustado: {period_str} → {adjusted}")
+            print(f"🕒 Período ajustado: {period_str} UTC → {adjusted} {'CEST' if is_dst else 'CET'}")
             return adjusted
             
     except Exception as e:
