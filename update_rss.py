@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import pytz
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 import sys
 import os
@@ -26,6 +26,40 @@ def safe_float(value, default=0.0):
             return default
     
     return default
+
+def adjust_period_time(period_str):
+    """
+    Ajusta el período de GMT a hora local (CET/CEST)
+    Ejemplo: "16:30-17:00" → "17:30-18:00" (en CET)
+    """
+    try:
+        # Extraer las horas del período
+        match = re.match(r'(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})', period_str)
+        if match:
+            start_hour = int(match.group(1))
+            start_minute = int(match.group(2))
+            end_hour = int(match.group(3))
+            end_minute = int(match.group(4))
+            
+            # Crear objetos datetime para hoy con las horas GMT
+            today = datetime.now().date()
+            gmt_start = datetime(today.year, today.month, today.day, start_hour, start_minute)
+            gmt_end = datetime(today.year, today.month, today.day, end_hour, end_minute)
+            
+            # Convertir a CET (GMT+1) o CEST (GMT+2)
+            cet = pytz.timezone('CET')
+            local_start = pytz.utc.localize(gmt_start).astimezone(cet)
+            local_end = pytz.utc.localize(gmt_end).astimezone(cet)
+            
+            # Formatear de nuevo
+            adjusted_period = f"{local_start.strftime('%H:%M')}-{local_end.strftime('%H:%M')}"
+            print(f"🕒 Período ajustado: {period_str} (GMT) → {adjusted_period} (CET)")
+            return adjusted_period
+        
+    except Exception as e:
+        print(f"❌ Error ajustando período: {e}")
+    
+    return period_str  # Si hay error, devolver el original
 
 def get_meteo_data():
     try:
@@ -59,7 +93,7 @@ def get_meteo_data():
             if len(cells) >= 11:
                 print(f"📝 Fila {i}: {cells[0].text.strip()} | TM:{cells[1].text} | TX:{cells[2].text} | TN:{cells[3].text} | HR:{cells[4].text} | PPT:{cells[5].text} | VVM:{cells[6].text} | VVX:{cells[8].text} | PM:{cells[9].text}")
         
-        # 🎯 CANVI CLAU: Buscar desde la ÚLTIMA fila hacia arriba (para encontrar la más reciente)
+        # Buscar desde la ÚLTIMA fila hacia arriba (para encontrar la más reciente)
         valid_data = None
         for i in range(len(rows)-1, 0, -1):  # Recorrer de abajo hacia arriba
             data_row = rows[i]
@@ -80,35 +114,33 @@ def get_meteo_data():
                     hum = safe_float(cells[4].text, None)       # HR - Humedad relativa
                     precip = safe_float(cells[5].text, None)    # PPT - Precipitación
                     wind = safe_float(cells[6].text, None)      # VVM - Viento medio
-                    # DVM (7) no se usa - Dirección del viento
                     gust = safe_float(cells[8].text, None)      # VVX - Ráfagas máximas
                     pressure = safe_float(cells[9].text, None)  # PM - Presión atmosférica
-                    # RS (10) no se usa - Radiación solar
                     
                     # Verificar si esta fila tiene datos válidos (no "(s/d)")
                     if temp is not None and hum is not None:
-                        if 5 <= temp <= 40 and 10 <= hum <= 100:
-                            print(f"✅ Fila {i} VÁLIDA - Período: {hora}")
-                            valid_data = {
-                                'hora': hora,
-                                'temp': temp,
-                                'max_temp': max_temp,
-                                'min_temp': min_temp,
-                                'hum': hum,
-                                'precip': precip,
-                                'wind': wind,
-                                'gust': gust,
-                                'pressure': pressure
-                            }
-                            # 🎯 NO PARAMOS AQUÍ - Seguimos buscando hacia arriba para encontrar la MÁS RECIENTE
-                        else:
-                            print(f"⚠️ Fila {i} tiene datos fuera de rango")
+                        print(f"✅ Fila {i} VÁLIDA - Período: {hora}")
+                        valid_data = {
+                            'hora': hora,
+                            'temp': temp,
+                            'max_temp': max_temp,
+                            'min_temp': min_temp,
+                            'hum': hum,
+                            'precip': precip,
+                            'wind': wind,
+                            'gust': gust,
+                            'pressure': pressure
+                        }
+                        break  # Nos quedamos con la más reciente
                     else:
-                        print(f"❌ Fila {i} tiene datos INCOMPLETOS (s/d)")
+                        print(f"❌ Fila {i} tiene datos INCOMPLETOS (s/d) - Temp: {temp}, Hum: {hum}")
         
-        # 🎯 CANVI CLAU: Si encontramos datos válidos, devolvemos el ÚLTIMO (más reciente)
         if valid_data:
-            print("🎯 PERÍODO MÁS RECIENTE CON DATOS VÁLIDOS:")
+            # 🎯 AJUSTAR EL PERÍODO A HORA LOCAL
+            adjusted_hora = adjust_period_time(valid_data['hora'])
+            valid_data['hora'] = adjusted_hora
+            
+            print("🎯 PERÍODO MÁS RECIENTE CON DATOS VÁLIDOS (AJUSTADO):")
             print(f"   Período: {valid_data['hora']}")
             print(f"   TM (Actual): {valid_data['temp']}°C")
             print(f"   TX (Máxima): {valid_data['max_temp']}°C") 
@@ -137,9 +169,11 @@ def generate_rss():
     
     if not data:
         print("❌ No se pudieron obtener datos válidos")
-        # Usar datos del período más reciente
+        # Usar datos del período más reciente con hora ajustada
+        base_period = "16:30-17:00"
+        adjusted_period = adjust_period_time(base_period)
         data = {
-            'hora': '16:30-17:00',
+            'hora': adjusted_period,
             'temp': 17.2,
             'max_temp': 17.6,
             'min_temp': 16.9,
@@ -149,7 +183,7 @@ def generate_rss():
             'gust': 12.2,
             'pressure': 1023.1
         }
-        print("📊 Usando datos del período 16:30-17:00 (más reciente)")
+        print(f"📊 Usando datos del período {base_period} → {adjusted_period} (ajustado)")
     
     # 🎯 FORMATO DEFINITIVO - ESTRUCTURA FINAL
     title = (
