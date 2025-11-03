@@ -140,7 +140,7 @@ def generate_rss():
     if not data:
         print("❌ No se pudieron obtener datos válidos de ningún período")
         # Generar mensaje de error
-        title = "[CAT] Actualitzat {current_time} | Dades no disponibles | [GB] Updated {current_time} | Data not available"
+        title = f"[CAT] Actualitzat {current_time} | Dades no disponibles | [GB] Updated {current_time} | Data not available"
         rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
