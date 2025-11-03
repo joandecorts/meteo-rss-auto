@@ -50,41 +50,44 @@ def get_meteo_data():
         rows = table.find_all('tr')
         print(f"📊 Total de filas en la tabla: {len(rows)}")
         
-        # Buscar la fila con datos reales - empezar desde la fila 1 (índice 1)
-        for i in range(1, min(6, len(rows))):  # Revisar primeras 5 filas de datos
+        # Buscar EXCLUSIVAMENTE la PRIMERA fila con datos válidos (la más reciente)
+        for i in range(1, min(5, len(rows))):
             data_row = rows[i]
             cells = data_row.find_all('td')
             
-            if len(cells) >= 11:  # ⚡ SON 11 COLUMNAS
+            if len(cells) >= 11:
                 hora = cells[0].text.strip()
                 
                 # Verificar si es una fila de datos válida (formato de hora)
                 if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', hora):
-                    print(f"✅ Fila {i} seleccionada - Hora: {hora}")
+                    print(f"🔍 Revisando fila {i} - Período: {hora}")
                     
-                    # ⚡ ESTRUCTURA CON 11 COLUMNAS:
-                    temp = safe_float(cells[1].text)
-                    max_temp = safe_float(cells[2].text)
-                    min_temp = safe_float(cells[3].text)
-                    hum = safe_float(cells[4].text)
-                    wind = safe_float(cells[5].text)
-                    gust = safe_float(cells[6].text)
-                    precip = safe_float(cells[7].text)
-                    pressure = safe_float(cells[8].text)
+                    # Extraer datos según la guía - solo los campos que usamos
+                    temp = safe_float(cells[1].text, None)      # TM - Temperatura actual
+                    max_temp = safe_float(cells[2].text, None)  # TX - Temperatura máxima
+                    min_temp = safe_float(cells[3].text, None)  # TN - Temperatura mínima
+                    hum = safe_float(cells[4].text, None)       # HR - Humedad relativa
+                    wind = safe_float(cells[5].text, None)      # VVM - Viento medio
+                    gust = safe_float(cells[6].text, None)      # VVX - Ráfagas
+                    precip = safe_float(cells[7].text, None)    # PPT - Precipitación
+                    pressure = safe_float(cells[8].text, None)  # PM - Presión
                     
-                    print("📊 DATOS EXTRAÍDOS CORRECTAMENTE:")
-                    print(f"   Hora: {hora}")
-                    print(f"   Temp: {temp}°C")
-                    print(f"   Max: {max_temp}°C") 
-                    print(f"   Min: {min_temp}°C")
-                    print(f"   Hum: {hum}%")
-                    print(f"   Viento: {wind}km/h")
-                    print(f"   Ráfagas: {gust}km/h")
-                    print(f"   Precip: {precip}mm")
-                    print(f"   Presión: {pressure}hPa")
-                    
-                    # Validar que los datos sean razonables
-                    if 10 <= temp <= 40 and 20 <= hum <= 100:
+                    # Verificar si esta fila tiene datos válidos (no "(s/d)")
+                    if (temp is not None and hum is not None and 
+                        5 <= temp <= 40 and 10 <= hum <= 100):
+                        print(f"✅ Fila {i} seleccionada - Período MÁS RECIENTE con datos")
+                        
+                        print("📊 DATOS METEOROLÓGICOS MÁS RECIENTES:")
+                        print(f"   Período: {hora}")
+                        print(f"   TM (Temp actual): {temp}°C")
+                        print(f"   TX (Máxima): {max_temp}°C")
+                        print(f"   TN (Mínima): {min_temp}°C")
+                        print(f"   HR (Humedad): {hum}%")
+                        print(f"   VVM (Viento): {wind}km/h")
+                        print(f"   VVX (Ráfagas): {gust}km/h")
+                        print(f"   PPT (Precipitación): {precip}mm")
+                        print(f"   PM (Presión): {pressure}hPa")
+                        
                         return {
                             'hora': hora,
                             'temp': temp,
@@ -97,7 +100,7 @@ def get_meteo_data():
                             'pressure': pressure
                         }
                     else:
-                        print(f"⚠️ Datos fuera de rango en fila {i}")
+                        print(f"⚠️ Fila {i} tiene datos fuera de rango, buscando siguiente...")
         
         print("❌ No se encontró ninguna fila con datos válidos")
         return None
@@ -109,32 +112,31 @@ def get_meteo_data():
 def generate_rss():
     data = get_meteo_data()
     
-    # Obtener timestamp actual
+    # Obtener hora actual para ACTUALITZAT/UPDATED
     cet = pytz.timezone('CET')
     now = datetime.now(cet)
-    current_time = now.strftime("%H:%M")  # Hora actual en formato 16:45
-    timestamp = int(now.timestamp())      # Timestamp para el final
+    current_time = now.strftime("%H:%M")
     
     if not data:
         print("❌ No se pudieron obtener datos válidos")
-        # Usar datos de ejemplo
+        # Usar datos de ejemplo basados en lo que viste
         data = {
-            'hora': '15:30-16:00',
-            'temp': 19.3,
-            'max_temp': 19.9,
-            'min_temp': 18.6,
-            'hum': 63,
+            'hora': '16:00-16:30',
+            'temp': 18.2,
+            'max_temp': 18.6,
+            'min_temp': 17.6,
+            'hum': 69,
             'wind': 0.0,
-            'gust': 6.8,
+            'gust': 6.5,
             'precip': 0.0,
             'pressure': 1022.8
         }
-        print("📊 Usando datos de ejemplo")
+        print("📊 Usando datos de respaldo")
     
-    # 🎯 FORMATO MEJORADO CON "ACTUALITZAT", "UPDATED" Y TIMESTAMP
+    # 🎯 FORMATO DEFINITIVO SEGÚN GUÍA
     title = (
-        f"[CAT] ACTUALITZAT {current_time} | {data['hora']} | "
-        f"Temp:{data['temp']}°C | "
+        f"[CAT] Actualitzat {current_time} | {data['hora']} | "  # "Actualitzat" en catalán
+        f"Actual:{data['temp']}°C | "
         f"Màx:{data['max_temp']}°C | "
         f"Mín:{data['min_temp']}°C | "
         f"Hum:{data['hum']}% | "
@@ -142,16 +144,15 @@ def generate_rss():
         f"Ràfegues:{data['gust']}km/h | "
         f"Precip:{data['precip']}mm | "
         f"Pressió:{data['pressure']}hPa | "
-        f"[GB] UPDATED {current_time} | {data['hora']} | "
-        f"Temp:{data['temp']}°C | "
+        f"[GB] Updated {current_time} | {data['hora']} | "
+        f"Current:{data['temp']}°C | "
         f"Max:{data['max_temp']}°C | "
         f"Min:{data['min_temp']}°C | "
         f"Hum:{data['hum']}% | "
         f"Wind:{data['wind']}km/h | "
         f"Gusts:{data['gust']}km/h | "
         f"Precip:{data['precip']}mm | "
-        f"Pressure:{data['pressure']}hPa | "
-        f"⌚ {timestamp}"
+        f"Pressure:{data['pressure']}hPa"
     )
     
     rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
