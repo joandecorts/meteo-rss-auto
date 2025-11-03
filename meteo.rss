@@ -4,20 +4,20 @@
   <title>MeteoCat RSS</title>
   <link>https://www.meteo.cat</link>
   <description>Automated meteorological data - Dades meteorològiques automàtiques</description>
-  <lastBuildDate>Mon, 03 Nov 2025 12:18:09 CET</lastBuildDate>
+  <lastBuildDate>Mon, 03 Nov 2025 12:36:11 CET</lastBuildDate>
   
   <!-- Versió catalana -->
   <item>
-    <title>METEOCAT CET  |  10:30 - 11:00  |  Temp:19.2C  |  Max:19.6C  |  Min:18.7C  |  Hum:53%  |  Vent:2.9km/h  |  Rafega:8.6km/h  |  Precip:0.0mm  |  Pres:1024.9hPa</title>
+    <title>METEOCAT CET  |  11:30 - 12:00  |  Temp:19.2C  |  Max:19.6C  |  Min:18.7C  |  Hum:53%  |  Vent:2.9km/h  |  Rafega:8.6km/h  |  Precip:0.0mm  |  Pres:1024.9hPa</title>
     <link>https://www.meteo.cat</link>
-    <pubDate>Mon, 03 Nov 2025 12:18:09 CET</pubDate>
+    <pubDate>Mon, 03 Nov 2025 12:36:11 CET</pubDate>
   </item>
   
   <!-- English version -->
   <item>
-    <title>METEOCAT CET  |  10:30 - 11:00  |  Temp:19.2C  |  Max:19.6C  |  Min:18.7C  |  Hum:53%  |  Wind:2.9km/h  |  Gust:8.6km/h  |  Precip:0.0mm  |  Press:1024.9hPa</title>
+    <title>METEOCAT CET  |  11:30 - 12:00  |  Temp:19.2C  |  Max:19.6C  |  Min:18.7C  |  Hum:53%  |  Wind:2.9km/h  |  Gust:8.6km/h  |  Precip:0.0mm  |  Press:1024.9hPa</title>
     <link>https://www.meteo.cat</link>
-    <pubDate>Mon, 03 Nov 2025 12:18:09 CET</pubDate>
+    <pubDate>Mon, 03 Nov 2025 12:36:11 CET</pubDate>
   </item>
 </channel>
 </rss>
