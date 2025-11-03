@@ -5,9 +5,20 @@ from datetime import datetime, timedelta
 import re
 import sys
 
+def write_log(message):
+    """Escriu un missatge al log i també el mostra per pantalla"""
+    print(message)
+    with open('debug.log', 'a', encoding='utf-8') as f:
+        f.write(message + '\n')
+
 def get_meteo_data():
     try:
-        print("🌐 Connectant a Meteo.cat...")
+        # Netejar el fitxer de log anterior
+        with open('debug.log', 'w', encoding='utf-8') as f:
+            f.write("=== DEBUG LOG METEO.CAT ===\n")
+            f.write(f"Hora inici: {datetime.now()}\n")
+        
+        write_log("🌐 Connectant a Meteo.cat...")
         url = "https://www.meteo.cat/observacions/xema/dades?codi=Z6"
         headers = {
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
@@ -15,108 +26,152 @@ def get_meteo_data():
         
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
-        print("✅ Connexió exitosa")
+        write_log("✅ Connexió exitosa")
+        write_log(f"🔗 URL: {url}")
+        write_log(f"📄 Mida resposta: {len(response.content)} bytes")
         
         soup = BeautifulSoup(response.content, 'html.parser')
-        table = soup.find('table', {'class': 'tblperiode'})
-        if not table:
-            print("❌ No s'ha trobat la taula")
+        
+        # Buscar TOTES les taules per si ha canviat
+        tables = soup.find_all('table')
+        write_log(f"📊 Taules trobades: {len(tables)}")
+        
+        for idx, table in enumerate(tables):
+            write_log(f"  Taula {idx}: classes = {table.get('class', ['No class'])}")
+        
+        target_table = None
+        for table in tables:
+            if 'tblperiode' in table.get('class', []):
+                target_table = table
+                break
+        
+        if not target_table and tables:
+            write_log("⚠️  No s'ha trobat 'tblperiode', provant amb la primera taula")
+            target_table = tables[0]
+            
+        if not target_table:
+            write_log("❌ NO HI HA TAULES A LA PÀGINA")
             return None
             
-        rows = table.find_all('tr')
-        print(f"📊 Files trobades: {len(rows)}")
+        rows = target_table.find_all('tr')
+        write_log(f"📊 Files a la taula: {len(rows)}")
         
-        # Recórrer des de l'última fila (més recent) fins a la primera
-        for i in range(len(rows)-1, 0, -1):
+        # Mostrar les CAPÇALERES per veure l'estructura
+        if rows:
+            header_cells = rows[0].find_all(['th', 'td'])
+            header_texts = [cell.get_text(strip=True) for cell in header_cells]
+            write_log(f"📋 CAPÇALERES: {header_texts}")
+            write_log(f"📋 Número de capçaleres: {len(header_texts)}")
+        
+        # Analitzar les 10 files més recents
+        write_log("\n🔍 ANALITZANT LES 10 FILES MÉS RECENTS:")
+        files_analitzades = 0
+        
+        for i in range(max(1, len(rows)-10), len(rows)):
+            files_analitzades += 1
             cells = rows[i].find_all('td')
             
-            if len(cells) >= 11:  # Assegurar que tenim les 11 columnes
+            write_log(f"\n--- FILA {i} ---")
+            write_log(f"   Número de cel·les: {len(cells)}")
+            
+            if cells:
                 periode = cells[0].get_text(strip=True)
+                write_log(f"   Període: '{periode}'")
+                
+                # Mostrar TOTES les cel·les d'aquesta fila
+                for idx, cell in enumerate(cells):
+                    text = cell.get_text(strip=True)
+                    write_log(f"   Columna {idx}: '{text}'")
                 
                 # Verificar si és un període vàlid
-                if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periode):
-                    print(f"\n🔍 ANALITZANT PERÍODE: {periode}")
+                if re.match(r'\d{1,2}:\d{2}\s*-\s*(\d{1,2}:\d{2})?', periode):
+                    write_log(f"✅ FORMAT DE PERÍODE VÀLID: {periode}")
                     
-                    # LLEGIR LES 11 COLUMNES EN L'ORDRE EXACTE
-                    tm = cells[1].get_text(strip=True)   # TM
-                    tx = cells[2].get_text(strip=True)   # TX
-                    tn = cells[3].get_text(strip=True)   # TN
-                    hr = cells[4].get_text(strip=True)   # HR
-                    ppt = cells[5].get_text(strip=True)  # PPT
-                    vvm = cells[6].get_text(strip=True)  # VVM
-                    dvm = cells[7].get_text(strip=True)  # DVM
-                    vvx = cells[8].get_text(strip=True)  # VVX
-                    pm = cells[9].get_text(strip=True)   # PM
-                    rs = cells[10].get_text(strip=True)  # RS
-                    
-                    print("📊 LES 11 DADES EN BRUT:")
-                    print(f"   Període: {periode}")
-                    print(f"   TM: '{tm}' | TX: '{tx}' | TN: '{tn}'")
-                    print(f"   HR: '{hr}' | PPT: '{ppt}' | VVM: '{vvm}'")
-                    print(f"   DVM: '{dvm}' | VVX: '{vvx}' | PM: '{pm}' | RS: '{rs}'")
-                    
-                    # Verificar si hi ha dades vàlides (no buides ni "s/d")
-                    dades_valides = any([
-                        tm and tm != '(s/d)', tx and tx != '(s/d)', tn and tn != '(s/d)',
-                        hr and hr != '(s/d)', ppt and ppt != '(s/d)', vvm and vvm != '(s/d)',
-                        dvm and dvm != '(s/d)', vvx and vvx != '(s/d)', pm and pm != '(s/d)',
-                        rs and rs != '(s/d)'
-                    ])
+                    # Verificar si té dades vàlides
+                    dades_valides = False
+                    for idx in range(1, min(11, len(cells))):
+                        text = cells[idx].get_text(strip=True)
+                        if text and text != '(s/d)':
+                            dades_valides = True
+                            break
                     
                     if dades_valides:
-                        print("✅ PERÍODE AMB DADES VÀLIDES - PROCESSANT...")
+                        write_log(f"🎯 FILA {i} TE DADES VÀLIDES!")
                         
-                        # Convertir tots els valors a números
+                        # Llegir les 11 columnes
+                        tm = cells[1].get_text(strip=True) if len(cells) > 1 else "N/A"
+                        tx = cells[2].get_text(strip=True) if len(cells) > 2 else "N/A"
+                        tn = cells[3].get_text(strip=True) if len(cells) > 3 else "N/A"
+                        hr = cells[4].get_text(strip=True) if len(cells) > 4 else "N/A"
+                        ppt = cells[5].get_text(strip=True) if len(cells) > 5 else "N/A"
+                        vvm = cells[6].get_text(strip=True) if len(cells) > 6 else "N/A"
+                        dvm = cells[7].get_text(strip=True) if len(cells) > 7 else "N/A"
+                        vvx = cells[8].get_text(strip=True) if len(cells) > 8 else "N/A"
+                        pm = cells[9].get_text(strip=True) if len(cells) > 9 else "N/A"
+                        rs = cells[10].get_text(strip=True) if len(cells) > 10 else "N/A"
+                        
+                        write_log("📊 DADES EXTRAÏDES:")
+                        write_log(f"   TM: '{tm}' | TX: '{tx}' | TN: '{tn}'")
+                        write_log(f"   HR: '{hr}' | PPT: '{ppt}' | VVM: '{vvm}'")
+                        write_log(f"   DVM: '{dvm}' | VVX: '{vvx}' | PM: '{pm}' | RS: '{rs}'")
+                        
+                        # Convertir a números
                         def a_numero(text, default=0.0):
-                            if not text or text == '(s/d)':
+                            if not text or text == '(s/d)' or text == 'N/A':
                                 return default
                             try:
                                 return float(text.replace(',', '.'))
                             except:
                                 return default
                         
-                        # Aplicar conversions a les 11 dades
-                        tm_num = a_numero(tm)
-                        tx_num = a_numero(tx, tm_num)
-                        tn_num = a_numero(tn, tm_num)
-                        hr_num = a_numero(hr)
-                        ppt_num = a_numero(ppt)
-                        vvm_num = a_numero(vvm)
-                        dvm_num = a_numero(dvm)
-                        vvx_num = a_numero(vvx)
-                        pm_num = a_numero(pm)
-                        rs_num = a_numero(rs)
-                        
-                        # Ajustar període TU a hora local
+                        # Ajustar període
                         periode_ajustat = ajustar_periode(periode)
                         
                         return {
                             'periode': periode_ajustat,
-                            'tm': tm_num, 'tx': tx_num, 'tn': tn_num,
-                            'hr': hr_num, 'ppt': ppt_num, 'vvm': vvm_num,
-                            'dvm': dvm_num, 'vvx': vvx_num, 'pm': pm_num,
-                            'rs': rs_num
+                            'tm': a_numero(tm),
+                            'tx': a_numero(tx, a_numero(tm)),
+                            'tn': a_numero(tn, a_numero(tm)),
+                            'hr': a_numero(hr),
+                            'ppt': a_numero(ppt),
+                            'vvm': a_numero(vvm),
+                            'dvm': a_numero(dvm),
+                            'vvx': a_numero(vvx),
+                            'pm': a_numero(pm),
+                            'rs': a_numero(rs)
                         }
                     else:
-                        print("❌ PERÍODE SENSE DADES - CERCANT ANTERIOR...")
-                        continue
+                        write_log(f"❌ FILA {i} NO TE DADES VÀLIDES")
+                else:
+                    write_log(f"❌ FORMAT DE PERÍODE INVÀLID: {periode}")
+            else:
+                write_log("❌ FILA SENSE CEL·LES")
         
-        print("❌ No s'ha trobat cap període amb dades vàlides")
+        write_log(f"\n📝 RESUM: S'han analitzat {files_analitzades} files")
+        write_log("❌ CAP FILA TE DADES VÀLIDES")
         return None
         
     except Exception as e:
-        print(f"❌ Error: {e}")
+        write_log(f"❌ ERROR CRÍTIC: {str(e)}")
+        import traceback
+        write_log(f"TRACEBACK: {traceback.format_exc()}")
         return None
 
 def ajustar_periode(periode_str):
     """Ajusta període TU (UTC) a hora local"""
     try:
-        match = re.match(r'(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})', periode_str)
+        match = re.match(r'(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}:\d{2})?', periode_str)
         if match:
             hora_inici = int(match.group(1))
             minut_inici = int(match.group(2))
-            hora_fi = int(match.group(3))
-            minut_fi = int(match.group(4))
+            # Alguns períodes poden no tenir hora fi
+            if match.group(3):
+                hora_fi = int(match.group(3).split(':')[0])
+                minut_fi = int(match.group(3).split(':')[1])
+            else:
+                # Si no hi ha hora fi, assumim 30 minuts després
+                hora_fi = (hora_inici + 1) if minut_inici >= 30 else hora_inici
+                minut_fi = 0 if minut_inici >= 30 else 30
             
             # Determinar diferència horària
             cet = pytz.timezone('CET')
@@ -130,15 +185,18 @@ def ajustar_periode(periode_str):
             hora_fi_ajustada = (hora_fi + hores_diferencia) % 24
             
             periode_ajustat = f"{hora_inici_ajustada:02d}:{minut_inici:02d}-{hora_fi_ajustada:02d}:{minut_fi:02d}"
-            print(f"🕒 PERÍODE AJUSTAT: {periode_str} TU → {periode_ajustat} {'CEST' if es_dst else 'CET'}")
+            write_log(f"🕒 PERÍODE AJUSTAT: {periode_str} TU → {periode_ajustat} {'CEST' if es_dst else 'CET'}")
             return periode_ajustat
             
     except Exception as e:
-        print(f"❌ Error ajustant període: {e}")
+        write_log(f"❌ Error ajustant període: {e}")
     
     return periode_str
 
 def generar_rss():
+    write_log("\n" + "="*50)
+    write_log("🚀 INICIANT GENERACIÓ RSS")
+    
     dades = get_meteo_data()
     
     # Hora actual
@@ -147,10 +205,12 @@ def generar_rss():
     hora_actual = ara.strftime("%H:%M")
     
     if not dades:
-        print("❌ No s'han pogut obtenir dades - NO s'actualitza RSS")
+        write_log("❌ NO S'HAN POGUT OBTENIR DADES - NO S'ACTUALITZA RSS")
         return False
     
-    # Crear títol amb les 11 dades en l'ordre exacte
+    write_log("✅ DADES OBTINGUDES CORRECTAMENT")
+    
+    # Crear títol amb les 11 dades
     titol = (
         f"[CAT] Actualitzat {hora_actual} | {dades['periode']} | "
         f"TM:{dades['tm']}°C | TX:{dades['tx']}°C | TN:{dades['tn']}°C | "
@@ -161,6 +221,8 @@ def generar_rss():
         f"HR:{dades['hr']}% | PPT:{dades['ppt']}mm | VVM:{dades['vvm']}km/h | "
         f"DVM:{dades['dvm']}° | VVX:{dades['vvx']}km/h | PM:{dades['pm']}hPa | RS:{dades['rs']}W/m2"
     )
+    
+    write_log(f"📝 TÍTOL GENERAT: {titol}")
     
     # Generar RSS
     contingut_rss = f'''<?xml version="1.0" encoding="UTF-8"?>
@@ -178,18 +240,30 @@ def generar_rss():
 </channel>
 </rss>'''
     
-    # Guardar arxiu
+    # Guardar arxiu RSS
     with open('meteo.rss', 'w', encoding='utf-8') as f:
         f.write(contingut_rss)
     
-    print("✅ RSS ACTUALITZAT CORRECTAMENT AMB LES 11 DADES")
+    write_log("✅ RSS ACTUALITZAT CORRECTAMENT")
+    write_log(f"💾 Fitxer 'meteo.rss' guardat")
+    write_log(f"📝 Fitxer 'debug.log' amb informació detallada")
+    
     return True
 
 if __name__ == "__main__":
-    print("🚀 Iniciant actualització RSS...")
+    write_log("="*60)
+    write_log("🚀 INICIANT SCRIPT METEO.CAT RSS")
+    write_log(f"⏰ Data/hora: {datetime.now()}")
+    write_log("="*60)
+    
     exit = generar_rss()
     if exit:
-        print("🎉 COMPLETAT - RSS ACTUALITZAT")
+        write_log("🎉 COMPLETAT - RSS ACTUALITZAT")
     else:
-        print("💤 NO S'HA ACTUALITZAT - Sense dades vàlides")
+        write_log("💤 NO S'HA ACTUALITZAT - Sense dades vàlides")
+    
+    write_log("="*60)
+    write_log("🏁 FI DE L'EXECUCIÓ")
+    write_log("="*60)
+    
     sys.exit(0)
