@@ -117,6 +117,9 @@ class MeteoCatRSS:
         hora_espanya, zona_horaria = self.obtenir_hora_oficial_espanya()
         data_rss = hora_espanya.strftime('%a, %d %b %Y %H:%M:%S') + ' ' + zona_horaria
         
+        # TIMESTAMP ÚNIC per forçar canvis cada execució
+        timestamp = int(time.time())
+        
         # ALTERNAR ENTRE IDIOMES cada 30 segons (basat en el minut actual)
         minut_actual = hora_espanya.minute
         segon_actual = hora_espanya.second
@@ -124,25 +127,25 @@ class MeteoCatRSS:
         
         if not dades:
             if alternar_idioma:
-                title = "METEOCAT  |  Esperant dades actuals...  |  Waiting for current data..."
+                title = f"METEOCAT  |  Esperant dades actuals...  |  Waiting for current data...  |  ⌚ {timestamp}"
             else:
-                title = "METEOCAT  |  Waiting for current data...  |  Esperant dades actuals..."
+                title = f"METEOCAT  |  Waiting for current data...  |  Esperant dades actuals...  |  ⌚ {timestamp}"
         else:
             periode = self.convertir_periode_gmt_a_local(dades['periode'])
             
             if alternar_idioma:
                 # Primer català, després anglès
-                title = f"METEOCAT {zona_horaria}  |  {periode}  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Vent:{dades['vvm']}km/h  |  Rafega:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Pres:{dades['pm']}hPa  |  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Wind:{dades['vvm']}km/h  |  Gust:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Press:{dades['pm']}hPa"
+                title = f"METEOCAT {zona_horaria}  |  {periode}  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Vent:{dades['vvm']}km/h  |  Rafega:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Pres:{dades['pm']}hPa  |  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Wind:{dades['vvm']}km/h  |  Gust:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Press:{dades['pm']}hPa  |  ⌚ {timestamp}"
             else:
                 # Primer anglès, després català
-                title = f"METEOCAT {zona_horaria}  |  {periode}  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Wind:{dades['vvm']}km/h  |  Gust:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Press:{dades['pm']}hPa  |  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Vent:{dades['vvm']}km/h  |  Rafega:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Pres:{dades['pm']}hPa"
+                title = f"METEOCAT {zona_horaria}  |  {periode}  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Wind:{dades['vvm']}km/h  |  Gust:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Press:{dades['pm']}hPa  |  |  Temp:{dades['tm']}C  |  Max:{dades['tx']}C  |  Min:{dades['tn']}C  |  Hum:{dades['hrm']}%  |  Vent:{dades['vvm']}km/h  |  Rafega:{dades['vvx']}km/h  |  Precip:{dades['ppt']}mm  |  Pres:{dades['pm']}hPa  |  ⌚ {timestamp}"
         
         rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
   <title>MeteoCat RSS</title>
   <link>https://www.meteo.cat</link>
-  <description>Automated meteorological data - Dades meteorològiques automàtiques</description>
+  <description>Automated meteorological data - Dades meteorològiques automàtiques - Timestamp: {timestamp}</description>
   <lastBuildDate>{data_rss}</lastBuildDate>
   <item>
     <title>{title}</title>
@@ -155,7 +158,8 @@ class MeteoCatRSS:
         with open('meteo.rss', 'w', encoding='utf-8') as f:
             f.write(rss_content)
         
-        print(f"✅ RSS alternant: {title[:80]}...")
+        print(f"✅ RSS actualitzat amb timestamp: {timestamp}")
+        print(f"📝 Titol: {title[:100]}...")
         return True
 
 if __name__ == "__main__":
