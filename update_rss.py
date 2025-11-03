@@ -1,12 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import pytz
-from datetime import datetime, timedelta
+from datetime import datetime
 import re
 import sys
 import os
 
-def safe_float(value, default=0.0):
+def safe_float(value, default=None):
     """Convierte seguridad un valor a float"""
     if value is None or value == '':
         return default
@@ -29,8 +29,8 @@ def safe_float(value, default=0.0):
 
 def adjust_period_time(period_str):
     """
-    Ajusta el período de GMT a hora local (CET/CEST)
-    Ejemplo: "16:30-17:00" → "17:30-18:00" (en CET)
+    Ajusta el período de UTC a hora local (CET/CEST)
+    Ejemplo: "18:00-18:30" (UTC) → "20:00-20:30" (CEST)
     """
     try:
         # Extraer las horas del período
@@ -41,25 +41,29 @@ def adjust_period_time(period_str):
             end_hour = int(match.group(3))
             end_minute = int(match.group(4))
             
-            # Crear objetos datetime para hoy con las horas GMT
-            today = datetime.now().date()
-            gmt_start = datetime(today.year, today.month, today.day, start_hour, start_minute)
-            gmt_end = datetime(today.year, today.month, today.day, end_hour, end_minute)
-            
-            # Convertir a CET (GMT+1) o CEST (GMT+2)
+            # Determinar diferencia horaria (CET = UTC+1, CEST = UTC+2)
             cet = pytz.timezone('CET')
-            local_start = pytz.utc.localize(gmt_start).astimezone(cet)
-            local_end = pytz.utc.localize(gmt_end).astimezone(cet)
+            now_utc = datetime.utcnow().replace(tzinfo=pytz.utc)
+            now_cet = now_utc.astimezone(cet)
             
-            # Formatear de nuevo
-            adjusted_period = f"{local_start.strftime('%H:%M')}-{local_end.strftime('%H:%M')}"
-            print(f"🕒 Período ajustado: {period_str} (GMT) → {adjusted_period} (CET)")
+            # Verificar si es horario de verano (CEST)
+            is_dst = now_cet.dst() != timedelta(0)
+            offset_hours = 2 if is_dst else 1
+            
+            print(f"🕒 Diferencia horaria: UTC+{offset_hours} ({'CEST' if is_dst else 'CET'})")
+            
+            # Ajustar horas
+            start_hour_adj = (start_hour + offset_hours) % 24
+            end_hour_adj = (end_hour + offset_hours) % 24
+            
+            adjusted_period = f"{start_hour_adj:02d}:{start_minute:02d}-{end_hour_adj:02d}:{end_minute:02d}"
+            print(f"🕒 Período ajustado: {period_str} (UTC) → {adjusted_period} ({'CEST' if is_dst else 'CET'})")
             return adjusted_period
         
     except Exception as e:
         print(f"❌ Error ajustando período: {e}")
     
-    return period_str  # Si hay error, devolver el original
+    return period_str
 
 def get_meteo_data():
     try:
@@ -84,18 +88,13 @@ def get_meteo_data():
         rows = table.find_all('tr')
         print(f"📊 Total de filas en la tabla: {len(rows)}")
         
-        # DIAGNÓSTICO: Mostrar la estructura real de las últimas 5 filas
-        print("🔍 ESTRUCTURA DE LA TABLA (últimas 5 filas de datos):")
+        # 🎯 LECTURA ESPECÍFICA DE LAS 5 ÚLTIMAS FILAS
+        print("🔍 ANALIZANDO LAS 5 ÚLTIMAS FILAS:")
+        last_5_rows = []
+        
+        # Obtener índices de las últimas 5 filas (excluyendo la cabecera)
         start_index = max(1, len(rows) - 5)
         for i in range(start_index, len(rows)):
-            data_row = rows[i]
-            cells = data_row.find_all('td')
-            if len(cells) >= 11:
-                print(f"📝 Fila {i}: {cells[0].text.strip()} | TM:{cells[1].text} | TX:{cells[2].text} | TN:{cells[3].text} | HR:{cells[4].text} | PPT:{cells[5].text} | VVM:{cells[6].text} | VVX:{cells[8].text} | PM:{cells[9].text}")
-        
-        # Buscar desde la ÚLTIMA fila hacia arriba (para encontrar la más reciente)
-        valid_data = None
-        for i in range(len(rows)-1, 0, -1):  # Recorrer de abajo hacia arriba
             data_row = rows[i]
             cells = data_row.find_all('td')
             
@@ -104,43 +103,50 @@ def get_meteo_data():
                 
                 # Verificar si es una fila de datos válida (formato de hora)
                 if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', hora):
-                    print(f"🔍 Revisando fila {i} - Período: {hora}")
+                    # Extraer datos
+                    temp = safe_float(cells[1].text, None)
+                    max_temp = safe_float(cells[2].text, None)
+                    min_temp = safe_float(cells[3].text, None)
+                    hum = safe_float(cells[4].text, None)
+                    precip = safe_float(cells[5].text, 0.0)
+                    wind = safe_float(cells[6].text, 0.0)
+                    gust = safe_float(cells[8].text, 0.0)
+                    pressure = safe_float(cells[9].text, 0.0)
                     
-                    # ⚡ ESTRUCTURA DEFINITIVA SEGÚN TU ESPECIFICACIÓN
-                    # 0: Período, 1:TM, 2:TX, 3:TN, 4:HR, 5:PPT, 6:VVM, 7:DVM(no), 8:VVX, 9:PM, 10:RS(no)
-                    temp = safe_float(cells[1].text, None)      # TM - Temperatura media (Actual)
-                    max_temp = safe_float(cells[2].text, None)  # TX - Temperatura máxima
-                    min_temp = safe_float(cells[3].text, None)  # TN - Temperatura mínima
-                    hum = safe_float(cells[4].text, None)       # HR - Humedad relativa
-                    precip = safe_float(cells[5].text, None)    # PPT - Precipitación
-                    wind = safe_float(cells[6].text, None)      # VVM - Viento medio
-                    gust = safe_float(cells[8].text, None)      # VVX - Ráfagas máximas
-                    pressure = safe_float(cells[9].text, None)  # PM - Presión atmosférica
+                    # Guardar información de la fila
+                    row_data = {
+                        'index': i,
+                        'hora': hora,
+                        'temp': temp,
+                        'max_temp': max_temp,
+                        'min_temp': min_temp,
+                        'hum': hum,
+                        'precip': precip,
+                        'wind': wind,
+                        'gust': gust,
+                        'pressure': pressure,
+                        'es_valida': temp is not None and hum is not None
+                    }
                     
-                    # Verificar si esta fila tiene datos válidos (no "(s/d)")
-                    if temp is not None and hum is not None:
-                        print(f"✅ Fila {i} VÁLIDA - Período: {hora}")
-                        valid_data = {
-                            'hora': hora,
-                            'temp': temp,
-                            'max_temp': max_temp,
-                            'min_temp': min_temp,
-                            'hum': hum,
-                            'precip': precip,
-                            'wind': wind,
-                            'gust': gust,
-                            'pressure': pressure
-                        }
-                        break  # Nos quedamos con la más reciente
-                    else:
-                        print(f"❌ Fila {i} tiene datos INCOMPLETOS (s/d) - Temp: {temp}, Hum: {hum}")
+                    last_5_rows.append(row_data)
+                    
+                    estado = "✅ VÁLIDA" if row_data['es_valida'] else "❌ INVÁLIDA"
+                    print(f"📝 Fila {i}: {hora} | TM:{temp}°C | HR:{hum}% | {estado}")
+        
+        # 🎯 SELECCIONAR LA ÚLTIMA FILA VÁLIDA
+        valid_data = None
+        for row_data in reversed(last_5_rows):  # Recorrer de más reciente a más antigua
+            if row_data['es_valida']:
+                valid_data = row_data
+                print(f"🎯 SELECCIONADA: Fila {row_data['index']} - Período: {row_data['hora']}")
+                break
         
         if valid_data:
             # 🎯 AJUSTAR EL PERÍODO A HORA LOCAL
             adjusted_hora = adjust_period_time(valid_data['hora'])
             valid_data['hora'] = adjusted_hora
             
-            print("🎯 PERÍODO MÁS RECIENTE CON DATOS VÁLIDOS (AJUSTADO):")
+            print("🎯 PERÍODO MÁS RECIENTE CON DATOS VÁLIDOS:")
             print(f"   Período: {valid_data['hora']}")
             print(f"   TM (Actual): {valid_data['temp']}°C")
             print(f"   TX (Máxima): {valid_data['max_temp']}°C") 
@@ -150,9 +156,21 @@ def get_meteo_data():
             print(f"   VVM (Viento): {valid_data['wind']}km/h")
             print(f"   VVX (Ráfagas): {valid_data['gust']}km/h")
             print(f"   PM (Presión): {valid_data['pressure']}hPa")
-            return valid_data
+            
+            # Devolver solo los datos necesarios
+            return {
+                'hora': valid_data['hora'],
+                'temp': valid_data['temp'],
+                'max_temp': valid_data['max_temp'] if valid_data['max_temp'] is not None else valid_data['temp'],
+                'min_temp': valid_data['min_temp'] if valid_data['min_temp'] is not None else valid_data['temp'],
+                'hum': valid_data['hum'],
+                'precip': valid_data['precip'],
+                'wind': valid_data['wind'],
+                'gust': valid_data['gust'],
+                'pressure': valid_data['pressure']
+            }
         else:
-            print("❌ No se encontró ninguna fila con datos válidos")
+            print("❌ No se encontró ninguna fila con datos válidos en las últimas 5 filas")
             return None
         
     except Exception as e:
@@ -170,7 +188,7 @@ def generate_rss():
     if not data:
         print("❌ No se pudieron obtener datos válidos")
         # Usar datos del período más reciente con hora ajustada
-        base_period = "16:30-17:00"
+        base_period = "18:30-19:00"  # Período más reciente que mencionaste
         adjusted_period = adjust_period_time(base_period)
         data = {
             'hora': adjusted_period,
@@ -183,7 +201,7 @@ def generate_rss():
             'gust': 12.2,
             'pressure': 1023.1
         }
-        print(f"📊 Usando datos del período {base_period} → {adjusted_period} (ajustado)")
+        print(f"📊 Usando datos de respaldo para período {adjusted_period}")
     
     # 🎯 FORMATO DEFINITIVO - ESTRUCTURA FINAL
     title = (
