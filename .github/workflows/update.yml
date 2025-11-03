@@ -20,5 +20,5 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add meteo.rss
-          git diff --staged --quiet || git commit -m "🔄 Actualització automàtica"
+          git commit -m "🔄 Actualització automàtica - $(date +'%H:%M')" || echo "No changes to commit"
           git push
