@@ -9,11 +9,7 @@ def get_meteo_data():
     try:
         print("🌐 Conectando a Meteo.cat...")
         url = "https://www.meteo.cat/observacions/xema/dades?codi=Z6"
-        headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
-        }
-        
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, timeout=10)
         response.raise_for_status()
         print("✅ Conexión exitosa")
         
@@ -24,38 +20,48 @@ def get_meteo_data():
             return None
             
         rows = table.find_all('tr')
-        print(f"📊 Filas encontradas: {len(rows)}")
+        print(f"📊 Total filas: {len(rows)}")
         
-        # Buscar desde la ÚLTIMA fila (la más reciente)
+        # Recorrer desde la ÚLTIMA fila hasta la PRIMERA
         for i in range(len(rows)-1, 0, -1):
             cells = rows[i].find_all('td')
-            if len(cells) >= 11:  # Debe tener todas las columnas
+            if len(cells) >= 11:
                 periodo = cells[0].get_text(strip=True)
                 
-                # Verificar que sea un período válido
+                # Verificar si es un período válido
                 if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periodo):
-                    print(f"🔍 Analizando período: {periodo}")
+                    print(f"\n🔍 Analizando período: {periodo}")
                     
-                    # Extraer los valores directamente
-                    temp_text = cells[1].get_text(strip=True)  # TM
-                    hum_text = cells[4].get_text(strip=True)   # HRM
+                    # Leer TODOS los valores en bruto
+                    temp_text = cells[1].get_text(strip=True)
+                    max_temp_text = cells[2].get_text(strip=True)
+                    min_temp_text = cells[3].get_text(strip=True)
+                    hum_text = cells[4].get_text(strip=True)
+                    precip_text = cells[5].get_text(strip=True)
+                    wind_text = cells[6].get_text(strip=True)
+                    gust_text = cells[8].get_text(strip=True)
                     
-                    print(f"   TM: '{temp_text}', HR: '{hum_text}'")
+                    print(f"   📊 VALORES CRUDOS:")
+                    print(f"   TM: '{temp_text}' | TX: '{max_temp_text}' | TN: '{min_temp_text}'")
+                    print(f"   HR: '{hum_text}' | PPT: '{precip_text}'")
+                    print(f"   VVM: '{wind_text}' | VVX: '{gust_text}'")
                     
-                    # 🎯 CANVI: Aceptar si al menos uno de los dos tiene datos
-                    if (temp_text and temp_text != '(s/d)') or (hum_text and hum_text != '(s/d)'):
-                        print("✅ PERÍODO VÁLIDO CON DATOS")
+                    # Verificar si hay datos válidos (no vacíos y no s/d)
+                    tiene_datos = (temp_text and temp_text != '(s/d)') or (hum_text and hum_text != '(s/d)')
+                    
+                    if tiene_datos:
+                        print("✅ PERÍODO CON DATOS VÁLIDOS")
                         
-                        # Convertir a números, si alguno es (s/d) o vacío, usar 0.0 o None?
+                        # Convertir a números, usando 0.0 si hay s/d
                         try:
                             temp = float(temp_text.replace(',', '.')) if temp_text and temp_text != '(s/d)' else 0.0
+                            max_temp = float(max_temp_text.replace(',', '.')) if max_temp_text and max_temp_text != '(s/d)' else temp
+                            min_temp = float(min_temp_text.replace(',', '.')) if min_temp_text and min_temp_text != '(s/d)' else temp
                             hum = float(hum_text.replace(',', '.')) if hum_text and hum_text != '(s/d)' else 0.0
-                            max_temp = float(cells[2].get_text(strip=True).replace(',', '.')) if cells[2].get_text(strip=True) not in ['', '(s/d)'] else temp
-                            min_temp = float(cells[3].get_text(strip=True).replace(',', '.')) if cells[3].get_text(strip=True) not in ['', '(s/d)'] else temp
-                            precip = float(cells[5].get_text(strip=True).replace(',', '.')) if cells[5].get_text(strip=True) not in ['', '(s/d)'] else 0.0
-                            wind = float(cells[6].get_text(strip=True).replace(',', '.')) if cells[6].get_text(strip=True) not in ['', '(s/d)'] else 0.0
-                            gust = float(cells[8].get_text(strip=True).replace(',', '.')) if cells[8].get_text(strip=True) not in ['', '(s/d)'] else 0.0
-                            pressure = float(cells[9].get_text(strip=True).replace(',', '.')) if cells[9].get_text(strip=True) not in ['', '(s/d)'] else 0.0
+                            precip = float(precip_text.replace(',', '.')) if precip_text and precip_text != '(s/d)' else 0.0
+                            wind = float(wind_text.replace(',', '.')) if wind_text and wind_text != '(s/d)' else 0.0
+                            gust = float(gust_text.replace(',', '.')) if gust_text and gust_text != '(s/d)' else 0.0
+                            pressure = 0.0  # No disponible en esta tabla
                             
                             # Ajustar período a hora local
                             periodo_ajustado = adjust_period_time(periodo)
@@ -71,18 +77,19 @@ def get_meteo_data():
                                 'gust': gust,
                                 'pressure': pressure
                             }
+                            
                         except ValueError as e:
                             print(f"❌ Error convirtiendo números: {e}")
                             continue
                     else:
-                        print("❌ Período sin datos en TM y HR, buscando anterior...")
+                        print("❌ PERÍODO SIN DATOS - Buscando anterior...")
                         continue
         
-        print("❌ No se encontraron datos válidos en ninguna fila")
+        print("❌ No se encontró ningún período con datos")
         return None
         
     except Exception as e:
-        print(f"❌ Error: {e}")
+        print(f"❌ Error general: {e}")
         return None
 
 def adjust_period_time(period_str):
@@ -103,11 +110,11 @@ def adjust_period_time(period_str):
             is_dst = now_cet.dst() != timedelta(0)
             offset_hours = 2 if is_dst else 1
             
-            start_hour_adj = (start_hour + offset_hours) % 24
-            end_hour_adj = (end_hour + offset_hours) % 24
+            start_adj = (start_hour + offset_hours) % 24
+            end_adj = (end_hour + offset_hours) % 24
             
-            adjusted = f"{start_hour_adj:02d}:{start_minute:02d}-{end_hour_adj:02d}:{end_minute:02d}"
-            print(f"🕒 Período ajustado: {period_str} UTC → {adjusted} {'CEST' if is_dst else 'CET'}")
+            adjusted = f"{start_adj:02d}:{start_minute:02d}-{end_adj:02d}:{end_minute:02d}"
+            print(f"🕒 AJUSTE: {period_str} UTC → {adjusted} {'CEST' if is_dst else 'CET'}")
             return adjusted
             
     except Exception as e:
@@ -124,7 +131,7 @@ def generate_rss():
     current_time = now.strftime("%H:%M")
     
     if not data:
-        print("❌ No se pudieron obtener datos")
+        print("❌ No se pudieron obtener datos - NO se actualiza RSS")
         return False
     
     # Crear título
@@ -159,14 +166,14 @@ def generate_rss():
     with open('meteo.rss', 'w', encoding='utf-8') as f:
         f.write(rss_content)
     
-    print("✅ RSS actualizado correctamente")
+    print("✅ RSS ACTUALIZADO CORRECTAMENTE")
     return True
 
 if __name__ == "__main__":
     print("🚀 Iniciando actualización RSS...")
     success = generate_rss()
     if success:
-        print("🎉 Completado - RSS actualizado")
+        print("🎉 COMPLETADO - RSS ACTUALIZADO")
     else:
-        print("💤 No se pudo actualizar el RSS")
+        print("💤 NO SE ACTUALIZÓ - Sin datos válidos")
     sys.exit(0)
