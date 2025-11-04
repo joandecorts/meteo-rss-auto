@@ -4,11 +4,11 @@
   <title>MeteoCat RSS</title>
   <link>https://www.meteo.cat</link>
   <description>Automated meteorological data - Dades meteorològiques automàtiques</description>
-  <lastBuildDate>Tue, 04 Nov 2025 06:37:48 CET</lastBuildDate>
+  <lastBuildDate>Tue, 04 Nov 2025 06:39:49 CET</lastBuildDate>
   <item>
-    <title>[CAT] Actualitzat 06:37 | 05:30-06:00 | TM:7.7°C | TX:8.3°C | TN:7.4°C | HR:100.0% | PPT:0.0mm | VVM:1.4km/h | DVM:295.0° | VVX:5.8km/h | PM:1023.8hPa | RS:0.0W/m2 | [GB] Updated 06:37 | 05:30-06:00 | TM:7.7°C | TX:8.3°C | TN:7.4°C | HR:100.0% | PPT:0.0mm | VVM:1.4km/h | DVM:295.0° | VVX:5.8km/h | PM:1023.8hPa | RS:0.0W/m2</title>
+    <title>[CAT] Actualitzat 06:39 | 06:00-06:30 | TM:6.9°C | TX:7.4°C | TN:6.4°C | HR:100.0% | PPT:0.0mm | VVM:1.4km/h | DVM:276.0° | VVX:4.0km/h | PM:1023.7hPa | RS:0.0W/m2 | [GB] Updated 06:39 | 06:00-06:30 | TM:6.9°C | TX:7.4°C | TN:6.4°C | HR:100.0% | PPT:0.0mm | VVM:1.4km/h | DVM:276.0° | VVX:4.0km/h | PM:1023.7hPa | RS:0.0W/m2</title>
     <link>https://www.meteo.cat</link>
-    <pubDate>Tue, 04 Nov 2025 06:37:48 CET</pubDate>
+    <pubDate>Tue, 04 Nov 2025 06:39:49 CET</pubDate>
   </item>
 </channel>
 </rss>
