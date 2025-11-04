@@ -1,0 +1,39 @@
+﻿name: Update RSS Data Every 5 Minutes
+
+on:
+  schedule:
+    # Executar cada 5 minuts
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+    # Permet executar manualment des de la interfície de GitHub
+
+jobs:
+  update-rss:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 🛎️ Checkout code
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: 🐍 Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: 📦 Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests beautifulsoup4 pytz
+        
+    - name: 🚀 Run RSS updater
+      run: python update_rss.py
+      
+    - name: 💾 Commit and push changes
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add meteo.rss debug.log
+        git diff --staged --quiet || git commit -m "🤖 Auto-update RSS data - $(date +'%Y-%m-%d %H:%M')"
+        git push
