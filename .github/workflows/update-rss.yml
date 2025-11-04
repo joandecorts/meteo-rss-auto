@@ -2,22 +2,22 @@ name: Update RSS Data Every 5 Minutes
 
 on:
   schedule:
-    # Executar cada 5 minuts - UTC time
-    - cron: '*/5 * * * *'
+    # Múltiples triggers per millorar fiabilitat
+    - cron: '*/5 * * * *'  # Cada 5 minuts
+    - cron: '1-59/5 * * * *' # Offset 1 minut
   workflow_dispatch:
-    # Permet executar manualment
 
 jobs:
   update-rss:
     runs-on: ubuntu-latest
-    timeout-minutes: 10  # ⏰ Evita execucions eternes
+    timeout-minutes: 10
     
     steps:
     - name: 🛎️ Checkout code
       uses: actions/checkout@v4
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        fetch-depth: 0  # 🔍 Baixa tot l'historial
+        fetch-depth: 0
         
     - name: 🐍 Set up Python
       uses: actions/setup-python@v4
@@ -37,13 +37,11 @@ jobs:
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         
-        # ⚠️ CRÍTIC: Actualitza amb els canvis remots PRIMER
+        # Sincronitza amb el remot
         git pull origin main --rebase --autostash
         
-        # Afegeix els fitxers
         git add meteo.rss debug.log
         
-        # Commit només si hi ha canvis
         if git diff --staged --quiet; then
           echo "🟡 No hi ha canvis per commit"
         else
