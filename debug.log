@@ -1,31 +1,22 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-<<<<<<< Updated upstream
-Inici: 2025-11-05 04:01:47.180169
-=======
-Inici: 2025-11-05 04:01:47.941185
->>>>>>> Stashed changes
+Inici: 2025-11-05 04:42:12.754017
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
-🐍 Versió Python: 3.9.24 (main, Oct 10 2025, 01:00:43) 
-[GCC 13.3.0]
+🐍 Versió Python: 3.10.19 (main, Oct 10 2025, 01:01:37) [GCC 13.3.0]
 📁 Directori de treball: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 
 ============================================================
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
-<<<<<<< Updated upstream
-⏰ Hora: 2025-11-05 04:01:47.180347
-=======
-⏰ Hora: 2025-11-05 04:01:47.941345
->>>>>>> Stashed changes
+⏰ Hora: 2025-11-05 04:42:12.754205
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
 ✅ HTML parsejat correctament
 ✅ Taula 'tblperiode' trobada
-📊 Files a la taula: 9
+📊 Files a la taula: 10
 
 🔍 ANALITZANT ESTRUCTURA REAL DE LES FILES...
 
@@ -74,50 +65,32 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
 ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)
 
---- ANALITZANT FILA 8 ---
+--- ANALITZANT FILA 9 ---
    Cel·les (td+th): 11
-   Període: '03:30 - 04:00'
+   Període: '04:00 - 04:30'
    ✅ FORMAT DE PERÍODE VÀLID
    📊 CONTINGUT DE LES 11 COLUMNES:
-      Columna 0 (th): '03:30 - 04:00'
-      Columna 1 (td): '(s/d)'
-      Columna 2 (td): '(s/d)'
-      Columna 3 (td): '(s/d)'
-      Columna 4 (td): '(s/d)'
-      Columna 5 (td): '(s/d)'
-      Columna 6 (td): '(s/d)'
-      Columna 7 (td): '(s/d)'
-      Columna 8 (td): '(s/d)'
-      Columna 9 (td): '(s/d)'
-      Columna 10 (td): '(s/d)'
-   ❌ NO TE DADES VÀLIDES - Cercant fila anterior...
-
---- ANALITZANT FILA 7 ---
-   Cel·les (td+th): 11
-   Període: '03:00 - 03:30'
-   ✅ FORMAT DE PERÍODE VÀLID
-   📊 CONTINGUT DE LES 11 COLUMNES:
-      Columna 0 (th): '03:00 - 03:30'
-      Columna 1 (td): '5.5'
-      Columna 2 (td): '5.6'
-      Columna 3 (td): '5.4'
+      Columna 0 (th): '04:00 - 04:30'
+      Columna 1 (td): '5.2'
+      Columna 2 (td): '5.3'
+      Columna 3 (td): '5.0'
       Columna 4 (td): '100'
       Columna 5 (td): '0.0'
-      Columna 6 (td): '1.4'
-      Columna 7 (td): '291'
-      Columna 8 (td): '4.0'
-      Columna 9 (td): '1021.7'
+      Columna 6 (td): '0.7'
+      Columna 7 (td): '345'
+      Columna 8 (td): '2.2'
+      Columna 9 (td): '1021.6'
       Columna 10 (td): '0'
    🎯 TE DADES VÀLIDES - PROCESSANT...
    📊 DADES EXTRAÏDES:
-      TM: '5.5' | TX: '5.6' | TN: '5.4'
-      HR: '100' | PPT: '0.0' | VVM: '1.4'
-      DVM: '291' | VVX: '4.0' | PM: '1021.7'
+      TM: '5.2' | TX: '5.3' | TN: '5.0'
+      HR: '100' | PPT: '0.0' | VVM: '0.7'
+      DVM: '345' | VVX: '2.2' | PM: '1021.6'
       RS: '0'
-   🕒 Ajustant període: 03:00 - 03:30
-   🕒 PERÍODE AJUSTAT: 03:00 - 03:30 TU → 04:00-04:30
+   🕒 Ajustant període: 04:00 - 04:30
+   🕒 PERÍODE AJUSTAT: 04:00 - 04:30 TU → 05:00-05:30
    ✅ DADES OBTINGUDES CORRECTAMENT
-   🕒 Període ajustat: 03:00 - 03:30 → 04:00-04:30
+   🕒 Període ajustat: 04:00 - 04:30 → 05:00-05:30
 ✅ DADES OBTINGUDES - GENERANT RSS
 📝 Títol generat (537 caràcters)
 📁 Intentant escriure el fitxer meteo.rss...
