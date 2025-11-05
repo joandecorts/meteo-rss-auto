@@ -1,5 +1,9 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
+<<<<<<< Updated upstream
 Inici: 2025-11-05 21:30:38.542065
+=======
+Inici: 2025-11-05 21:30:51.486146
+>>>>>>> Stashed changes
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
@@ -11,7 +15,11 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
+<<<<<<< Updated upstream
 ⏰ Hora: 2025-11-05 21:30:38.542220
+=======
+⏰ Hora: 2025-11-05 21:30:51.486345
+>>>>>>> Stashed changes
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ❌ ERROR CRÍTIC a get_meteo_data(): HTTPSConnectionPool(host='www.meteo.cat', port=443): Read timed out. (read timeout=10)
