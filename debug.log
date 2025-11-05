@@ -1,5 +1,9 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
+<<<<<<< Updated upstream
 Inici: 2025-11-05 10:56:29.829229
+=======
+Inici: 2025-11-05 11:00:21.788595
+>>>>>>> Stashed changes
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
@@ -11,13 +15,17 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
+<<<<<<< Updated upstream
 ⏰ Hora: 2025-11-05 10:56:29.829388
+=======
+⏰ Hora: 2025-11-05 11:00:21.788743
+>>>>>>> Stashed changes
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
 ✅ HTML parsejat correctament
 ✅ Taula 'tblperiode' trobada
-📊 Files a la taula: 22
+📊 Files a la taula: 23
 
 🔍 ANALITZANT ESTRUCTURA REAL DE LES FILES...
 
@@ -65,6 +73,24 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 
 🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
 ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)
+
+--- ANALITZANT FILA 22 ---
+   Cel·les (td+th): 11
+   Període: '10:30 - 11:00'
+   ✅ FORMAT DE PERÍODE VÀLID
+   📊 CONTINGUT DE LES 11 COLUMNES:
+      Columna 0 (th): '10:30 - 11:00'
+      Columna 1 (td): '(s/d)'
+      Columna 2 (td): '(s/d)'
+      Columna 3 (td): '(s/d)'
+      Columna 4 (td): '(s/d)'
+      Columna 5 (td): '(s/d)'
+      Columna 6 (td): '(s/d)'
+      Columna 7 (td): '(s/d)'
+      Columna 8 (td): '(s/d)'
+      Columna 9 (td): '(s/d)'
+      Columna 10 (td): '(s/d)'
+   ❌ NO TE DADES VÀLIDES - Cercant fila anterior...
 
 --- ANALITZANT FILA 21 ---
    Cel·les (td+th): 11
