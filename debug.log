@@ -1,5 +1,5 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-Inici: 2025-11-04 23:55:05.121432
+Inici: 2025-11-05 03:35:08.913665
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
@@ -11,13 +11,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
-⏰ Hora: 2025-11-04 23:55:05.121588
+⏰ Hora: 2025-11-05 03:35:08.913852
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
 ✅ HTML parsejat correctament
 ✅ Taula 'tblperiode' trobada
-📊 Files a la taula: 48
+📊 Files a la taula: 8
 
 🔍 ANALITZANT ESTRUCTURA REAL DE LES FILES...
 
@@ -38,60 +38,78 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 --- FILA 1 (estructura) ---
    Total elements (td+th): 11
    Element 0 (th): '00:00 - 00:30'
-   Element 1 (td): '6.5'
-   Element 2 (td): '6.7'
-   Element 3 (td): '6.3'
+   Element 1 (td): '7.5'
+   Element 2 (td): '7.8'
+   Element 3 (td): '7.4'
    Element 4 (td): '100'
    Element 5 (td): '0.0'
-   Element 6 (td): '0.7'
-   Element 7 (td): '40'
-   Element 8 (td): '4.3'
-   Element 9 (td): '1024.2'
+   Element 6 (td): '1.8'
+   Element 7 (td): '335'
+   Element 8 (td): '7.6'
+   Element 9 (td): '1022.3'
    Element 10 (td): '0'
 
 --- FILA 2 (estructura) ---
    Total elements (td+th): 11
    Element 0 (th): '00:30 - 01:00'
-   Element 1 (td): '6.3'
-   Element 2 (td): '6.5'
-   Element 3 (td): '6.0'
+   Element 1 (td): '7.1'
+   Element 2 (td): '7.5'
+   Element 3 (td): '6.8'
    Element 4 (td): '100'
    Element 5 (td): '0.0'
-   Element 6 (td): '1.4'
-   Element 7 (td): '14'
-   Element 8 (td): '3.2'
-   Element 9 (td): '1024.1'
+   Element 6 (td): '2.5'
+   Element 7 (td): '56'
+   Element 8 (td): '8.3'
+   Element 9 (td): '1022.0'
    Element 10 (td): '0'
 
 🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
 ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)
 
---- ANALITZANT FILA 47 ---
+--- ANALITZANT FILA 7 ---
    Cel·les (td+th): 11
-   Període: '23:00 - 23:30'
+   Període: '03:00 - 03:30'
    ✅ FORMAT DE PERÍODE VÀLID
    📊 CONTINGUT DE LES 11 COLUMNES:
-      Columna 0 (th): '23:00 - 23:30'
-      Columna 1 (td): '8.4'
-      Columna 2 (td): '8.5'
-      Columna 3 (td): '8.0'
+      Columna 0 (th): '03:00 - 03:30'
+      Columna 1 (td): '(s/d)'
+      Columna 2 (td): '(s/d)'
+      Columna 3 (td): '(s/d)'
+      Columna 4 (td): '(s/d)'
+      Columna 5 (td): '(s/d)'
+      Columna 6 (td): '(s/d)'
+      Columna 7 (td): '(s/d)'
+      Columna 8 (td): '(s/d)'
+      Columna 9 (td): '(s/d)'
+      Columna 10 (td): '(s/d)'
+   ❌ NO TE DADES VÀLIDES - Cercant fila anterior...
+
+--- ANALITZANT FILA 6 ---
+   Cel·les (td+th): 11
+   Període: '02:30 - 03:00'
+   ✅ FORMAT DE PERÍODE VÀLID
+   📊 CONTINGUT DE LES 11 COLUMNES:
+      Columna 0 (th): '02:30 - 03:00'
+      Columna 1 (td): '5.9'
+      Columna 2 (td): '6.2'
+      Columna 3 (td): '5.6'
       Columna 4 (td): '100'
       Columna 5 (td): '0.0'
-      Columna 6 (td): '1.1'
-      Columna 7 (td): '321'
-      Columna 8 (td): '5.8'
-      Columna 9 (td): '1022.7'
+      Columna 6 (td): '0.7'
+      Columna 7 (td): '323'
+      Columna 8 (td): '4.7'
+      Columna 9 (td): '1021.8'
       Columna 10 (td): '0'
    🎯 TE DADES VÀLIDES - PROCESSANT...
    📊 DADES EXTRAÏDES:
-      TM: '8.4' | TX: '8.5' | TN: '8.0'
-      HR: '100' | PPT: '0.0' | VVM: '1.1'
-      DVM: '321' | VVX: '5.8' | PM: '1022.7'
+      TM: '5.9' | TX: '6.2' | TN: '5.6'
+      HR: '100' | PPT: '0.0' | VVM: '0.7'
+      DVM: '323' | VVX: '4.7' | PM: '1021.8'
       RS: '0'
-   🕒 Ajustant període: 23:00 - 23:30
-   🕒 PERÍODE AJUSTAT: 23:00 - 23:30 TU → 00:00-00:30
+   🕒 Ajustant període: 02:30 - 03:00
+   🕒 PERÍODE AJUSTAT: 02:30 - 03:00 TU → 03:30-04:00
    ✅ DADES OBTINGUDES CORRECTAMENT
-   🕒 Període ajustat: 23:00 - 23:30 → 00:00-00:30
+   🕒 Període ajustat: 02:30 - 03:00 → 03:30-04:00
 ✅ DADES OBTINGUDES - GENERANT RSS
 📝 Títol generat (537 caràcters)
 📁 Intentant escriure el fitxer meteo.rss...
