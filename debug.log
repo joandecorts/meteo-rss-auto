@@ -1,5 +1,5 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-Inici: 2025-11-05 21:58:52.173841
+Inici: 2025-11-05 22:17:11.325384
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
@@ -11,13 +11,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
-⏰ Hora: 2025-11-05 21:58:52.173994
+⏰ Hora: 2025-11-05 22:17:11.325538
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
 ✅ HTML parsejat correctament
 ✅ Taula 'tblperiode' trobada
-📊 Files a la taula: 44
+📊 Files a la taula: 45
 
 🔍 ANALITZANT ESTRUCTURA REAL DE LES FILES...
 
@@ -66,38 +66,38 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
 ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)
 
---- ANALITZANT FILA 43 ---
+--- ANALITZANT FILA 44 ---
    Cel·les (td+th): 11
-   Període: '21:00 - 21:30'
+   Període: '21:30 - 22:00'
    ✅ FORMAT DE PERÍODE VÀLID
    📊 CONTINGUT DE LES 11 COLUMNES:
-      Columna 0 (th): '21:00 - 21:30'
-      Columna 1 (td): '16.2'
+      Columna 0 (th): '21:30 - 22:00'
+      Columna 1 (td): '16.1'
       Columna 2 (td): '16.2'
-      Columna 3 (td): '16.2'
-      Columna 4 (td): '100'
+      Columna 3 (td): '15.8'
+      Columna 4 (td): '99'
       Columna 5 (td): '0.0'
-      Columna 6 (td): '2.9'
-      Columna 7 (td): '231'
-      Columna 8 (td): '6.8'
-      Columna 9 (td): '1016.0'
+      Columna 6 (td): '1.8'
+      Columna 7 (td): '198'
+      Columna 8 (td): '5.0'
+      Columna 9 (td): '1015.8'
       Columna 10 (td): '0'
    🎯 TE DADES VÀLIDES - PROCESSANT...
    📊 DADES EXTRAÏDES:
-      TM: '16.2' | TX: '16.2' | TN: '16.2'
-      HR: '100' | PPT: '0.0' | VVM: '2.9'
-      DVM: '231' | VVX: '6.8' | PM: '1016.0'
+      TM: '16.1' | TX: '16.2' | TN: '15.8'
+      HR: '99' | PPT: '0.0' | VVM: '1.8'
+      DVM: '198' | VVX: '5.0' | PM: '1015.8'
       RS: '0'
-   🕒 Ajustant període: 21:00 - 21:30
-   🕒 PERÍODE AJUSTAT: 21:00 - 21:30 TU → 22:00-22:30
+   🕒 Ajustant període: 21:30 - 22:00
+   🕒 PERÍODE AJUSTAT: 21:30 - 22:00 TU → 22:30-23:00
    ✅ DADES OBTINGUDES CORRECTAMENT
-   🕒 Període ajustat: 21:00 - 21:30 → 22:00-22:30
+   🕒 Període ajustat: 21:30 - 22:00 → 22:30-23:00
 ✅ DADES OBTINGUDES - GENERANT RSS
-📝 Títol generat (543 caràcters)
+📝 Títol generat (541 caràcters)
 📁 Intentant escriure el fitxer meteo.rss...
 📍 Ruta completa del fitxer: /home/runner/work/meteo-rss-auto/meteo-rss-auto/meteo.rss
 ✅ RSS guardat a 'meteo.rss'
-📏 Mida del fitxer: 1215 bytes
+📏 Mida del fitxer: 1213 bytes
 📄 Primeres línies del fitxer:
    Línia 0: <?xml version="1.0" encoding="UTF-8"?>
    Línia 1: <rss version="2.0">
