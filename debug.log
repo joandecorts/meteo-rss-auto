@@ -1,5 +1,5 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-Inici: 2025-11-05 21:50:19.983488
+Inici: 2025-11-05 21:52:46.780871
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
@@ -11,19 +11,97 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
-⏰ Hora: 2025-11-05 21:50:19.983643
+⏰ Hora: 2025-11-05 21:52:46.780984
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
-❌ ERROR CRÍTIC a get_meteo_data(): 503 Server Error: Service Unavailable for url: https://www.meteo.cat/observacions/xema/dades?codi=XJ
-TRACEBACK: Traceback (most recent call last):
-  File "/home/runner/work/meteo-rss-auto/meteo-rss-auto/update_rss.py", line 30, in get_meteo_data
-    response.raise_for_status()
-  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/requests/models.py", line 1026, in raise_for_status
-    raise HTTPError(http_error_msg, response=self)
-requests.exceptions.HTTPError: 503 Server Error: Service Unavailable for url: https://www.meteo.cat/observacions/xema/dades?codi=XJ
+✅ Connexió exitosa
+✅ HTML parsejat correctament
+✅ Taula 'tblperiode' trobada
+📊 Files a la taula: 44
 
-❌ NO S'HAN POGUT OBTENIR DADES
-💤 NO S'ACTUALITZA RSS
-💤 NO S'HA ACTUALITZAT RSS - Sense dades vàlides
+🔍 ANALITZANT ESTRUCTURA REAL DE LES FILES...
+
+--- FILA 0 (estructura) ---
+   Total elements (td+th): 11
+   Element 0 (th): 'PeríodeTU'
+   Element 1 (th): 'TM°C'
+   Element 2 (th): 'TX°C'
+   Element 3 (th): 'TN°C'
+   Element 4 (th): 'HRM%'
+   Element 5 (th): 'PPTmm'
+   Element 6 (th): 'VVM (10 m)km/h'
+   Element 7 (th): 'DVM (10 m)graus'
+   Element 8 (th): 'VVX (10 m)km/h'
+   Element 9 (th): 'PMhPa'
+   Element 10 (th): 'RSW/m2'
+
+--- FILA 1 (estructura) ---
+   Total elements (td+th): 11
+   Element 0 (th): '00:00 - 00:30'
+   Element 1 (td): '7.5'
+   Element 2 (td): '7.8'
+   Element 3 (td): '7.4'
+   Element 4 (td): '100'
+   Element 5 (td): '0.0'
+   Element 6 (td): '1.8'
+   Element 7 (td): '335'
+   Element 8 (td): '7.6'
+   Element 9 (td): '1022.3'
+   Element 10 (td): '0'
+
+--- FILA 2 (estructura) ---
+   Total elements (td+th): 11
+   Element 0 (th): '00:30 - 01:00'
+   Element 1 (td): '7.1'
+   Element 2 (td): '7.5'
+   Element 3 (td): '6.8'
+   Element 4 (td): '100'
+   Element 5 (td): '0.0'
+   Element 6 (td): '2.5'
+   Element 7 (td): '56'
+   Element 8 (td): '8.3'
+   Element 9 (td): '1022.0'
+   Element 10 (td): '0'
+
+🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
+ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)
+
+--- ANALITZANT FILA 43 ---
+   Cel·les (td+th): 11
+   Període: '21:00 - 21:30'
+   ✅ FORMAT DE PERÍODE VÀLID
+   📊 CONTINGUT DE LES 11 COLUMNES:
+      Columna 0 (th): '21:00 - 21:30'
+      Columna 1 (td): '16.2'
+      Columna 2 (td): '16.2'
+      Columna 3 (td): '16.2'
+      Columna 4 (td): '100'
+      Columna 5 (td): '0.0'
+      Columna 6 (td): '2.9'
+      Columna 7 (td): '231'
+      Columna 8 (td): '6.8'
+      Columna 9 (td): '1016.0'
+      Columna 10 (td): '0'
+   🎯 TE DADES VÀLIDES - PROCESSANT...
+   📊 DADES EXTRAÏDES:
+      TM: '16.2' | TX: '16.2' | TN: '16.2'
+      HR: '100' | PPT: '0.0' | VVM: '2.9'
+      DVM: '231' | VVX: '6.8' | PM: '1016.0'
+      RS: '0'
+   🕒 Ajustant període: 21:00 - 21:30
+   🕒 PERÍODE AJUSTAT: 21:00 - 21:30 TU → 22:00-22:30
+   ✅ DADES OBTINGUDES CORRECTAMENT
+   🕒 Període ajustat: 21:00 - 21:30 → 22:00-22:30
+✅ DADES OBTINGUDES - GENERANT RSS
+📝 Títol generat (543 caràcters)
+📁 Intentant escriure el fitxer meteo.rss...
+📍 Ruta completa del fitxer: /home/runner/work/meteo-rss-auto/meteo-rss-auto/meteo.rss
+✅ RSS guardat a 'meteo.rss'
+📏 Mida del fitxer: 1215 bytes
+📄 Primeres línies del fitxer:
+   Línia 0: <?xml version="1.0" encoding="UTF-8"?>
+   Línia 1: <rss version="2.0">
+   Línia 2: <channel>
+🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
 ============================================================
 🏁 FI DE L'EXECUCIÓ
