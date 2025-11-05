@@ -1,5 +1,5 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-Inici: 2025-11-05 20:41:34.106801
+Inici: 2025-11-05 20:53:31.965928
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
@@ -11,97 +11,67 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
-⏰ Hora: 2025-11-05 20:41:34.106958
+⏰ Hora: 2025-11-05 20:53:31.966040
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
-✅ Connexió exitosa
-✅ HTML parsejat correctament
-✅ Taula 'tblperiode' trobada
-📊 Files a la taula: 42
+❌ ERROR CRÍTIC a get_meteo_data(): HTTPSConnectionPool(host='www.meteo.cat', port=443): Read timed out. (read timeout=10)
+TRACEBACK: Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/urllib3/connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/urllib3/connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/http/client.py", line 1377, in getresponse
+    response.begin()
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/http/client.py", line 320, in begin
+    version, status, reason = self._read_status()
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/http/client.py", line 281, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/socket.py", line 716, in readinto
+    return self._sock.recv_into(b)
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/ssl.py", line 1277, in recv_into
+    return self.read(nbytes, buffer)
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/ssl.py", line 1135, in read
+    return self._sslobj.read(len, buffer)
+socket.timeout: The read operation timed out
 
-🔍 ANALITZANT ESTRUCTURA REAL DE LES FILES...
+The above exception was the direct cause of the following exception:
 
---- FILA 0 (estructura) ---
-   Total elements (td+th): 11
-   Element 0 (th): 'PeríodeTU'
-   Element 1 (th): 'TM°C'
-   Element 2 (th): 'TX°C'
-   Element 3 (th): 'TN°C'
-   Element 4 (th): 'HRM%'
-   Element 5 (th): 'PPTmm'
-   Element 6 (th): 'VVM (10 m)km/h'
-   Element 7 (th): 'DVM (10 m)graus'
-   Element 8 (th): 'VVX (10 m)km/h'
-   Element 9 (th): 'PMhPa'
-   Element 10 (th): 'RSW/m2'
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/requests/adapters.py", line 644, in send
+    resp = conn.urlopen(
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/urllib3/connectionpool.py", line 841, in urlopen
+    retries = retries.increment(
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/urllib3/util/retry.py", line 474, in increment
+    raise reraise(type(error), error, _stacktrace)
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/urllib3/util/util.py", line 39, in reraise
+    raise value
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/urllib3/connectionpool.py", line 787, in urlopen
+    response = self._make_request(
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/urllib3/connectionpool.py", line 536, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/urllib3/connectionpool.py", line 367, in _raise_timeout
+    raise ReadTimeoutError(
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='www.meteo.cat', port=443): Read timed out. (read timeout=10)
 
---- FILA 1 (estructura) ---
-   Total elements (td+th): 11
-   Element 0 (th): '00:00 - 00:30'
-   Element 1 (td): '7.5'
-   Element 2 (td): '7.8'
-   Element 3 (td): '7.4'
-   Element 4 (td): '100'
-   Element 5 (td): '0.0'
-   Element 6 (td): '1.8'
-   Element 7 (td): '335'
-   Element 8 (td): '7.6'
-   Element 9 (td): '1022.3'
-   Element 10 (td): '0'
+During handling of the above exception, another exception occurred:
 
---- FILA 2 (estructura) ---
-   Total elements (td+th): 11
-   Element 0 (th): '00:30 - 01:00'
-   Element 1 (td): '7.1'
-   Element 2 (td): '7.5'
-   Element 3 (td): '6.8'
-   Element 4 (td): '100'
-   Element 5 (td): '0.0'
-   Element 6 (td): '2.5'
-   Element 7 (td): '56'
-   Element 8 (td): '8.3'
-   Element 9 (td): '1022.0'
-   Element 10 (td): '0'
+Traceback (most recent call last):
+  File "/home/runner/work/meteo-rss-auto/meteo-rss-auto/update_rss.py", line 29, in get_meteo_data
+    response = requests.get(url, headers=headers, timeout=10)
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/requests/api.py", line 73, in get
+    return request("get", url, params=params, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/requests/api.py", line 59, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/requests/sessions.py", line 589, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/requests/sessions.py", line 703, in send
+    r = adapter.send(request, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.9.24/x64/lib/python3.9/site-packages/requests/adapters.py", line 690, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='www.meteo.cat', port=443): Read timed out. (read timeout=10)
 
-🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
-ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)
-
---- ANALITZANT FILA 41 ---
-   Cel·les (td+th): 11
-   Període: '20:00 - 20:30'
-   ✅ FORMAT DE PERÍODE VÀLID
-   📊 CONTINGUT DE LES 11 COLUMNES:
-      Columna 0 (th): '20:00 - 20:30'
-      Columna 1 (td): '16.3'
-      Columna 2 (td): '16.3'
-      Columna 3 (td): '16.3'
-      Columna 4 (td): '99'
-      Columna 5 (td): '0.2'
-      Columna 6 (td): '5.4'
-      Columna 7 (td): '223'
-      Columna 8 (td): '11.5'
-      Columna 9 (td): '1016.1'
-      Columna 10 (td): '0'
-   🎯 TE DADES VÀLIDES - PROCESSANT...
-   📊 DADES EXTRAÏDES:
-      TM: '16.3' | TX: '16.3' | TN: '16.3'
-      HR: '99' | PPT: '0.2' | VVM: '5.4'
-      DVM: '223' | VVX: '11.5' | PM: '1016.1'
-      RS: '0'
-   🕒 Ajustant període: 20:00 - 20:30
-   🕒 PERÍODE AJUSTAT: 20:00 - 20:30 TU → 21:00-21:30
-   ✅ DADES OBTINGUDES CORRECTAMENT
-   🕒 Període ajustat: 20:00 - 20:30 → 21:00-21:30
-✅ DADES OBTINGUDES - GENERANT RSS
-📝 Títol generat (543 caràcters)
-📁 Intentant escriure el fitxer meteo.rss...
-📍 Ruta completa del fitxer: /home/runner/work/meteo-rss-auto/meteo-rss-auto/meteo.rss
-✅ RSS guardat a 'meteo.rss'
-📏 Mida del fitxer: 1215 bytes
-📄 Primeres línies del fitxer:
-   Línia 0: <?xml version="1.0" encoding="UTF-8"?>
-   Línia 1: <rss version="2.0">
-   Línia 2: <channel>
-🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
+❌ NO S'HAN POGUT OBTENIR DADES
+💤 NO S'ACTUALITZA RSS
+💤 NO S'HA ACTUALITZAT RSS - Sense dades vàlides
 ============================================================
 🏁 FI DE L'EXECUCIÓ
