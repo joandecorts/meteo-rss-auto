@@ -1,5 +1,5 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-Inici: 2025-11-05 19:58:55.895542
+Inici: 2025-11-05 20:11:28.859337
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
@@ -11,13 +11,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
-⏰ Hora: 2025-11-05 19:58:55.895695
+⏰ Hora: 2025-11-05 20:11:28.859487
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
 ✅ HTML parsejat correctament
 ✅ Taula 'tblperiode' trobada
-📊 Files a la taula: 40
+📊 Files a la taula: 41
 
 🔍 ANALITZANT ESTRUCTURA REAL DE LES FILES...
 
@@ -66,32 +66,32 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
 ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)
 
---- ANALITZANT FILA 39 ---
+--- ANALITZANT FILA 40 ---
    Cel·les (td+th): 11
-   Període: '19:00 - 19:30'
+   Període: '19:30 - 20:00'
    ✅ FORMAT DE PERÍODE VÀLID
    📊 CONTINGUT DE LES 11 COLUMNES:
-      Columna 0 (th): '19:00 - 19:30'
+      Columna 0 (th): '19:30 - 20:00'
       Columna 1 (td): '16.4'
       Columna 2 (td): '16.4'
       Columna 3 (td): '16.3'
       Columna 4 (td): '99'
-      Columna 5 (td): '0.1'
-      Columna 6 (td): '4.0'
-      Columna 7 (td): '217'
-      Columna 8 (td): '10.4'
-      Columna 9 (td): '1016.4'
+      Columna 5 (td): '0.2'
+      Columna 6 (td): '6.1'
+      Columna 7 (td): '229'
+      Columna 8 (td): '13.3'
+      Columna 9 (td): '1016.3'
       Columna 10 (td): '0'
    🎯 TE DADES VÀLIDES - PROCESSANT...
    📊 DADES EXTRAÏDES:
       TM: '16.4' | TX: '16.4' | TN: '16.3'
-      HR: '99' | PPT: '0.1' | VVM: '4.0'
-      DVM: '217' | VVX: '10.4' | PM: '1016.4'
+      HR: '99' | PPT: '0.2' | VVM: '6.1'
+      DVM: '229' | VVX: '13.3' | PM: '1016.3'
       RS: '0'
-   🕒 Ajustant període: 19:00 - 19:30
-   🕒 PERÍODE AJUSTAT: 19:00 - 19:30 TU → 20:00-20:30
+   🕒 Ajustant període: 19:30 - 20:00
+   🕒 PERÍODE AJUSTAT: 19:30 - 20:00 TU → 20:30-21:00
    ✅ DADES OBTINGUDES CORRECTAMENT
-   🕒 Període ajustat: 19:00 - 19:30 → 20:00-20:30
+   🕒 Període ajustat: 19:30 - 20:00 → 20:30-21:00
 ✅ DADES OBTINGUDES - GENERANT RSS
 📝 Títol generat (543 caràcters)
 📁 Intentant escriure el fitxer meteo.rss...
