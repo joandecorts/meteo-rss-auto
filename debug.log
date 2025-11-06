@@ -1,13 +1,18 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Inici: 2025-11-06 05:39:43.464247
 =======
 Inici: 2025-11-06 05:40:00.393115
 >>>>>>> Stashed changes
+=======
+Inici: 2025-11-06 05:40:17.165674
+>>>>>>> Stashed changes
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
-🐍 Versió Python: 3.10.19 (main, Oct 10 2025, 01:01:37) [GCC 13.3.0]
+🐍 Versió Python: 3.9.24 (main, Oct 10 2025, 01:00:43) 
+[GCC 13.3.0]
 📁 Directori de treball: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 
 ============================================================
@@ -15,9 +20,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 INICIANT get_meteo_data()
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ⏰ Hora: 2025-11-06 05:39:43.464396
 =======
 ⏰ Hora: 2025-11-06 05:40:00.393270
+>>>>>>> Stashed changes
+=======
+⏰ Hora: 2025-11-06 05:40:17.165945
 >>>>>>> Stashed changes
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
