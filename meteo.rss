@@ -4,12 +4,21 @@
   <title>MeteoCat Girona</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estació Girona [XJ] - Real-time weather data</description>
+<<<<<<< Updated upstream
   <lastBuildDate>Thu, 06 Nov 2025 04:39:21 CET</lastBuildDate>
   <item>
     <title>🌤️ GIRONA | Actualitzat: 04:39 | Període: 04:00-04:30 | Temp. Mitjana: 14.1°C | Temp. Màxima: 14.3°C | Temp. Mínima: 13.8°C | Humitat: 100.0% | Precipitació: 0.0mm | Vent Mitjà: 0.0km/h | Direcció Vent: 105.0° | Vent Màxim: 1.8km/h | Pressió: 1012.1hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 04:39 | Period: 04:00-04:30 | Avg Temp: 14.1°C | Max Temp: 14.3°C | Min Temp: 13.8°C | Humidity: 100.0% | Precipitation: 0.0mm | Avg Wind: 0.0km/h | Wind Direction: 105.0° | Max Wind: 1.8km/h | Pressure: 1012.1hPa | Solar Radiation: 0.0W/m²</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
     <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
     <pubDate>Thu, 06 Nov 2025 04:39:21 CET</pubDate>
+=======
+  <lastBuildDate>Thu, 06 Nov 2025 04:41:25 CET</lastBuildDate>
+  <item>
+    <title>🌤️ GIRONA | Actualitzat: 04:41 | Període: 04:00-04:30 | Temp. Mitjana: 14.1°C | Temp. Màxima: 14.3°C | Temp. Mínima: 13.8°C | Humitat: 100.0% | Precipitació: 0.0mm | Vent Mitjà: 0.0km/h | Direcció Vent: 105.0° | Vent Màxim: 1.8km/h | Pressió: 1012.1hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 04:41 | Period: 04:00-04:30 | Avg Temp: 14.1°C | Max Temp: 14.3°C | Min Temp: 13.8°C | Humidity: 100.0% | Precipitation: 0.0mm | Avg Wind: 0.0km/h | Wind Direction: 105.0° | Max Wind: 1.8km/h | Pressure: 1012.1hPa | Solar Radiation: 0.0W/m²</title>
+    <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
+    <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
+    <pubDate>Thu, 06 Nov 2025 04:41:25 CET</pubDate>
+>>>>>>> Stashed changes
   </item>
 </channel>
 </rss>
