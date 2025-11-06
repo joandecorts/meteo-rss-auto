@@ -2,15 +2,14 @@ name: Update RSS Data Every 5 Minutes
 
 on:
   schedule:
-    # Múltiples triggers per millorar fiabilitat
-    - cron: '*/5 * * * *'  # Cada 5 minuts
-    - cron: '1-59/5 * * * *' # Offset 1 minut
+    # Temporalment cada 5 minuts per proves
+    - cron: '*/5 * * * *'
   workflow_dispatch:
 
 jobs:
   update-rss:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 25  # Suficient per a 3 intents (15 min) + marges
     
     steps:
     - name: 🛎️ Checkout code
@@ -29,21 +28,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install requests beautifulsoup4 pytz
         
-    - name: 🚀 Run RSS updater
+    - name: 🚀 Run RSS updater with retries
       run: python update_rss.py
       
     - name: 💾 Commit and push changes
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
-        
-        # Sincronitza amb el remot
         git pull origin main --rebase --autostash
-        
         git add meteo.rss debug.log
-        
         if git diff --staged --quiet; then
-          echo "🟡 No hi ha canvis per commit"
+          echo "🟡 No hi ha canvis nous"
         else
           git commit -m "🤖 Auto-update RSS data - $(date +'%Y-%m-%d %H:%M')"
           git push origin main
