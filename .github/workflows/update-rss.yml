@@ -2,13 +2,10 @@ name: Update RSS Data Every 5 Minutes
 
 on:
   schedule:
-    # PROVA 1: Cron més simple
     - cron: '*/5 * * * *'
-    
-    # PROVA 2: Double trigger per millorar fiabilitat
-    - cron: '2-59/5 * * * *'
-    
   workflow_dispatch:
+  repository_dispatch:
+    types: [trigger_rss_update]
 
 jobs:
   update-rss:
