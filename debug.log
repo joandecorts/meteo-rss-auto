@@ -1,5 +1,5 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-Inici: 2025-11-05 23:56:31.394081
+Inici: 2025-11-06 03:39:19.766329
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
@@ -11,13 +11,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
-⏰ Hora: 2025-11-05 23:56:31.394192
+⏰ Hora: 2025-11-06 03:39:19.766595
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
 ✅ HTML parsejat correctament
 ✅ Taula 'tblperiode' trobada
-📊 Files a la taula: 48
+📊 Files a la taula: 8
 
 🔍 ANALITZANT ESTRUCTURA REAL DE LES FILES...
 
@@ -38,60 +38,60 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 --- FILA 1 (estructura) ---
    Total elements (td+th): 11
    Element 0 (th): '00:00 - 00:30'
-   Element 1 (td): '7.5'
-   Element 2 (td): '7.8'
-   Element 3 (td): '7.4'
-   Element 4 (td): '100'
-   Element 5 (td): '0.0'
-   Element 6 (td): '1.8'
-   Element 7 (td): '335'
-   Element 8 (td): '7.6'
-   Element 9 (td): '1022.3'
+   Element 1 (td): '16.2'
+   Element 2 (td): '16.2'
+   Element 3 (td): '16.0'
+   Element 4 (td): '97'
+   Element 5 (td): '0.1'
+   Element 6 (td): '5.8'
+   Element 7 (td): '207'
+   Element 8 (td): '16.9'
+   Element 9 (td): '1014.3'
    Element 10 (td): '0'
 
 --- FILA 2 (estructura) ---
    Total elements (td+th): 11
    Element 0 (th): '00:30 - 01:00'
-   Element 1 (td): '7.1'
-   Element 2 (td): '7.5'
-   Element 3 (td): '6.8'
-   Element 4 (td): '100'
+   Element 1 (td): '15.7'
+   Element 2 (td): '16.1'
+   Element 3 (td): '15.3'
+   Element 4 (td): '99'
    Element 5 (td): '0.0'
-   Element 6 (td): '2.5'
-   Element 7 (td): '56'
-   Element 8 (td): '8.3'
-   Element 9 (td): '1022.0'
+   Element 6 (td): '2.2'
+   Element 7 (td): '191'
+   Element 8 (td): '6.8'
+   Element 9 (td): '1013.7'
    Element 10 (td): '0'
 
 🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
 ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)
 
---- ANALITZANT FILA 47 ---
+--- ANALITZANT FILA 7 ---
    Cel·les (td+th): 11
-   Període: '23:00 - 23:30'
+   Període: '03:00 - 03:30'
    ✅ FORMAT DE PERÍODE VÀLID
    📊 CONTINGUT DE LES 11 COLUMNES:
-      Columna 0 (th): '23:00 - 23:30'
-      Columna 1 (td): '16.1'
-      Columna 2 (td): '16.1'
-      Columna 3 (td): '16.1'
-      Columna 4 (td): '98'
-      Columna 5 (td): '0.1'
-      Columna 6 (td): '6.1'
-      Columna 7 (td): '198'
-      Columna 8 (td): '12.6'
-      Columna 9 (td): '1015.1'
+      Columna 0 (th): '03:00 - 03:30'
+      Columna 1 (td): '14.1'
+      Columna 2 (td): '14.3'
+      Columna 3 (td): '13.8'
+      Columna 4 (td): '100'
+      Columna 5 (td): '0.0'
+      Columna 6 (td): '0.0'
+      Columna 7 (td): '105'
+      Columna 8 (td): '1.8'
+      Columna 9 (td): '1012.1'
       Columna 10 (td): '0'
    🎯 TE DADES VÀLIDES - PROCESSANT...
    📊 DADES EXTRAÏDES:
-      TM: '16.1' | TX: '16.1' | TN: '16.1'
-      HR: '98' | PPT: '0.1' | VVM: '6.1'
-      DVM: '198' | VVX: '12.6' | PM: '1015.1'
+      TM: '14.1' | TX: '14.3' | TN: '13.8'
+      HR: '100' | PPT: '0.0' | VVM: '0.0'
+      DVM: '105' | VVX: '1.8' | PM: '1012.1'
       RS: '0'
-   🕒 Ajustant període: 23:00 - 23:30
-   🕒 PERÍODE AJUSTAT: 23:00 - 23:30 TU → 00:00-00:30
+   🕒 Ajustant període: 03:00 - 03:30
+   🕒 PERÍODE AJUSTAT: 03:00 - 03:30 TU → 04:00-04:30
    ✅ DADES OBTINGUDES CORRECTAMENT
-   🕒 Període ajustat: 23:00 - 23:30 → 00:00-00:30
+   🕒 Període ajustat: 03:00 - 03:30 → 04:00-04:30
 ✅ DADES OBTINGUDES - GENERANT RSS
 📝 Títol generat (543 caràcters)
 📁 Intentant escriure el fitxer meteo.rss...
