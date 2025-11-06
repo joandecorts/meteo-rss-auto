@@ -4,20 +4,12 @@
   <title>MeteoCat Girona</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estació Girona [XJ] - Real-time weather data</description>
-<<<<<<< Updated upstream
-  <lastBuildDate>Thu, 06 Nov 2025 05:57:21 CET</lastBuildDate>
-=======
-  <lastBuildDate>Thu, 06 Nov 2025 05:57:23 CET</lastBuildDate>
->>>>>>> Stashed changes
+  <lastBuildDate>Thu, 06 Nov 2025 06:39:45 CET</lastBuildDate>
   <item>
-    <title>🌤️ GIRONA | Actualitzat: 05:57 | Període: 05:00-05:30 | Temp. Mitjana: 13.5°C | Temp. Màxima: 13.6°C | Temp. Mínima: 13.4°C | Humitat: 100.0% | Precipitació: 0.0mm | Vent Mitjà: 1.1km/h | Direcció Vent: 96.0° | Vent Màxim: 3.2km/h | Pressió: 1011.3hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 05:57 | Period: 05:00-05:30 | Avg Temp: 13.5°C | Max Temp: 13.6°C | Min Temp: 13.4°C | Humidity: 100.0% | Precipitation: 0.0mm | Avg Wind: 1.1km/h | Wind Direction: 96.0° | Max Wind: 3.2km/h | Pressure: 1011.3hPa | Solar Radiation: 0.0W/m²</title>
+    <title>🌤️ GIRONA | Actualitzat: 06:39 | Període: 06:00-06:30 | Temp. Mitjana: 13.1°C | Temp. Màxima: 13.4°C | Temp. Mínima: 12.9°C | Humitat: 100.0% | Precipitació: 0.0mm | Vent Mitjà: 1.8km/h | Direcció Vent: 300.0° | Vent Màxim: 5.0km/h | Pressió: 1010.2hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 06:39 | Period: 06:00-06:30 | Avg Temp: 13.1°C | Max Temp: 13.4°C | Min Temp: 12.9°C | Humidity: 100.0% | Precipitation: 0.0mm | Avg Wind: 1.8km/h | Wind Direction: 300.0° | Max Wind: 5.0km/h | Pressure: 1010.2hPa | Solar Radiation: 0.0W/m²</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
     <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
-<<<<<<< Updated upstream
-    <pubDate>Thu, 06 Nov 2025 05:57:21 CET</pubDate>
-=======
-    <pubDate>Thu, 06 Nov 2025 05:57:23 CET</pubDate>
->>>>>>> Stashed changes
+    <pubDate>Thu, 06 Nov 2025 06:39:45 CET</pubDate>
   </item>
 </channel>
 </rss>
