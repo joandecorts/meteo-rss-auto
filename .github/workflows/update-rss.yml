@@ -2,9 +2,10 @@ name: Update RSS Data Every 5 Minutes
 
 on:
   schedule:
-    # Temporalment cada 5 minuts per proves
-    - cron: '*/5 * * * *'
+    # Execució EXACTA als minuts: 0,5,10,15,20,25,30,35,40,45,50,55 de cada hora
+    - cron: '0,5,10,15,20,25,30,35,40,45,50,55 * * * *'
   workflow_dispatch:
+    # Permet executar manualment des de la interfície de GitHub
 
 jobs:
   update-rss:
