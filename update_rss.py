@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import re
 import sys
 import os
+import time  # Nou import per als reintents
 
 def write_log(message):
     """Escriu un missatge al log i també el mostra per pantalla"""
@@ -47,50 +48,40 @@ def get_meteo_data():
             write_log("❌ La taula no té files")
             return None
         
-        # CANVI CRÍTIC: Mostrar l'estructura REAL de les files
         write_log("\n🔍 ANALITZANT ESTRUCTURA REAL DE LES FILES...")
         
-        # Mostrar les primeres 3 files per veure l'estructura
         for i in range(min(3, len(rows))):
             write_log(f"\n--- FILA {i} (estructura) ---")
-            # Buscar TOTS els elements (td i th)
             all_cells = rows[i].find_all(['td', 'th'])
             write_log(f"   Total elements (td+th): {len(all_cells)}")
             
             for j, cell in enumerate(all_cells):
                 write_log(f"   Element {j} ({cell.name}): '{cell.get_text(strip=True)}'")
         
-        # CANVI CRÍTIC: Cercar files amb dades (11 columnes segons el diagnòstic)
         write_log("\n🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...")
         write_log("ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)")
         
         for i in range(len(rows)-1, 0, -1):
             write_log(f"\n--- ANALITZANT FILA {i} ---")
-            # CANVI CRÍTIC: Buscar TOTS els elements (td i th)
             cells = rows[i].find_all(['td', 'th'])
             write_log(f"   Cel·les (td+th): {len(cells)}")
             
-            # CANVI CRÍTIC: Ara acceptem 11 columnes (com mostra el diagnòstic)
             if len(cells) < 11:
                 write_log(f"   ❌ Només té {len(cells)} columnes - necessitem 11")
                 continue
                 
-            # CANVI CRÍTIC: El període està a la primera cel·la (th)
             periode = cells[0].get_text(strip=True)
             write_log(f"   Període: '{periode}'")
             
-            # Verificar si és un període vàlid (format hh:mm-hh:mm)
             if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periode):
                 write_log(f"   ✅ FORMAT DE PERÍODE VÀLID")
                 
-                # Mostrar totes les cel·les d'aquesta fila
                 write_log("   📊 CONTINGUT DE LES 11 COLUMNES:")
                 for idx in range(min(11, len(cells))):
                     text = cells[idx].get_text(strip=True)
                     cell_type = cells[idx].name
                     write_log(f"      Columna {idx} ({cell_type}): '{text}'")
                 
-                # Verificar si té dades vàlides (de la columna 1 a la 10)
                 dades_valides = False
                 for idx in range(1, min(11, len(cells))):
                     text = cells[idx].get_text(strip=True)
@@ -101,9 +92,6 @@ def get_meteo_data():
                 if dades_valides:
                     write_log(f"   🎯 TE DADES VÀLIDES - PROCESSANT...")
                     
-                    # CANVI CRÍTIC: Llegir les 11 columnes com mostra el diagnòstic
-                    # Columna 0: th amb el període (ja l'tenim)
-                    # Columnes 1-10: td amb les dades
                     tm = cells[1].get_text(strip=True)
                     tx = cells[2].get_text(strip=True)
                     tn = cells[3].get_text(strip=True)
@@ -113,7 +101,7 @@ def get_meteo_data():
                     dvm = cells[7].get_text(strip=True)
                     vvx = cells[8].get_text(strip=True)
                     pm = cells[9].get_text(strip=True)
-                    rs = cells[10].get_text(strip=True)  # CANVI: RS SÍ que està present!
+                    rs = cells[10].get_text(strip=True)
                     
                     write_log("   📊 DADES EXTRAÏDES:")
                     write_log(f"      TM: '{tm}' | TX: '{tx}' | TN: '{tn}'")
@@ -121,7 +109,6 @@ def get_meteo_data():
                     write_log(f"      DVM: '{dvm}' | VVX: '{vvx}' | PM: '{pm}'")
                     write_log(f"      RS: '{rs}'")
                     
-                    # Convertir a números
                     def a_numero(text, default=0.0):
                         if not text or text == '(s/d)':
                             return default
@@ -139,9 +126,8 @@ def get_meteo_data():
                     dvm_num = a_numero(dvm)
                     vvx_num = a_numero(vvx)
                     pm_num = a_numero(pm)
-                    rs_num = a_numero(rs)  # CANVI: Ara llegim la RS real
+                    rs_num = a_numero(rs)
                     
-                    # Ajustar període
                     periode_ajustat = ajustar_periode(periode)
                     
                     write_log(f"   ✅ DADES OBTINGUDES CORRECTAMENT")
@@ -152,7 +138,7 @@ def get_meteo_data():
                         'tm': tm_num, 'tx': tx_num, 'tn': tn_num,
                         'hr': hr_num, 'ppt': ppt_num, 'vvm': vvm_num,
                         'dvm': dvm_num, 'vvx': vvx_num, 'pm': pm_num,
-                        'rs': rs_num  # CANVI: Retornem la RS real
+                        'rs': rs_num
                     }
                 else:
                     write_log(f"   ❌ NO TE DADES VÀLIDES - Cercant fila anterior...")
@@ -171,12 +157,12 @@ def get_meteo_data():
 def ajustar_periode(periode_str):
     try:
         write_log(f"   🕒 Ajustant període: {periode_str}")
-        match = re.match(r'(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})', periode_str)
+        match = re.match(r'(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})', periode_str)
         if match:
-            hora_inici = int(match.group(1))
-            minut_inici = int(match.group(2))
-            hora_fi = int(match.group(3))
-            minut_fi = int(match.group(4))
+            hora_inici = int(match.group(1).split(':')[0])
+            minut_inici = int(match.group(1).split(':')[1])
+            hora_fi = int(match.group(2).split(':')[0])
+            minut_fi = int(match.group(2).split(':')[1])
             
             cet = pytz.timezone('CET')
             now_utc = datetime.utcnow().replace(tzinfo=pytz.utc)
@@ -214,7 +200,6 @@ def generar_rss():
     
     write_log("✅ DADES OBTINGUDES - GENERANT RSS")
     
-    # FORMAT MILLORAT - CATALÀ amb descripcions clares
     titol_cat = (
         f"🌤️ GIRONA | Actualitzat: {current_time} | Període: {dades['periode']} | "
         f"Temp. Mitjana: {dades['tm']}°C | Temp. Màxima: {dades['tx']}°C | Temp. Mínima: {dades['tn']}°C | "
@@ -224,7 +209,6 @@ def generar_rss():
         f"Radiació Solar: {dades['rs']}W/m²"
     )
     
-    # FORMAT MILLORAT - ANGLÈS amb descripcions clares
     titol_en = (
         f"🌤️ GIRONA | Updated: {current_time} | Period: {dades['periode']} | "
         f"Avg Temp: {dades['tm']}°C | Max Temp: {dades['tx']}°C | Min Temp: {dades['tn']}°C | "
@@ -234,7 +218,6 @@ def generar_rss():
         f"Solar Radiation: {dades['rs']}W/m²"
     )
     
-    # COMBINAR AMB SEPARACIÓ CLARA
     titol = f"{titol_cat} || {titol_en}"
     
     write_log(f"📝 Títol generat ({len(titol)} caràcters)")
@@ -255,7 +238,6 @@ def generar_rss():
 </channel>
 </rss>'''
     
-    # CANVI: Afegim més logging per diagnosticar
     write_log("📁 Intentant escriure el fitxer meteo.rss...")
     
     try:
@@ -267,12 +249,10 @@ def generar_rss():
         
         write_log("✅ RSS guardat a 'meteo.rss'")
         
-        # Verifiquem que s'ha escrit correctament
         if os.path.exists('meteo.rss'):
             mida = os.path.getsize('meteo.rss')
             write_log(f"📏 Mida del fitxer: {mida} bytes")
             
-            # Llegim les primeres línies per verificar
             with open('meteo.rss', 'r', encoding='utf-8') as f:
                 primeres_linies = f.readlines()[:3]
                 write_log("📄 Primeres línies del fitxer:")
@@ -289,14 +269,42 @@ def generar_rss():
         write_log(f"TRACEBACK: {traceback.format_exc()}")
         return False
 
+def main_amb_reintents():
+    """Funció principal amb sistema de reintents intel·ligent"""
+    max_intents = 3
+    espera_entre_intents = 300  # 5 minuts en segons
+    
+    write_log("🔄 SISTEMA DE REINTENTS ACTIVAT")
+    write_log(f"🎯 Configuració: {max_intents} intents màxims, {espera_entre_intents}s entre intents")
+
+    for intent in range(max_intents):
+        write_log(f"\n{'='*50}")
+        write_log(f"🔄 INTENT {intent + 1}/{max_intents}")
+        write_log(f"⏰ Hora inici intent: {datetime.now()}")
+        
+        exit = generar_rss()
+        
+        if exit:
+            write_log("✅ ÈXIT - RSS actualitzat correctament")
+            return True
+        else:
+            if intent < max_intents - 1:
+                write_log(f"⏰ Esperant {espera_entre_intents} segons per proper intent...")
+                # Mostrem compte enrere cada 30 segons
+                for i in range(espera_entre_intents // 30):
+                    time.sleep(30)
+                    write_log(f"   ⏳ Temps restant: {espera_entre_intents - (i+1)*30} segons")
+            else:
+                write_log("❌ TOTS ELS INTENTS HAN FALLAT")
+    
+    return False
+
 if __name__ == "__main__":
     # Netejar log anterior
     if os.path.exists('debug.log'):
         os.remove('debug.log')
     
-    # CANVI: Mostrar el directori actual
     directori_actual = os.getcwd()
-    print(f"📁 Directori actual: {directori_actual}")
     
     with open('debug.log', 'w', encoding='utf-8') as f:
         f.write("=== DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===\n")
@@ -307,16 +315,18 @@ if __name__ == "__main__":
     write_log("🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)")
     write_log(f"🐍 Versió Python: {sys.version}")
     write_log(f"📁 Directori de treball: {directori_actual}")
+    write_log(f"⏰ Hora d'inici: {datetime.now()}")
     
-    exit = generar_rss()
+    # Cridem la nova funció amb reintents
+    exit = main_amb_reintents()
     
     if exit:
         write_log("🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT")
     else:
-        write_log("💤 NO S'HA ACTUALITZAT RSS - Sense dades vàlides")
+        write_log("💤 NO S'HA ACTUALITZAT RSS - Tots els intents han fallat")
     
     write_log("="*60)
-    write_log("🏁 FI DE L'EXECUCIÓ")
+    write_log(f"🏁 FI DE L'EXECUCIÓ - {datetime.now()}")
     
-    # SEMPRE sortim amb èxit per evitar emails d'error
-    sys.exit(0)
+    # Sortim amb 0 si èxit, 1 si fallada
+    sys.exit(0 if exit else 1)
