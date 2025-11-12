@@ -4,12 +4,21 @@
   <title>MeteoCat Girona</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estació Girona [XJ] - Real-time weather data</description>
+<<<<<<< Updated upstream
   <lastBuildDate>Wed, 12 Nov 2025 04:35:22 CET</lastBuildDate>
   <item>
     <title>🌤️ GIRONA | Actualitzat: 04:35 | Període: 03:30-04:00 | Temp. Mitjana: 4.9°C | Temp. Màxima: 5.1°C | Temp. Mínima: 4.6°C | Humitat: 100.0% | Precipitació: 0.0mm | Vent Mitjà: 2.2km/h | Direcció Vent: 278.0° | Vent Màxim: 4.3km/h | Pressió: 1016.0hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 04:35 | Period: 03:30-04:00 | Avg Temp: 4.9°C | Max Temp: 5.1°C | Min Temp: 4.6°C | Humidity: 100.0% | Precipitation: 0.0mm | Avg Wind: 2.2km/h | Wind Direction: 278.0° | Max Wind: 4.3km/h | Pressure: 1016.0hPa | Solar Radiation: 0.0W/m²</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
     <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
     <pubDate>Wed, 12 Nov 2025 04:35:22 CET</pubDate>
+=======
+  <lastBuildDate>Wed, 12 Nov 2025 04:37:11 CET</lastBuildDate>
+  <item>
+    <title>🌤️ GIRONA | Actualitzat: 04:37 | Període: 03:30-04:00 | Temp. Mitjana: 4.9°C | Temp. Màxima: 5.1°C | Temp. Mínima: 4.6°C | Humitat: 100.0% | Precipitació: 0.0mm | Vent Mitjà: 2.2km/h | Direcció Vent: 278.0° | Vent Màxim: 4.3km/h | Pressió: 1016.0hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 04:37 | Period: 03:30-04:00 | Avg Temp: 4.9°C | Max Temp: 5.1°C | Min Temp: 4.6°C | Humidity: 100.0% | Precipitation: 0.0mm | Avg Wind: 2.2km/h | Wind Direction: 278.0° | Max Wind: 4.3km/h | Pressure: 1016.0hPa | Solar Radiation: 0.0W/m²</title>
+    <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
+    <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
+    <pubDate>Wed, 12 Nov 2025 04:37:11 CET</pubDate>
+>>>>>>> Stashed changes
   </item>
 </channel>
 </rss>
