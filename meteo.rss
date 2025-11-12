@@ -4,12 +4,12 @@
   <title>MeteoCat Girona</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estació Girona [XJ] - Real-time weather data</description>
-  <lastBuildDate>Wed, 12 Nov 2025 20:05:17 CET</lastBuildDate>
+  <lastBuildDate>Wed, 12 Nov 2025 20:10:25 CET</lastBuildDate>
   <item>
-    <title>🌤️ GIRONA | Actualitzat: 20:05 | Període: 19:00-19:30 | Temp. Mitjana: 15.9°C | Temp. Màxima: 16.3°C | Temp. Mínima: 15.3°C | Humitat: 88.0% | Precipitació: 0.0mm | Vent Mitjà: 2.9km/h | Direcció Vent: 217.0° | Vent Màxim: 8.6km/h | Pressió: 1019.0hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 20:05 | Period: 19:00-19:30 | Avg Temp: 15.9°C | Max Temp: 16.3°C | Min Temp: 15.3°C | Humidity: 88.0% | Precipitation: 0.0mm | Avg Wind: 2.9km/h | Wind Direction: 217.0° | Max Wind: 8.6km/h | Pressure: 1019.0hPa | Solar Radiation: 0.0W/m²</title>
+    <title>🌤️ GIRONA | Actualitzat: 20:10 | Període: 19:30-20:00 | Temp. Mitjana: 13.8°C | Temp. Màxima: 15.2°C | Temp. Mínima: 12.9°C | Humitat: 94.0% | Precipitació: 0.0mm | Vent Mitjà: 0.7km/h | Direcció Vent: 20.0° | Vent Màxim: 2.9km/h | Pressió: 1019.3hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 20:10 | Period: 19:30-20:00 | Avg Temp: 13.8°C | Max Temp: 15.2°C | Min Temp: 12.9°C | Humidity: 94.0% | Precipitation: 0.0mm | Avg Wind: 0.7km/h | Wind Direction: 20.0° | Max Wind: 2.9km/h | Pressure: 1019.3hPa | Solar Radiation: 0.0W/m²</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
     <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
-    <pubDate>Wed, 12 Nov 2025 20:05:17 CET</pubDate>
+    <pubDate>Wed, 12 Nov 2025 20:10:25 CET</pubDate>
   </item>
 </channel>
 </rss>
