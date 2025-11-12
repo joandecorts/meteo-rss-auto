@@ -1,40 +1,24 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-<<<<<<< Updated upstream
-Inici: 2025-11-12 11:35:24.571559
-=======
-Inici: 2025-11-12 11:36:17.883892
->>>>>>> Stashed changes
+Inici: 2025-11-12 11:40:24.288163
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
 🐍 Versió Python: 3.9.24 (main, Oct 10 2025, 01:00:43) 
 [GCC 13.3.0]
 📁 Directori de treball: /home/runner/work/meteo-rss-auto/meteo-rss-auto
-<<<<<<< Updated upstream
-⏰ Hora d'inici: 2025-11-12 11:35:24.571658
-=======
-⏰ Hora d'inici: 2025-11-12 11:36:17.883971
->>>>>>> Stashed changes
+⏰ Hora d'inici: 2025-11-12 11:40:24.288258
 🔄 SISTEMA DE REINTENTS ACTIVAT
 🎯 Configuració: 3 intents màxims, 300s entre intents
 
 ==================================================
 🔄 INTENT 1/3
-<<<<<<< Updated upstream
-⏰ Hora inici intent: 2025-11-12 11:35:24.571739
-=======
-⏰ Hora inici intent: 2025-11-12 11:36:17.884024
->>>>>>> Stashed changes
+⏰ Hora inici intent: 2025-11-12 11:40:24.288337
 
 ============================================================
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
-<<<<<<< Updated upstream
-⏰ Hora: 2025-11-12 11:35:24.571812
-=======
-⏰ Hora: 2025-11-12 11:36:17.884073
->>>>>>> Stashed changes
+⏰ Hora: 2025-11-12 11:40:24.288408
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
@@ -95,44 +79,26 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
    ✅ FORMAT DE PERÍODE VÀLID
    📊 CONTINGUT DE LES 11 COLUMNES:
       Columna 0 (th): '11:00 - 11:30'
-      Columna 1 (td): '(s/d)'
-      Columna 2 (td): '(s/d)'
-      Columna 3 (td): '(s/d)'
-      Columna 4 (td): '(s/d)'
-      Columna 5 (td): '(s/d)'
-      Columna 6 (td): '(s/d)'
-      Columna 7 (td): '(s/d)'
-      Columna 8 (td): '(s/d)'
-      Columna 9 (td): '(s/d)'
-      Columna 10 (td): '(s/d)'
-   ❌ NO TE DADES VÀLIDES - Cercant fila anterior...
-
---- ANALITZANT FILA 22 ---
-   Cel·les (td+th): 11
-   Període: '10:30 - 11:00'
-   ✅ FORMAT DE PERÍODE VÀLID
-   📊 CONTINGUT DE LES 11 COLUMNES:
-      Columna 0 (th): '10:30 - 11:00'
-      Columna 1 (td): '20.5'
-      Columna 2 (td): '20.8'
-      Columna 3 (td): '20.4'
-      Columna 4 (td): '62'
+      Columna 1 (td): '20.8'
+      Columna 2 (td): '21.1'
+      Columna 3 (td): '20.5'
+      Columna 4 (td): '61'
       Columna 5 (td): '0.0'
-      Columna 6 (td): '14.8'
-      Columna 7 (td): '227'
-      Columna 8 (td): '27.7'
-      Columna 9 (td): '1017.9'
-      Columna 10 (td): '501'
+      Columna 6 (td): '14.0'
+      Columna 7 (td): '226'
+      Columna 8 (td): '29.9'
+      Columna 9 (td): '1017.7'
+      Columna 10 (td): '519'
    🎯 TE DADES VÀLIDES - PROCESSANT...
    📊 DADES EXTRAÏDES:
-      TM: '20.5' | TX: '20.8' | TN: '20.4'
-      HR: '62' | PPT: '0.0' | VVM: '14.8'
-      DVM: '227' | VVX: '27.7' | PM: '1017.9'
-      RS: '501'
-   🕒 Ajustant període: 10:30 - 11:00
-   🕒 PERÍODE AJUSTAT: 10:30 - 11:00 TU → 11:30-12:00
+      TM: '20.8' | TX: '21.1' | TN: '20.5'
+      HR: '61' | PPT: '0.0' | VVM: '14.0'
+      DVM: '226' | VVX: '29.9' | PM: '1017.7'
+      RS: '519'
+   🕒 Ajustant període: 11:00 - 11:30
+   🕒 PERÍODE AJUSTAT: 11:00 - 11:30 TU → 12:00-12:30
    ✅ DADES OBTINGUDES CORRECTAMENT
-   🕒 Període ajustat: 10:30 - 11:00 → 11:30-12:00
+   🕒 Període ajustat: 11:00 - 11:30 → 12:00-12:30
 ✅ DADES OBTINGUDES - GENERANT RSS
 📝 Títol generat (549 caràcters)
 📁 Intentant escriure el fitxer meteo.rss...
@@ -146,8 +112,4 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ✅ ÈXIT - RSS actualitzat correctament
 🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
 ============================================================
-<<<<<<< Updated upstream
-🏁 FI DE L'EXECUCIÓ - 2025-11-12 11:35:26.382835
-=======
-🏁 FI DE L'EXECUCIÓ - 2025-11-12 11:36:19.721393
->>>>>>> Stashed changes
+🏁 FI DE L'EXECUCIÓ - 2025-11-12 11:40:25.820805
