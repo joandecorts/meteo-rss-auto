@@ -1,30 +1,30 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-Inici: 2025-11-11 23:55:32.730473
+Inici: 2025-11-12 00:40:22.748926
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
 🐍 Versió Python: 3.9.24 (main, Oct 10 2025, 01:00:43) 
 [GCC 13.3.0]
 📁 Directori de treball: /home/runner/work/meteo-rss-auto/meteo-rss-auto
-⏰ Hora d'inici: 2025-11-11 23:55:32.730572
+⏰ Hora d'inici: 2025-11-12 00:40:22.749035
 🔄 SISTEMA DE REINTENTS ACTIVAT
 🎯 Configuració: 3 intents màxims, 300s entre intents
 
 ==================================================
 🔄 INTENT 1/3
-⏰ Hora inici intent: 2025-11-11 23:55:32.730651
+⏰ Hora inici intent: 2025-11-12 00:40:22.749119
 
 ============================================================
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
-⏰ Hora: 2025-11-11 23:55:32.730723
+⏰ Hora: 2025-11-12 00:40:22.749192
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
 ✅ HTML parsejat correctament
 ✅ Taula 'tblperiode' trobada
-📊 Files a la taula: 48
+📊 Files a la taula: 2
 
 🔍 ANALITZANT ESTRUCTURA REAL DE LES FILES...
 
@@ -45,66 +45,52 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 --- FILA 1 (estructura) ---
    Total elements (td+th): 11
    Element 0 (th): '00:00 - 00:30'
-   Element 1 (td): '4.6'
-   Element 2 (td): '4.8'
-   Element 3 (td): '4.5'
-   Element 4 (td): '100'
+   Element 1 (td): '7.0'
+   Element 2 (td): '7.5'
+   Element 3 (td): '6.6'
+   Element 4 (td): '98'
    Element 5 (td): '0.0'
-   Element 6 (td): '0.7'
-   Element 7 (td): '310'
-   Element 8 (td): '3.2'
-   Element 9 (td): '1018.4'
-   Element 10 (td): '0'
-
---- FILA 2 (estructura) ---
-   Total elements (td+th): 11
-   Element 0 (th): '00:30 - 01:00'
-   Element 1 (td): '4.4'
-   Element 2 (td): '4.6'
-   Element 3 (td): '4.2'
-   Element 4 (td): '100'
-   Element 5 (td): '0.0'
-   Element 6 (td): '0.0'
-   Element 7 (td): '335'
-   Element 8 (td): '2.2'
-   Element 9 (td): '1018.3'
+   Element 6 (td): '1.4'
+   Element 7 (td): '295'
+   Element 8 (td): '5.4'
+   Element 9 (td): '1016.0'
    Element 10 (td): '0'
 
 🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
 ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)
 
---- ANALITZANT FILA 47 ---
+--- ANALITZANT FILA 1 ---
    Cel·les (td+th): 11
-   Període: '23:00 - 23:30'
+   Període: '00:00 - 00:30'
    ✅ FORMAT DE PERÍODE VÀLID
    📊 CONTINGUT DE LES 11 COLUMNES:
-      Columna 0 (th): '23:00 - 23:30'
-      Columna 1 (td): '8.8'
-      Columna 2 (td): '10.0'
-      Columna 3 (td): '8.1'
-      Columna 4 (td): '94'
+      Columna 0 (th): '00:00 - 00:30'
+      Columna 1 (td): '7.0'
+      Columna 2 (td): '7.5'
+      Columna 3 (td): '6.6'
+      Columna 4 (td): '98'
       Columna 5 (td): '0.0'
-      Columna 6 (td): '5.0'
-      Columna 7 (td): '207'
-      Columna 8 (td): '8.3'
-      Columna 9 (td): '1016.2'
+      Columna 6 (td): '1.4'
+      Columna 7 (td): '295'
+      Columna 8 (td): '5.4'
+      Columna 9 (td): '1016.0'
       Columna 10 (td): '0'
    🎯 TE DADES VÀLIDES - PROCESSANT...
    📊 DADES EXTRAÏDES:
-      TM: '8.8' | TX: '10.0' | TN: '8.1'
-      HR: '94' | PPT: '0.0' | VVM: '5.0'
-      DVM: '207' | VVX: '8.3' | PM: '1016.2'
+      TM: '7.0' | TX: '7.5' | TN: '6.6'
+      HR: '98' | PPT: '0.0' | VVM: '1.4'
+      DVM: '295' | VVX: '5.4' | PM: '1016.0'
       RS: '0'
-   🕒 Ajustant període: 23:00 - 23:30
-   🕒 PERÍODE AJUSTAT: 23:00 - 23:30 TU → 00:00-00:30
+   🕒 Ajustant període: 00:00 - 00:30
+   🕒 PERÍODE AJUSTAT: 00:00 - 00:30 TU → 01:00-01:30
    ✅ DADES OBTINGUDES CORRECTAMENT
-   🕒 Període ajustat: 23:00 - 23:30 → 00:00-00:30
+   🕒 Període ajustat: 00:00 - 00:30 → 01:00-01:30
 ✅ DADES OBTINGUDES - GENERANT RSS
-📝 Títol generat (537 caràcters)
+📝 Títol generat (535 caràcters)
 📁 Intentant escriure el fitxer meteo.rss...
 📍 Ruta completa del fitxer: /home/runner/work/meteo-rss-auto/meteo-rss-auto/meteo.rss
 ✅ RSS guardat a 'meteo.rss'
-📏 Mida del fitxer: 1209 bytes
+📏 Mida del fitxer: 1207 bytes
 📄 Primeres línies del fitxer:
    Línia 0: <?xml version="1.0" encoding="UTF-8"?>
    Línia 1: <rss version="2.0">
@@ -112,4 +98,4 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ✅ ÈXIT - RSS actualitzat correctament
 🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
 ============================================================
-🏁 FI DE L'EXECUCIÓ - 2025-11-11 23:55:34.393843
+🏁 FI DE L'EXECUCIÓ - 2025-11-12 00:40:24.125070
