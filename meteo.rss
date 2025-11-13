@@ -4,20 +4,12 @@
   <title>MeteoCat Girona</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estació Girona [XJ] - Real-time weather data</description>
-<<<<<<< Updated upstream
-  <lastBuildDate>Thu, 13 Nov 2025 20:40:22 CET</lastBuildDate>
-=======
-  <lastBuildDate>Thu, 13 Nov 2025 20:40:39 CET</lastBuildDate>
->>>>>>> Stashed changes
+  <lastBuildDate>Thu, 13 Nov 2025 20:45:39 CET</lastBuildDate>
   <item>
-    <title>🌤️ GIRONA | Actualitzat: 20:40 | Període: 20:00-20:30 | Temp. Mitjana: 15.9°C | Temp. Màxima: 16.4°C | Temp. Mínima: 15.5°C | Humitat: 100.0% | Precipitació: 0.0mm | Vent Mitjà: 1.1km/h | Direcció Vent: 308.0° | Vent Màxim: 3.2km/h | Pressió: 1016.3hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 20:40 | Period: 20:00-20:30 | Avg Temp: 15.9°C | Max Temp: 16.4°C | Min Temp: 15.5°C | Humidity: 100.0% | Precipitation: 0.0mm | Avg Wind: 1.1km/h | Wind Direction: 308.0° | Max Wind: 3.2km/h | Pressure: 1016.3hPa | Solar Radiation: 0.0W/m²</title>
+    <title>🌤️ GIRONA | Actualitzat: 20:45 | Període: 20:00-20:30 | Temp. Mitjana: 15.9°C | Temp. Màxima: 16.4°C | Temp. Mínima: 15.5°C | Humitat: 100.0% | Precipitació: 0.0mm | Vent Mitjà: 1.1km/h | Direcció Vent: 308.0° | Vent Màxim: 3.2km/h | Pressió: 1016.3hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 20:45 | Period: 20:00-20:30 | Avg Temp: 15.9°C | Max Temp: 16.4°C | Min Temp: 15.5°C | Humidity: 100.0% | Precipitation: 0.0mm | Avg Wind: 1.1km/h | Wind Direction: 308.0° | Max Wind: 3.2km/h | Pressure: 1016.3hPa | Solar Radiation: 0.0W/m²</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
     <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
-<<<<<<< Updated upstream
-    <pubDate>Thu, 13 Nov 2025 20:40:22 CET</pubDate>
-=======
-    <pubDate>Thu, 13 Nov 2025 20:40:39 CET</pubDate>
->>>>>>> Stashed changes
+    <pubDate>Thu, 13 Nov 2025 20:45:39 CET</pubDate>
   </item>
 </channel>
 </rss>
