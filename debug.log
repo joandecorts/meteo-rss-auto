@@ -1,19 +1,27 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Inici: 2025-11-14 08:50:32.088867
 =======
 Inici: 2025-11-14 08:55:56.602934
 >>>>>>> Stashed changes
+=======
+Inici: 2025-11-14 08:56:11.763640
+>>>>>>> Stashed changes
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
-🐍 Versió Python: 3.9.25 (main, Nov  3 2025, 15:16:36) 
+🐍 Versió Python: 3.9.24 (main, Oct 10 2025, 01:00:43) 
 [GCC 13.3.0]
 📁 Directori de treball: /home/runner/work/meteo-rss-auto/meteo-rss-auto
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 ⏰ Hora d'inici: 2025-11-14 08:50:32.088973
 =======
 ⏰ Hora d'inici: 2025-11-14 08:55:56.603041
+>>>>>>> Stashed changes
+=======
+⏰ Hora d'inici: 2025-11-14 08:56:11.763739
 >>>>>>> Stashed changes
 🔄 SISTEMA DE REINTENTS ACTIVAT
 🎯 Configuració: 3 intents màxims, 300s entre intents
@@ -21,9 +29,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ==================================================
 🔄 INTENT 1/3
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ⏰ Hora inici intent: 2025-11-14 08:50:32.089050
 =======
 ⏰ Hora inici intent: 2025-11-14 08:55:56.603120
+>>>>>>> Stashed changes
+=======
+⏰ Hora inici intent: 2025-11-14 08:56:11.763819
 >>>>>>> Stashed changes
 
 ============================================================
@@ -31,9 +43,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 INICIANT get_meteo_data()
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ⏰ Hora: 2025-11-14 08:50:32.089122
 =======
 ⏰ Hora: 2025-11-14 08:55:56.603192
+>>>>>>> Stashed changes
+=======
+⏰ Hora: 2025-11-14 08:56:11.763891
 >>>>>>> Stashed changes
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
@@ -129,7 +145,11 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
 ============================================================
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 🏁 FI DE L'EXECUCIÓ - 2025-11-14 08:50:33.698529
 =======
 🏁 FI DE L'EXECUCIÓ - 2025-11-14 08:55:58.036563
+>>>>>>> Stashed changes
+=======
+🏁 FI DE L'EXECUCIÓ - 2025-11-14 08:56:11.910969
 >>>>>>> Stashed changes
