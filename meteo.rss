@@ -4,12 +4,21 @@
   <title>MeteoCat Girona</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estació Girona [XJ] - Real-time weather data</description>
+<<<<<<< Updated upstream
   <lastBuildDate>Fri, 14 Nov 2025 10:40:25 CET</lastBuildDate>
   <item>
     <title>🌤️ GIRONA | Actualitzat: 10:40 | Període: 10:00-10:30 | Temp. Mitjana: 18.2°C | Temp. Màxima: 18.4°C | Temp. Mínima: 18.1°C | Humitat: 88.0% | Precipitació: 0.0mm | Vent Mitjà: 4.3km/h | Direcció Vent: 157.0° | Vent Màxim: 10.1km/h | Pressió: 1011.2hPa | Radiació Solar: 187.0W/m² || 🌤️ GIRONA | Updated: 10:40 | Period: 10:00-10:30 | Avg Temp: 18.2°C | Max Temp: 18.4°C | Min Temp: 18.1°C | Humidity: 88.0% | Precipitation: 0.0mm | Avg Wind: 4.3km/h | Wind Direction: 157.0° | Max Wind: 10.1km/h | Pressure: 1011.2hPa | Solar Radiation: 187.0W/m²</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
     <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
     <pubDate>Fri, 14 Nov 2025 10:40:25 CET</pubDate>
+=======
+  <lastBuildDate>Fri, 14 Nov 2025 10:43:36 CET</lastBuildDate>
+  <item>
+    <title>🌤️ GIRONA | Actualitzat: 10:43 | Període: 10:00-10:30 | Temp. Mitjana: 18.2°C | Temp. Màxima: 18.4°C | Temp. Mínima: 18.1°C | Humitat: 88.0% | Precipitació: 0.0mm | Vent Mitjà: 4.3km/h | Direcció Vent: 157.0° | Vent Màxim: 10.1km/h | Pressió: 1011.2hPa | Radiació Solar: 187.0W/m² || 🌤️ GIRONA | Updated: 10:43 | Period: 10:00-10:30 | Avg Temp: 18.2°C | Max Temp: 18.4°C | Min Temp: 18.1°C | Humidity: 88.0% | Precipitation: 0.0mm | Avg Wind: 4.3km/h | Wind Direction: 157.0° | Max Wind: 10.1km/h | Pressure: 1011.2hPa | Solar Radiation: 187.0W/m²</title>
+    <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
+    <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
+    <pubDate>Fri, 14 Nov 2025 10:43:36 CET</pubDate>
+>>>>>>> Stashed changes
   </item>
 </channel>
 </rss>
