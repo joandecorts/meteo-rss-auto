@@ -1,8 +1,12 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Inici: 2025-11-14 00:40:22.270879
 =======
 Inici: 2025-11-14 00:30:28.684504
+>>>>>>> Stashed changes
+=======
+Inici: 2025-11-14 00:37:02.629349
 >>>>>>> Stashed changes
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
@@ -11,9 +15,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 [GCC 13.3.0]
 📁 Directori de treball: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ⏰ Hora d'inici: 2025-11-14 00:40:22.270985
 =======
 ⏰ Hora d'inici: 2025-11-14 00:30:28.684602
+>>>>>>> Stashed changes
+=======
+⏰ Hora d'inici: 2025-11-14 00:37:02.629446
 >>>>>>> Stashed changes
 🔄 SISTEMA DE REINTENTS ACTIVAT
 🎯 Configuració: 3 intents màxims, 300s entre intents
@@ -21,9 +29,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ==================================================
 🔄 INTENT 1/3
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ⏰ Hora inici intent: 2025-11-14 00:40:22.271064
 =======
 ⏰ Hora inici intent: 2025-11-14 00:30:28.684682
+>>>>>>> Stashed changes
+=======
+⏰ Hora inici intent: 2025-11-14 00:37:02.629526
 >>>>>>> Stashed changes
 
 ============================================================
@@ -31,9 +43,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 INICIANT get_meteo_data()
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ⏰ Hora: 2025-11-14 00:40:22.271136
 =======
 ⏰ Hora: 2025-11-14 00:30:28.684763
+=======
+⏰ Hora: 2025-11-14 00:37:02.629602
+>>>>>>> Stashed changes
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
@@ -55,12 +71,17 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 
 ==================================================
 🔄 INTENT 2/3
+<<<<<<< Updated upstream
 ⏰ Hora inici intent: 2025-11-14 00:35:30.101769
+=======
+⏰ Hora inici intent: 2025-11-14 00:42:03.068562
+>>>>>>> Stashed changes
 
 ============================================================
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
+<<<<<<< Updated upstream
 ⏰ Hora: 2025-11-14 00:35:30.101884
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
@@ -90,6 +111,9 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 INICIANT get_meteo_data()
 ⏰ Hora: 2025-11-14 00:40:31.499268
+>>>>>>> Stashed changes
+=======
+⏰ Hora: 2025-11-14 00:42:03.068765
 >>>>>>> Stashed changes
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
@@ -171,7 +195,11 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
 ============================================================
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 🏁 FI DE L'EXECUCIÓ - 2025-11-14 00:40:23.792875
 =======
 🏁 FI DE L'EXECUCIÓ - 2025-11-14 00:40:31.691193
+>>>>>>> Stashed changes
+=======
+🏁 FI DE L'EXECUCIÓ - 2025-11-14 00:42:03.211918
 >>>>>>> Stashed changes
