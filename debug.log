@@ -1,24 +1,24 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-Inici: 2025-11-15 23:35:20.857705
+Inici: 2025-11-15 23:40:21.811832
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
 🐍 Versió Python: 3.9.25 (main, Nov  3 2025, 15:16:36) 
 [GCC 13.3.0]
 📁 Directori de treball: /home/runner/work/meteo-rss-auto/meteo-rss-auto
-⏰ Hora d'inici: 2025-11-15 23:35:20.857799
+⏰ Hora d'inici: 2025-11-15 23:40:21.811962
 🔄 SISTEMA DE REINTENTS ACTIVAT
 🎯 Configuració: 3 intents màxims, 300s entre intents
 
 ==================================================
 🔄 INTENT 1/3
-⏰ Hora inici intent: 2025-11-15 23:35:20.857879
+⏰ Hora inici intent: 2025-11-15 23:40:21.812040
 
 ============================================================
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
-⏰ Hora: 2025-11-15 23:35:20.857951
+⏰ Hora: 2025-11-15 23:40:21.812113
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
@@ -79,44 +79,26 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
    ✅ FORMAT DE PERÍODE VÀLID
    📊 CONTINGUT DE LES 11 COLUMNES:
       Columna 0 (th): '23:00 - 23:30'
-      Columna 1 (td): '(s/d)'
-      Columna 2 (td): '(s/d)'
-      Columna 3 (td): '(s/d)'
-      Columna 4 (td): '(s/d)'
-      Columna 5 (td): '(s/d)'
-      Columna 6 (td): '(s/d)'
-      Columna 7 (td): '(s/d)'
-      Columna 8 (td): '(s/d)'
-      Columna 9 (td): '(s/d)'
-      Columna 10 (td): '(s/d)'
-   ❌ NO TE DADES VÀLIDES - Cercant fila anterior...
-
---- ANALITZANT FILA 46 ---
-   Cel·les (td+th): 11
-   Període: '22:30 - 23:00'
-   ✅ FORMAT DE PERÍODE VÀLID
-   📊 CONTINGUT DE LES 11 COLUMNES:
-      Columna 0 (th): '22:30 - 23:00'
-      Columna 1 (td): '14.9'
-      Columna 2 (td): '15.4'
-      Columna 3 (td): '14.1'
+      Columna 1 (td): '15.2'
+      Columna 2 (td): '15.5'
+      Columna 3 (td): '14.8'
       Columna 4 (td): '68'
       Columna 5 (td): '0.0'
-      Columna 6 (td): '4.7'
-      Columna 7 (td): '284'
-      Columna 8 (td): '11.2'
-      Columna 9 (td): '1008.8'
+      Columna 6 (td): '7.2'
+      Columna 7 (td): '180'
+      Columna 8 (td): '15.1'
+      Columna 9 (td): '1008.4'
       Columna 10 (td): '0'
    🎯 TE DADES VÀLIDES - PROCESSANT...
    📊 DADES EXTRAÏDES:
-      TM: '14.9' | TX: '15.4' | TN: '14.1'
-      HR: '68' | PPT: '0.0' | VVM: '4.7'
-      DVM: '284' | VVX: '11.2' | PM: '1008.8'
+      TM: '15.2' | TX: '15.5' | TN: '14.8'
+      HR: '68' | PPT: '0.0' | VVM: '7.2'
+      DVM: '180' | VVX: '15.1' | PM: '1008.4'
       RS: '0'
-   🕒 Ajustant període: 22:30 - 23:00
-   🕒 PERÍODE AJUSTAT: 22:30 - 23:00 TU → 23:30-00:00
+   🕒 Ajustant període: 23:00 - 23:30
+   🕒 PERÍODE AJUSTAT: 23:00 - 23:30 TU → 00:00-00:30
    ✅ DADES OBTINGUDES CORRECTAMENT
-   🕒 Període ajustat: 22:30 - 23:00 → 23:30-00:00
+   🕒 Període ajustat: 23:00 - 23:30 → 00:00-00:30
 ✅ DADES OBTINGUDES - GENERANT RSS
 📝 Títol generat (543 caràcters)
 📁 Intentant escriure el fitxer meteo.rss...
@@ -130,4 +112,4 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ✅ ÈXIT - RSS actualitzat correctament
 🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
 ============================================================
-🏁 FI DE L'EXECUCIÓ - 2025-11-15 23:35:22.492426
+🏁 FI DE L'EXECUCIÓ - 2025-11-15 23:40:23.664612
