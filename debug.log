@@ -1,8 +1,12 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 Inici: 2025-11-16 11:40:43.177780
 =======
 Inici: 2025-11-16 11:45:39.492748
+>>>>>>> Stashed changes
+=======
+Inici: 2025-11-16 11:45:56.767514
 >>>>>>> Stashed changes
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
@@ -11,9 +15,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 [GCC 13.3.0]
 📁 Directori de treball: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ⏰ Hora d'inici: 2025-11-16 11:40:43.177859
 =======
 ⏰ Hora d'inici: 2025-11-16 11:45:39.492840
+>>>>>>> Stashed changes
+=======
+⏰ Hora d'inici: 2025-11-16 11:45:56.767625
 >>>>>>> Stashed changes
 🔄 SISTEMA DE REINTENTS ACTIVAT
 🎯 Configuració: 3 intents màxims, 300s entre intents
@@ -21,9 +29,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ==================================================
 🔄 INTENT 1/3
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ⏰ Hora inici intent: 2025-11-16 11:40:43.177937
 =======
 ⏰ Hora inici intent: 2025-11-16 11:45:39.492892
+>>>>>>> Stashed changes
+=======
+⏰ Hora inici intent: 2025-11-16 11:45:56.767703
 >>>>>>> Stashed changes
 
 ============================================================
@@ -31,9 +43,13 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 INICIANT get_meteo_data()
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 ⏰ Hora: 2025-11-16 11:40:43.177985
 =======
 ⏰ Hora: 2025-11-16 11:45:39.492939
+>>>>>>> Stashed changes
+=======
+⏰ Hora: 2025-11-16 11:45:56.767774
 >>>>>>> Stashed changes
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
@@ -129,7 +145,11 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
 ============================================================
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 🏁 FI DE L'EXECUCIÓ - 2025-11-16 11:40:45.676118
 =======
 🏁 FI DE L'EXECUCIÓ - 2025-11-16 11:45:41.223626
+>>>>>>> Stashed changes
+=======
+🏁 FI DE L'EXECUCIÓ - 2025-11-16 11:45:56.977029
 >>>>>>> Stashed changes
