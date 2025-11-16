@@ -4,20 +4,12 @@
   <title>MeteoCat Girona</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estació Girona [XJ] - Real-time weather data</description>
-<<<<<<< Updated upstream
-  <lastBuildDate>Sun, 16 Nov 2025 15:55:19 CET</lastBuildDate>
-=======
-  <lastBuildDate>Sun, 16 Nov 2025 15:55:45 CET</lastBuildDate>
->>>>>>> Stashed changes
+  <lastBuildDate>Sun, 16 Nov 2025 16:00:32 CET</lastBuildDate>
   <item>
-    <title>🌤️ GIRONA | Actualitzat: 15:55 | Període: 15:00-15:30 | Temp. Mitjana: 19.8°C | Temp. Màxima: 20.4°C | Temp. Mínima: 19.4°C | Humitat: 54.0% | Precipitació: 0.0mm | Vent Mitjà: 9.7km/h | Direcció Vent: 90.0° | Vent Màxim: 23.0km/h | Pressió: 1005.6hPa | Radiació Solar: 164.0W/m² || 🌤️ GIRONA | Updated: 15:55 | Period: 15:00-15:30 | Avg Temp: 19.8°C | Max Temp: 20.4°C | Min Temp: 19.4°C | Humidity: 54.0% | Precipitation: 0.0mm | Avg Wind: 9.7km/h | Wind Direction: 90.0° | Max Wind: 23.0km/h | Pressure: 1005.6hPa | Solar Radiation: 164.0W/m²</title>
+    <title>🌤️ GIRONA | Actualitzat: 16:00 | Període: 15:00-15:30 | Temp. Mitjana: 19.8°C | Temp. Màxima: 20.4°C | Temp. Mínima: 19.4°C | Humitat: 54.0% | Precipitació: 0.0mm | Vent Mitjà: 9.7km/h | Direcció Vent: 90.0° | Vent Màxim: 23.0km/h | Pressió: 1005.6hPa | Radiació Solar: 164.0W/m² || 🌤️ GIRONA | Updated: 16:00 | Period: 15:00-15:30 | Avg Temp: 19.8°C | Max Temp: 20.4°C | Min Temp: 19.4°C | Humidity: 54.0% | Precipitation: 0.0mm | Avg Wind: 9.7km/h | Wind Direction: 90.0° | Max Wind: 23.0km/h | Pressure: 1005.6hPa | Solar Radiation: 164.0W/m²</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
     <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
-<<<<<<< Updated upstream
-    <pubDate>Sun, 16 Nov 2025 15:55:19 CET</pubDate>
-=======
-    <pubDate>Sun, 16 Nov 2025 15:55:45 CET</pubDate>
->>>>>>> Stashed changes
+    <pubDate>Sun, 16 Nov 2025 16:00:32 CET</pubDate>
   </item>
 </channel>
 </rss>
