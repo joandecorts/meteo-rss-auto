@@ -4,20 +4,12 @@
   <title>MeteoCat Girona</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estació Girona [XJ] - Real-time weather data</description>
-<<<<<<< Updated upstream
-  <lastBuildDate>Thu, 20 Nov 2025 06:40:21 CET</lastBuildDate>
-=======
-  <lastBuildDate>Thu, 20 Nov 2025 06:40:22 CET</lastBuildDate>
->>>>>>> Stashed changes
+  <lastBuildDate>Thu, 20 Nov 2025 06:45:26 CET</lastBuildDate>
   <item>
-    <title>🌤️ GIRONA | Actualitzat: 06:40 | Període: 06:00-06:30 | Temp. Mitjana: -0.8°C | Temp. Màxima: -0.5°C | Temp. Mínima: -0.9°C | Humitat: 100.0% | Precipitació: 0.0mm | Vent Mitjà: 0.4km/h | Direcció Vent: 9.0° | Vent Màxim: 2.2km/h | Pressió: 1013.9hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 06:40 | Period: 06:00-06:30 | Avg Temp: -0.8°C | Max Temp: -0.5°C | Min Temp: -0.9°C | Humidity: 100.0% | Precipitation: 0.0mm | Avg Wind: 0.4km/h | Wind Direction: 9.0° | Max Wind: 2.2km/h | Pressure: 1013.9hPa | Solar Radiation: 0.0W/m²</title>
+    <title>🌤️ GIRONA | Actualitzat: 06:45 | Període: 06:00-06:30 | Temp. Mitjana: -0.8°C | Temp. Màxima: -0.5°C | Temp. Mínima: -0.9°C | Humitat: 100.0% | Precipitació: 0.0mm | Vent Mitjà: 0.4km/h | Direcció Vent: 9.0° | Vent Màxim: 2.2km/h | Pressió: 1013.9hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 06:45 | Period: 06:00-06:30 | Avg Temp: -0.8°C | Max Temp: -0.5°C | Min Temp: -0.9°C | Humidity: 100.0% | Precipitation: 0.0mm | Avg Wind: 0.4km/h | Wind Direction: 9.0° | Max Wind: 2.2km/h | Pressure: 1013.9hPa | Solar Radiation: 0.0W/m²</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
     <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
-<<<<<<< Updated upstream
-    <pubDate>Thu, 20 Nov 2025 06:40:21 CET</pubDate>
-=======
-    <pubDate>Thu, 20 Nov 2025 06:40:22 CET</pubDate>
->>>>>>> Stashed changes
+    <pubDate>Thu, 20 Nov 2025 06:45:26 CET</pubDate>
   </item>
 </channel>
 </rss>
