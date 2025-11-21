@@ -1,24 +1,24 @@
 === DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===
-Inici: 2025-11-21 01:05:22.211923
+Inici: 2025-11-21 01:10:25.119238
 Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ============================================================
 🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)
 🐍 Versió Python: 3.9.25 (main, Nov  3 2025, 15:16:36) 
 [GCC 13.3.0]
 📁 Directori de treball: /home/runner/work/meteo-rss-auto/meteo-rss-auto
-⏰ Hora d'inici: 2025-11-21 01:05:22.212022
+⏰ Hora d'inici: 2025-11-21 01:10:25.119343
 🔄 SISTEMA DE REINTENTS ACTIVAT
 🎯 Configuració: 3 intents màxims, 300s entre intents
 
 ==================================================
 🔄 INTENT 1/3
-⏰ Hora inici intent: 2025-11-21 01:05:22.212102
+⏰ Hora inici intent: 2025-11-21 01:10:25.119423
 
 ============================================================
 🚀 INICIANT GENERACIÓ RSS
 ============================================================
 🚀 INICIANT get_meteo_data()
-⏰ Hora: 2025-11-21 01:05:22.212173
+⏰ Hora: 2025-11-21 01:10:25.119497
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
@@ -59,16 +59,16 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 --- FILA 2 (estructura) ---
    Total elements (td+th): 11
    Element 0 (th): '00:30 - 01:00'
-   Element 1 (td): '(s/d)'
-   Element 2 (td): '(s/d)'
-   Element 3 (td): '(s/d)'
-   Element 4 (td): '(s/d)'
-   Element 5 (td): '(s/d)'
-   Element 6 (td): '(s/d)'
-   Element 7 (td): '(s/d)'
-   Element 8 (td): '(s/d)'
-   Element 9 (td): '(s/d)'
-   Element 10 (td): '(s/d)'
+   Element 1 (td): '2.2'
+   Element 2 (td): '2.3'
+   Element 3 (td): '1.9'
+   Element 4 (td): '95'
+   Element 5 (td): '0.0'
+   Element 6 (td): '1.8'
+   Element 7 (td): '283'
+   Element 8 (td): '7.2'
+   Element 9 (td): '1014.5'
+   Element 10 (td): '0'
 
 🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
 ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)
@@ -79,44 +79,26 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
    ✅ FORMAT DE PERÍODE VÀLID
    📊 CONTINGUT DE LES 11 COLUMNES:
       Columna 0 (th): '00:30 - 01:00'
-      Columna 1 (td): '(s/d)'
-      Columna 2 (td): '(s/d)'
-      Columna 3 (td): '(s/d)'
-      Columna 4 (td): '(s/d)'
-      Columna 5 (td): '(s/d)'
-      Columna 6 (td): '(s/d)'
-      Columna 7 (td): '(s/d)'
-      Columna 8 (td): '(s/d)'
-      Columna 9 (td): '(s/d)'
-      Columna 10 (td): '(s/d)'
-   ❌ NO TE DADES VÀLIDES - Cercant fila anterior...
-
---- ANALITZANT FILA 1 ---
-   Cel·les (td+th): 11
-   Període: '00:00 - 00:30'
-   ✅ FORMAT DE PERÍODE VÀLID
-   📊 CONTINGUT DE LES 11 COLUMNES:
-      Columna 0 (th): '00:00 - 00:30'
       Columna 1 (td): '2.2'
       Columna 2 (td): '2.3'
       Columna 3 (td): '1.9'
-      Columna 4 (td): '96'
+      Columna 4 (td): '95'
       Columna 5 (td): '0.0'
-      Columna 6 (td): '3.6'
-      Columna 7 (td): '310'
-      Columna 8 (td): '8.6'
-      Columna 9 (td): '1014.6'
+      Columna 6 (td): '1.8'
+      Columna 7 (td): '283'
+      Columna 8 (td): '7.2'
+      Columna 9 (td): '1014.5'
       Columna 10 (td): '0'
    🎯 TE DADES VÀLIDES - PROCESSANT...
    📊 DADES EXTRAÏDES:
       TM: '2.2' | TX: '2.3' | TN: '1.9'
-      HR: '96' | PPT: '0.0' | VVM: '3.6'
-      DVM: '310' | VVX: '8.6' | PM: '1014.6'
+      HR: '95' | PPT: '0.0' | VVM: '1.8'
+      DVM: '283' | VVX: '7.2' | PM: '1014.5'
       RS: '0'
-   🕒 Ajustant període: 00:00 - 00:30
-   🕒 PERÍODE AJUSTAT: 00:00 - 00:30 TU → 01:00-01:30
+   🕒 Ajustant període: 00:30 - 01:00
+   🕒 PERÍODE AJUSTAT: 00:30 - 01:00 TU → 01:30-02:00
    ✅ DADES OBTINGUDES CORRECTAMENT
-   🕒 Període ajustat: 00:00 - 00:30 → 01:00-01:30
+   🕒 Període ajustat: 00:30 - 01:00 → 01:30-02:00
 ✅ DADES OBTINGUDES - GENERANT RSS
 📝 Títol generat (535 caràcters)
 📁 Intentant escriure el fitxer meteo.rss...
@@ -130,4 +112,4 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ✅ ÈXIT - RSS actualitzat correctament
 🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
 ============================================================
-🏁 FI DE L'EXECUCIÓ - 2025-11-21 01:05:24.669758
+🏁 FI DE L'EXECUCIÓ - 2025-11-21 01:10:26.981828
