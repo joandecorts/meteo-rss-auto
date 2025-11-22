@@ -5,7 +5,7 @@ from datetime import datetime, timedelta
 import re
 import sys
 import os
-import time  # Nou import per als reintents
+import time
 
 def write_log(message):
     """Escriu un missatge al log i també el mostra per pantalla"""
@@ -13,14 +13,14 @@ def write_log(message):
     with open('debug.log', 'a', encoding='utf-8') as f:
         f.write(message + '\n')
 
-def get_meteo_data():
+def get_meteo_data_fornells():
     try:
         write_log("="*60)
-        write_log("🚀 INICIANT get_meteo_data()")
+        write_log("🚀 INICIANT get_meteo_data_fornells() - Estació FORNELLS [UO]")
         write_log(f"⏰ Hora: {datetime.now()}")
         
-        write_log("🌐 Connectant a Meteo.cat - Estació Girona [XJ]...")
-        url = "https://www.meteo.cat/observacions/xema/dades?codi=XJ"
+        write_log("🌐 Connectant a Meteo.cat - Estació Fornells de la Selva [UO]...")
+        url = "https://www.meteo.cat/observacions/xema/dades?codi=UO"
         write_log(f"🔗 URL: {url}")
         
         headers = {
@@ -48,39 +48,18 @@ def get_meteo_data():
             write_log("❌ La taula no té files")
             return None
         
-        write_log("\n🔍 ANALITZANT ESTRUCTURA REAL DE LES FILES...")
-        
-        for i in range(min(3, len(rows))):
-            write_log(f"\n--- FILA {i} (estructura) ---")
-            all_cells = rows[i].find_all(['td', 'th'])
-            write_log(f"   Total elements (td+th): {len(all_cells)}")
-            
-            for j, cell in enumerate(all_cells):
-                write_log(f"   Element {j} ({cell.name}): '{cell.get_text(strip=True)}'")
-        
         write_log("\n🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...")
-        write_log("ℹ️  NOTA: Les files de dades reals tenen 11 columnes (th + 10 td)")
         
         for i in range(len(rows)-1, 0, -1):
-            write_log(f"\n--- ANALITZANT FILA {i} ---")
             cells = rows[i].find_all(['td', 'th'])
-            write_log(f"   Cel·les (td+th): {len(cells)}")
             
             if len(cells) < 11:
-                write_log(f"   ❌ Només té {len(cells)} columnes - necessitem 11")
                 continue
                 
             periode = cells[0].get_text(strip=True)
-            write_log(f"   Període: '{periode}'")
             
             if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periode):
-                write_log(f"   ✅ FORMAT DE PERÍODE VÀLID")
-                
-                write_log("   📊 CONTINGUT DE LES 11 COLUMNES:")
-                for idx in range(min(11, len(cells))):
-                    text = cells[idx].get_text(strip=True)
-                    cell_type = cells[idx].name
-                    write_log(f"      Columna {idx} ({cell_type}): '{text}'")
+                write_log(f"   ✅ PERÍODE VÀLID TROBAT: '{periode}'")
                 
                 dades_valides = False
                 for idx in range(1, min(11, len(cells))):
@@ -105,9 +84,6 @@ def get_meteo_data():
                     
                     write_log("   📊 DADES EXTRAÏDES:")
                     write_log(f"      TM: '{tm}' | TX: '{tx}' | TN: '{tn}'")
-                    write_log(f"      HR: '{hr}' | PPT: '{ppt}' | VVM: '{vvm}'")
-                    write_log(f"      DVM: '{dvm}' | VVX: '{vvx}' | PM: '{pm}'")
-                    write_log(f"      RS: '{rs}'")
                     
                     def a_numero(text, default=0.0):
                         if not text or text == '(s/d)':
@@ -140,23 +116,18 @@ def get_meteo_data():
                         'dvm': dvm_num, 'vvx': vvx_num, 'pm': pm_num,
                         'rs': rs_num
                     }
-                else:
-                    write_log(f"   ❌ NO TE DADES VÀLIDES - Cercant fila anterior...")
-            else:
-                write_log(f"   ❌ FORMAT DE PERÍODE INVÀLID - Cercant fila anterior...")
         
         write_log("❌ CAP FILA TE DADES VÀLIDES")
         return None
         
     except Exception as e:
-        write_log(f"❌ ERROR CRÍTIC a get_meteo_data(): {str(e)}")
+        write_log(f"❌ ERROR CRÍTIC a get_meteo_data_fornells(): {str(e)}")
         import traceback
         write_log(f"TRACEBACK: {traceback.format_exc()}")
         return None
 
 def ajustar_periode(periode_str):
     try:
-        write_log(f"   🕒 Ajustant període: {periode_str}")
         match = re.match(r'(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})', periode_str)
         if match:
             hora_inici = int(match.group(1).split(':')[0])
@@ -175,7 +146,6 @@ def ajustar_periode(periode_str):
             end_adj = (hora_fi + offset_hours) % 24
             
             adjusted = f"{start_adj:02d}:{minut_inici:02d}-{end_adj:02d}:{minut_fi:02d}"
-            write_log(f"   🕒 PERÍODE AJUSTAT: {periode_str} TU → {adjusted}")
             return adjusted
             
     except Exception as e:
@@ -183,150 +153,82 @@ def ajustar_periode(periode_str):
     
     return periode_str
 
-def generar_rss():
+def generar_rss_fornells():
     write_log("\n" + "="*60)
-    write_log("🚀 INICIANT GENERACIÓ RSS")
+    write_log("🚀 INICIANT GENERACIÓ RSS - FORNELLS")
     
-    dades = get_meteo_data()
+    dades = get_meteo_data_fornells()
     
     cet = pytz.timezone('CET')
     now = datetime.now(cet)
     current_time = now.strftime("%H:%M")
     
     if not dades:
-        write_log("❌ NO S'HAN POGUT OBTENIR DADES")
-        write_log("💤 NO S'ACTUALITZA RSS")
+        write_log("❌ NO S'HAN POGUT OBTENIR DADES DE FORNELLS")
         return False
     
-    write_log("✅ DADES OBTINGUDES - GENERANT RSS")
+    write_log("✅ DADES OBTINGUDES - GENERANT RSS FOR FORNELLS")
     
     titol_cat = (
-        f"🌤️ GIRONA | Actualitzat: {current_time} | Període: {dades['periode']} | "
+        f"🌤️ FORNELLS DE LA SELVA | Actualitzat: {current_time} | Període: {dades['periode']} | "
         f"Temp. Mitjana: {dades['tm']}°C | Temp. Màxima: {dades['tx']}°C | Temp. Mínima: {dades['tn']}°C | "
-        f"Humitat: {dades['hr']}% | Precipitació: {dades['ppt']}mm | "
-        f"Vent Mitjà: {dades['vvm']}km/h | Direcció Vent: {dades['dvm']}° | "
-        f"Vent Màxim: {dades['vvx']}km/h | Pressió: {dades['pm']}hPa | "
-        f"Radiació Solar: {dades['rs']}W/m²"
+        f"Humitat: {dades['hr']}% | Precipitació: {dades['ppt']}mm"
     )
     
     titol_en = (
-        f"🌤️ GIRONA | Updated: {current_time} | Period: {dades['periode']} | "
+        f"🌤️ FORNELLS DE LA SELVA | Updated: {current_time} | Period: {dades['periode']} | "
         f"Avg Temp: {dades['tm']}°C | Max Temp: {dades['tx']}°C | Min Temp: {dades['tn']}°C | "
-        f"Humidity: {dades['hr']}% | Precipitation: {dades['ppt']}mm | "
-        f"Avg Wind: {dades['vvm']}km/h | Wind Direction: {dades['dvm']}° | "
-        f"Max Wind: {dades['vvx']}km/h | Pressure: {dades['pm']}hPa | "
-        f"Solar Radiation: {dades['rs']}W/m²"
+        f"Humidity: {dades['hr']}% | Precipitation: {dades['ppt']}mm"
     )
     
     titol = f"{titol_cat} || {titol_en}"
     
-    write_log(f"📝 Títol generat ({len(titol)} caràcters)")
-    
     rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
-  <title>MeteoCat Girona</title>
+  <title>MeteoCat Fornells de la Selva</title>
   <link>https://www.meteo.cat</link>
-  <description>Dades meteorològiques en temps real - Estació Girona [XJ] - Real-time weather data</description>
+  <description>Dades meteorològiques en temps real - Estació Fornells de la Selva [UO]</description>
   <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
   <item>
     <title>{titol}</title>
-    <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
-    <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
+    <link>https://www.meteo.cat/observacions/xema/dades?codi=UO</link>
+    <description>Dades meteorològiques automàtiques de l'estació de Fornells de la Selva (UO)</description>
     <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
   </item>
 </channel>
 </rss>'''
     
-    write_log("📁 Intentant escriure el fitxer meteo.rss...")
-    
     try:
-        ruta_completa = os.path.abspath('meteo.rss')
-        write_log(f"📍 Ruta completa del fitxer: {ruta_completa}")
-        
-        with open('meteo.rss', 'w', encoding='utf-8') as f:
+        with open('meteo_fornells.rss', 'w', encoding='utf-8') as f:
             f.write(rss_content)
         
-        write_log("✅ RSS guardat a 'meteo.rss'")
-        
-        if os.path.exists('meteo.rss'):
-            mida = os.path.getsize('meteo.rss')
-            write_log(f"📏 Mida del fitxer: {mida} bytes")
-            
-            with open('meteo.rss', 'r', encoding='utf-8') as f:
-                primeres_linies = f.readlines()[:3]
-                write_log("📄 Primeres línies del fitxer:")
-                for i, linia in enumerate(primeres_linies):
-                    write_log(f"   Línia {i}: {linia.strip()}")
-        else:
-            write_log("❌ El fitxer meteo.rss NO existeix després d'escriure!")
-            
+        write_log("✅ RSS FORNELLS guardat a 'meteo_fornells.rss'")
         return True
         
     except Exception as e:
         write_log(f"❌ ERROR escrivint el fitxer: {str(e)}")
-        import traceback
-        write_log(f"TRACEBACK: {traceback.format_exc()}")
         return False
-
-def main_amb_reintents():
-    """Funció principal amb sistema de reintents intel·ligent"""
-    max_intents = 3
-    espera_entre_intents = 300  # 5 minuts en segons
-    
-    write_log("🔄 SISTEMA DE REINTENTS ACTIVAT")
-    write_log(f"🎯 Configuració: {max_intents} intents màxims, {espera_entre_intents}s entre intents")
-
-    for intent in range(max_intents):
-        write_log(f"\n{'='*50}")
-        write_log(f"🔄 INTENT {intent + 1}/{max_intents}")
-        write_log(f"⏰ Hora inici intent: {datetime.now()}")
-        
-        exit = generar_rss()
-        
-        if exit:
-            write_log("✅ ÈXIT - RSS actualitzat correctament")
-            return True
-        else:
-            if intent < max_intents - 1:
-                write_log(f"⏰ Esperant {espera_entre_intents} segons per proper intent...")
-                # Mostrem compte enrere cada 30 segons
-                for i in range(espera_entre_intents // 30):
-                    time.sleep(30)
-                    write_log(f"   ⏳ Temps restant: {espera_entre_intents - (i+1)*30} segons")
-            else:
-                write_log("❌ TOTS ELS INTENTS HAN FALLAT")
-    
-    return False
 
 if __name__ == "__main__":
     # Netejar log anterior
-    if os.path.exists('debug.log'):
-        os.remove('debug.log')
+    if os.path.exists('debug_fornells.log'):
+        os.remove('debug_fornells.log')
     
-    directori_actual = os.getcwd()
-    
-    with open('debug.log', 'w', encoding='utf-8') as f:
-        f.write("=== DEBUG LOG METEO.CAT - ESTACIÓ XJ (GIRONA) ===\n")
+    with open('debug_fornells.log', 'w', encoding='utf-8') as f:
+        f.write("=== DEBUG LOG FORNELLS DE LA SELVA [UO] ===\n")
         f.write(f"Inici: {datetime.now()}\n")
-        f.write(f"Directori actual: {directori_actual}\n")
-        f.write("="*60 + "\n")
     
-    write_log("🚀 SCRIPT INICIAT - ESTACIÓ XJ (GIRONA)")
-    write_log(f"🐍 Versió Python: {sys.version}")
-    write_log(f"📁 Directori de treball: {directori_actual}")
-    write_log(f"⏰ Hora d'inici: {datetime.now()}")
+    write_log("🚀 SCRIPT FORNELLS INICIAT - ESTACIÓ UO")
     
-    # Cridem la nova funció amb reintents
-    exit = main_amb_reintents()
+    exit = generar_rss_fornells()
     
     if exit:
-        write_log("🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT")
+        write_log("🎉 ÈXIT - RSS FORNELLS ACTUALITZAT CORRECTAMENT")
     else:
-        write_log("💤 NO S'HA ACTUALITZAT RSS - Tots els intents han fallat")
+        write_log("💤 NO S'HA ACTUALITZAT RSS FORNELLS")
     
     write_log("="*60)
-    write_log(f"🏁 FI DE L'EXECUCIÓ - {datetime.now()}")
+    write_log(f"🏁 FI DE L'EXECUCIÓ FORNELLS - {datetime.now()}")
     
-    # Sortim amb 0 si èxit, 1 si fallada
     sys.exit(0 if exit else 1)
