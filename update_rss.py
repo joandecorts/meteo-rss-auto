@@ -9,12 +9,8 @@ def fetch_station_data(station_code):
     """Fetches weather data for a specific station"""
     url = f"https://api.meteo.cat/xema/v1/estacions/{station_code}/variables/32/ultimes/1"
     
-    headers = {
-        'User-Agent': 'MeteoCat-RSS-Bot/1.0 (https://github.com/joandecoris/meteo-rss-auto)'
-    }
-    
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        response = requests.get(url, timeout=10)
         response.raise_for_status()
         data = response.json()
         
@@ -28,48 +24,34 @@ def fetch_station_data(station_code):
         print(f"Error fetching data for {station_code}: {e}")
         return None
 
-def get_current_station():
-    """Alterna entre estacions basant-se en el minut actual"""
-    current_minute = datetime.now().minute
-    # Si el minut és parell: Girona, si és senar: Fornells
-    if current_minute % 2 == 0:
-        return {"code": "XJ", "name": "Girona"}
-    else:
-        return {"code": "UO", "name": "Fornells de la Selva"}
-
 def generate_rss_feed():
     """Generate RSS feed from the latest weather data"""
-    # Trobar tots els fitxers de dades
+    # Trobar el fitxer més recent
     weather_files = glob.glob("weather-data/weather_data_*.json")
     if not weather_files:
         print("No weather data files found")
         return
     
-    # Agafar els 2 fitxers més recents (per tenir les dues estacions)
-    latest_files = sorted(weather_files, key=os.path.getctime, reverse=True)[:2]
+    latest_file = max(weather_files, key=os.path.getctime)
     
-    all_weather_data = []
+    try:
+        with open(latest_file, 'r', encoding='utf-8') as f:
+            weather_data_list = json.load(f)
+    except Exception as e:
+        print(f"Error reading weather data: {e}")
+        return
     
-    for file_path in latest_files:
-        try:
-            with open(file_path, 'r', encoding='utf-8') as f:
-                data = json.load(f)
-                if isinstance(data, list) and len(data) > 0:
-                    all_weather_data.extend(data)
-        except Exception as e:
-            print(f"Error reading {file_path}: {e}")
-    
-    if not all_weather_data:
+    if not weather_data_list:
         print("No weather data available")
         return
     
     # Configuració de fus horari
     tz = pytz.timezone('Europe/Madrid')
     
-    # Generar items RSS per cada estació
+    # Generar items RSS
     items = []
     
-    for weather_data in all_weather_data:
+    for weather_data in weather_data_list:
         station_name = weather_data.get("station_name", "Unknown Station")
         station_code = weather_data.get("station_code", "Unknown")
         
@@ -110,12 +92,12 @@ def generate_rss_feed():
     rss_content = f"""<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
-    <title>MeteoCat Weather Stations</title>
-    <description>Temperatures de les estacions meteorològiques de Girona i Fornells de la Selva</description>
+    <title>MeteoCat Weather Station - Fornells de la Selva</title>
+    <description>Temperatura a Fornells de la Selva</description>
     <link>https://github.com/joandecoris/meteo-rss-auto</link>
     <lastBuildDate>{current_time}</lastBuildDate>
     <pubDate>{current_time}</pubDate>
-    <ttl>10</ttl>
+    <ttl>5</ttl>
 {chr(10).join(items)}
 </channel>
 </rss>"""
@@ -124,11 +106,11 @@ def generate_rss_feed():
     with open("meteo.rss", "w", encoding="utf-8") as f:
         f.write(rss_content)
     
-    print(f"RSS feed generated successfully with {len(items)} stations")
+    print("RSS feed generated successfully")
 
 def main():
-    # Triem quina estació consultar en aquesta execució
-    station = get_current_station()
+    # Consultem ÚNICAMENT Fornells de la Selva
+    station = {"code": "UO", "name": "Fornells de la Selva"}
     print(f"Fetching data for {station['name']} ({station['code']})...")
     
     station_data = fetch_station_data(station["code"])
