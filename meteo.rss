@@ -4,20 +4,12 @@
   <title>MeteoCat Weather Stations</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estacions Girona i Fornells de la Selva</description>
-<<<<<<< Updated upstream
-  <lastBuildDate>Sat, 22 Nov 2025 11:58:46 CET</lastBuildDate>
-=======
-  <lastBuildDate>Sat, 22 Nov 2025 11:58:50 CET</lastBuildDate>
->>>>>>> Stashed changes
+  <lastBuildDate>Sat, 22 Nov 2025 12:00:29 CET</lastBuildDate>
   <item>
-    <title>🌤️ Girona | Actualitzat: 11:58 | Període: 11:00-11:30 | Temp. Mitjana: 11.4°C | Temp. Màxima: 12.3°C | Temp. Mínima: 9.9°C | Humitat: 25.0% | Precipitació: 0.0mm || 🌤️ Girona | Updated: 11:58 | Period: 11:00-11:30 | Avg Temp: 11.4°C | Max Temp: 12.3°C | Min Temp: 9.9°C | Humidity: 25.0% | Precipitation: 0.0mm</title>
+    <title>🌤️ Girona | Actualitzat: 12:00 | Període: 11:00-11:30 | Temp. Mitjana: 11.4°C | Temp. Màxima: 12.3°C | Temp. Mínima: 9.9°C | Humitat: 25.0% | Precipitació: 0.0mm || 🌤️ Girona | Updated: 12:00 | Period: 11:00-11:30 | Avg Temp: 11.4°C | Max Temp: 12.3°C | Min Temp: 9.9°C | Humidity: 25.0% | Precipitation: 0.0mm</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
     <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ)</description>
-<<<<<<< Updated upstream
-    <pubDate>Sat, 22 Nov 2025 11:58:46 CET</pubDate>
-=======
-    <pubDate>Sat, 22 Nov 2025 11:58:50 CET</pubDate>
->>>>>>> Stashed changes
+    <pubDate>Sat, 22 Nov 2025 12:00:29 CET</pubDate>
   </item>
 </channel>
 </rss>
