@@ -1,34 +1,13 @@
-=== DEBUG LOG METEO.CAT - ESTACIONS ALTERNANTS ===
-Inici: 2025-11-22 11:15:22.754146
-🚀 SCRIPT INICIAT - ESTACIONS ALTERNANTS (GIRONA I FORNELLS)
+=== INICI: 2025-11-22 11:24:46.377365 ===
+🚀 Script iniciat
 
-============================================================
 🚀 INICIANT GENERACIÓ RSS
-🎯 ESTACIÓ SELECCIONADA: Girona [XJ]
-============================================================
-🚀 INICIANT get_meteo_data() - Estació Girona [XJ]
-⏰ Hora: 2025-11-22 11:15:22.754293
-🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
-🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
-✅ Connexió exitosa
-✅ HTML parsejat correctament
-✅ Taula 'tblperiode' trobada
-📊 Files a la taula: 23
-
-🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
-   ✅ PERÍODE VÀLID TROBAT: '10:30 - 11:00'
-   🎯 TE DADES VÀLIDES - PROCESSANT...
-   📊 DADES EXTRAÏDES:
-      TM: '13.0' | TX: '13.9' | TN: '11.9'
-      HR: '21' | PPT: '0.0'
-   🕒 Ajustant període: 10:30 - 11:00
-   🕒 PERÍODE AJUSTAT: 10:30 - 11:00 TU → 11:30-12:00
-   ✅ DADES OBTINGUDES CORRECTAMENT
-   🕒 Període ajustat: 10:30 - 11:00 → 11:30-12:00
-✅ DADES OBTINGUDES - GENERANT RSS
-📝 Títol generat (312 caràcters)
-📁 Intentant escriure el fitxer meteo.rss...
-✅ RSS guardat a 'meteo.rss'
-🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
-============================================================
-🏁 FI DE L'EXECUCIÓ - 2025-11-22 11:15:24.461772
+🔄 Alternança: XJ → UO
+🎯 Estació: Fornells de la Selva [UO]
+🌐 Consultant Fornells de la Selva [UO]...
+📊 23 files trobades
+✅ Dades trobades al període: 00:00 - 00:30
+📝 Títol: 🌤️ Fornells de la Selva | Actualitzat: 12:24 | Període: 01:00-01:30 | Temp. Mitjana: 5.6°C | Temp. Màxima: 6.2°C | Temp. Mínima: 2.7°C | Humitat: 41.0% | Precipitació: 0.0mm
+✅ RSS guardat correctament
+🎉 Èxit complet
+🏁 Fi: 2025-11-22 11:24:47.674023
