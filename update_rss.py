@@ -1,144 +1,234 @@
 import requests
-import json
-from datetime import datetime
-import os
-import glob
+from bs4 import BeautifulSoup
 import pytz
+from datetime import datetime, timedelta
+import re
+import sys
+import os
+import time
 
-def fetch_station_data(station_code):
-    """Fetches weather data for a specific station"""
-    url = f"https://api.meteo.cat/xema/v1/estacions/{station_code}/variables/32/ultimes/1"
-    
+def write_log(message):
+    """Escriu un missatge al log i també el mostra per pantalla"""
+    print(message)
+    with open('debug.log', 'a', encoding='utf-8') as f:
+        f.write(message + '\n')
+
+def get_meteo_data_fornells():
     try:
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        data = response.json()
+        write_log("="*60)
+        write_log("🚀 INICIANT get_meteo_data_fornells() - Estació FORNELLS [UO]")
+        write_log(f"⏰ Hora: {datetime.now()}")
         
-        if data and len(data) > 0:
-            return data[0]
-        else:
-            print(f"No data found for station {station_code}")
+        write_log("🌐 Connectant a Meteo.cat - Estació Fornells de la Selva [UO]...")
+        url = "https://www.meteo.cat/observacions/xema/dades?codi=UO"
+        write_log(f"🔗 URL: {url}")
+        
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+        }
+        
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        write_log("✅ Connexió exitosa")
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        write_log("✅ HTML parsejat correctament")
+        
+        table = soup.find('table', {'class': 'tblperiode'})
+        if not table:
+            write_log("❌ No s'ha trobat la taula 'tblperiode'")
             return None
             
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching data for {station_code}: {e}")
+        write_log("✅ Taula 'tblperiode' trobada")
+            
+        rows = table.find_all('tr')
+        write_log(f"📊 Files a la taula: {len(rows)}")
+        
+        if not rows:
+            write_log("❌ La taula no té files")
+            return None
+        
+        write_log("\n🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...")
+        
+        for i in range(len(rows)-1, 0, -1):
+            cells = rows[i].find_all(['td', 'th'])
+            
+            if len(cells) < 11:
+                continue
+                
+            periode = cells[0].get_text(strip=True)
+            
+            if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periode):
+                write_log(f"   ✅ PERÍODE VÀLID TROBAT: '{periode}'")
+                
+                dades_valides = False
+                for idx in range(1, min(11, len(cells))):
+                    text = cells[idx].get_text(strip=True)
+                    if text and text != '(s/d)':
+                        dades_valides = True
+                        break
+                
+                if dades_valides:
+                    write_log(f"   🎯 TE DADES VÀLIDES - PROCESSANT...")
+                    
+                    tm = cells[1].get_text(strip=True)
+                    tx = cells[2].get_text(strip=True)
+                    tn = cells[3].get_text(strip=True)
+                    hr = cells[4].get_text(strip=True)
+                    ppt = cells[5].get_text(strip=True)
+                    vvm = cells[6].get_text(strip=True)
+                    dvm = cells[7].get_text(strip=True)
+                    vvx = cells[8].get_text(strip=True)
+                    pm = cells[9].get_text(strip=True)
+                    rs = cells[10].get_text(strip=True)
+                    
+                    write_log("   📊 DADES EXTRAÏDES:")
+                    write_log(f"      TM: '{tm}' | TX: '{tx}' | TN: '{tn}'")
+                    
+                    def a_numero(text, default=0.0):
+                        if not text or text == '(s/d)':
+                            return default
+                        try:
+                            return float(text.replace(',', '.'))
+                        except:
+                            return default
+                    
+                    tm_num = a_numero(tm)
+                    tx_num = a_numero(tx, tm_num)
+                    tn_num = a_numero(tn, tm_num)
+                    hr_num = a_numero(hr)
+                    ppt_num = a_numero(ppt)
+                    vvm_num = a_numero(vvm)
+                    dvm_num = a_numero(dvm)
+                    vvx_num = a_numero(vvx)
+                    pm_num = a_numero(pm)
+                    rs_num = a_numero(rs)
+                    
+                    periode_ajustat = ajustar_periode(periode)
+                    
+                    write_log(f"   ✅ DADES OBTINGUDES CORRECTAMENT")
+                    write_log(f"   🕒 Període ajustat: {periode} → {periode_ajustat}")
+                    
+                    return {
+                        'periode': periode_ajustat,
+                        'tm': tm_num, 'tx': tx_num, 'tn': tn_num,
+                        'hr': hr_num, 'ppt': ppt_num, 'vvm': vvm_num,
+                        'dvm': dvm_num, 'vvx': vvx_num, 'pm': pm_num,
+                        'rs': rs_num
+                    }
+        
+        write_log("❌ CAP FILA TE DADES VÀLIDES")
+        return None
+        
+    except Exception as e:
+        write_log(f"❌ ERROR CRÍTIC a get_meteo_data_fornells(): {str(e)}")
+        import traceback
+        write_log(f"TRACEBACK: {traceback.format_exc()}")
         return None
 
-def generate_rss_feed():
-    """Generate RSS feed from the latest weather data"""
-    # Trobar el fitxer més recent
-    weather_files = glob.glob("weather-data/weather_data_*.json")
-    if not weather_files:
-        print("No weather data files found")
-        return
-    
-    latest_file = max(weather_files, key=os.path.getctime)
-    
+def ajustar_periode(periode_str):
     try:
-        with open(latest_file, 'r', encoding='utf-8') as f:
-            weather_data_list = json.load(f)
+        match = re.match(r'(\d{1,2}:\d{2})\s*-\s*(\d{1,2}:\d{2})', periode_str)
+        if match:
+            hora_inici = int(match.group(1).split(':')[0])
+            minut_inici = int(match.group(1).split(':')[1])
+            hora_fi = int(match.group(2).split(':')[0])
+            minut_fi = int(match.group(2).split(':')[1])
+            
+            cet = pytz.timezone('CET')
+            now_utc = datetime.utcnow().replace(tzinfo=pytz.utc)
+            now_cet = now_utc.astimezone(cet)
+            
+            is_dst = now_cet.dst() != timedelta(0)
+            offset_hours = 2 if is_dst else 1
+            
+            start_adj = (hora_inici + offset_hours) % 24
+            end_adj = (hora_fi + offset_hours) % 24
+            
+            adjusted = f"{start_adj:02d}:{minut_inici:02d}-{end_adj:02d}:{minut_fi:02d}"
+            return adjusted
+            
     except Exception as e:
-        print(f"Error reading weather data: {e}")
-        return
+        write_log(f"   ❌ Error ajustant període: {e}")
     
-    if not weather_data_list:
-        print("No weather data available")
-        return
+    return periode_str
+
+def generar_rss_fornells():
+    write_log("\n" + "="*60)
+    write_log("🚀 INICIANT GENERACIÓ RSS - FORNELLS")
     
-    # Configuració de fus horari
-    tz = pytz.timezone('Europe/Madrid')
+    dades = get_meteo_data_fornells()
     
-    # Generar items RSS
-    items = []
+    cet = pytz.timezone('CET')
+    now = datetime.now(cet)
+    current_time = now.strftime("%H:%M")
     
-    for weather_data in weather_data_list:
-        station_name = weather_data.get("station_name", "Unknown Station")
-        station_code = weather_data.get("station_code", "Unknown")
-        
-        data = weather_data.get("data", [{}])[0] if weather_data.get("data") else {}
-        valor = data.get("valor")
-        data_lectura = data.get("data")
-        
-        if valor is not None and data_lectura:
-            try:
-                # Convertir la data
-                lectura_dt = datetime.fromisoformat(data_lectura.replace('Z', '+00:00'))
-                lectura_dt = lectura_dt.astimezone(tz)
-                data_legible = lectura_dt.strftime("%d/%m/%Y %H:%M:%S")
-                
-                title = f"🌡️ {station_name}: {valor}°C"
-                description = f"Temperatura a {station_name} ({station_code}): {valor}°C - Actualitzat: {data_legible}"
-                
-                item = f"""    <item>
-        <title><![CDATA[{title}]]></title>
-        <description><![CDATA[{description}]]></description>
-        <pubDate>{lectura_dt.strftime('%a, %d %b %Y %H:%M:%S %z')}</pubDate>
-        <guid>{station_code}_{data_lectura}</guid>
-    </item>"""
-                
-                items.append(item)
-                
-            except Exception as e:
-                print(f"Error processing data for {station_name}: {e}")
-                continue
+    if not dades:
+        write_log("❌ NO S'HAN POGUT OBTENIR DADES DE FORNELLS")
+        return False
     
-    if not items:
-        print("No valid weather data to generate RSS")
-        return
+    write_log("✅ DADES OBTINGUDES - GENERANT RSS FOR FORNELLS")
     
-    # Generar el RSS feed complet
-    current_time = datetime.now(tz).strftime("%a, %d %b %Y %H:%M:%S %z")
+    titol_cat = (
+        f"🌤️ FORNELLS DE LA SELVA | Actualitzat: {current_time} | Període: {dades['periode']} | "
+        f"Temp. Mitjana: {dades['tm']}°C | Temp. Màxima: {dades['tx']}°C | Temp. Mínima: {dades['tn']}°C | "
+        f"Humitat: {dades['hr']}% | Precipitació: {dades['ppt']}mm"
+    )
     
-    rss_content = f"""<?xml version="1.0" encoding="UTF-8"?>
+    titol_en = (
+        f"🌤️ FORNELLS DE LA SELVA | Updated: {current_time} | Period: {dades['periode']} | "
+        f"Avg Temp: {dades['tm']}°C | Max Temp: {dades['tx']}°C | Min Temp: {dades['tn']}°C | "
+        f"Humidity: {dades['hr']}% | Precipitation: {dades['ppt']}mm"
+    )
+    
+    titol = f"{titol_cat} || {titol_en}"
+    
+    rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
-    <title>MeteoCat Weather Station - Fornells de la Selva</title>
-    <description>Temperatura a Fornells de la Selva</description>
-    <link>https://github.com/joandecoris/meteo-rss-auto</link>
-    <lastBuildDate>{current_time}</lastBuildDate>
-    <pubDate>{current_time}</pubDate>
-    <ttl>5</ttl>
-{chr(10).join(items)}
+  <title>MeteoCat Fornells de la Selva</title>
+  <link>https://www.meteo.cat</link>
+  <description>Dades meteorològiques en temps real - Estació Fornells de la Selva [UO]</description>
+  <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
+  <item>
+    <title>{titol}</title>
+    <link>https://www.meteo.cat/observacions/xema/dades?codi=UO</link>
+    <description>Dades meteorològiques automàtiques de l'estació de Fornells de la Selva (UO)</description>
+    <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
+  </item>
 </channel>
-</rss>"""
+</rss>'''
     
-    # Guardar el fitxer RSS
-    with open("meteo.rss", "w", encoding="utf-8") as f:
-        f.write(rss_content)
-    
-    print("RSS feed generated successfully")
-
-def main():
-    # Consultem ÚNICAMENT Fornells de la Selva
-    station = {"code": "UO", "name": "Fornells de la Selva"}
-    print(f"Fetching data for {station['name']} ({station['code']})...")
-    
-    station_data = fetch_station_data(station["code"])
-    
-    if station_data:
-        # Afegim informació de l'estació
-        station_data["station_name"] = station["name"]
-        station_data["station_code"] = station["code"]
+    try:
+        with open('meteo_fornells.rss', 'w', encoding='utf-8') as f:
+            f.write(rss_content)
         
-        # Guardem les dades
-        output_dir = "weather-data"
-        os.makedirs(output_dir, exist_ok=True)
+        write_log("✅ RSS FORNELLS guardat a 'meteo_fornells.rss'")
+        return True
         
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        output_file = f"{output_dir}/weather_data_{timestamp}.json"
-        
-        with open(output_file, 'w', encoding='utf-8') as f:
-            json.dump([station_data], f, ensure_ascii=False, indent=2)
-        
-        print(f"Weather data saved to {output_file}")
-        print(f"Successfully fetched data for {station['name']}")
-        
-        # Generar el RSS feed amb les dades recopilades
-        generate_rss_feed()
-    else:
-        print(f"No data fetched for {station['name']}")
-        # Exit with error code to fail the workflow
-        exit(1)
+    except Exception as e:
+        write_log(f"❌ ERROR escrivint el fitxer: {str(e)}")
+        return False
 
 if __name__ == "__main__":
-    main()
+    # Netejar log anterior
+    if os.path.exists('debug_fornells.log'):
+        os.remove('debug_fornells.log')
+    
+    with open('debug_fornells.log', 'w', encoding='utf-8') as f:
+        f.write("=== DEBUG LOG FORNELLS DE LA SELVA [UO] ===\n")
+        f.write(f"Inici: {datetime.now()}\n")
+    
+    write_log("🚀 SCRIPT FORNELLS INICIAT - ESTACIÓ UO")
+    
+    exit = generar_rss_fornells()
+    
+    if exit:
+        write_log("🎉 ÈXIT - RSS FORNELLS ACTUALITZAT CORRECTAMENT")
+    else:
+        write_log("💤 NO S'HA ACTUALITZAT RSS FORNELLS")
+    
+    write_log("="*60)
+    write_log(f"🏁 FI DE L'EXECUCIÓ FORNELLS - {datetime.now()}")
+    
+    sys.exit(0 if exit else 1)
