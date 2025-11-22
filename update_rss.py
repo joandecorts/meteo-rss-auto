@@ -65,10 +65,10 @@ def get_meteo_data(station_code, station_name):
                     hr = cells[4].get_text(strip=True) if len(cells) > 4 else ''
                     ppt = cells[5].get_text(strip=True) if len(cells) > 5 else ''
                     vvm = cells[6].get_text(strip=True) if len(cells) > 6 else ''
-                    dvm = cells[7].get_text(strip=True) if len(cells) > 7 else ''  # ✅ NOVA COLUMNA
+                    dvm = cells[7].get_text(strip=True) if len(cells) > 7 else ''  # ✅ Direcció del vent
                     vvx = cells[8].get_text(strip=True) if len(cells) > 8 else ''
                     pm = cells[9].get_text(strip=True) if len(cells) > 9 else ''
-                    rs = cells[10].get_text(strip=True) if len(cells) > 10 else ''  # ✅ NOVA COLUMNA
+                    rs = cells[10].get_text(strip=True) if len(cells) > 10 else ''  # ✅ Radiació solar
                     
                     write_log("📊 Dades extretes:")
                     write_log(f"   TM: '{tm}' | TX: '{tx}' | TN: '{tn}'")
@@ -96,10 +96,10 @@ def get_meteo_data(station_code, station_name):
                         'hr': a_numero(hr),
                         'ppt': a_numero(ppt),
                         'vvm': a_numero(vvm),
-                        'dvm': a_numero(dvm),  # ✅ NOVA COLUMNA
+                        'dvm': a_numero(dvm),  # ✅ Direcció del vent
                         'vvx': a_numero(vvx),
                         'pm': a_numero(pm),
-                        'rs': a_numero(rs)     # ✅ NOVA COLUMNA
+                        'rs': a_numero(rs)     # ✅ Radiació solar
                     }
         
         write_log("❌ No s'han trobat dades vàlides")
@@ -210,7 +210,7 @@ def generar_rss():
         # Afegim dades de vent si estan disponibles
         if dades['vvm'] > 0:
             parts_cat.append(f"Vent: {dades['vvm']}km/h")
-            if dades['dvm'] > 0:  # ✅ NOVA: Direcció del vent
+            if dades['dvm'] > 0:  # ✅ Direcció del vent
                 parts_cat.append(f"Dir.Vent: {dades['dvm']}°")
             if dades['vvx'] > 0:
                 parts_cat.append(f"Vent Màx: {dades['vvx']}km/h")
@@ -219,8 +219,8 @@ def generar_rss():
         if dades['pm'] > 0:
             parts_cat.append(f"Pressió: {dades['pm']}hPa")
         
-        # Afegim radiació solar si està disponible ✅ NOVA
-        if dades['rs'] > 0:
+        # ✅ CORRECCIÓ: Mostrem la radiació solar SIEMPRE que existeixi el valor
+        if dades.get('rs', 0) is not None and dades['rs'] >= 0:
             parts_cat.append(f"Radiació: {dades['rs']}W/m²")
         
         titol_cat = " | ".join(parts_cat)
@@ -240,7 +240,7 @@ def generar_rss():
         # Afegim dades de vent si estan disponibles
         if dades['vvm'] > 0:
             parts_en.append(f"Wind: {dades['vvm']}km/h")
-            if dades['dvm'] > 0:  # ✅ NOVA: Direcció del vent
+            if dades['dvm'] > 0:  # ✅ Direcció del vent
                 parts_en.append(f"Wind Dir: {dades['dvm']}°")
             if dades['vvx'] > 0:
                 parts_en.append(f"Max Wind: {dades['vvx']}km/h")
@@ -249,8 +249,8 @@ def generar_rss():
         if dades['pm'] > 0:
             parts_en.append(f"Pressure: {dades['pm']}hPa")
         
-        # Afegim radiació solar si està disponible ✅ NOVA
-        if dades['rs'] > 0:
+        # ✅ CORRECCIÓ: Mostrem la radiació solar SIEMPRE que existeixi el valor
+        if dades.get('rs', 0) is not None and dades['rs'] >= 0:
             parts_en.append(f"Radiation: {dades['rs']}W/m²")
         
         titol_en = " | ".join(parts_en)
