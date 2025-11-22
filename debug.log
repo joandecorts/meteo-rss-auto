@@ -1,15 +1,15 @@
 === DEBUG LOG METEO.CAT - ESTACIONS ALTERNANTS ===
-Inici: 2025-11-22 11:05:20.279511
+Inici: 2025-11-22 11:10:21.372127
 🚀 SCRIPT INICIAT - ESTACIONS ALTERNANTS (GIRONA I FORNELLS)
 
 ============================================================
 🚀 INICIANT GENERACIÓ RSS
-🎯 ESTACIÓ SELECCIONADA: Girona [XJ]
+🎯 ESTACIÓ SELECCIONADA: Fornells de la Selva [UO]
 ============================================================
-🚀 INICIANT get_meteo_data() - Estació Girona [XJ]
-⏰ Hora: 2025-11-22 11:05:20.279621
-🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
-🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
+🚀 INICIANT get_meteo_data() - Estació Fornells de la Selva [UO]
+⏰ Hora: 2025-11-22 11:10:21.372274
+🌐 Connectant a Meteo.cat - Estació Fornells de la Selva [UO]...
+🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=UO
 ✅ Connexió exitosa
 ✅ HTML parsejat correctament
 ✅ Taula 'tblperiode' trobada
@@ -17,19 +17,18 @@ Inici: 2025-11-22 11:05:20.279511
 
 🔍 CERCANT PERÍODE MÉS RECENT AMB DADES VÀLIDES...
    ✅ PERÍODE VÀLID TROBAT: '10:30 - 11:00'
-   ✅ PERÍODE VÀLID TROBAT: '10:00 - 10:30'
    🎯 TE DADES VÀLIDES - PROCESSANT...
    📊 DADES EXTRAÏDES:
-      TM: '11.4' | TX: '12.3' | TN: '9.9'
-      HR: '25' | PPT: '0.0'
-   🕒 Ajustant període: 10:00 - 10:30
-   🕒 PERÍODE AJUSTAT: 10:00 - 10:30 TU → 11:00-11:30
+      TM: '12.6' | TX: '12.9' | TN: '12.0'
+      HR: '18' | PPT: '0.0'
+   🕒 Ajustant període: 10:30 - 11:00
+   🕒 PERÍODE AJUSTAT: 10:30 - 11:00 TU → 11:30-12:00
    ✅ DADES OBTINGUDES CORRECTAMENT
-   🕒 Període ajustat: 10:00 - 10:30 → 11:00-11:30
+   🕒 Període ajustat: 10:30 - 11:00 → 11:30-12:00
 ✅ DADES OBTINGUDES - GENERANT RSS
-📝 Títol generat (310 caràcters)
+📝 Títol generat (340 caràcters)
 📁 Intentant escriure el fitxer meteo.rss...
 ✅ RSS guardat a 'meteo.rss'
 🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
 ============================================================
-🏁 FI DE L'EXECUCIÓ - 2025-11-22 11:05:22.475527
+🏁 FI DE L'EXECUCIÓ - 2025-11-22 11:10:23.119929
