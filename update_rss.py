@@ -13,35 +13,6 @@ def write_log(message):
     with open('debug.log', 'a', encoding='utf-8') as f:
         f.write(message + '\n')
 
-def get_current_station():
-    """Alterna entre estacions basant-se en un fitxer de estat"""
-    try:
-        estat_file = 'station_state.json'
-        
-        if os.path.exists(estat_file):
-            with open(estat_file, 'r') as f:
-                estat = json.load(f)
-            ultima_estacio = estat.get('ultima_estacio', 'XJ')
-        else:
-            ultima_estacio = 'XJ'
-        
-        # Alternem estacions
-        if ultima_estacio == 'XJ':
-            nova_estacio = {"code": "UO", "name": "Fornells de la Selva"}
-        else:
-            nova_estacio = {"code": "XJ", "name": "Girona"}
-        
-        # Guardem l'estat
-        with open(estat_file, 'w') as f:
-            json.dump({'ultima_estacio': nova_estacio['code']}, f)
-        
-        write_log(f"🔄 Alternança: {ultima_estacio} → {nova_estacio['code']}")
-        return nova_estacio
-        
-    except Exception as e:
-        write_log(f"❌ Error en alternança: {e}")
-        return {"code": "XJ", "name": "Girona"}
-
 def get_meteo_data(station_code, station_name):
     try:
         write_log(f"🌐 Consultant {station_name} [{station_code}]...")
@@ -61,7 +32,7 @@ def get_meteo_data(station_code, station_name):
         rows = table.find_all('tr')
         write_log(f"📊 {len(rows)} files trobades")
         
-        # ⚠️ CANVI IMPORTANT: Busquem des del FINAL (dades més recents)
+        # Busquem des del FINAL (dades més recents)
         for i in range(len(rows)-1, 0, -1):
             cells = rows[i].find_all(['td', 'th'])
             
@@ -146,40 +117,96 @@ def ajustar_periode(periode_str):
     
     return periode_str
 
+def llegir_dades_guardades():
+    """Llegeix les dades guardades de totes les estacions"""
+    try:
+        if os.path.exists('weather_data.json'):
+            with open('weather_data.json', 'r', encoding='utf-8') as f:
+                return json.load(f)
+        else:
+            return {}
+    except Exception as e:
+        write_log(f"⚠️ Error llegint dades guardades: {e}")
+        return {}
+
+def guardar_dades(dades_estacions):
+    """Guarda les dades de totes les estacions"""
+    try:
+        with open('weather_data.json', 'w', encoding='utf-8') as f:
+            json.dump(dades_estacions, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        write_log(f"⚠️ Error guardant dades: {e}")
+
 def generar_rss():
     write_log("\n🚀 INICIANT GENERACIÓ RSS")
-    
-    station = get_current_station()
-    write_log(f"🎯 Estació: {station['name']} [{station['code']}]")
-    
-    dades = get_meteo_data(station['code'], station['name'])
-    
-    if not dades:
-        write_log("❌ No s'han obtingut dades")
-        return False
     
     cet = pytz.timezone('CET')
     now = datetime.now(cet)
     
-    # Construïm el títol amb totes les dades
-    parts = [
-        f"🌤️ {dades['station_name']}",
-        f"Actualitzat: {now.strftime('%H:%M')}",
-        f"Període: {dades['periode']}",
-        f"Temp. Mitjana: {dades['tm']}°C",
-        f"Temp. Màxima: {dades['tx']}°C", 
-        f"Temp. Mínima: {dades['tn']}°C",
-        f"Humitat: {dades['hr']}%",
-        f"Precipitació: {dades['ppt']}mm"
+    # Llegim les dades guardades de totes les estacions
+    dades_estacions = llegir_dades_guardades()
+    write_log(f"📚 Dades guardades: {list(dades_estacions.keys())}")
+    
+    # Consultem les DUES estacions cada vegada
+    estacions = [
+        {"code": "XJ", "name": "Girona"},
+        {"code": "UO", "name": "Fornells de la Selva"}
     ]
     
-    if dades['vvm'] > 0:
-        parts.extend([f"Vent: {dades['vvm']}km/h", f"Vent Màx: {dades['vvx']}km/h"])
+    dades_actualitzades = {}
     
-    if dades['pm'] > 0:
-        parts.append(f"Pressió: {dades['pm']}hPa")
+    for station in estacions:
+        write_log(f"\n🎯 Consultant {station['name']} [{station['code']}]")
+        dades = get_meteo_data(station['code'], station['name'])
+        
+        if dades:
+            dades_actualitzades[station['code']] = dades
+            write_log(f"✅ {station['name']} actualitzada")
+        else:
+            # Si no podem obtenir dades noves, mantenim les antigues
+            if station['code'] in dades_estacions:
+                dades_actualitzades[station['code']] = dades_estacions[station['code']]
+                write_log(f"⚠️ {station['name']} - mantenint dades antigues")
+            else:
+                write_log(f"❌ {station['name']} - sense dades")
     
-    titol = " | ".join(parts)
+    # Actualitzem les dades guardades
+    guardar_dades(dades_actualitzades)
+    
+    # Generem les entrades RSS per cada estació
+    entrades = []
+    
+    for station_code, dades in dades_actualitzades.items():
+        # Construïm el títol amb totes les dades
+        parts = [
+            f"🌤️ {dades['station_name']}",
+            f"Actualitzat: {now.strftime('%H:%M')}",
+            f"Període: {dades['periode']}",
+            f"Temp. Mitjana: {dades['tm']}°C",
+            f"Temp. Màxima: {dades['tx']}°C", 
+            f"Temp. Mínima: {dades['tn']}°C",
+            f"Humitat: {dades['hr']}%",
+            f"Precipitació: {dades['ppt']}mm"
+        ]
+        
+        if dades['vvm'] > 0:
+            parts.extend([f"Vent: {dades['vvm']}km/h", f"Vent Màx: {dades['vvx']}km/h"])
+        
+        if dades['pm'] > 0:
+            parts.append(f"Pressió: {dades['pm']}hPa")
+        
+        titol = " | ".join(parts)
+        
+        entrada = f'''  <item>
+    <title>{titol}</title>
+    <link>https://www.meteo.cat/observacions/xema/dades?codi={dades['station_code']}</link>
+    <description>Dades meteorològiques de {dades['station_name']} - Actualitzat el {now.strftime("%d/%m/%Y a les %H:%M")}</description>
+    <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
+  </item>'''
+        
+        entrades.append(entrada)
+    
+    write_log(f"📊 Entrades generades: {len(entrades)}")
     
     rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -188,19 +215,15 @@ def generar_rss():
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estacions Girona i Fornells de la Selva</description>
   <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
-  <item>
-    <title>{titol}</title>
-    <link>https://www.meteo.cat/observacions/xema/dades?codi={dades['station_code']}</link>
-    <description>Dades meteorològiques de {dades['station_name']} - Actualitzat el {now.strftime("%d/%m/%Y a les %H:%M")}</description>
-    <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
-  </item>
+{chr(10).join(entrades)}
 </channel>
 </rss>'''
     
     try:
         with open('meteo.rss', 'w', encoding='utf-8') as f:
             f.write(rss_content)
-        write_log("✅ RSS guardat correctament")
+        write_log("✅ RSS actualitzat correctament")
+        write_log(f"🏁 Estacions al RSS: {list(dades_actualitzades.keys())}")
         return True
     except Exception as e:
         write_log(f"❌ Error guardant RSS: {e}")
