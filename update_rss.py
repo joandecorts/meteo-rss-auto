@@ -14,10 +14,14 @@ def write_log(message):
         f.write(message + '\n')
 
 def get_current_station():
-    """Alterna entre estacions basant-se en el minut actual"""
+    """Alterna entre estacions basant-se en la HORA actual"""
+    current_hour = datetime.now().hour
     current_minute = datetime.now().minute
-    # Si el minut és parell: Girona, si és senar: Fornells
-    if current_minute % 2 == 0:
+    
+    # Utilitzem la combinació hora+minut per alternar
+    # Si (hora + minut) és parell: Girona, si és senar: Fornells
+    total = current_hour + current_minute
+    if total % 2 == 0:
         return {"code": "XJ", "name": "Girona"}
     else:
         return {"code": "UO", "name": "Fornells de la Selva"}
@@ -213,92 +217,35 @@ def generar_rss():
     write_log("📁 Intentant escriure el fitxer meteo.rss...")
     
     try:
-        ruta_completa = os.path.abspath('meteo.rss')
-        write_log(f"📍 Ruta completa del fitxer: {ruta_completa}")
-        
         with open('meteo.rss', 'w', encoding='utf-8') as f:
             f.write(rss_content)
         
         write_log("✅ RSS guardat a 'meteo.rss'")
-        
-        if os.path.exists('meteo.rss'):
-            mida = os.path.getsize('meteo.rss')
-            write_log(f"📏 Mida del fitxer: {mida} bytes")
-            
-            with open('meteo.rss', 'r', encoding='utf-8') as f:
-                primeres_linies = f.readlines()[:3]
-                write_log("📄 Primeres línies del fitxer:")
-                for i, linia in enumerate(primeres_linies):
-                    write_log(f"   Línia {i}: {linia.strip()}")
-        else:
-            write_log("❌ El fitxer meteo.rss NO existeix després d'escriure!")
-            
         return True
         
     except Exception as e:
         write_log(f"❌ ERROR escrivint el fitxer: {str(e)}")
-        import traceback
-        write_log(f"TRACEBACK: {traceback.format_exc()}")
         return False
-
-def main_amb_reintents():
-    """Funció principal amb sistema de reintents intel·ligent"""
-    max_intents = 3
-    espera_entre_intents = 300  # 5 minuts en segons
-    
-    write_log("🔄 SISTEMA DE REINTENTS ACTIVAT")
-    write_log(f"🎯 Configuració: {max_intents} intents màxims, {espera_entre_intents}s entre intents")
-
-    for intent in range(max_intents):
-        write_log(f"\n{'='*50}")
-        write_log(f"🔄 INTENT {intent + 1}/{max_intents}")
-        write_log(f"⏰ Hora inici intent: {datetime.now()}")
-        
-        exit = generar_rss()
-        
-        if exit:
-            write_log("✅ ÈXIT - RSS actualitzat correctament")
-            return True
-        else:
-            if intent < max_intents - 1:
-                write_log(f"⏰ Esperant {espera_entre_intents} segons per proper intent...")
-                # Mostrem compte enrere cada 30 segons
-                for i in range(espera_entre_intents // 30):
-                    time.sleep(30)
-                    write_log(f"   ⏳ Temps restant: {espera_entre_intents - (i+1)*30} segons")
-            else:
-                write_log("❌ TOTS ELS INTENTS HAN FALLAT")
-    
-    return False
 
 if __name__ == "__main__":
     # Netejar log anterior
     if os.path.exists('debug.log'):
         os.remove('debug.log')
     
-    directori_actual = os.getcwd()
-    
     with open('debug.log', 'w', encoding='utf-8') as f:
         f.write("=== DEBUG LOG METEO.CAT - ESTACIONS ALTERNANTS ===\n")
         f.write(f"Inici: {datetime.now()}\n")
-        f.write(f"Directori actual: {directori_actual}\n")
-        f.write("="*60 + "\n")
     
     write_log("🚀 SCRIPT INICIAT - ESTACIONS ALTERNANTS (GIRONA I FORNELLS)")
-    write_log(f"🐍 Versió Python: {sys.version}")
-    write_log(f"📁 Directori de treball: {directori_actual}")
-    write_log(f"⏰ Hora d'inici: {datetime.now()}")
     
-    # Cridem la nova funció amb reintents
-    exit = main_amb_reintents()
+    exit = generar_rss()
     
     if exit:
         write_log("🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT")
     else:
-        write_log("💤 NO S'HA ACTUALITZAT RSS - Tots els intents han fallat")
+        write_log("💤 NO S'HA ACTUALITZAT RSS")
     
     write_log("="*60)
     write_log(f"🏁 FI DE L'EXECUCIÓ - {datetime.now()}")
     
-    # Sortim amb 0 si èxit, 1 si fallada
     sys.exit(0 if exit else 1)
