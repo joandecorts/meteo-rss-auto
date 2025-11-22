@@ -4,20 +4,12 @@
   <title>MeteoCat Girona</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estació Girona [XJ] - Real-time weather data</description>
-<<<<<<< Updated upstream
-  <lastBuildDate>Sat, 22 Nov 2025 05:40:10 CET</lastBuildDate>
-=======
-  <lastBuildDate>Sat, 22 Nov 2025 05:40:23 CET</lastBuildDate>
->>>>>>> Stashed changes
+  <lastBuildDate>Sat, 22 Nov 2025 05:45:20 CET</lastBuildDate>
   <item>
-    <title>🌤️ GIRONA | Actualitzat: 05:40 | Període: 05:00-05:30 | Temp. Mitjana: -0.5°C | Temp. Màxima: 0.4°C | Temp. Mínima: -1.2°C | Humitat: 69.0% | Precipitació: 0.0mm | Vent Mitjà: 1.1km/h | Direcció Vent: 19.0° | Vent Màxim: 2.9km/h | Pressió: 1020.4hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 05:40 | Period: 05:00-05:30 | Avg Temp: -0.5°C | Max Temp: 0.4°C | Min Temp: -1.2°C | Humidity: 69.0% | Precipitation: 0.0mm | Avg Wind: 1.1km/h | Wind Direction: 19.0° | Max Wind: 2.9km/h | Pressure: 1020.4hPa | Solar Radiation: 0.0W/m²</title>
+    <title>🌤️ GIRONA | Actualitzat: 05:45 | Període: 05:00-05:30 | Temp. Mitjana: -0.5°C | Temp. Màxima: 0.4°C | Temp. Mínima: -1.2°C | Humitat: 69.0% | Precipitació: 0.0mm | Vent Mitjà: 1.1km/h | Direcció Vent: 19.0° | Vent Màxim: 2.9km/h | Pressió: 1020.4hPa | Radiació Solar: 0.0W/m² || 🌤️ GIRONA | Updated: 05:45 | Period: 05:00-05:30 | Avg Temp: -0.5°C | Max Temp: 0.4°C | Min Temp: -1.2°C | Humidity: 69.0% | Precipitation: 0.0mm | Avg Wind: 1.1km/h | Wind Direction: 19.0° | Max Wind: 2.9km/h | Pressure: 1020.4hPa | Solar Radiation: 0.0W/m²</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
     <description>Dades meteorològiques automàtiques de l'estació de Girona (XJ) - Automatic weather data from Girona station (XJ)</description>
-<<<<<<< Updated upstream
-    <pubDate>Sat, 22 Nov 2025 05:40:10 CET</pubDate>
-=======
-    <pubDate>Sat, 22 Nov 2025 05:40:23 CET</pubDate>
->>>>>>> Stashed changes
+    <pubDate>Sat, 22 Nov 2025 05:45:20 CET</pubDate>
   </item>
 </channel>
 </rss>
