@@ -54,59 +54,47 @@ def get_meteo_data(station_code, station_name):
                     write_log(f"✅ Dades RECENTS trobades: {periode}")
                     write_log(f"🔍 Columnes disponibles: {len(cells)}")
                     
-                    # Extracció de dades COMPLETA - adaptativa a les columnes disponibles
-                    # Les columnes estan en aquest ordre:
-                    # 0: Període, 1: TM, 2: TX, 3: TN, 4: HRM, 5: PPT, 
-                    # 6: VVM, 7: DVM, 8: VVX, 9: PM, 10: RS
-                    
-                    tm = cells[1].get_text(strip=True) if len(cells) > 1 else ''
-                    tx = cells[2].get_text(strip=True) if len(cells) > 2 else ''
-                    tn = cells[3].get_text(strip=True) if len(cells) > 3 else ''
-                    hr = cells[4].get_text(strip=True) if len(cells) > 4 else ''
-                    ppt = cells[5].get_text(strip=True) if len(cells) > 5 else ''
-                    vvm = cells[6].get_text(strip=True) if len(cells) > 6 else ''
-                    dvm = cells[7].get_text(strip=True) if len(cells) > 7 else ''  # ✅ Direcció del vent
-                    vvx = cells[8].get_text(strip=True) if len(cells) > 8 else ''
-                    pm = cells[9].get_text(strip=True) if len(cells) > 9 else ''
-                    rs = cells[10].get_text(strip=True) if len(cells) > 10 else ''  # ✅ Radiació solar
-                    
-                    write_log("📊 Dades extretes:")
-                    write_log(f"   TM: '{tm}' | TX: '{tx}' | TN: '{tn}'")
-                    write_log(f"   HR: '{hr}' | PPT: '{ppt}'")
-                    write_log(f"   VVM: '{vvm}' | DVM: '{dvm}' | VVX: '{vvx}'")
-                    write_log(f"   PM: '{pm}' | RS: '{rs}'")
-                    
-                    def a_numero(text, default=0.0):
-                        if not text or text in ['(s/d)', '-', '']:
-                            return default
-                        try:
-                            return float(text.replace(',', '.'))
-                        except:
-                            return default
-                    
-                    periode_ajustat = ajustar_periode(periode)
-                    
-                    return {
+                    # Extracció de dades ADAPTATIVA - només les columnes que existeixen
+                    dades_extretes = {
                         'station_name': station_name,
                         'station_code': station_code,
-                        'periode': periode_ajustat,
-                        'tm': a_numero(tm),
-                        'tx': a_numero(tx),
-                        'tn': a_numero(tn),
-                        'hr': a_numero(hr),
-                        'ppt': a_numero(ppt),
-                        'vvm': a_numero(vvm),
-                        'dvm': a_numero(dvm),  # ✅ Direcció del vent
-                        'vvx': a_numero(vvx),
-                        'pm': a_numero(pm),
-                        'rs': a_numero(rs)     # ✅ Radiació solar
+                        'periode': ajustar_periode(periode),
+                        'tm': convertir_a_numero(cells[1].get_text(strip=True)) if len(cells) > 1 else None,
+                        'tx': convertir_a_numero(cells[2].get_text(strip=True)) if len(cells) > 2 else None,
+                        'tn': convertir_a_numero(cells[3].get_text(strip=True)) if len(cells) > 3 else None,
+                        'hr': convertir_a_numero(cells[4].get_text(strip=True)) if len(cells) > 4 else None,
+                        'ppt': convertir_a_numero(cells[5].get_text(strip=True)) if len(cells) > 5 else None,
+                        'vvm': convertir_a_numero(cells[6].get_text(strip=True)) if len(cells) > 6 else None,
+                        'dvm': convertir_a_numero(cells[7].get_text(strip=True)) if len(cells) > 7 else None,
+                        'vvx': convertir_a_numero(cells[8].get_text(strip=True)) if len(cells) > 8 else None,
+                        'pm': convertir_a_numero(cells[9].get_text(strip=True)) if len(cells) > 9 else None,
+                        'rs': convertir_a_numero(cells[10].get_text(strip=True)) if len(cells) > 10 else None
                     }
+                    
+                    # Netegem les dades que no existeixen (valor None)
+                    dades_finales = {k: v for k, v in dades_extretes.items() if v is not None}
+                    
+                    write_log("📊 Dades extretes:")
+                    for key, value in dades_finales.items():
+                        if key not in ['station_name', 'station_code', 'periode']:
+                            write_log(f"   {key}: {value}")
+                    
+                    return dades_finales
         
         write_log("❌ No s'han trobat dades vàlides")
         return None
         
     except Exception as e:
         write_log(f"❌ Error consultant dades: {e}")
+        return None
+
+def convertir_a_numero(text, default=None):
+    """Converteix text a número, retorna None si no és vàlid"""
+    if not text or text in ['(s/d)', '-', '']:
+        return None
+    try:
+        return float(text.replace(',', '.'))
+    except:
         return None
 
 def ajustar_periode(periode_str):
@@ -195,7 +183,7 @@ def generar_rss():
     entrades = []
     
     for station_code, dades in dades_actualitzades.items():
-        # ✅ VERSIÓ CATALÀ
+        # ✅ VERSIÓ CATALÀ - només amb les dades que existeixen
         parts_cat = [
             f"🌤️ {dades['station_name']}",
             f"Actualitzat: {now.strftime('%H:%M')}",
@@ -207,25 +195,27 @@ def generar_rss():
             f"Precipitació: {dades['ppt']}mm"
         ]
         
-        # Afegim dades de vent si estan disponibles
-        if dades['vvm'] > 0:
+        # Afegim dades de vent SOLAMENT si existeixen
+        if 'vvm' in dades and dades['vvm'] is not None:
             parts_cat.append(f"Vent: {dades['vvm']}km/h")
-            if dades['dvm'] > 0:  # ✅ Direcció del vent
-                parts_cat.append(f"Dir.Vent: {dades['dvm']}°")
-            if dades['vvx'] > 0:
-                parts_cat.append(f"Vent Màx: {dades['vvx']}km/h")
+            
+        if 'dvm' in dades and dades['dvm'] is not None:
+            parts_cat.append(f"Dir.Vent: {dades['dvm']}°")
+            
+        if 'vvx' in dades and dades['vvx'] is not None:
+            parts_cat.append(f"Vent Màx: {dades['vvx']}km/h")
         
-        # Afegim pressió si està disponible
-        if dades['pm'] > 0:
+        # Afegim pressió SOLAMENT si existeix
+        if 'pm' in dades and dades['pm'] is not None:
             parts_cat.append(f"Pressió: {dades['pm']}hPa")
         
-        # ✅ CORRECCIÓ: Mostrem la radiació solar SIEMPRE que existeixi el valor
-        if dades.get('rs', 0) is not None and dades['rs'] >= 0:
+        # Afegim radiació solar SOLAMENT si existeix
+        if 'rs' in dades and dades['rs'] is not None:
             parts_cat.append(f"Radiació: {dades['rs']}W/m²")
         
         titol_cat = " | ".join(parts_cat)
         
-        # ✅ VERSIÓ ANGLÈS
+        # ✅ VERSIÓ ANGLÈS - només amb les dades que existeixen
         parts_en = [
             f"🌤️ {dades['station_name']}",
             f"Updated: {now.strftime('%H:%M')}",
@@ -237,20 +227,22 @@ def generar_rss():
             f"Precipitation: {dades['ppt']}mm"
         ]
         
-        # Afegim dades de vent si estan disponibles
-        if dades['vvm'] > 0:
+        # Afegim dades de vent SOLAMENT si existeixen
+        if 'vvm' in dades and dades['vvm'] is not None:
             parts_en.append(f"Wind: {dades['vvm']}km/h")
-            if dades['dvm'] > 0:  # ✅ Direcció del vent
-                parts_en.append(f"Wind Dir: {dades['dvm']}°")
-            if dades['vvx'] > 0:
-                parts_en.append(f"Max Wind: {dades['vvx']}km/h")
+            
+        if 'dvm' in dades and dades['dvm'] is not None:
+            parts_en.append(f"Wind Dir: {dades['dvm']}°")
+            
+        if 'vvx' in dades and dades['vvx'] is not None:
+            parts_en.append(f"Max Wind: {dades['vvx']}km/h")
         
-        # Afegim pressió si està disponible
-        if dades['pm'] > 0:
+        # Afegim pressió SOLAMENT si existeix
+        if 'pm' in dades and dades['pm'] is not None:
             parts_en.append(f"Pressure: {dades['pm']}hPa")
         
-        # ✅ CORRECCIÓ: Mostrem la radiació solar SIEMPRE que existeixi el valor
-        if dades.get('rs', 0) is not None and dades['rs'] >= 0:
+        # Afegim radiació solar SOLAMENT si existeix
+        if 'rs' in dades and dades['rs'] is not None:
             parts_en.append(f"Radiation: {dades['rs']}W/m²")
         
         titol_en = " | ".join(parts_en)
