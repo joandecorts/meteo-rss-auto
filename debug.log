@@ -1,25 +1,13 @@
 === DEBUG LOG METEO.CAT - ESTACIONS ALTERNANTS ===
-Inici: 2025-11-22 11:00:27.920476
-Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
-============================================================
+Inici: 2025-11-22 11:05:20.279511
 🚀 SCRIPT INICIAT - ESTACIONS ALTERNANTS (GIRONA I FORNELLS)
-🐍 Versió Python: 3.9.25 (main, Nov  3 2025, 15:16:36) 
-[GCC 13.3.0]
-📁 Directori de treball: /home/runner/work/meteo-rss-auto/meteo-rss-auto
-⏰ Hora d'inici: 2025-11-22 11:00:27.920566
-🔄 SISTEMA DE REINTENTS ACTIVAT
-🎯 Configuració: 3 intents màxims, 300s entre intents
-
-==================================================
-🔄 INTENT 1/3
-⏰ Hora inici intent: 2025-11-22 11:00:27.920693
 
 ============================================================
 🚀 INICIANT GENERACIÓ RSS
 🎯 ESTACIÓ SELECCIONADA: Girona [XJ]
 ============================================================
 🚀 INICIANT get_meteo_data() - Estació Girona [XJ]
-⏰ Hora: 2025-11-22 11:00:27.920786
+⏰ Hora: 2025-11-22 11:05:20.279621
 🌐 Connectant a Meteo.cat - Estació Girona [XJ]...
 🔗 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ
 ✅ Connexió exitosa
@@ -41,14 +29,7 @@ Directori actual: /home/runner/work/meteo-rss-auto/meteo-rss-auto
 ✅ DADES OBTINGUDES - GENERANT RSS
 📝 Títol generat (310 caràcters)
 📁 Intentant escriure el fitxer meteo.rss...
-📍 Ruta completa del fitxer: /home/runner/work/meteo-rss-auto/meteo-rss-auto/meteo.rss
 ✅ RSS guardat a 'meteo.rss'
-📏 Mida del fitxer: 927 bytes
-📄 Primeres línies del fitxer:
-   Línia 0: <?xml version="1.0" encoding="UTF-8"?>
-   Línia 1: <rss version="2.0">
-   Línia 2: <channel>
-✅ ÈXIT - RSS actualitzat correctament
 🎉 ÈXIT - RSS ACTUALITZAT CORRECTAMENT
 ============================================================
-🏁 FI DE L'EXECUCIÓ - 2025-11-22 11:00:29.221368
+🏁 FI DE L'EXECUCIÓ - 2025-11-22 11:05:22.475527
