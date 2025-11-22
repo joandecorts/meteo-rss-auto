@@ -32,6 +32,13 @@ def get_meteo_data(station_code, station_name):
         rows = table.find_all('tr')
         write_log(f"📊 {len(rows)} files trobades")
         
+        # DEBUG: Mostrem la capçalera per saber quantes columnes té aquesta estació
+        if len(rows) > 0:
+            header_cells = rows[0].find_all(['td', 'th'])
+            write_log(f"🔍 CAPÇALERA - {len(header_cells)} columnes:")
+            for i, cell in enumerate(header_cells):
+                write_log(f"   Columna {i}: '{cell.get_text(strip=True)}'")
+        
         # Busquem des del FINAL (dades més recents)
         for i in range(len(rows)-1, 0, -1):
             cells = rows[i].find_all(['td', 'th'])
@@ -45,18 +52,29 @@ def get_meteo_data(station_code, station_name):
                 tm = cells[1].get_text(strip=True)
                 if tm and tm not in ['(s/d)', '-', '']:
                     write_log(f"✅ Dades RECENTS trobades: {periode}")
+                    write_log(f"🔍 Columnes disponibles: {len(cells)}")
                     
-                    # Extracció de dades
-                    tm = cells[1].get_text(strip=True)
+                    # Extracció de dades COMPLETA - adaptativa a les columnes disponibles
+                    # Les columnes estan en aquest ordre:
+                    # 0: Període, 1: TM, 2: TX, 3: TN, 4: HRM, 5: PPT, 
+                    # 6: VVM, 7: DVM, 8: VVX, 9: PM, 10: RS
+                    
+                    tm = cells[1].get_text(strip=True) if len(cells) > 1 else ''
                     tx = cells[2].get_text(strip=True) if len(cells) > 2 else ''
                     tn = cells[3].get_text(strip=True) if len(cells) > 3 else ''
                     hr = cells[4].get_text(strip=True) if len(cells) > 4 else ''
                     ppt = cells[5].get_text(strip=True) if len(cells) > 5 else ''
                     vvm = cells[6].get_text(strip=True) if len(cells) > 6 else ''
-                    dvm = cells[7].get_text(strip=True) if len(cells) > 7 else ''
+                    dvm = cells[7].get_text(strip=True) if len(cells) > 7 else ''  # ✅ NOVA COLUMNA
                     vvx = cells[8].get_text(strip=True) if len(cells) > 8 else ''
                     pm = cells[9].get_text(strip=True) if len(cells) > 9 else ''
-                    rs = cells[10].get_text(strip=True) if len(cells) > 10 else ''
+                    rs = cells[10].get_text(strip=True) if len(cells) > 10 else ''  # ✅ NOVA COLUMNA
+                    
+                    write_log("📊 Dades extretes:")
+                    write_log(f"   TM: '{tm}' | TX: '{tx}' | TN: '{tn}'")
+                    write_log(f"   HR: '{hr}' | PPT: '{ppt}'")
+                    write_log(f"   VVM: '{vvm}' | DVM: '{dvm}' | VVX: '{vvx}'")
+                    write_log(f"   PM: '{pm}' | RS: '{rs}'")
                     
                     def a_numero(text, default=0.0):
                         if not text or text in ['(s/d)', '-', '']:
@@ -78,10 +96,10 @@ def get_meteo_data(station_code, station_name):
                         'hr': a_numero(hr),
                         'ppt': a_numero(ppt),
                         'vvm': a_numero(vvm),
-                        'dvm': a_numero(dvm),
+                        'dvm': a_numero(dvm),  # ✅ NOVA COLUMNA
                         'vvx': a_numero(vvx),
                         'pm': a_numero(pm),
-                        'rs': a_numero(rs)
+                        'rs': a_numero(rs)     # ✅ NOVA COLUMNA
                     }
         
         write_log("❌ No s'han trobat dades vàlides")
@@ -177,8 +195,8 @@ def generar_rss():
     entrades = []
     
     for station_code, dades in dades_actualitzades.items():
-        # Construïm el títol amb totes les dades
-        parts = [
+        # ✅ VERSIÓ CATALÀ
+        parts_cat = [
             f"🌤️ {dades['station_name']}",
             f"Actualitzat: {now.strftime('%H:%M')}",
             f"Període: {dades['periode']}",
@@ -189,18 +207,61 @@ def generar_rss():
             f"Precipitació: {dades['ppt']}mm"
         ]
         
+        # Afegim dades de vent si estan disponibles
         if dades['vvm'] > 0:
-            parts.extend([f"Vent: {dades['vvm']}km/h", f"Vent Màx: {dades['vvx']}km/h"])
+            parts_cat.append(f"Vent: {dades['vvm']}km/h")
+            if dades['dvm'] > 0:  # ✅ NOVA: Direcció del vent
+                parts_cat.append(f"Dir.Vent: {dades['dvm']}°")
+            if dades['vvx'] > 0:
+                parts_cat.append(f"Vent Màx: {dades['vvx']}km/h")
         
+        # Afegim pressió si està disponible
         if dades['pm'] > 0:
-            parts.append(f"Pressió: {dades['pm']}hPa")
+            parts_cat.append(f"Pressió: {dades['pm']}hPa")
         
-        titol = " | ".join(parts)
+        # Afegim radiació solar si està disponible ✅ NOVA
+        if dades['rs'] > 0:
+            parts_cat.append(f"Radiació: {dades['rs']}W/m²")
+        
+        titol_cat = " | ".join(parts_cat)
+        
+        # ✅ VERSIÓ ANGLÈS
+        parts_en = [
+            f"🌤️ {dades['station_name']}",
+            f"Updated: {now.strftime('%H:%M')}",
+            f"Period: {dades['periode']}",
+            f"Avg Temp: {dades['tm']}°C",
+            f"Max Temp: {dades['tx']}°C", 
+            f"Min Temp: {dades['tn']}°C",
+            f"Humidity: {dades['hr']}%",
+            f"Precipitation: {dades['ppt']}mm"
+        ]
+        
+        # Afegim dades de vent si estan disponibles
+        if dades['vvm'] > 0:
+            parts_en.append(f"Wind: {dades['vvm']}km/h")
+            if dades['dvm'] > 0:  # ✅ NOVA: Direcció del vent
+                parts_en.append(f"Wind Dir: {dades['dvm']}°")
+            if dades['vvx'] > 0:
+                parts_en.append(f"Max Wind: {dades['vvx']}km/h")
+        
+        # Afegim pressió si està disponible
+        if dades['pm'] > 0:
+            parts_en.append(f"Pressure: {dades['pm']}hPa")
+        
+        # Afegim radiació solar si està disponible ✅ NOVA
+        if dades['rs'] > 0:
+            parts_en.append(f"Radiation: {dades['rs']}W/m²")
+        
+        titol_en = " | ".join(parts_en)
+        
+        # ✅ COMBINEM LES DUES VERSIONS
+        titol = f"{titol_cat} || {titol_en}"
         
         entrada = f'''  <item>
     <title>{titol}</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi={dades['station_code']}</link>
-    <description>Dades meteorològiques de {dades['station_name']} - Actualitzat el {now.strftime("%d/%m/%Y a les %H:%M")}</description>
+    <description>Dades meteorològiques de {dades['station_name']} / Weather data from {dades['station_name']} - Actualitzat el {now.strftime("%d/%m/%Y a les %H:%M")} / Updated on {now.strftime("%d/%m/%Y at %H:%M")}</description>
     <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
   </item>'''
         
@@ -213,7 +274,7 @@ def generar_rss():
 <channel>
   <title>MeteoCat Weather Stations</title>
   <link>https://www.meteo.cat</link>
-  <description>Dades meteorològiques en temps real - Estacions Girona i Fornells de la Selva</description>
+  <description>Dades meteorològiques en temps real - Estacions Girona i Fornells de la Selva / Real-time weather data - Girona and Fornells de la Selva stations</description>
   <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
 {chr(10).join(entrades)}
 </channel>
