@@ -40,7 +40,6 @@ def get_current_station():
         
     except Exception as e:
         write_log(f"❌ Error en alternança: {e}")
-        # Per defecte, Girona
         return {"code": "XJ", "name": "Girona"}
 
 def get_meteo_data(station_code, station_name):
@@ -62,8 +61,8 @@ def get_meteo_data(station_code, station_name):
         rows = table.find_all('tr')
         write_log(f"📊 {len(rows)} files trobades")
         
-        # Busquem la primera fila amb dades vàlides
-        for i in range(1, min(10, len(rows))):  # Mirem les primeres 10 files
+        # ⚠️ CANVI IMPORTANT: Busquem des del FINAL (dades més recents)
+        for i in range(len(rows)-1, 0, -1):
             cells = rows[i].find_all(['td', 'th'])
             
             if len(cells) < 3:
@@ -72,26 +71,22 @@ def get_meteo_data(station_code, station_name):
             periode = cells[0].get_text(strip=True)
             
             if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periode):
-                # Verifiquem que hi hagi temperatura
                 tm = cells[1].get_text(strip=True)
                 if tm and tm not in ['(s/d)', '-', '']:
-                    write_log(f"✅ Dades trobades al període: {periode}")
+                    write_log(f"✅ Dades RECENTS trobades: {periode}")
                     
-                    # Extracció de dades bàsiques (que sempre estan)
+                    # Extracció de dades
                     tm = cells[1].get_text(strip=True)
                     tx = cells[2].get_text(strip=True) if len(cells) > 2 else ''
                     tn = cells[3].get_text(strip=True) if len(cells) > 3 else ''
                     hr = cells[4].get_text(strip=True) if len(cells) > 4 else ''
                     ppt = cells[5].get_text(strip=True) if len(cells) > 5 else ''
-                    
-                    # Dades addicionals (poden no estar)
                     vvm = cells[6].get_text(strip=True) if len(cells) > 6 else ''
                     dvm = cells[7].get_text(strip=True) if len(cells) > 7 else ''
                     vvx = cells[8].get_text(strip=True) if len(cells) > 8 else ''
                     pm = cells[9].get_text(strip=True) if len(cells) > 9 else ''
                     rs = cells[10].get_text(strip=True) if len(cells) > 10 else ''
                     
-                    # Conversió a números
                     def a_numero(text, default=0.0):
                         if not text or text in ['(s/d)', '-', '']:
                             return default
@@ -100,7 +95,6 @@ def get_meteo_data(station_code, station_name):
                         except:
                             return default
                     
-                    # Ajust del període
                     periode_ajustat = ajustar_periode(periode)
                     
                     return {
@@ -167,8 +161,8 @@ def generar_rss():
     cet = pytz.timezone('CET')
     now = datetime.now(cet)
     
-    # Construïm el títol amb totes les dades disponibles
-    parts_cat = [
+    # Construïm el títol amb totes les dades
+    parts = [
         f"🌤️ {dades['station_name']}",
         f"Actualitzat: {now.strftime('%H:%M')}",
         f"Període: {dades['periode']}",
@@ -179,24 +173,13 @@ def generar_rss():
         f"Precipitació: {dades['ppt']}mm"
     ]
     
-    # Afegim dades addicionals si estan disponibles
     if dades['vvm'] > 0:
-        parts_cat.extend([
-            f"Vent Mitjà: {dades['vvm']}km/h",
-            f"Direcció Vent: {dades['dvm']}°",
-            f"Vent Màxim: {dades['vvx']}km/h"
-        ])
+        parts.extend([f"Vent: {dades['vvm']}km/h", f"Vent Màx: {dades['vvx']}km/h"])
     
     if dades['pm'] > 0:
-        parts_cat.append(f"Pressió: {dades['pm']}hPa")
+        parts.append(f"Pressió: {dades['pm']}hPa")
     
-    if dades['rs'] > 0:
-        parts_cat.append(f"Radiació Solar: {dades['rs']}W/m²")
-    
-    titol_cat = " | ".join(parts_cat)
-    titol = titol_cat  # Per ara només en català per simplificar
-    
-    write_log(f"📝 Títol: {titol}")
+    titol = " | ".join(parts)
     
     rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -224,7 +207,6 @@ def generar_rss():
         return False
 
 if __name__ == "__main__":
-    # Inicialitzem el log
     with open('debug.log', 'w', encoding='utf-8') as f:
         f.write(f"=== INICI: {datetime.now()} ===\n")
     
@@ -237,9 +219,7 @@ if __name__ == "__main__":
         else:
             write_log("💤 Fallada")
     except Exception as e:
-        write_log(f"💥 ERROR NO CONTROLAT: {e}")
-        import traceback
-        write_log(f"TRACEBACK: {traceback.format_exc()}")
+        write_log(f"💥 ERROR: {e}")
         exit = False
     
     write_log(f"🏁 Fi: {datetime.now()}")
