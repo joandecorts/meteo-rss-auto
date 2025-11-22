@@ -1,46 +1,202 @@
-def generar_rss():
-    write_log("\n" + "="*60)
-    write_log("🚀 INICIANT GENERACIÓ RSS")
+import requests
+from bs4 import BeautifulSoup
+import pytz
+from datetime import datetime, timedelta
+import re
+import sys
+import os
+import json
+
+def write_log(message):
+    """Escriu un missatge al log i també el mostra per pantalla"""
+    print(message)
+    with open('debug.log', 'a', encoding='utf-8') as f:
+        f.write(message + '\n')
+
+def get_current_station():
+    """Alterna entre estacions basant-se en un fitxer de estat"""
+    try:
+        estat_file = 'station_state.json'
+        
+        if os.path.exists(estat_file):
+            with open(estat_file, 'r') as f:
+                estat = json.load(f)
+            ultima_estacio = estat.get('ultima_estacio', 'XJ')
+        else:
+            ultima_estacio = 'XJ'
+        
+        # Alternem estacions
+        if ultima_estacio == 'XJ':
+            nova_estacio = {"code": "UO", "name": "Fornells de la Selva"}
+        else:
+            nova_estacio = {"code": "XJ", "name": "Girona"}
+        
+        # Guardem l'estat
+        with open(estat_file, 'w') as f:
+            json.dump({'ultima_estacio': nova_estacio['code']}, f)
+        
+        write_log(f"🔄 Alternança: {ultima_estacio} → {nova_estacio['code']}")
+        return nova_estacio
+        
+    except Exception as e:
+        write_log(f"❌ Error en alternança: {e}")
+        # Per defecte, Girona
+        return {"code": "XJ", "name": "Girona"}
+
+def get_meteo_data(station_code, station_name):
+    try:
+        write_log(f"🌐 Consultant {station_name} [{station_code}]...")
+        url = f"https://www.meteo.cat/observacions/xema/dades?codi={station_code}"
+        
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        table = soup.find('table', {'class': 'tblperiode'})
+        
+        if not table:
+            write_log("❌ No s'ha trobat la taula")
+            return None
+            
+        rows = table.find_all('tr')
+        write_log(f"📊 {len(rows)} files trobades")
+        
+        # Busquem la primera fila amb dades vàlides
+        for i in range(1, min(10, len(rows))):  # Mirem les primeres 10 files
+            cells = rows[i].find_all(['td', 'th'])
+            
+            if len(cells) < 3:
+                continue
+                
+            periode = cells[0].get_text(strip=True)
+            
+            if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periode):
+                # Verifiquem que hi hagi temperatura
+                tm = cells[1].get_text(strip=True)
+                if tm and tm not in ['(s/d)', '-', '']:
+                    write_log(f"✅ Dades trobades al període: {periode}")
+                    
+                    # Extracció de dades bàsiques (que sempre estan)
+                    tm = cells[1].get_text(strip=True)
+                    tx = cells[2].get_text(strip=True) if len(cells) > 2 else ''
+                    tn = cells[3].get_text(strip=True) if len(cells) > 3 else ''
+                    hr = cells[4].get_text(strip=True) if len(cells) > 4 else ''
+                    ppt = cells[5].get_text(strip=True) if len(cells) > 5 else ''
+                    
+                    # Dades addicionals (poden no estar)
+                    vvm = cells[6].get_text(strip=True) if len(cells) > 6 else ''
+                    dvm = cells[7].get_text(strip=True) if len(cells) > 7 else ''
+                    vvx = cells[8].get_text(strip=True) if len(cells) > 8 else ''
+                    pm = cells[9].get_text(strip=True) if len(cells) > 9 else ''
+                    rs = cells[10].get_text(strip=True) if len(cells) > 10 else ''
+                    
+                    # Conversió a números
+                    def a_numero(text, default=0.0):
+                        if not text or text in ['(s/d)', '-', '']:
+                            return default
+                        try:
+                            return float(text.replace(',', '.'))
+                        except:
+                            return default
+                    
+                    # Ajust del període
+                    periode_ajustat = ajustar_periode(periode)
+                    
+                    return {
+                        'station_name': station_name,
+                        'station_code': station_code,
+                        'periode': periode_ajustat,
+                        'tm': a_numero(tm),
+                        'tx': a_numero(tx),
+                        'tn': a_numero(tn),
+                        'hr': a_numero(hr),
+                        'ppt': a_numero(ppt),
+                        'vvm': a_numero(vvm),
+                        'dvm': a_numero(dvm),
+                        'vvx': a_numero(vvx),
+                        'pm': a_numero(pm),
+                        'rs': a_numero(rs)
+                    }
+        
+        write_log("❌ No s'han trobat dades vàlides")
+        return None
+        
+    except Exception as e:
+        write_log(f"❌ Error consultant dades: {e}")
+        return None
+
+def ajustar_periode(periode_str):
+    try:
+        match = re.match(r'(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})', periode_str)
+        if match:
+            hora_inici = int(match.group(1))
+            minut_inici = int(match.group(2))
+            hora_fi = int(match.group(3))
+            minut_fi = int(match.group(4))
+            
+            cet = pytz.timezone('CET')
+            now_utc = datetime.utcnow().replace(tzinfo=pytz.utc)
+            now_cet = now_utc.astimezone(cet)
+            
+            is_dst = now_cet.dst() != timedelta(0)
+            offset_hours = 2 if is_dst else 1
+            
+            start_adj = (hora_inici + offset_hours) % 24
+            end_adj = (hora_fi + offset_hours) % 24
+            
+            return f"{start_adj:02d}:{minut_inici:02d}-{end_adj:02d}:{minut_fi:02d}"
+            
+    except Exception as e:
+        write_log(f"⚠️ Error ajustant període: {e}")
     
-    # Triem quina estació consultar
+    return periode_str
+
+def generar_rss():
+    write_log("\n🚀 INICIANT GENERACIÓ RSS")
+    
     station = get_current_station()
-    write_log(f"🎯 ESTACIÓ SELECCIONADA: {station['name']} [{station['code']}]")
+    write_log(f"🎯 Estació: {station['name']} [{station['code']}]")
     
     dades = get_meteo_data(station['code'], station['name'])
     
-    cet = pytz.timezone('CET')
-    now = datetime.now(cet)
-    current_time = now.strftime("%H:%M")
-    
     if not dades:
-        write_log("❌ NO S'HAN POGUT OBTENIR DADES")
-        write_log("💤 NO S'ACTUALITZA RSS")
+        write_log("❌ No s'han obtingut dades")
         return False
     
-    write_log("✅ DADES OBTINGUDES - GENERANT RSS")
+    cet = pytz.timezone('CET')
+    now = datetime.now(cet)
     
-    # Títol complet amb TOTES les dades disponibles
-    titol_cat = (
-        f"🌤️ {dades['station_name']} | Actualitzat: {current_time} | Període: {dades['periode']} | "
-        f"Temp. Mitjana: {dades['tm']}°C | Temp. Màxima: {dades['tx']}°C | Temp. Mínima: {dades['tn']}°C | "
-        f"Humitat: {dades['hr']}% | Precipitació: {dades['ppt']}mm | "
-        f"Vent Mitjà: {dades['vvm']}km/h | Direcció Vent: {dades['dvm']}° | "
-        f"Vent Màxim: {dades['vvx']}km/h | Pressió: {dades['pm']}hPa | "
-        f"Radiació Solar: {dades['rs']}W/m²"
-    )
+    # Construïm el títol amb totes les dades disponibles
+    parts_cat = [
+        f"🌤️ {dades['station_name']}",
+        f"Actualitzat: {now.strftime('%H:%M')}",
+        f"Període: {dades['periode']}",
+        f"Temp. Mitjana: {dades['tm']}°C",
+        f"Temp. Màxima: {dades['tx']}°C", 
+        f"Temp. Mínima: {dades['tn']}°C",
+        f"Humitat: {dades['hr']}%",
+        f"Precipitació: {dades['ppt']}mm"
+    ]
     
-    titol_en = (
-        f"🌤️ {dades['station_name']} | Updated: {current_time} | Period: {dades['periode']} | "
-        f"Avg Temp: {dades['tm']}°C | Max Temp: {dades['tx']}°C | Min Temp: {dades['tn']}°C | "
-        f"Humidity: {dades['hr']}% | Precipitation: {dades['ppt']}mm | "
-        f"Avg Wind: {dades['vvm']}km/h | Wind Direction: {dades['dvm']}° | "
-        f"Max Wind: {dades['vvx']}km/h | Pressure: {dades['pm']}hPa | "
-        f"Solar Radiation: {dades['rs']}W/m²"
-    )
+    # Afegim dades addicionals si estan disponibles
+    if dades['vvm'] > 0:
+        parts_cat.extend([
+            f"Vent Mitjà: {dades['vvm']}km/h",
+            f"Direcció Vent: {dades['dvm']}°",
+            f"Vent Màxim: {dades['vvx']}km/h"
+        ])
     
-    titol = f"{titol_cat} || {titol_en}"
+    if dades['pm'] > 0:
+        parts_cat.append(f"Pressió: {dades['pm']}hPa")
     
-    write_log(f"📝 Títol generat ({len(titol)} caràcters)")
+    if dades['rs'] > 0:
+        parts_cat.append(f"Radiació Solar: {dades['rs']}W/m²")
+    
+    titol_cat = " | ".join(parts_cat)
+    titol = titol_cat  # Per ara només en català per simplificar
+    
+    write_log(f"📝 Títol: {titol}")
     
     rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -52,21 +208,39 @@ def generar_rss():
   <item>
     <title>{titol}</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi={dades['station_code']}</link>
-    <description>Dades meteorològiques automàtiques de l'estació de {dades['station_name']} ({dades['station_code']})</description>
+    <description>Dades meteorològiques de {dades['station_name']} - Actualitzat el {now.strftime("%d/%m/%Y a les %H:%M")}</description>
     <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
   </item>
 </channel>
 </rss>'''
     
-    write_log("📁 Intentant escriure el fitxer meteo.rss...")
-    
     try:
         with open('meteo.rss', 'w', encoding='utf-8') as f:
             f.write(rss_content)
-        
-        write_log("✅ RSS guardat a 'meteo.rss'")
+        write_log("✅ RSS guardat correctament")
         return True
-        
     except Exception as e:
-        write_log(f"❌ ERROR escrivint el fitxer: {str(e)}")
+        write_log(f"❌ Error guardant RSS: {e}")
         return False
+
+if __name__ == "__main__":
+    # Inicialitzem el log
+    with open('debug.log', 'w', encoding='utf-8') as f:
+        f.write(f"=== INICI: {datetime.now()} ===\n")
+    
+    write_log("🚀 Script iniciat")
+    
+    try:
+        exit = generar_rss()
+        if exit:
+            write_log("🎉 Èxit complet")
+        else:
+            write_log("💤 Fallada")
+    except Exception as e:
+        write_log(f"💥 ERROR NO CONTROLAT: {e}")
+        import traceback
+        write_log(f"TRACEBACK: {traceback.format_exc()}")
+        exit = False
+    
+    write_log(f"🏁 Fi: {datetime.now()}")
+    sys.exit(0 if exit else 1)
