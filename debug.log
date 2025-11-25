@@ -1,4 +1,4 @@
-=== INICI: 2025-11-24 23:56:56.254543 ===
+=== INICI: 2025-11-25 00:00:38.578994 ===
 🚀 Script iniciat
 
 🚀 INICIANT GENERACIÓ RSS
@@ -6,55 +6,15 @@
 
 🎯 Consultant Girona [XJ]
 🌐 Consultant Girona [XJ]...
-📊 48 files trobades
-🔍 CAPÇALERA - 11 columnes:
-   Columna 0: 'PeríodeTU'
-   Columna 1: 'TM°C'
-   Columna 2: 'TX°C'
-   Columna 3: 'TN°C'
-   Columna 4: 'HRM%'
-   Columna 5: 'PPTmm'
-   Columna 6: 'VVM (10 m)km/h'
-   Columna 7: 'DVM (10 m)graus'
-   Columna 8: 'VVX (10 m)km/h'
-   Columna 9: 'PMhPa'
-   Columna 10: 'RSW/m2'
-✅ Dades RECENTS trobades: 23:00 - 23:30
-🔍 Columnes disponibles: 11
-📊 Dades extretes:
-   tm: 10.8
-   tx: 11.1
-   tn: 10.2
-   hr: 78.0
-   ppt: 0.0
-   vvm: 2.9
-   dvm: 250.0
-   vvx: 6.8
-   pm: 1005.4
-   rs: 0.0
-✅ Girona actualitzada
+❌ No s'ha trobat la taula
+❌ Girona - sense dades
 
 🎯 Consultant Fornells de la Selva [UO]
 🌐 Consultant Fornells de la Selva [UO]...
-📊 48 files trobades
-🔍 CAPÇALERA - 6 columnes:
-   Columna 0: 'PeríodeTU'
-   Columna 1: 'TM°C'
-   Columna 2: 'TX°C'
-   Columna 3: 'TN°C'
-   Columna 4: 'HRM%'
-   Columna 5: 'PPTmm'
-✅ Dades RECENTS trobades: 23:00 - 23:30
-🔍 Columnes disponibles: 6
-📊 Dades extretes:
-   tm: 10.4
-   tx: 11.3
-   tn: 9.5
-   hr: 84.0
-   ppt: 0.0
-✅ Fornells de la Selva actualitzada
-📊 Entrades generades: 2
+❌ No s'ha trobat la taula
+❌ Fornells de la Selva - sense dades
+📊 Entrades generades: 0
 ✅ RSS actualitzat correctament
-🏁 Estacions al RSS: ['XJ', 'UO']
+🏁 Estacions al RSS: []
 🎉 Èxit complet
-🏁 Fi: 2025-11-24 23:56:59.612895
+🏁 Fi: 2025-11-25 00:00:41.530252
