@@ -4,18 +4,30 @@
   <title>MeteoCat Weather Stations</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estacions Girona i Fornells de la Selva / Real-time weather data - Girona and Fornells de la Selva stations</description>
+<<<<<<< Updated upstream
   <lastBuildDate>Wed, 26 Nov 2025 20:40:08 CET</lastBuildDate>
+=======
+  <lastBuildDate>Wed, 26 Nov 2025 20:40:20 CET</lastBuildDate>
+>>>>>>> Stashed changes
   <item>
     <title>🌤️ Girona | Actualitzat: 20:40 | Període: 20:00-20:30 | Temp. Mitjana: 8.8°C | Temp. Màxima: 9.0°C | Temp. Mínima: 8.4°C | Humitat: 33.0% | Precipitació: 0.0mm | Vent: 6.5km/h | Dir.Vent: 22.0° | Vent Màx: 24.1km/h | Pressió: 1018.3hPa | Radiació: 0.0W/m² || 🌤️ Girona | Updated: 20:40 | Period: 20:00-20:30 | Avg Temp: 8.8°C | Max Temp: 9.0°C | Min Temp: 8.4°C | Humidity: 33.0% | Precipitation: 0.0mm | Wind: 6.5km/h | Wind Dir: 22.0° | Max Wind: 24.1km/h | Pressure: 1018.3hPa | Radiation: 0.0W/m²</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
     <description>Dades meteorològiques de Girona / Weather data from Girona - Actualitzat el 26/11/2025 a les 20:40 / Updated on 26/11/2025 at 20:40</description>
+<<<<<<< Updated upstream
     <pubDate>Wed, 26 Nov 2025 20:40:08 CET</pubDate>
+=======
+    <pubDate>Wed, 26 Nov 2025 20:40:20 CET</pubDate>
+>>>>>>> Stashed changes
   </item>
   <item>
     <title>🌤️ Fornells de la Selva | Actualitzat: 20:40 | Període: 20:00-20:30 | Temp. Mitjana: 8.5°C | Temp. Màxima: 9.0°C | Temp. Mínima: 8.2°C | Humitat: 37.0% | Precipitació: 0.0mm || 🌤️ Fornells de la Selva | Updated: 20:40 | Period: 20:00-20:30 | Avg Temp: 8.5°C | Max Temp: 9.0°C | Min Temp: 8.2°C | Humidity: 37.0% | Precipitation: 0.0mm</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=UO</link>
     <description>Dades meteorològiques de Fornells de la Selva / Weather data from Fornells de la Selva - Actualitzat el 26/11/2025 a les 20:40 / Updated on 26/11/2025 at 20:40</description>
+<<<<<<< Updated upstream
     <pubDate>Wed, 26 Nov 2025 20:40:08 CET</pubDate>
+=======
+    <pubDate>Wed, 26 Nov 2025 20:40:20 CET</pubDate>
+>>>>>>> Stashed changes
   </item>
 </channel>
 </rss>
