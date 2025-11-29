@@ -4,18 +4,18 @@
   <title>MeteoCat Weather Stations</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estacions Girona i Fornells de la Selva / Real-time weather data - Girona and Fornells de la Selva stations</description>
-  <lastBuildDate>Sat, 29 Nov 2025 14:50:22 CET</lastBuildDate>
+  <lastBuildDate>Sat, 29 Nov 2025 14:55:23 CET</lastBuildDate>
   <item>
-    <title>🌤️ Girona | Actualitzat: 14:50 | Període: 14:00-14:30 | Temp. Mitjana: 17.2°C | Temp. Màxima: 17.4°C | Temp. Mínima: 17.0°C | Humitat: 31.0% | Precipitació: 0.0mm | Vent: 4.0km/h | Dir.Vent: 176.0° | Vent Màx: 7.9km/h | Pressió: 1012.8hPa | Radiació: 308.0W/m² || 🌤️ Girona | Updated: 14:50 | Period: 14:00-14:30 | Avg Temp: 17.2°C | Max Temp: 17.4°C | Min Temp: 17.0°C | Humidity: 31.0% | Precipitation: 0.0mm | Wind: 4.0km/h | Wind Dir: 176.0° | Max Wind: 7.9km/h | Pressure: 1012.8hPa | Radiation: 308.0W/m²</title>
+    <title>🌤️ Girona | Actualitzat: 14:55 | Període: 14:00-14:30 | Temp. Mitjana: 17.2°C | Temp. Màxima: 17.4°C | Temp. Mínima: 17.0°C | Humitat: 31.0% | Precipitació: 0.0mm | Vent: 4.0km/h | Dir.Vent: 176.0° | Vent Màx: 7.9km/h | Pressió: 1012.8hPa | Radiació: 308.0W/m² || 🌤️ Girona | Updated: 14:55 | Period: 14:00-14:30 | Avg Temp: 17.2°C | Max Temp: 17.4°C | Min Temp: 17.0°C | Humidity: 31.0% | Precipitation: 0.0mm | Wind: 4.0km/h | Wind Dir: 176.0° | Max Wind: 7.9km/h | Pressure: 1012.8hPa | Radiation: 308.0W/m²</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
-    <description>Dades meteorològiques de Girona / Weather data from Girona - Actualitzat el 29/11/2025 a les 14:50 / Updated on 29/11/2025 at 14:50</description>
-    <pubDate>Sat, 29 Nov 2025 14:50:22 CET</pubDate>
+    <description>Dades meteorològiques de Girona / Weather data from Girona - Actualitzat el 29/11/2025 a les 14:55 / Updated on 29/11/2025 at 14:55</description>
+    <pubDate>Sat, 29 Nov 2025 14:55:23 CET</pubDate>
   </item>
   <item>
-    <title>🌤️ Fornells de la Selva | Actualitzat: 14:50 | Període: 14:00-14:30 | Temp. Mitjana: 17.4°C | Temp. Màxima: 18.0°C | Temp. Mínima: 16.8°C | Humitat: 33.0% | Precipitació: 0.0mm || 🌤️ Fornells de la Selva | Updated: 14:50 | Period: 14:00-14:30 | Avg Temp: 17.4°C | Max Temp: 18.0°C | Min Temp: 16.8°C | Humidity: 33.0% | Precipitation: 0.0mm</title>
+    <title>🌤️ Fornells de la Selva | Actualitzat: 14:55 | Període: 14:00-14:30 | Temp. Mitjana: 17.4°C | Temp. Màxima: 18.0°C | Temp. Mínima: 16.8°C | Humitat: 33.0% | Precipitació: 0.0mm || 🌤️ Fornells de la Selva | Updated: 14:55 | Period: 14:00-14:30 | Avg Temp: 17.4°C | Max Temp: 18.0°C | Min Temp: 16.8°C | Humidity: 33.0% | Precipitation: 0.0mm</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=UO</link>
-    <description>Dades meteorològiques de Fornells de la Selva / Weather data from Fornells de la Selva - Actualitzat el 29/11/2025 a les 14:50 / Updated on 29/11/2025 at 14:50</description>
-    <pubDate>Sat, 29 Nov 2025 14:50:22 CET</pubDate>
+    <description>Dades meteorològiques de Fornells de la Selva / Weather data from Fornells de la Selva - Actualitzat el 29/11/2025 a les 14:55 / Updated on 29/11/2025 at 14:55</description>
+    <pubDate>Sat, 29 Nov 2025 14:55:23 CET</pubDate>
   </item>
 </channel>
 </rss>
