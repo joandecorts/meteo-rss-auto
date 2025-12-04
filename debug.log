@@ -1,4 +1,4 @@
-=== INICI: 2025-12-04 04:40:18.767535 ===
+=== INICI: 2025-12-04 04:45:18.434819 ===
 🚀 Script iniciat
 
 🚀 INICIANT GENERACIÓ RSS
@@ -44,12 +44,12 @@
    Columna 3: 'TN°C'
    Columna 4: 'HRM%'
    Columna 5: 'PPTmm'
-✅ Dades RECENTS trobades: 03:30 - 04:00
+✅ Dades RECENTS trobades: 04:00 - 04:30
 🔍 Columnes disponibles: 6
 📊 Dades extretes:
-   tm: -1.4
+   tm: -1.3
    tx: -1.2
-   tn: -1.4
+   tn: -1.3
    hr: 96.0
    ppt: 0.0
 ✅ Fornells de la Selva actualitzada
@@ -57,4 +57,4 @@
 ✅ RSS actualitzat correctament
 🏁 Estacions al RSS: ['XJ', 'UO']
 🎉 Èxit complet
-🏁 Fi: 2025-12-04 04:40:20.183879
+🏁 Fi: 2025-12-04 04:45:21.174508
