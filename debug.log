@@ -1,4 +1,4 @@
-=== INICI: 2025-12-04 06:05:18.376227 ===
+=== INICI: 2025-12-04 06:10:18.344942 ===
 🚀 Script iniciat
 
 🚀 INICIANT GENERACIÓ RSS
@@ -19,18 +19,18 @@
    Columna 8: 'VVX (10 m)km/h'
    Columna 9: 'PMhPa'
    Columna 10: 'RSW/m2'
-✅ Dades RECENTS trobades: 05:00 - 05:30
+✅ Dades RECENTS trobades: 05:30 - 06:00
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   tm: -1.5
-   tx: -1.4
-   tn: -1.7
+   tm: -1.6
+   tx: -1.5
+   tn: -1.8
    hr: 100.0
    ppt: 0.0
-   vvm: 1.1
-   dvm: 324.0
-   vvx: 4.7
-   pm: 1013.0
+   vvm: 1.8
+   dvm: 33.0
+   vvx: 3.2
+   pm: 1012.7
    rs: 0.0
 ✅ Girona actualitzada
 
@@ -44,11 +44,11 @@
    Columna 3: 'TN°C'
    Columna 4: 'HRM%'
    Columna 5: 'PPTmm'
-✅ Dades RECENTS trobades: 05:00 - 05:30
+✅ Dades RECENTS trobades: 05:30 - 06:00
 🔍 Columnes disponibles: 6
 📊 Dades extretes:
-   tm: -1.5
-   tx: -1.3
+   tm: -1.6
+   tx: -1.4
    tn: -1.7
    hr: 96.0
    ppt: 0.0
@@ -57,4 +57,4 @@
 ✅ RSS actualitzat correctament
 🏁 Estacions al RSS: ['XJ', 'UO']
 🎉 Èxit complet
-🏁 Fi: 2025-12-04 06:05:21.810259
+🏁 Fi: 2025-12-04 06:10:20.930918
