@@ -1,4 +1,4 @@
-=== INICI: 2025-12-08 20:55:15.887473 ===
+=== INICI: 2025-12-08 21:00:30.959983 ===
 🚀 Script iniciat
 
 🚀 INICIANT GENERACIÓ RSS
@@ -6,7 +6,7 @@
 
 🎯 Consultant Girona [XJ]
 🌐 Consultant Girona [XJ]...
-📊 42 files trobades
+📊 43 files trobades
 🔍 CAPÇALERA - 11 columnes:
    Columna 0: 'PeríodeTU'
    Columna 1: 'TM°C'
@@ -36,25 +36,10 @@
 
 🎯 Consultant Fornells de la Selva [UO]
 🌐 Consultant Fornells de la Selva [UO]...
-📊 42 files trobades
-🔍 CAPÇALERA - 6 columnes:
-   Columna 0: 'PeríodeTU'
-   Columna 1: 'TM°C'
-   Columna 2: 'TX°C'
-   Columna 3: 'TN°C'
-   Columna 4: 'HRM%'
-   Columna 5: 'PPTmm'
-✅ Dades RECENTS trobades: 20:00 - 20:30
-🔍 Columnes disponibles: 6
-📊 Dades extretes:
-   tm: 5.6
-   tx: 6.3
-   tn: 5.2
-   hr: 95.0
-   ppt: 0.0
-✅ Fornells de la Selva actualitzada
-📊 Entrades generades: 2
+❌ Error consultant dades: 502 Server Error: Bad Gateway for url: https://www.meteo.cat/observacions/xema/dades?codi=UO
+❌ Fornells de la Selva - sense dades
+📊 Entrades generades: 1
 ✅ RSS actualitzat correctament
-🏁 Estacions al RSS: ['XJ', 'UO']
+🏁 Estacions al RSS: ['XJ']
 🎉 Èxit complet
-🏁 Fi: 2025-12-08 20:55:18.907742
+🏁 Fi: 2025-12-08 21:00:33.071049
