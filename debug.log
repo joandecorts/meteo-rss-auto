@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-=== INICI: 2025-12-08 09:55:06.009021 ===
-=======
-=== INICI: 2025-12-08 09:55:15.935003 ===
->>>>>>> Stashed changes
+=== INICI: 2025-12-08 10:00:32.183097 ===
 🚀 Script iniciat
 
 🚀 INICIANT GENERACIÓ RSS
@@ -10,7 +6,7 @@
 
 🎯 Consultant Girona [XJ]
 🌐 Consultant Girona [XJ]...
-📊 20 files trobades
+📊 21 files trobades
 🔍 CAPÇALERA - 11 columnes:
    Columna 0: 'PeríodeTU'
    Columna 1: 'TM°C'
@@ -40,7 +36,7 @@
 
 🎯 Consultant Fornells de la Selva [UO]
 🌐 Consultant Fornells de la Selva [UO]...
-📊 20 files trobades
+📊 21 files trobades
 🔍 CAPÇALERA - 6 columnes:
    Columna 0: 'PeríodeTU'
    Columna 1: 'TM°C'
@@ -61,8 +57,4 @@
 ✅ RSS actualitzat correctament
 🏁 Estacions al RSS: ['XJ', 'UO']
 🎉 Èxit complet
-<<<<<<< Updated upstream
-🏁 Fi: 2025-12-08 09:55:08.661497
-=======
-🏁 Fi: 2025-12-08 09:55:16.317517
->>>>>>> Stashed changes
+🏁 Fi: 2025-12-08 10:00:34.918749
