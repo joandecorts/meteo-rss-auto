@@ -1,8 +1,4 @@
-<<<<<<< Updated upstream
-=== INICI: 2025-12-12 10:35:09.858100 ===
-=======
-=== INICI: 2025-12-12 10:35:14.268511 ===
->>>>>>> Stashed changes
+=== INICI: 2025-12-12 10:40:18.417921 ===
 🚀 Script iniciat
 
 🚀 INICIANT GENERACIÓ RSS
@@ -23,19 +19,19 @@
    Columna 8: 'VVX (10 m)km/h'
    Columna 9: 'PMhPa'
    Columna 10: 'RSW/m2'
-✅ Dades RECENTS trobades: 09:30 - 10:00
+✅ Dades RECENTS trobades: 10:00 - 10:30
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   tm: 10.2
-   tx: 12.2
-   tn: 9.0
-   hr: 77.0
+   tm: 12.4
+   tx: 13.6
+   tn: 11.7
+   hr: 68.0
    ppt: 0.0
-   vvm: 0.7
-   dvm: 199.0
+   vvm: 0.4
+   dvm: 132.0
    vvx: 2.9
-   pm: 1022.1
-   rs: 311.0
+   pm: 1022.0
+   rs: 360.0
 ✅ Girona actualitzada
 
 🎯 Consultant Fornells de la Selva [UO]
@@ -48,21 +44,17 @@
    Columna 3: 'TN°C'
    Columna 4: 'HRM%'
    Columna 5: 'PPTmm'
-✅ Dades RECENTS trobades: 09:30 - 10:00
+✅ Dades RECENTS trobades: 10:00 - 10:30
 🔍 Columnes disponibles: 6
 📊 Dades extretes:
-   tm: 10.4
-   tx: 10.9
-   tn: 10.2
-   hr: 81.0
+   tm: 12.2
+   tx: 13.6
+   tn: 10.6
+   hr: 78.0
    ppt: 0.0
 ✅ Fornells de la Selva actualitzada
 📊 Entrades generades: 2
 ✅ RSS actualitzat correctament
 🏁 Estacions al RSS: ['XJ', 'UO']
 🎉 Èxit complet
-<<<<<<< Updated upstream
-🏁 Fi: 2025-12-12 10:35:12.440197
-=======
-🏁 Fi: 2025-12-12 10:35:14.651900
->>>>>>> Stashed changes
+🏁 Fi: 2025-12-12 10:40:21.775396
