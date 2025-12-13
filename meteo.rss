@@ -4,18 +4,30 @@
   <title>MeteoCat Weather Stations</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estacions Girona i Fornells de la Selva / Real-time weather data - Girona and Fornells de la Selva stations</description>
+<<<<<<< Updated upstream
   <lastBuildDate>Sat, 13 Dec 2025 11:40:10 CET</lastBuildDate>
+=======
+  <lastBuildDate>Sat, 13 Dec 2025 11:40:21 CET</lastBuildDate>
+>>>>>>> Stashed changes
   <item>
     <title>🌤️ Girona | Actualitzat: 11:40 | Període: 11:00-11:30 | Temp. Mitjana: 14.0°C | Temp. Màxima: 14.8°C | Temp. Mínima: 13.3°C | Humitat: 68.0% | Precipitació: 0.0mm | Vent: 1.8km/h | Dir.Vent: 228.0° | Vent Màx: 5.0km/h | Pressió: 1028.2hPa | Radiació: 293.0W/m² || 🌤️ Girona | Updated: 11:40 | Period: 11:00-11:30 | Avg Temp: 14.0°C | Max Temp: 14.8°C | Min Temp: 13.3°C | Humidity: 68.0% | Precipitation: 0.0mm | Wind: 1.8km/h | Wind Dir: 228.0° | Max Wind: 5.0km/h | Pressure: 1028.2hPa | Radiation: 293.0W/m²</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
     <description>Dades meteorològiques de Girona / Weather data from Girona - Actualitzat el 13/12/2025 a les 11:40 / Updated on 13/12/2025 at 11:40</description>
+<<<<<<< Updated upstream
     <pubDate>Sat, 13 Dec 2025 11:40:10 CET</pubDate>
+=======
+    <pubDate>Sat, 13 Dec 2025 11:40:21 CET</pubDate>
+>>>>>>> Stashed changes
   </item>
   <item>
     <title>🌤️ Fornells de la Selva | Actualitzat: 11:40 | Període: 11:00-11:30 | Temp. Mitjana: 14.1°C | Temp. Màxima: 15.0°C | Temp. Mínima: 13.3°C | Humitat: 74.0% | Precipitació: 0.0mm || 🌤️ Fornells de la Selva | Updated: 11:40 | Period: 11:00-11:30 | Avg Temp: 14.1°C | Max Temp: 15.0°C | Min Temp: 13.3°C | Humidity: 74.0% | Precipitation: 0.0mm</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=UO</link>
     <description>Dades meteorològiques de Fornells de la Selva / Weather data from Fornells de la Selva - Actualitzat el 13/12/2025 a les 11:40 / Updated on 13/12/2025 at 11:40</description>
+<<<<<<< Updated upstream
     <pubDate>Sat, 13 Dec 2025 11:40:10 CET</pubDate>
+=======
+    <pubDate>Sat, 13 Dec 2025 11:40:21 CET</pubDate>
+>>>>>>> Stashed changes
   </item>
 </channel>
 </rss>
