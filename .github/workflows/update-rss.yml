@@ -20,16 +20,26 @@ jobs:
       - name: 📦 Instal·lar dependències
         run: pip install -r requirements.txt
 
-      - name: 📊 Executar update_rss.py (ÚNIC)
+      - name: 📊 Executar update_rss.py (TEMPS REAL)
         run: python update_rss.py
+
+      - name: 📅 Executar update_rss_dayly.py (RESUM DIARI)
+        run: python update_rss_dayly.py
 
       - name: 📁 Crear carpeta /docs i copiar resultats
         run: |
           mkdir -p docs
-          cp -f meteo.rss docs/
+          # Copiar els RSS reals
+          cp -f update_meteo.rss docs/
+          cp -f update_meteo_dayly.rss docs/
+          # Crear també meteo.rss per compatibilitat (opcional)
+          cp -f update_meteo.rss docs/meteo.rss
+          # Copiar logs i dades de suport
           cp -f debug.log docs/ 2>/dev/null || true
+          cp -f debug_dayly.log docs/ 2>/dev/null || true
           cp -f acumulacio_*.json docs/ 2>/dev/null || true
           cp -f weather_data.json docs/ 2>/dev/null || true
+          cp -f daily_summary.json docs/ 2>/dev/null || true
 
       - name: 💾 Publicar a la branca gh-pages
         uses: peaceiris/actions-gh-pages@v3
