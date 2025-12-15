@@ -75,11 +75,11 @@ def generar_rss_diari():
 </rss>'''
     
     try:
-        with open('update_meteo_dayly.rss', 'w', encoding='utf-8') as f:
+        with open('update_meteo_daily.rss', 'w', encoding='utf-8') as f:
             f.write(rss_content)
         
         write_log("\n✅ RSS DIARI GENERAT CORRECTAMENT")
-        write_log(f"📁 Fitxer: update_meteo_dayly.rss")
+        write_log(f"📁 Fitxer: update_meteo_daily.rss")
         
         # Mostrar resultat
         write_log("\n📄 RESUM DEL RSS GENERAT:")
@@ -92,7 +92,7 @@ def generar_rss_diari():
         return False
 
 if __name__ == "__main__":
-    with open('debug_dayly.log', 'w', encoding='utf-8') as f:
+    with open('debug_daily.log', 'w', encoding='utf-8') as f:
         f.write(f"=== INICI: {datetime.now()} ===\n")
     
     write_log("🚀 SCRIPT SENZILL - DADES FIXES")
