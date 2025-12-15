@@ -1,4 +1,4 @@
-=== INICI: 2025-12-15 23:13:37.892898 ===
+=== INICI: 2025-12-15 23:38:59.245057 ===
 🚀 Script de dades del període actual (amb acumulació)
 
 🚀 INICIANT GENERACIÓ RSS (DADES PERIODE ACTUAL)
@@ -6,7 +6,7 @@
 
 🎯 [PERÍODE] Consultant Girona [XJ]
 🌐 Consultant Girona [XJ]...
-📊 47 files trobades
+📊 48 files trobades
 ✅ Dades RECENTS trobades: 22:30 - 23:00
 📊 Dades extretes:
    tm: 11.2
@@ -27,7 +27,7 @@
 
 🎯 [PERÍODE] Consultant Fornells de la Selva [UO]
 🌐 Consultant Fornells de la Selva [UO]...
-📊 47 files trobades
+📊 48 files trobades
 ✅ Dades RECENTS trobades: 22:30 - 23:00
 📊 Dades extretes:
    tm: 9.8
@@ -46,4 +46,4 @@
 ✅ RSS generat correctament (update_meteo.rss i meteo.rss)
 📁 Arxius: update_meteo.rss, meteo.rss
 🎉 Èxit complet - RSS generat
-🏁 Fi del procés: 2025-12-15 23:13:41.545848
+🏁 Fi del procés: 2025-12-15 23:39:01.976041
