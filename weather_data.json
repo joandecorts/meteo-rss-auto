@@ -27,20 +27,20 @@
   "UO": {
     "station_name": "Fornells de la Selva",
     "station_code": "UO",
-    "periode": "18:00-18:30",
-    "tm": 14.9,
+    "periode": "18:30-19:00",
+    "tm": 14.8,
     "tx": 14.9,
-    "tn": 14.8,
-    "hr": 93.0,
-    "ppt": 0.0,
+    "tn": 14.7,
+    "hr": 95.0,
+    "ppt": 0.3,
     "resum_dia": {
       "data": "2025-12-15",
       "estacio": "UO",
       "maxima_dia": 14.9,
       "num_periodes_max": 1,
-      "minima_dia": 14.8,
+      "minima_dia": 14.7,
       "num_periodes_min": 1,
-      "pluja_dia": 0.0,
+      "pluja_dia": 0.3,
       "num_periodes_pluja": 1
     }
   }
