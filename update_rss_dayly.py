@@ -205,6 +205,9 @@ def generar_rss_diari():
                     if data_avui in all_data and station['code'] in all_data[data_avui]:
                         dades = all_data[data_avui][station['code']]
                         
+                        # Extreure només l'hora (HH:MM) de 'actualitzat'
+                        hora_actualitzacio = dades['actualitzat'][11:16] if dades['actualitzat'] else now.strftime('%H:%M')
+                        
                         titol_cat = f"📊 RESUM DEL DIA {station['name']} | Data: {data_avui} | 🔥 Temperatura Màxima: {dades['temp_maxima']}°C | ❄️ Temperatura Mínima: {dades['temp_minima']}°C | 🌧️ Pluja Acumulada: {dades['pluja_acumulada']}mm"
                         titol_en = f"📊 TODAY'S SUMMARY {station['name']} | Date: {data_avui} | 🔥 Maximum Temperature: {dades['temp_maxima']}°C | ❄️ Minimum Temperature: {dades['temp_minima']}°C | 🌧️ Accumulated Rain: {dades['pluja_acumulada']}mm"
                         titol = f"{titol_cat} || {titol_en}"
@@ -214,7 +217,7 @@ def generar_rss_diari():
                         entrada = f'''  <item>
     <title>{titol}</title>
     <link>{link_resum}</link>
-    <description>Resum diari de {station['name']} - Data: {data_avui} - Actualitzat a les {dades['actualitzat']} CET / Daily summary from {station['name']} - Date: {data_avui} - Updated at {dades['actualitzat']} CET</description>
+    <description>Resum diari de {station['name']} - Data: {data_avui} - Actualitzat a les {hora_actualitzacio} CET / Daily summary from {station['name']} - Date: {data_avui} - Updated at {hora_actualitzacio} CET</description>
     <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
   </item>'''
                         
