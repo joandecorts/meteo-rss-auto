@@ -1,47 +1,42 @@
-name: Update RSS Data Every 5 Minutes
+name: Update RSS Feeds
 
 on:
   schedule:
-    - cron: '*/5 * * * *'
+    # S'executa cada 30 minuts
+    - cron: '*/30 * * * *'
+  # Permet activar manualment des de la pestanya "Actions"
   workflow_dispatch:
-  repository_dispatch:
-    types: [trigger_rss_update]
 
 jobs:
-  update-rss:
+  update-feeds:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
     
     steps:
-    - name: 🛎️ Checkout code
-      uses: actions/checkout@v4
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        fetch-depth: 0
-        
-    - name: 🐍 Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
-        
-    - name: 📦 Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install requests beautifulsoup4 pytz
-        
-    - name: 🚀 Run RSS updater with retries
-      run: python update_rss.py
-      
-    - name: 💾 Commit and push changes
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git pull origin main --rebase --autostash
-        git add meteo.rss debug.log
-        if git diff --staged --quiet; then
-          echo "🟡 No hi ha canvis nous"
-        else
-          git commit -m "🤖 Auto-update RSS data - $(date +'%Y-%m-%d %H:%M')"
-          git push origin main
-          echo "✅ Canvis pujats correctament"
-        fi
+      - name: 📥 Agafar el codi del repositori
+        uses: actions/checkout@v4
+
+      - name: 🐍 Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: 📦 Instal·lar dependències
+        run: |
+          pip install -r requirements.txt
+
+      - name: 🔄 Executar update_rss.py (Dades del període actual)
+        run: python update_rss.py
+
+      - name: 📊 Executar update_rss_dayly.py (Resum diari)
+        run: python update_rss_dayly.py
+
+      - name: 💾 Pujar arxius RSS generats
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./
+          publish_branch: main  # O 'gh-pages' si utilitzes aquesta branca
+          # Assegura't que només es pugin els arxius .rss i no sobreescriure tot
+          keep_files: false
+          # Especifica quins arxius pujar
+          destination_dir: ./
