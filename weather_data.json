@@ -2,26 +2,46 @@
   "XJ": {
     "station_name": "Girona",
     "station_code": "XJ",
-    "periode": "16:00-16:30",
-    "tm": 15.1,
-    "tx": 15.4,
-    "tn": 14.9,
-    "hr": 95.0,
-    "ppt": 1.1,
-    "vvm": 9.0,
-    "dvm": 143.0,
-    "vvx": 19.1,
-    "pm": 1012.6,
-    "rs": 40.0
+    "periode": "16:30-17:00",
+    "tm": 14.8,
+    "tx": 14.9,
+    "tn": 14.8,
+    "hr": 97.0,
+    "ppt": 0.3,
+    "vvm": 8.3,
+    "dvm": 154.0,
+    "vvx": 20.5,
+    "pm": 1012.4,
+    "rs": 8.0,
+    "resum_dia": {
+      "data": "2025-12-15",
+      "estacio": "XJ",
+      "maxima_dia": 14.9,
+      "num_periodes_max": 1,
+      "minima_dia": 14.8,
+      "num_periodes_min": 1,
+      "pluja_dia": 0.3,
+      "num_periodes_pluja": 1
+    }
   },
   "UO": {
     "station_name": "Fornells de la Selva",
     "station_code": "UO",
-    "periode": "16:00-16:30",
-    "tm": 14.9,
-    "tx": 15.0,
-    "tn": 14.8,
-    "hr": 94.0,
-    "ppt": 0.6
+    "periode": "16:30-17:00",
+    "tm": 15.0,
+    "tx": 15.1,
+    "tn": 14.9,
+    "hr": 93.0,
+    "ppt": 0.1,
+    "resum_dia": {
+      "data": "2025-12-15",
+      "estacio": "UO",
+      "maxima_dia": 15.1,
+      "num_periodes_max": 1,
+      "minima_dia": 14.9,
+      "num_periodes_min": 1,
+      "pluja_dia": 0.1,
+      "num_periodes_pluja": 1
+    }
   }
 }
