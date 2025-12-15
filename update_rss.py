@@ -7,6 +7,113 @@ import sys
 import os
 import json
 
+# ============================================================================
+# FUNCIONS D'ACUMULACIÓ (REACTIVADES)
+# ============================================================================
+def llegir_acumulacio_estacio(codi_estacio):
+    """Llegeix les dades acumulades d'una estació per al dia d'avui"""
+    fitxer = f"acumulacio_{codi_estacio}.json"
+    
+    if os.path.exists(fitxer):
+        try:
+            with open(fitxer, 'r', encoding='utf-8') as f:
+                dades = json.load(f)
+            
+            data_guardada = dades.get('data', '')
+            data_avui = datetime.now().strftime('%Y-%m-%d')
+            
+            if data_guardada == data_avui:
+                return dades
+            else:
+                return {
+                    'data': data_avui, 
+                    'estacio': codi_estacio,
+                    'maximes_periodes': [],
+                    'minimes_periodes': [], 
+                    'pluja_periodes': []
+                }
+                
+        except Exception as e:
+            write_log(f"⚠️ Error llegint {fitxer}: {e}")
+    
+    data_avui = datetime.now().strftime('%Y-%m-%d')
+    return {
+        'data': data_avui, 
+        'estacio': codi_estacio,
+        'maximes_periodes': [],
+        'minimes_periodes': [], 
+        'pluja_periodes': []
+    }
+
+def guardar_acumulacio_estacio(dades):
+    """Guarda les dades acumulades d'una estació"""
+    codi_estacio = dades.get('estacio', 'desconegut')
+    fitxer = f"acumulacio_{codi_estacio}.json"
+    
+    try:
+        with open(fitxer, 'w', encoding='utf-8') as f:
+            json.dump(dades, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        write_log(f"❌ Error guardant {fitxer}: {e}")
+
+def afegir_periode_estacio(codi_estacio, max_periode, min_periode, pluja_periode):
+    """Afegeix les dades d'un període a l'acumulació diària de l'estació"""
+    dades = llegir_acumulacio_estacio(codi_estacio)
+    
+    if max_periode is not None:
+        dades['maximes_periodes'].append(float(max_periode))
+    
+    if min_periode is not None:
+        dades['minimes_periodes'].append(float(min_periode))
+    
+    if pluja_periode is not None:
+        dades['pluja_periodes'].append(float(pluja_periode))
+    
+    guardar_acumulacio_estacio(dades)
+    return calcular_resums_estacio(dades)
+
+def calcular_resums_estacio(dades=None, codi_estacio=None):
+    """Calcula els resums (màxima, mínima, pluja) del dia a partir de les dades acumulades"""
+    if dades is None and codi_estacio is not None:
+        dades = llegir_acumulacio_estacio(codi_estacio)
+    elif dades is None:
+        return {}
+    
+    maximes = dades.get('maximes_periodes', [])
+    minimes = dades.get('minimes_periodes', [])
+    pluja = dades.get('pluja_periodes', [])
+    
+    resums = {
+        'data': dades.get('data', ''),
+        'estacio': dades.get('estacio', '')
+    }
+    
+    if maximes:
+        resums['maxima_dia'] = round(max(maximes), 1)
+        resums['num_periodes_max'] = len(maximes)
+    else:
+        resums['maxima_dia'] = None
+        resums['num_periodes_max'] = 0
+    
+    if minimes:
+        resums['minima_dia'] = round(min(minimes), 1)
+        resums['num_periodes_min'] = len(minimes)
+    else:
+        resums['minima_dia'] = None
+        resums['num_periodes_min'] = 0
+    
+    if pluja:
+        resums['pluja_dia'] = round(sum(pluja), 1)
+        resums['num_periodes_pluja'] = len(pluja)
+    else:
+        resums['pluja_dia'] = None
+        resums['num_periodes_pluja'] = 0
+    
+    return resums
+
+# ============================================================================
+# FUNCIONS PRINCIPALS (Web scraping i RSS)
+# ============================================================================
 def write_log(message):
     """Escriu un missatge al log i també el mostra per pantalla"""
     print(message)
@@ -130,20 +237,18 @@ def llegir_dades_guardades():
         return {}
 
 def guardar_dades(dades_estacions):
-    """Guarda les dades de totes les estacions (període) - SENSE RESUM_DIA"""
+    """Guarda les dades de totes les estacions (període) - AMB RESUM_DIA"""
     try:
-        # Netejar qualsevol 'resum_dia' que pugui haver
-        for station_code in dades_estacions:
-            if 'resum_dia' in dades_estacions[station_code]:
-                del dades_estacions[station_code]['resum_dia']
-        
         with open('weather_data.json', 'w', encoding='utf-8') as f:
             json.dump(dades_estacions, f, ensure_ascii=False, indent=2)
     except Exception as e:
         write_log(f"⚠️ Error guardant dades: {e}")
 
+# ============================================================================
+# GENERACIÓ RSS (2 ÍTEMS - PERIODE ACTUAL)
+# ============================================================================
 def generar_rss():
-    """Funció principal que genera el RSS amb 4 ítems"""
+    """Funció principal que genera el RSS amb 2 ítems (periode actual)"""
     write_log("\n🚀 INICIANT GENERACIÓ RSS (DADES PERIODE ACTUAL)")
     
     cet = pytz.timezone('CET')
@@ -161,12 +266,38 @@ def generar_rss():
     
     dades_actualitzades = {}
     
-    # 1️⃣ OBTENIR DADES DEL PERÍODE RECENT (SENSE ACUMULACIÓ)
+    # 1️⃣ OBTENIR DADES DEL PERÍODE RECENT I ACUMULAR-LES
     for station in estacions:
         write_log(f"\n🎯 [PERÍODE] Consultant {station['name']} [{station['code']}]")
         dades = get_meteo_data(station['code'], station['name'])
         
         if dades:
+            # ACUMULAR DADES PER AL RESUM DIARI (REACTIVAT)
+            if all(k in dades for k in ['tx', 'tn', 'ppt']):
+                try:
+                    resum_dia = afegir_periode_estacio(
+                        station['code'],
+                        dades['tx'],
+                        dades['tn'],
+                        dades['ppt']
+                    )
+                    write_log(f"📊 RESUM DEL DIA ({station['name']}):")
+                    write_log(f"   • Màxima acumulada: {resum_dia.get('maxima_dia', 'N/D')}°C")
+                    write_log(f"   • Mínima acumulada: {resum_dia.get('minima_dia', 'N/D')}°C")
+                    write_log(f"   • Pluja acumulada: {resum_dia.get('pluja_dia', 'N/D')}mm")
+                    
+                    # Afegim el resum a les dades
+                    dades['resum_dia'] = resum_dia
+                    
+                except Exception as e:
+                    write_log(f"⚠️ Error acumulant dades diàries: {e}")
+            else:
+                write_log(f"⚠️ Dades incompletes per a acumulació diària")
+                # Si no podem acumular ara, llegim el resum existent
+                resum_existent = calcular_resums_estacio(codi_estacio=station['code'])
+                if resum_existent.get('maxima_dia') is not None:
+                    dades['resum_dia'] = resum_existent
+            
             dades_actualitzades[station['code']] = dades
             write_log(f"✅ {station['name']} - dades del període actualitzades")
         else:
@@ -186,7 +317,7 @@ def generar_rss():
     # Guardem les dades del període per a possibles fallbacks futurs
     guardar_dades(dades_actualitzades)
     
-    # 2️⃣ GENERAR ELS 2 ÍTEMS RSS (NOMÉS PERIODE ACTUAL)
+    # 2️⃣ GENERAR ELS 2 ÍTEMS RSS (PERIODE ACTUAL)
     write_log(f"\n📝 Generant ítems del període recent...")
     entrades = []
     
@@ -267,8 +398,12 @@ def generar_rss():
         with open('update_meteo.rss', 'w', encoding='utf-8') as f:
             f.write(rss_content)
         
-        write_log("✅ RSS generat correctament (només període actual)")
-        write_log(f"📁 Arxiu: update_meteo.rss")
+        # Crear també meteo.rss per compatibilitat amb el workflow
+        with open('meteo.rss', 'w', encoding='utf-8') as f:
+            f.write(rss_content)
+        
+        write_log("✅ RSS generat correctament (update_meteo.rss i meteo.rss)")
+        write_log(f"📁 Arxius: update_meteo.rss, meteo.rss")
         return True
     except Exception as e:
         write_log(f"❌ Error guardant RSS: {e}")
@@ -278,7 +413,7 @@ if __name__ == "__main__":
     with open('debug.log', 'w', encoding='utf-8') as f:
         f.write(f"=== INICI: {datetime.now()} ===\n")
     
-    write_log("🚀 Script de dades del període actual")
+    write_log("🚀 Script de dades del període actual (amb acumulació)")
     
     try:
         exit = generar_rss()
