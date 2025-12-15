@@ -1,4 +1,4 @@
-=== INICI: 2025-12-15 05:35:19.077145 ===
+=== INICI: 2025-12-15 05:40:20.794206 ===
 🚀 Script iniciat
 
 🚀 INICIANT GENERACIÓ RSS
@@ -19,18 +19,18 @@
    Columna 8: 'VVX (10 m)km/h'
    Columna 9: 'PMhPa'
    Columna 10: 'RSW/m2'
-✅ Dades RECENTS trobades: 04:30 - 05:00
+✅ Dades RECENTS trobades: 05:00 - 05:30
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   tm: 11.1
-   tx: 11.1
+   tm: 11.0
+   tx: 11.0
    tn: 11.0
    hr: 100.0
-   ppt: 0.1
-   vvm: 0.4
-   dvm: 343.0
-   vvx: 2.2
-   pm: 1019.4
+   ppt: 0.0
+   vvm: 1.4
+   dvm: 267.0
+   vvx: 3.2
+   pm: 1019.1
    rs: 0.0
 ✅ Girona actualitzada
 
@@ -44,17 +44,17 @@
    Columna 3: 'TN°C'
    Columna 4: 'HRM%'
    Columna 5: 'PPTmm'
-✅ Dades RECENTS trobades: 04:30 - 05:00
+✅ Dades RECENTS trobades: 05:00 - 05:30
 🔍 Columnes disponibles: 6
 📊 Dades extretes:
-   tm: 12.6
-   tx: 13.2
-   tn: 12.0
+   tm: 11.8
+   tx: 12.0
+   tn: 11.7
    hr: 97.0
-   ppt: 0.0
+   ppt: 0.1
 ✅ Fornells de la Selva actualitzada
 📊 Entrades generades: 2
 ✅ RSS actualitzat correctament
 🏁 Estacions al RSS: ['XJ', 'UO']
 🎉 Èxit complet
-🏁 Fi: 2025-12-15 05:35:21.859087
+🏁 Fi: 2025-12-15 05:40:23.705782
