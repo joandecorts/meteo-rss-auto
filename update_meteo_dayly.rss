@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
-  <title>MeteoCat Resums Diaris (Acumulació Local)</title>
+  <title>MeteoCat Resums Diaris (Dades Actualitzades)</title>
   <link>https://www.meteo.cat</link>
-  <description>Resums meteorològics basats en dades acumulades localment - Estacions Girona i Fornells de la Selva / Weather summaries based on locally accumulated data - Girona and Fornells de la Selva stations</description>
-  <lastBuildDate>Mon, 15 Dec 2025 17:20:13 CET</lastBuildDate>
+  <description>Resums meteorològics actualitzats - Estacions Girona i Fornells de la Selva / Updated weather summaries - Girona and Fornells de la Selva stations</description>
+  <lastBuildDate>Mon, 15 Dec 2025 17:45:30 CET</lastBuildDate>
   <item>
-    <title>📊 RESUM DEL DIA Girona | Data: 2025-12-15 | Període: 00:00-24:00 | 🔥 Temperatura Màxima: 14.9°C | ❄️ Temperatura Mínima: 14.8°C | 🌧️ Pluja Acumulada: 0.3mm | 📈 Períodes processats: 1 || 📊 TODAY'S SUMMARY Girona | Date: 2025-12-15 | Period: 00:00-24:00 | 🔥 Maximum Temperature: 14.9°C | ❄️ Minimum Temperature: 14.8°C | 🌧️ Accumulated Rain: 0.3mm | 📈 Periods processed: 1</title>
+    <title>📊 RESUM DEL DIA Girona | Data: 2025-12-15 | Període: 00:00-24:00 | 🔥 Temperatura Màxima: 15.8°C | ❄️ Temperatura Mínima: 10.6°C | 🌧️ Pluja Acumulada: 27.4mm || 📊 TODAY'S SUMMARY Girona | Date: 2025-12-15 | Period: 00:00-24:00 | 🔥 Maximum Temperature: 15.8°C | ❄️ Minimum Temperature: 10.6°C | 🌧️ Accumulated Rain: 27.4mm</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
-    <description>Resum diari de Girona - Data: 2025-12-15 - Actualitzat a les 17:20 CET / Daily summary from Girona - Date: 2025-12-15 - Updated at 17:20 CET</description>
-    <pubDate>Mon, 15 Dec 2025 17:20:13 CET</pubDate>
+    <description>Resum diari de Girona - Data: 2025-12-15 - Actualitzat a les 17:45 CET / Daily summary from Girona - Date: 2025-12-15 - Updated at 17:45 CET</description>
+    <pubDate>Mon, 15 Dec 2025 17:45:30 CET</pubDate>
   </item>
   <item>
-    <title>📊 RESUM DEL DIA Fornells de la Selva | Data: 2025-12-15 | Període: 00:00-24:00 | 🔥 Temperatura Màxima: 15.1°C | ❄️ Temperatura Mínima: 14.9°C | 🌧️ Pluja Acumulada: 0.1mm | 📈 Períodes processats: 1 || 📊 TODAY'S SUMMARY Fornells de la Selva | Date: 2025-12-15 | Period: 00:00-24:00 | 🔥 Maximum Temperature: 15.1°C | ❄️ Minimum Temperature: 14.9°C | 🌧️ Accumulated Rain: 0.1mm | 📈 Periods processed: 1</title>
+    <title>📊 RESUM DEL DIA Fornells de la Selva | Data: 2025-12-15 | Període: 00:00-24:00 | 🔥 Temperatura Màxima: 15.7°C | ❄️ Temperatura Mínima: 10.6°C | 🌧️ Pluja Acumulada: 25.8mm || 📊 TODAY'S SUMMARY Fornells de la Selva | Date: 2025-12-15 | Period: 00:00-24:00 | 🔥 Maximum Temperature: 15.7°C | ❄️ Minimum Temperature: 10.6°C | 🌧️ Accumulated Rain: 25.8mm</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=UO</link>
-    <description>Resum diari de Fornells de la Selva - Data: 2025-12-15 - Actualitzat a les 17:20 CET / Daily summary from Fornells de la Selva - Date: 2025-12-15 - Updated at 17:20 CET</description>
-    <pubDate>Mon, 15 Dec 2025 17:20:13 CET</pubDate>
+    <description>Resum diari de Fornells de la Selva - Data: 2025-12-15 - Actualitzat a les 17:45 CET / Daily summary from Fornells de la Selva - Date: 2025-12-15 - Updated at 17:45 CET</description>
+    <pubDate>Mon, 15 Dec 2025 17:45:30 CET</pubDate>
   </item>
 </channel>
 </rss>
