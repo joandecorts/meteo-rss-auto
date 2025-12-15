@@ -1,0 +1,37 @@
+=== INICI RESUM DIARI: 2025-12-15 08:22:36.795836 ===
+Versió: Captura directa de resum diari de la web
+🚀 Script de resum diari iniciat
+🎯 Objectiu: Capturar 'Resum diari' de la pàgina web
+
+🚀 INICIANT GENERACIÓ RSS RESUM DIARI
+📅 Data actual: 2025-12-15
+⏰ Hora actual: 09:22 CET
+
+============================================================
+🎯 CONSULTANT RESUM DIARI: Girona [XJ]
+============================================================
+🌐 Consultant resum diari Girona [XJ]...
+📄 URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2025-12-15
+❌ Error consultant resum diari: 400 Client Error: 400 for url: https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2025-12-15
+⚠️  Girona - NO S'HA POGUT OBTENIR RESUM DIARI
+
+============================================================
+🎯 CONSULTANT RESUM DIARI: Fornells de la Selva [UO]
+============================================================
+🌐 Consultant resum diari Fornells de la Selva [UO]...
+📄 URL: https://www.meteo.cat/observacions/xema/dades?codi=UO&dia=2025-12-15
+❌ Error consultant resum diari: 400 Client Error: 400 for url: https://www.meteo.cat/observacions/xema/dades?codi=UO&dia=2025-12-15
+⚠️  Fornells de la Selva - NO S'HA POGUT OBTENIR RESUM DIARI
+
+============================================================
+📊 RESUM FINAL - Estacions amb dades: 0/2
+============================================================
+
+📊 Entrades de resum diari generades: 2
+✅ RSS de resum diari actualitzat correctament
+📁 Arxiu: meteo_dayly.rss
+
+🎉 ÈXIT COMPLET DEL PROCÉS DE RESUM DIARI
+💾 Dades guardades a: meteo_dayly.rss
+
+🏁 FI DEL PROCÉS: 2025-12-15 08:22:37.749451
