@@ -1,0 +1,20 @@
+=== INICI RSS DIARI: 2025-12-15 15:48:40.570744 ===
+🚀 Script de resums diaris reals
+
+🚀 GENERANT RSS DIARI (RESUMS REALS)
+
+📊 Consultant resum REAL per Girona
+🌐 Consultant resum diari REAL: Girona [XJ]
+   URL: https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2025-12-15
+❌ Error consultant resum diari: 400 Client Error: 400 for url: https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2025-12-15
+⚠️ No s'han pogut obtenir dades del dia per Girona
+
+📊 Consultant resum REAL per Fornells de la Selva
+🌐 Consultant resum diari REAL: Fornells de la Selva [UO]
+   URL: https://www.meteo.cat/observacions/xema/dades?codi=UO&dia=2025-12-15
+❌ Error consultant resum diari: 400 Client Error: 400 for url: https://www.meteo.cat/observacions/xema/dades?codi=UO&dia=2025-12-15
+⚠️ No s'han pogut obtenir dades del dia per Fornells de la Selva
+✅ RSS diari (resums reals) generat correctament
+📁 Arxiu: update_meteo_dayly.rss
+🎉 Èxit complet - RSS diari amb dades reals generat
+=== FI RSS DIARI: 2025-12-15 15:48:41.878820 ===
