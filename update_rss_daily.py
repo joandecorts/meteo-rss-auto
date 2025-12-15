@@ -3,7 +3,7 @@ import pytz
 
 def write_log(message):
     print(message)
-    with open('debug_dayly.log', 'a', encoding='utf-8') as f:
+    with open('debug_daily.log', 'a', encoding='utf-8') as f:
         f.write(message + '\n')
 
 def generar_rss_diari():
