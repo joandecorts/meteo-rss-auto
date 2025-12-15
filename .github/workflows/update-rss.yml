@@ -1,29 +1,36 @@
 name: Update RSS Feeds
+
 on:
   schedule:
     - cron: '*/30 * * * *'
   workflow_dispatch:
+
 jobs:
   update-feeds:
     runs-on: ubuntu-latest
     steps:
       - name: 📥 Agafar el codi
         uses: actions/checkout@v4
+
       - name: 🐍 Configurar Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
+
       - name: 📦 Instal·lar dependències
         run: pip install -r requirements.txt
-      - name: 🔄 Executar update_rss.py
+
+      - name: 📊 Executar update_rss.py (ÚNIC)
         run: python update_rss.py
-      - name: 📊 Executar update_rss_dayly.py
-        run: python update_rss_dayly.py
-      - name: 📁 Crear carpeta /docs
+
+      - name: 📁 Crear carpeta /docs i copiar resultats
         run: |
           mkdir -p docs
-          cp -f meteo.rss meteo_dayly.rss docs/
-          cp -f debug.log debug_dayly.log docs/ 2>/dev/null || true
+          cp -f meteo.rss docs/
+          cp -f debug.log docs/ 2>/dev/null || true
+          cp -f acumulacio_*.json docs/ 2>/dev/null || true
+          cp -f weather_data.json docs/ 2>/dev/null || true
+
       - name: 💾 Publicar a la branca gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
