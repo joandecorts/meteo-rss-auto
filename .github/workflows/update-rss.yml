@@ -1,0 +1,63 @@
+def get_daily_summary(station_code, station_name):
+    """Obté el resum diari (màximes, mínimes, acumulats) del dia actual"""
+    try:
+        # URL amb la data d'avui
+        today = datetime.now().strftime('%Y-%m-%d')
+        url = f"https://www.meteo.cat/observacions/xema/dades?codi={station_code}&dia={today}"
+        
+        write_log(f"🌐 Consultant resum diari {station_name} [{station_code}]...")
+        write_log(f"📄 URL: {url}")
+        
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        response = requests.get(url, headers=headers, timeout=15)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        daily_data = {
+            'station_name': station_name,
+            'station_code': station_code,
+            'data_consulta': today,
+            'hora_consulta': datetime.now().strftime('%H:%M'),
+            'periode': '00:00-24:00'
+        }
+        
+        # ESTRATÈGIA 1: Cerca específica per l'ID del resum diari
+        write_log("🔍 Cercant div amb id='resum-diari'...")
+        resum_div = soup.find('div', id='resum-diari')
+        
+        if resum_div:
+            write_log("✅ Secció 'resum-diari' trobada.")
+            # Busquem la taula dins d'aquest div. Podria ser una taula o bé llistes.
+            # Primer, busquem una taula (estructura més probable)
+            data_table = resum_div.find('table')
+            
+            if data_table:
+                write_log("📋 Taula de dades trobada dins del resum.")
+                # Aquí aniria la lògica per extreure files i cel·les de la taula
+                # Revisa l'HTML real per ajustar l'extracció
+                # EXEMPLE: rows = data_table.find_all('tr')
+            else:
+                write_log("🔍 No s'ha trobat taula, cercant per altres etiquetes (p, span, div)...")
+                # Si no hi ha taula, les dades poden estar en altres etiquetes.
+                # Podem buscar tot el text i aplicar regex.
+                full_resum_text = resum_div.get_text()
+                write_log(f"📄 Text del resum (mostra): {full_resum_text[:500]}")  # Primeres 500 lletres per debug
+        else:
+            write_log("❌ No s'ha trobat l'element amb id='resum-diari'.")
+            # Fallback a la cerca per text general a tota la pàgina
+            write_log("🔄 Intentant cerca per text a tota la pàgina...")
+            full_page_text = soup.get_text()
+            # ... (continua amb els patrons regex de l'exemple anterior) ...
+        
+        # Si després de tot no trobem res, tornem None
+        if not any(daily_data.get(key) for key in ['tm', 'tx', 'tn', 'hr', 'ppt']):
+            write_log("❌ No s'han pogut extreure dades del resum diari.")
+            return None
+        else:
+            write_log("✅ Dades del resum diari extretes.")
+            return daily_data
+        
+    except Exception as e:
+        write_log(f"❌ Error consultant resum diari: {e}")
+        return None
