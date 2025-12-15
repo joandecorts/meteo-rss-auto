@@ -1,4 +1,4 @@
-=== INICI: 2025-12-15 12:30:50.374503 ===
+=== INICI: 2025-12-15 13:35:38.028607 ===
 🚀 Script iniciat
 
 🚀 INICIANT GENERACIÓ RSS
@@ -6,36 +6,36 @@
 
 🎯 Consultant Girona [XJ]
 🌐 Consultant Girona [XJ]...
-📊 26 files trobades
-✅ Dades RECENTS trobades: 11:30 - 12:00
+📊 28 files trobades
+✅ Dades RECENTS trobades: 12:30 - 13:00
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   tm: 14.8
-   tx: 14.9
-   tn: 14.7
-   hr: 100.0
-   ppt: 0.2
-   vvm: 9.4
-   dvm: 160.0
-   vvx: 22.7
-   pm: 1015.1
-   rs: 91.0
+   tm: 15.2
+   tx: 15.2
+   tn: 15.1
+   hr: 99.0
+   ppt: 0.1
+   vvm: 13.0
+   dvm: 149.0
+   vvx: 30.2
+   pm: 1014.0
+   rs: 107.0
 ✅ Girona actualitzada
 
 🎯 Consultant Fornells de la Selva [UO]
 🌐 Consultant Fornells de la Selva [UO]...
-📊 26 files trobades
-✅ Dades RECENTS trobades: 11:30 - 12:00
+📊 28 files trobades
+✅ Dades RECENTS trobades: 12:30 - 13:00
 🔍 Columnes disponibles: 6
 📊 Dades extretes:
-   tm: 14.9
-   tx: 15.0
-   tn: 14.9
-   hr: 94.0
-   ppt: 0.1
+   tm: 15.4
+   tx: 15.5
+   tn: 15.3
+   hr: 92.0
+   ppt: 0.0
 ✅ Fornells de la Selva actualitzada
 📊 Entrades generades: 2
 ✅ RSS actualitzat correctament
 🏁 Estacions al RSS: ['XJ', 'UO']
 🎉 Èxit complet
-🏁 Fi: 2025-12-15 12:30:53.321449
+🏁 Fi: 2025-12-15 13:35:40.951523

@@ -4,18 +4,18 @@
   <title>MeteoCat Resum Diari</title>
   <link>https://www.meteo.cat</link>
   <description>Resums meteorològics del dia actual - Estacions Girona i Fornells de la Selva / Today's weather summaries - Girona and Fornells de la Selva stations</description>
-  <lastBuildDate>Mon, 15 Dec 2025 13:30:53 CET</lastBuildDate>
+  <lastBuildDate>Mon, 15 Dec 2025 14:35:41 CET</lastBuildDate>
   <item>
     <title>⚠️ Girona - Dades diàries no disponibles || ⚠️ Girona - Daily data not available</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ&dia=2025-12-15</link>
-    <description>Dades del resum diari no disponibles per a Girona - Actualitzat a les 13:30 CET / Daily summary data not available for Girona - Updated at 13:30 CET</description>
-    <pubDate>Mon, 15 Dec 2025 13:30:53 CET</pubDate>
+    <description>Dades del resum diari no disponibles per a Girona - Actualitzat a les 14:35 CET / Daily summary data not available for Girona - Updated at 14:35 CET</description>
+    <pubDate>Mon, 15 Dec 2025 14:35:41 CET</pubDate>
   </item>
   <item>
     <title>⚠️ Fornells de la Selva - Dades diàries no disponibles || ⚠️ Fornells de la Selva - Daily data not available</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi=UO&dia=2025-12-15</link>
-    <description>Dades del resum diari no disponibles per a Fornells de la Selva - Actualitzat a les 13:30 CET / Daily summary data not available for Fornells de la Selva - Updated at 13:30 CET</description>
-    <pubDate>Mon, 15 Dec 2025 13:30:53 CET</pubDate>
+    <description>Dades del resum diari no disponibles per a Fornells de la Selva - Actualitzat a les 14:35 CET / Daily summary data not available for Fornells de la Selva - Updated at 14:35 CET</description>
+    <pubDate>Mon, 15 Dec 2025 14:35:41 CET</pubDate>
   </item>
 </channel>
 </rss>
