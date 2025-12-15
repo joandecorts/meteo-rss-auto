@@ -1,273 +1,265 @@
 import requests
 from bs4 import BeautifulSoup
+from datetime import datetime
 import pytz
-from datetime import datetime, timedelta
-import re
-import sys
-import os
 import json
+import os
 
 def write_log(message):
-    """Escriu un missatge al log i també el mostra per pantalla"""
     print(message)
     with open('debug_dayly.log', 'a', encoding='utf-8') as f:
         f.write(message + '\n')
 
-def convertir_a_numero(text):
-    """Converteix text a número, retorna None si no és vàlid"""
-    if not text:
-        return None
-    
-    text = str(text).strip()
-    invalid_values = ['(s/d)', '-', '', 'n/d', '--', 'nan', 'null', 'none']
-    if text.lower() in [v.lower() for v in invalid_values]:
-        return None
-    
+def get_daily_summary_from_meteocat(station_code, station_name):
+    """Obté el resum diari REAL de MeteoCat (no acumulació local)"""
     try:
-        cleaned = re.sub(r'[^\d.\-]', '', text.replace(',', '.'))
-        if cleaned and re.search(r'\d', cleaned):
-            value = float(cleaned)
-            return value
-        else:
-            return None
-    except Exception as e:
-        write_log(f"⚠️ Error convertint número '{text}': {e}")
-        return None
-
-def get_daily_summary(station_code, station_name):
-    """Obté el resum diari (màximes, mínimes, acumulats) del dia actual"""
-    try:
-        # URL amb la data d'avui
-        today = datetime.now().strftime('%Y-%m-%d')
+        today = datetime.now().strftime("%Y-%m-%d")
         url = f"https://www.meteo.cat/observacions/xema/dades?codi={station_code}&dia={today}"
-
-        write_log(f"🌐 Consultant resum diari {station_name} [{station_code}]...")
-        write_log(f"📄 URL: {url}")
-
-        headers = {'User-Agent': 'Mozilla/5.0'}
-        response = requests.get(url, headers=headers, timeout=15)
-        response.raise_for_status()
-
-        soup = BeautifulSoup(response.content, 'html.parser')
-
-        daily_data = {
-            'station_name': station_name,
-            'station_code': station_code,
-            'data_consulta': today,
-            'hora_consulta': datetime.now().strftime('%H:%M'),
-            'periode': '00:00-24:00'
-        }
-
-        # ESTRATÈGIA 1: Cerca per l'ID 'resum-diari' o per l'etiqueta h2
-        write_log("🔍 Cercant resum diari...")
-        resum_div = soup.find('div', id='resum-diari')
         
-        if not resum_div:
-            h2_title = soup.find('h2', string=re.compile('Resum diari', re.IGNORECASE))
-            if h2_title:
-                resum_div = h2_title.find_parent('div')
-                if resum_div:
-                    write_log("✅ Trobat 'Resum diari' via h2.")
-
-        if resum_div:
-            write_log("✅ Secció del resum diari localitzada.")
-            # Busquem el text complet del resum
-            full_resum_text = resum_div.get_text()
-            write_log(f"📄 Text del resum: {full_resum_text[:500]}...")  # Primeres 500 lletres per debug
-
-            # Patrons regex per extreure dades del text
-            patterns = {
-                'tm': r'temperatura\s+mitjana[^\d]*([\d,\.]+)',
-                'tx': r'temperatura\s+(?:màxima|máxima)[^\d]*([\d,\.]+)',
-                'tn': r'temperatura\s+mínima[^\d]*([\d,\.]+)',
-                'hr': r'humitat\s+(?:relativa\s+)?mitjana[^\d]*([\d,\.]+)',
-                'ppt': r'precipitaci[oó]\s+(?:acumulada\s+)?[^\d]*([\d,\.]+)'
-            }
-
-            for key, pattern in patterns.items():
-                match = re.search(pattern, full_resum_text, re.IGNORECASE)
-                if match:
-                    value = match.group(1).replace(',', '.')
-                    daily_data[key] = convertir_a_numero(value)
-                    write_log(f"   ✅ {key.upper()} (via regex): {daily_data[key]}")
-                else:
-                    write_log(f"   ❌ {key.upper()} NO trobat amb patró.")
-        else:
-            write_log("❌ No s'ha trobat cap contenidor del resum diari.")
-
-        # COMPROVACIÓ FINAL: Tenim alguna dada vàlida?
-        dades_valides = any(daily_data.get(key) is not None for key in ['tm', 'tx', 'tn', 'hr', 'ppt'])
-        if dades_valides:
-            write_log("✅ Dades del resum diari extretes amb èxit.")
-            for key, value in daily_data.items():
-                if value is not None and key not in ['station_name', 'station_code', 'data_consulta', 'hora_consulta', 'periode']:
-                    write_log(f"   📍 {key.upper()}: {value}")
-            return daily_data
-        else:
-            write_log("❌ No s'han pogut extreure dades del resum diari.")
-            return None
-
+        write_log(f"🌐 Consultant resum diari REAL: {station_name} [{station_code}]")
+        write_log(f"   URL: {url}")
+        
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.content, 'html.parser')
+        
+        # Buscar totes les taules
+        tables = soup.find_all('table')
+        
+        for i, table in enumerate(tables):
+            # Verificar si aquesta taula conté "Resum diari" o "Temperatura"
+            table_text = table.get_text()
+            if 'Resum diari' in table_text or 'Temperatura' in table_text:
+                write_log(f"📊 Taula {i} sembla contenir dades del dia")
+                
+                # Buscar totes les files de la taula
+                rows = table.find_all('tr')
+                
+                # Diccionari per emmagatzemar valors trobats
+                valors = {}
+                
+                for row in rows:
+                    cells = row.find_all(['td', 'th'])
+                    if len(cells) >= 2:
+                        label = cells[0].get_text(strip=True)
+                        valor = cells[1].get_text(strip=True)
+                        
+                        # Identificar valors clau
+                        if 'Temperatura mitjana' in label or 'Temperatura máxima' in label or 'Temperatura mínima' in label or 'Precipitació acumulada' in label:
+                            # Extreure número del valor
+                            import re
+                            num_match = re.search(r'([-]?\d+[.,]?\d*)', valor)
+                            if num_match:
+                                num = float(num_match.group(1).replace(',', '.'))
+                                valors[label] = num
+                                write_log(f"   ✅ {label}: {num}")
+                
+                # Retornar els valors trobats
+                if valors:
+                    return {
+                        'data': today,
+                        'estacio': station_code,
+                        'nom_estacio': station_name,
+                        'temp_mitjana': valors.get('Temperatura mitjana'),
+                        'temp_maxima': valors.get('Temperatura máxima'),
+                        'temp_minima': valors.get('Temperatura mínima'),
+                        'pluja_acumulada': valors.get('Precipitació acumulada')
+                    }
+        
+        # Si no trobem la taula, provem amb una cerca més agressiva
+        write_log("⚠️ No s'ha trobat la taula amb el patró esperat, provant cerca alternativa...")
+        
+        # Cerca per tots els texts que continguin números i paraules clau
+        all_text = soup.get_text()
+        import re
+        
+        # Patrons per a temperatures
+        temp_max_pattern = r'Temperatura máxima[:\s]*([-]?\d+[.,]?\d*)'
+        temp_min_pattern = r'Temperatura mínima[:\s]*([-]?\d+[.,]?\d*)'
+        pluja_pattern = r'Precipitació acumulada[:\s]*([-]?\d+[.,]?\d*)'
+        
+        temp_max_match = re.search(temp_max_pattern, all_text)
+        temp_min_match = re.search(temp_min_pattern, all_text)
+        pluja_match = re.search(pluja_pattern, all_text)
+        
+        resultat = {
+            'data': today,
+            'estacio': station_code,
+            'nom_estacio': station_name,
+            'temp_maxima': float(temp_max_match.group(1).replace(',', '.')) if temp_max_match else None,
+            'temp_minima': float(temp_min_match.group(1).replace(',', '.')) if temp_min_match else None,
+            'pluja_acumulada': float(pluja_match.group(1).replace(',', '.')) if pluja_match else None
+        }
+        
+        if resultat['temp_maxima']:
+            write_log(f"   ✅ Temperatura máxima (alternativa): {resultat['temp_maxima']}")
+        if resultat['temp_minima']:
+            write_log(f"   ✅ Temperatura mínima (alternativa): {resultat['temp_minima']}")
+        if resultat['pluja_acumulada'] is not None:
+            write_log(f"   ✅ Precipitació acumulada (alternativa): {resultat['pluja_acumulada']}")
+        
+        return resultat
+        
     except Exception as e:
         write_log(f"❌ Error consultant resum diari: {e}")
-        import traceback
-        write_log(f"📋 Traceback: {traceback.format_exc()}")
         return None
 
-def generar_rss_daily():
-    write_log("\n🚀 INICIANT GENERACIÓ RSS RESUM DIARI")
+def save_daily_summary(summary_data):
+    """Guarda el resum diari a daily_summary.json"""
+    try:
+        # Llegir dades existents
+        if os.path.exists('daily_summary.json'):
+            with open('daily_summary.json', 'r', encoding='utf-8') as f:
+                all_data = json.load(f)
+        else:
+            all_data = {}
+        
+        # Actualitzar amb les dades noves
+        data_key = summary_data['data']
+        
+        if data_key not in all_data:
+            all_data[data_key] = {}
+        
+        station_code = summary_data['estacio']
+        all_data[data_key][station_code] = {
+            'station_name': summary_data['nom_estacio'],
+            'temp_maxima': summary_data['temp_maxima'],
+            'temp_minima': summary_data['temp_minima'],
+            'pluja_acumulada': summary_data['pluja_acumulada'],
+            'actualitzat': datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        }
+        
+        # Guardar
+        with open('daily_summary.json', 'w', encoding='utf-8') as f:
+            json.dump(all_data, f, ensure_ascii=False, indent=2)
+        
+        write_log(f"💾 Resum diari guardat a daily_summary.json")
+        return True
+        
+    except Exception as e:
+        write_log(f"❌ Error guardant resum diari: {e}")
+        return False
+
+def generar_rss_diari():
+    write_log("\n🚀 GENERANT RSS DIARI (RESUMS REALS)")
     
     cet = pytz.timezone('CET')
     now = datetime.now(cet)
-    today_str = now.strftime('%Y-%m-%d')
+    data_avui = now.strftime('%Y-%m-%d')
     
-    # Determinar si és hora d'estiu (CEST) o hora d'hivern (CET)
-    is_dst = now.dst() != timedelta(0)
-    timezone_cat = "CEST" if is_dst else "CET"
-    timezone_en = "CEST" if is_dst else "CET"
-    
-    write_log(f"📅 Data actual: {today_str}")
-    write_log(f"⏰ Hora actual: {now.strftime('%H:%M')} {timezone_cat}")
-    
-    # Consultem les DUES estacions per obtenir el resum diari
     estacions = [
         {"code": "XJ", "name": "Girona"},
         {"code": "UO", "name": "Fornells de la Selva"}
     ]
     
-    dades_diaries = {}
+    entrades = []
+    resums_trobats = []
     
     for station in estacions:
-        write_log(f"\n🎯 CONSULTANT RESUM DIARI: {station['name']} [{station['code']}]")
-        dades = get_daily_summary(station['code'], station['name'])
+        write_log(f"\n📊 Consultant resum REAL per {station['name']}")
         
-        if dades:
-            dades_diaries[station['code']] = dades
-            write_log(f"✅ RESUM DIARI OBTINGUT PER A {station['name']}")
-        else:
-            write_log(f"⚠️ {station['name']} - NO S'HA POGUT OBTENIR RESUM DIARI")
-            dades_diaries[station['code']] = {
-                'station_name': station['name'],
-                'station_code': station['code'],
-                'data_consulta': today_str,
-                'hora_consulta': now.strftime('%H:%M'),
-                'error': 'Dades no disponibles'
-            }
-    
-    # Generem les entrades RSS per cada estació
-    entrades = []
-    
-    for station_code, dades in dades_diaries.items():
-        if 'error' in dades:
-            titol_cat = f"⚠️ {dades['station_name']} - Dades diàries no disponibles"
-            titol_en = f"⚠️ {dades['station_name']} - Daily data not available"
-            titol = f"{titol_cat} || {titol_en}"
-            desc_cat = f"Dades del resum diari no disponibles per a {dades['station_name']} - Actualitzat a les {dades['hora_consulta']} {timezone_cat}"
-            desc_en = f"Daily summary data not available for {dades['station_name']} - Updated at {dades['hora_consulta']} {timezone_en}"
-        else:
-            # ✅ VERSIÓ CATALÀ - RESUM DIARI
-            parts_cat = [f"📊 RESUM AVUI {dades['station_name']}"]
+        # Obtenir resum REAL de MeteoCat
+        resum = get_daily_summary_from_meteocat(station['code'], station['name'])
+        
+        if resum and resum.get('temp_maxima') is not None:
+            # Guardar a daily_summary.json
+            save_daily_summary(resum)
+            resums_trobats.append(resum)
             
-            if dades.get('tx') is not None:
-                parts_cat.append(f"T. Màxima: {dades['tx']}°C")
-            if dades.get('tn') is not None:
-                parts_cat.append(f"T. Mínima: {dades['tn']}°C")
-            if dades.get('tm') is not None:
-                parts_cat.append(f"T. Mitjana: {dades['tm']}°C")
-            if dades.get('ppt') is not None:
-                parts_cat.append(f"Pluja: {dades['ppt']}mm")
-            if dades.get('hr') is not None:
-                parts_cat.append(f"Humitat: {dades['hr']}%")
+            # Preparar dades per RSS
+            temp_max = resum['temp_maxima']
+            temp_min = resum['temp_minima']
+            pluja = resum['pluja_acumulada'] if resum['pluja_acumulada'] is not None else 0.0
             
-            titol_cat = " | ".join(parts_cat)
+            # VERSIÓ CATALÀ - RESUM DIARI REAL
+            titol_cat = f"📊 RESUM DEL DIA {station['name']} | Data: {data_avui} | Període: 00:00-24:00 | 🔥 Temperatura Màxima: {temp_max}°C | ❄️ Temperatura Mínima: {temp_min}°C | 🌧️ Pluja Acumulada: {pluja}mm"
             
-            # ✅ VERSIÓ ANGLÈS - RESUM DIARI
-            parts_en = [f"📊 TODAY'S SUMMARY {dades['station_name']}"]
+            # VERSIÓ ANGLÈS - RESUM DIARI REAL
+            titol_en = f"📊 TODAY'S SUMMARY {station['name']} | Date: {data_avui} | Period: 00:00-24:00 | 🔥 Maximum Temperature: {temp_max}°C | ❄️ Minimum Temperature: {temp_min}°C | 🌧️ Accumulated Rain: {pluja}mm"
             
-            if dades.get('tx') is not None:
-                parts_en.append(f"Max Temp: {dades['tx']}°C")
-            if dades.get('tn') is not None:
-                parts_en.append(f"Min Temp: {dades['tn']}°C")
-            if dades.get('tm') is not None:
-                parts_en.append(f"Avg Temp: {dades['tm']}°C")
-            if dades.get('ppt') is not None:
-                parts_en.append(f"Rain: {dades['ppt']}mm")
-            if dades.get('hr') is not None:
-                parts_en.append(f"Humidity: {dades['hr']}%")
-            
-            titol_en = " | ".join(parts_en)
             titol = f"{titol_cat} || {titol_en}"
             
-            desc_parts_cat = [f"Resum diari de {dades['station_name']} - Data: {today_str}"]
-            if dades.get('tx') is not None:
-                desc_parts_cat.append(f"Temperatura màxima: {dades['tx']}°C")
-            if dades.get('tn') is not None:
-                desc_parts_cat.append(f"Temperatura mínima: {dades['tn']}°C")
-            if dades.get('ppt') is not None:
-                desc_parts_cat.append(f"Pluja acumulada: {dades['ppt']}mm")
-            desc_parts_cat.append(f"Actualitzat a les {dades.get('hora_consulta', now.strftime('%H:%M'))} {timezone_cat}")
+            # URL per al resum diari
+            link_resum = f"https://www.meteo.cat/observacions/xema/dades?codi={station['code']}&dia={data_avui}"
             
-            desc_parts_en = [f"Daily summary from {dades['station_name']} - Date: {today_str}"]
-            if dades.get('tx') is not None:
-                desc_parts_en.append(f"Maximum temperature: {dades['tx']}°C")
-            if dades.get('tn') is not None:
-                desc_parts_en.append(f"Minimum temperature: {dades['tn']}°C")
-            if dades.get('ppt') is not None:
-                desc_parts_en.append(f"Accumulated rain: {dades['ppt']}mm")
-            desc_parts_en.append(f"Updated at {dades.get('hora_consulta', now.strftime('%H:%M'))} {timezone_en}")
-            
-            desc_cat = " | ".join(desc_parts_cat)
-            desc_en = " | ".join(desc_parts_en)
-        
-        # URL amb la data d'avui
-        today_url = f"https://www.meteo.cat/observacions/xema/dades?codi={dades['station_code']}&dia={today_str}"
-        pub_date = now.strftime("%a, %d %b %Y %H:%M:%S ") + ("CEST" if is_dst else "CET")
-        
-        entrada = f'''  <item>
+            entrada = f'''  <item>
     <title>{titol}</title>
-    <link>{today_url}</link>
-    <description>{desc_cat} / {desc_en}</description>
-    <pubDate>{pub_date}</pubDate>
+    <link>{link_resum}</link>
+    <description>Resum diari de {station['name']} - Data: {data_avui} - Actualitzat a les {now.strftime('%H:%M')} CET / Daily summary from {station['name']} - Date: {data_avui} - Updated at {now.strftime('%H:%M')} CET</description>
+    <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
   </item>'''
-        
-        entrades.append(entrada)
-    
-    write_log(f"\n📊 Entrades de resum diari generades: {len(entrades)}")
+            
+            entrades.append(entrada)
+            write_log(f"✅ Resum REAL generat: Màx={temp_max}°C, Mín={temp_min}°C, Pluja={pluja}mm")
+        else:
+            write_log(f"⚠️ No s'han pogut obtenir dades del dia per {station['name']}")
+            
+            # Fallback: llegir del daily_summary.json si existeix
+            if os.path.exists('daily_summary.json'):
+                try:
+                    with open('daily_summary.json', 'r', encoding='utf-8') as f:
+                        all_data = json.load(f)
+                    
+                    if data_avui in all_data and station['code'] in all_data[data_avui]:
+                        dades = all_data[data_avui][station['code']]
+                        
+                        titol_cat = f"📊 RESUM DEL DIA {station['name']} | Data: {data_avui} | 🔥 Temperatura Màxima: {dades['temp_maxima']}°C | ❄️ Temperatura Mínima: {dades['temp_minima']}°C | 🌧️ Pluja Acumulada: {dades['pluja_acumulada']}mm"
+                        titol_en = f"📊 TODAY'S SUMMARY {station['name']} | Date: {data_avui} | 🔥 Maximum Temperature: {dades['temp_maxima']}°C | ❄️ Minimum Temperature: {dades['temp_minima']}°C | 🌧️ Accumulated Rain: {dades['pluja_acumulada']}mm"
+                        titol = f"{titol_cat} || {titol_en}"
+                        
+                        link_resum = f"https://www.meteo.cat/observacions/xema/dades?codi={station['code']}&dia={data_avui}"
+                        
+                        entrada = f'''  <item>
+    <title>{titol}</title>
+    <link>{link_resum}</link>
+    <description>Resum diari de {station['name']} - Data: {data_avui} - Actualitzat a les {dades['actualitzat']} CET / Daily summary from {station['name']} - Date: {data_avui} - Updated at {dades['actualitzat']} CET</description>
+    <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
+  </item>'''
+                        
+                        entrades.append(entrada)
+                        write_log(f"✅ Resum de còpia de seguretat generat")
+                except Exception as e:
+                    write_log(f"⚠️ Error llegint còpia de seguretat: {e}")
     
     rss_content = f'''<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
-  <title>MeteoCat Resum Diari</title>
+  <title>MeteoCat Resums Diaris Reals</title>
   <link>https://www.meteo.cat</link>
-  <description>Resums meteorològics del dia actual - Estacions Girona i Fornells de la Selva / Today's weather summaries - Girona and Fornells de la Selva stations</description>
-  <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S ")}{"CEST" if is_dst else "CET"}</lastBuildDate>
+  <description>Resums meteorològics reals del dia actual - Estacions Girona i Fornells de la Selva / Today's real weather summaries - Girona and Fornells de la Selva stations</description>
+  <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
 {chr(10).join(entrades)}
 </channel>
 </rss>'''
     
     try:
-        with open('meteo_dayly.rss', 'w', encoding='utf-8') as f:
+        with open('update_meteo_dayly.rss', 'w', encoding='utf-8') as f:
             f.write(rss_content)
-        write_log("✅ RSS de resum diari actualitzat correctament")
+        write_log("✅ RSS diari (resums reals) generat correctament")
+        write_log(f"📁 Arxiu: update_meteo_dayly.rss")
         return True
     except Exception as e:
-        write_log(f"❌ Error guardant RSS de resum: {e}")
+        write_log(f"❌ Error guardant RSS diari: {e}")
         return False
 
 if __name__ == "__main__":
     with open('debug_dayly.log', 'w', encoding='utf-8') as f:
-        f.write(f"=== INICI RESUM DIARI: {datetime.now()} ===\n")
+        f.write(f"=== INICI RSS DIARI: {datetime.now()} ===\n")
     
-    write_log("🚀 Script de resum diari iniciat")
+    write_log("🚀 Script de resums diaris reals")
     
     try:
-        exit_code = generar_rss_daily()
-        if exit_code:
-            write_log("\n🎉 ÈXIT COMPLET DEL PROCÉS DE RESUM DIARI")
+        exit = generar_rss_diari()
+        if exit:
+            write_log("🎉 Èxit complet - RSS diari amb dades reals generat")
         else:
-            write_log("\n💤 FALLADA EN EL PROCÉS DE RESUM DIARI")
+            write_log("💤 Fallada en la generació del RSS diari")
     except Exception as e:
-        write_log(f"\n💥 ERROR FATAL: {e}")
-        exit_code = False
+        write_log(f"💥 ERROR: {e}")
+        import traceback
+        write_log(f"📋 Traceback: {traceback.format_exc()}")
+        exit = False
     
-    write_log(f"\n🏁 FI DEL PROCÉS: {datetime.now()}")
-    sys.exit(0 if exit_code else 1)
+    write_log(f"=== FI RSS DIARI: {datetime.now()} ===")
