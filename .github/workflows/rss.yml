@@ -3,44 +3,44 @@ name: Update Meteo RSS
 on:
   workflow_dispatch:       # Permet executar manualment
   schedule:
-    - cron: '*/10 * * * *'  # Cada 10 minuts (ajusta-ho si vols cada 5)
+    - cron: '*/10 * * * *'  # Cada 10 minuts
 
 jobs:
   update:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          ref: main  # ✅ Canvia de 'gh-pages' a 'main'
-      
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.9'
-          
-      - name: Install Python dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests beautifulsoup4 pytz lxml
-          
-      - name: Generate RSS with real data
-        run: |
-          echo "🚀 Executant el generador RSS..."
-          python generate_meteo_rss.py
-          echo "✅ RSS generat amb dades reals"
-          
-      - name: Show generated RSS preview
-        run: |
-          echo "📄 Previsualització del RSS generat:"
-          head -30 meteo.rss || echo "No s'ha generat el fitxer"
-          
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
-          publish_branch: gh-pages
-          keep_files: true
-          commit_message: "📡 Update RSS amb dades reals - $(date +'%H:%M')"
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        ref: main  # IMPORTANT: Treballa des de main
+        
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests beautifulsoup4 pytz
+        
+    - name: Run Python RSS generator
+      run: |
+        echo "🚀 Executant generate_meteo_rss.py..."
+        python generate_meteo_rss.py
+        echo "✅ Script executat"
+        
+    - name: Verify generated file
+      run: |
+        echo "📄 Contingut de meteo.rss (primera part):"
+        head -20 meteo.rss || echo "ERROR: No s'ha generat meteo.rss"
+        
+    - name: Deploy to gh-pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: .
+        publish_branch: gh-pages
+        keep_files: true
+        commit_message: "📡 Actualització automàtica RSS - $(date -u +'%H:%M UTC')"
