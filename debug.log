@@ -1,4 +1,4 @@
-=== INICI: 2025-12-16 04:52:46.798156 ===
+=== INICI: 2025-12-16 05:16:42.362618 ===
 🚀 Script de dades del període actual (amb acumulació)
 
 🚀 INICIANT GENERACIÓ RSS (DADES PERIODE ACTUAL)
@@ -6,38 +6,38 @@
 
 🎯 [PERÍODE] Consultant Girona [XJ]
 🌐 Consultant Girona [XJ]...
-📊 10 files trobades
-✅ Dades RECENTS trobades: 04:00 - 04:30
+📊 11 files trobades
+✅ Dades RECENTS trobades: 04:30 - 05:00
 📊 Dades extretes:
-   tm: 8.7
-   tx: 8.8
-   tn: 8.5
+   tm: 8.1
+   tx: 8.4
+   tn: 7.9
    hr: 100.0
    ppt: 0.0
-   vvm: 0.7
-   dvm: 287.0
-   vvx: 5.8
-   pm: 1009.0
+   vvm: 2.5
+   dvm: 302.0
+   vvx: 7.6
+   pm: 1008.9
    rs: 0.0
 📊 RESUM DEL DIA (Girona):
-   • Màxima acumulada: 8.8°C
-   • Mínima acumulada: 8.5°C
+   • Màxima acumulada: 8.4°C
+   • Mínima acumulada: 7.9°C
    • Pluja acumulada: 0.0mm
 ✅ Girona - dades del període actualitzades
 
 🎯 [PERÍODE] Consultant Fornells de la Selva [UO]
 🌐 Consultant Fornells de la Selva [UO]...
-📊 10 files trobades
-✅ Dades RECENTS trobades: 04:00 - 04:30
+📊 11 files trobades
+✅ Dades RECENTS trobades: 04:30 - 05:00
 📊 Dades extretes:
-   tm: 8.9
-   tx: 9.1
-   tn: 8.8
-   hr: 98.0
+   tm: 9.2
+   tx: 9.5
+   tn: 9.1
+   hr: 99.0
    ppt: 0.0
 📊 RESUM DEL DIA (Fornells de la Selva):
-   • Màxima acumulada: 9.1°C
-   • Mínima acumulada: 8.8°C
+   • Màxima acumulada: 9.5°C
+   • Mínima acumulada: 9.1°C
    • Pluja acumulada: 0.0mm
 ✅ Fornells de la Selva - dades del període actualitzades
 
@@ -46,4 +46,4 @@
 ✅ RSS generat correctament (update_meteo.rss i meteo.rss)
 📁 Arxius: update_meteo.rss, meteo.rss
 🎉 Èxit complet - RSS generat
-🏁 Fi del procés: 2025-12-16 04:52:49.496140
+🏁 Fi del procés: 2025-12-16 05:16:45.925358
