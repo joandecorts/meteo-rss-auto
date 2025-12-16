@@ -1,95 +1,305 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 """
-Genera meteo.rss per a la branca gh-pages
-Unifica dades en temps real i resums diaris en un sol fitxer RSS amb 4 ítems
+Script per generar el ticker HTML a partir del fitxer RSS que ja tens.
 """
 
-import xml.etree.ElementTree as ET
+import urllib.request
+import re
+import json
 from datetime import datetime
+from pathlib import Path
+from typing import Dict, Any, List
 import sys
 
-def generate_rss():
+# ============================================================================
+# FUNCIÓ PER OBTENIR DADES DEL RSS
+# ============================================================================
+
+def obtenir_dades_del_rss(url_rss: str = 'https://joandecorts.github.io/meteo-rss-auto/meteo.rss') -> List[Dict[str, Any]]:
     """
-    Genera el fitxer meteo.rss amb 4 ítems:
-    1. Girona - últim període
-    2. Fornells - últim període  
-    3. Girona - resum diari acumulat
-    4. Fornells - resum diari acumulat
+    Llegeix el fitxer RSS i extreu les dades de totes les estacions.
+    Retorna una llista de diccionaris, un per cada estació.
     """
+    try:
+        print(f"[INFO] Obtenint dades del RSS: {url_rss}")
+        
+        # Descarregar el contingut del RSS
+        with urllib.request.urlopen(url_rss) as response:
+            rss_content = response.read().decode('utf-8')
+        
+        print("[OK] RSS obtingut correctament")
+        
+        # Trobar TOTS els items (estacions) del RSS
+        items = re.findall(r'<item>(.*?)</item>', rss_content, re.DOTALL)
+        print(f"[OK] Trobats {len(items)} estacions al RSS")
+        
+        stations_data = []
+        
+        for i, item in enumerate(items):
+            # Extreure el títol de l'estació (on estan TOTES les dades)
+            title_match = re.search(r'<title>(.*?)</title>', item, re.DOTALL)
+            
+            if not title_match:
+                continue
+            
+            title_text = title_match.group(1).strip()
+            
+            # Inicialitzar dades de l'estació
+            station_data = {
+                'name': "Estació Desconeguda",
+                'code': "",
+                # Temperatures
+                'temp_actual': None,
+                'temp_maxima': None,
+                'temp_minima': None,
+                # Humitat i precipitació
+                'humitat': None,
+                'precipitacio': '0.0',
+                # Vent
+                'vent': None,
+                'vent_direccio': None,
+                'vent_maxim': None,
+                # Pressió i radiació
+                'pressio': None,
+                'radiacio': None,
+                # Dades addicionals
+                'periode': None,
+                'actualitzacio': None
+            }
+            
+            # Extreure nom de l'estació
+            name_match = re.search(r'🌤️\s*(.*?)\s*\|', title_text)
+            if name_match:
+                station_data['name'] = name_match.group(1).strip()
+                
+                # Determinar codi de l'estació pel nom
+                if 'Girona' in station_data['name']:
+                    station_data['code'] = 'XJ'
+                elif 'Fornells' in station_data['name']:
+                    station_data['code'] = 'UO'
+            
+            # EXTREURE TOTES LES DADES METEOROLÒGIQUES DEL TÍTOL
+            
+            # Temperatura Actual (busquem 'Actual:' o 'Temp. Mitjana:')
+            temp_actual_match = re.search(r'(?:Actual|Temp\. Mitjana):\s*([\d.-]+)°C', title_text)
+            if temp_actual_match:
+                station_data['temp_actual'] = temp_actual_match.group(1)
+            
+            # Temperatura Màxima
+            temp_maxima_match = re.search(r'(?:Temp\. Màxima|Màxima):\s*([\d.-]+)°C', title_text)
+            if temp_maxima_match:
+                station_data['temp_maxima'] = temp_maxima_match.group(1)
+            
+            # Temperatura Mínima
+            temp_minima_match = re.search(r'(?:Temp\. Mínima|Mínima):\s*([\d.-]+)°C', title_text)
+            if temp_minima_match:
+                station_data['temp_minima'] = temp_minima_match.group(1)
+            
+            # Humitat
+            humitat_match = re.search(r'Humitat:\s*([\d.-]+)%', title_text)
+            if humitat_match:
+                station_data['humitat'] = humitat_match.group(1)
+            
+            # Precipitació
+            precipitacio_match = re.search(r'Precipitació:\s*([\d.-]+)mm', title_text)
+            if precipitacio_match:
+                station_data['precipitacio'] = precipitacio_match.group(1)
+            
+            # Vent (mitjà)
+            vent_match = re.search(r'(?:Vent|Vent mitjà):\s*([\d.-]+)km/h', title_text)
+            if vent_match:
+                station_data['vent'] = vent_match.group(1)
+            
+            # Direcció Vent
+            vent_dir_match = re.search(r'(?:Dir\.Vent|Direcció vent):\s*([\d.-]+)°', title_text)
+            if vent_dir_match:
+                station_data['vent_direccio'] = vent_dir_match.group(1)
+            
+            # Vent Màxim
+            vent_max_match = re.search(r'(?:Vent Màx|Ratxa màxima):\s*([\d.-]+)km/h', title_text)
+            if vent_max_match:
+                station_data['vent_maxim'] = vent_max_match.group(1)
+            
+            # Pressió
+            pressio_match = re.search(r'Pressió:\s*([\d.-]+)hPa', title_text)
+            if pressio_match:
+                station_data['pressio'] = pressio_match.group(1)
+            
+            # Radiació
+            radiacio_match = re.search(r'Radiació:\s*([\d.-]+)W/m²', title_text)
+            if radiacio_match:
+                station_data['radiacio'] = radiacio_match.group(1)
+            
+            # Període
+            periode_match = re.search(r'Període:\s*([\d:\s-]+)', title_text)
+            if periode_match:
+                station_data['periode'] = periode_match.group(1).strip()
+            
+            # Actualització
+            actualitzacio_match = re.search(r'Actualitzat:\s*([\d:]+)', title_text)
+            if actualitzacio_match:
+                station_data['actualitzacio'] = actualitzacio_match.group(1)
+            
+            stations_data.append(station_data)
+            print(f"[OK] Processada estació: {station_data['name']}")
+        
+        return stations_data
+        
+    except Exception as e:
+        print(f"[ERROR] Obtenint dades del RSS: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc()
+        return []
+
+# ============================================================================
+# GENERACIÓ DE L'HTML (ADAPTADA PER A LES DADES DEL RSS)
+# ============================================================================
+
+def renderitzar_html(estacions: List[Dict[str, Any]]) -> str:
+    """Genera el codi HTML del ticker a partir de les dades del RSS."""
     
-    # Dades actuals (aquestes es podrien obtenir d'una API real)
-    now = datetime.now()
-    current_hour = now.hour
-    current_minute = 30 if now.minute >= 30 else 0
-    period_end = f"{current_hour:02d}:{current_minute:02d}"
-    period_start = f"{current_hour:02d}:00"
-    period = f"{period_start}-{period_end}"
+    def fmt(val, unitat=''):
+        """Formata un valor per a mostrar-lo."""
+        if val is None:
+            return 'N/D'
+        try:
+            # Intentar convertir a float per arrodonir
+            num = float(val)
+            if num.is_integer():
+                return f'{int(num)}{unitat}'
+            return f'{num:.1f}{unitat}'.rstrip('0').rstrip('.') + unitat
+        except (ValueError, TypeError):
+            return str(val) if val else 'N/D'
     
-    # Formates de data
-    date_str = now.strftime('%d-%m-%Y')
-    date_str_en = now.strftime('%Y-%m-%d')
-    rfc_date = now.strftime('%a, %d %b %Y %H:%M:%S +0000')
+    hora_actual = datetime.now().strftime('%H:%M')
+    data_actual = datetime.now().strftime('%d/%m/%Y')
     
-    # Crear RSS
-    rss = ET.Element('rss', version='2.0')
-    channel = ET.SubElement(rss, 'channel')
+    # Separar estacions per al ticker (màxim 2 estacions)
+    estacio1 = estacions[0] if len(estacions) > 0 else {}
+    estacio2 = estacions[1] if len(estacions) > 1 else {}
     
-    # Capçalera
-    ET.SubElement(channel, 'title').text = 'Dades Meteorològiques Gironès'
-    ET.SubElement(channel, 'description').text = 'Dades en temps real i resums diaris - Font: Meteo.cat'
-    ET.SubElement(channel, 'link').text = 'https://www.meteo.cat'
-    ET.SubElement(channel, 'lastBuildDate').text = rfc_date
+    # Determinar noms per a les columnes del ticker
+    nom_estacio1 = estacio1.get('name', 'GIRONA')
+    nom_estacio2 = estacio2.get('name', 'FORNELLS DE LA SELVA')
     
-    # --- ÍTEM 1: GIRONA - ÚLTIM PERÍODE ---
-    item1 = ET.SubElement(channel, 'item')
-    ET.SubElement(item1, 'title').text = f'🌤️ Girona | Període: {period} | TM: 14.2°C | TX: 14.2°C | TN: 11.2°C | HRM: 82% | PPT: 5.5mm | VM: 8.2km/h | DVM: 225° | WX: 12.5km/h | PM: 1015.2hPa | RS: 85W/m²'
-    ET.SubElement(item1, 'pubDate').text = rfc_date
+    html = f'''<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticker Meteorològic</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {{ margin: 0; padding: 0; background: #111; color: #eee; font-family: 'Segoe UI', sans-serif; overflow: hidden; }}
+        .ticker {{ display: flex; background: linear-gradient(90deg, #1a3c5f, #2a2a2a); padding: 10px 20px; border-bottom: 3px solid #0cf; }}
+        .estacio {{ flex: 1; padding: 0 20px; border-right: 1px solid #444; }}
+        .estacio:last-child {{ border-right: none; }}
+        .header {{ display: flex; align-items: center; margin-bottom: 8px; color: #0cf; }}
+        .header i {{ margin-right: 10px; font-size: 1.2em; }}
+        .dades {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }}
+        .dada {{ background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 6px; }}
+        .etiqueta {{ font-size: 0.85em; color: #aaa; }}
+        .valor {{ font-size: 1.4em; font-weight: bold; color: #fff; }}
+        .unitat {{ font-size: 0.9em; color: #0cf; margin-left: 3px; }}
+        .temps-actual {{ font-size: 0.9em; color: #8f8; margin-top: 5px; }}
+        .timestamp {{ text-align: center; padding: 10px; color: #aaa; font-size: 0.9em; border-top: 1px solid #333; }}
+        .fa-temperature-high {{ color: #ff6b6b; }}
+        .fa-temperature-low {{ color: #4dabf7; }}
+        .fa-tint {{ color: #339af0; }}
+        .fa-wind {{ color: #a9e34b; }}
+        .fa-compress-alt {{ color: #da77f2; }}
+        .fa-sun {{ color: #ffd43b; }}
+    </style>
+</head>
+<body>
+    <div class="ticker">
+        <!-- PRIMERA ESTACIÓ -->
+        <div class="estacio">
+            <div class="header">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>{nom_estacio1.upper()}</h3>
+            </div>
+            <div class="temps-actual">Període: {estacio1.get('periode', 'N/D')}</div>
+            <div class="dades">
+                <div class="dada"><div class="etiqueta"><i class="fas fa-temperature-high"></i> Actual</div><div class="valor">{fmt(estacio1.get('temp_actual'), '°')}<span class="unitat">C</span></div></div>
+                <div class="dada"><div class="etiqueta"><i class="fas fa-temperature-high"></i> Màx</div><div class="valor">{fmt(estacio1.get('temp_maxima'), '°')}<span class="unitat">C</span></div></div>
+                <div class="dada"><div class="etiqueta"><i class="fas fa-temperature-low"></i> Mín</div><div class="valor">{fmt(estacio1.get('temp_minima'), '°')}<span class="unitat">C</span></div></div>
+                <div class="dada"><div class="etiqueta"><i class="fas fa-tint"></i> Humitat</div><div class="valor">{fmt(estacio1.get('humitat'), '')}<span class="unitat">%</span></div></div>
+                <div class="dada"><div class="etiqueta"><i class="fas fa-cloud-rain"></i> Pluja</div><div class="valor">{fmt(estacio1.get('precipitacio'), '')}<span class="unitat">mm</span></div></div>
+                <div class="dada"><div class="etiqueta"><i class="fas fa-wind"></i> Vent</div><div class="valor">{fmt(estacio1.get('vent'), '')}<span class="unitat">km/h</span></div></div>
+            </div>
+        </div>
+        
+        <!-- SEGONA ESTACIÓ (si existeix) -->
+        <div class="estacio">
+            <div class="header">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>{nom_estacio2.upper()}</h3>
+            </div>
+            <div class="temps-actual">Període: {estacio2.get('periode', 'N/D')}</div>
+            <div class="dades">
+                <div class="dada"><div class="etiqueta"><i class="fas fa-temperature-high"></i> Actual</div><div class="valor">{fmt(estacio2.get('temp_actual'), '°')}<span class="unitat">C</span></div></div>
+                <div class="dada"><div class="etiqueta"><i class="fas fa-temperature-high"></i> Màx</div><div class="valor">{fmt(estacio2.get('temp_maxima'), '°')}<span class="unitat">C</span></div></div>
+                <div class="dada"><div class="etiqueta"><i class="fas fa-temperature-low"></i> Mín</div><div class="valor">{fmt(estacio2.get('temp_minima'), '°')}<span class="unitat">C</span></div></div>
+                <div class="dada"><div class="etiqueta"><i class="fas fa-tint"></i> Humitat</div><div class="valor">{fmt(estacio2.get('humitat'), '')}<span class="unitat">%</span></div></div>
+                <div class="dada"><div class="etiqueta"><i class="fas fa-cloud-rain"></i> Pluja</div><div class="valor">{fmt(estacio2.get('precipitacio', 0), '')}<span class="unitat">mm</span></div></div>
+                <div class="dada"><div class="etiqueta"><i class="fas fa-wind"></i> Vent</div><div class="valor">{fmt(estacio2.get('vent'), '')}<span class="unitat">km/h</span></div></div>
+            </div>
+        </div>
+    </div>
     
-    # --- ÍTEM 2: FORNELLS - ÚLTIM PERÍODE ---
-    item2 = ET.SubElement(channel, 'item')
-    ET.SubElement(item2, 'title').text = f'🌤️ Fornells de la Selva | Període: {period} | TM: 14.0°C | TX: 14.0°C | TN: 11.0°C | HRM: 85% | PPT: 5.0mm | VM: 6.5km/h | DVM: 210° | WX: 9.8km/h | PM: 1014.8hPa | RS: 78W/m²'
-    ET.SubElement(item2, 'pubDate').text = rfc_date
-    
-    # --- ÍTEM 3: GIRONA - RESUM DEL DIA ---
-    item3 = ET.SubElement(channel, 'item')
-    title3_cat = f'📊 RESUM DEL DIA Girona | Data: {date_str} | Període: 00:00-{period_end} | 🔥 Temperatura Màxima: 16.2°C | ❄️ Temperatura Mínima: 10.6°C | 🌧️ Pluja Acumulada: 27.4mm'
-    title3_en = f'📊 TODAY\'S SUMMARY Girona | Date: {date_str_en} | Period: 00:00-{period_end} | 🔥 Maximum Temperature: 16.2°C | ❄️ Minimum Temperature: 10.6°C | 🌧️ Accumulated Rain: 27.4mm'
-    ET.SubElement(item3, 'title').text = f'{title3_cat} || {title3_en}'
-    ET.SubElement(item3, 'pubDate').text = rfc_date
-    
-    # --- ÍTEM 4: FORNELLS - RESUM DEL DIA ---
-    item4 = ET.SubElement(channel, 'item')
-    title4_cat = f'📊 RESUM DEL DIA Fornells de la Selva | Data: {date_str} | Període: 00:00-{period_end} | 🔥 Temperatura Màxima: 15.8°C | ❄️ Temperatura Mínima: 9.8°C | 🌧️ Pluja Acumulada: 25.1mm'
-    title4_en = f'📊 TODAY\'S SUMMARY Fornells de la Selva | Date: {date_str_en} | Period: 00:00-{period_end} | 🔥 Maximum Temperature: 15.8°C | ❄️ Minimum Temperature: 9.8°C | 🌧️ Accumulated Rain: 25.1mm'
-    ET.SubElement(item4, 'title').text = f'{title4_cat} || {title4_en}'
-    ET.SubElement(item4, 'pubDate').text = rfc_date
-    
-    # Guardar com XML
-    tree = ET.ElementTree(rss)
-    
-    # Formatejar bé
-    from xml.dom import minidom
-    xml_str = ET.tostring(rss, encoding='utf-8')
-    dom = minidom.parseString(xml_str)
-    pretty_xml = dom.toprettyxml(indent="  ", encoding='utf-8')
-    
-    # Escriure fitxer
-    with open('meteo.rss', 'wb') as f:
-        f.write(pretty_xml)
-    
-    print(f"✅ meteo.rss generat correctament a les {now.strftime('%H:%M:%S')}")
-    print(f"📊 Període: {period}")
-    print(f"📅 Data: {date_str}")
-    print(f"🔢 4 ítems generats")
+    <div class="timestamp">
+        <i class="far fa-clock"></i> Dades actualitzades a les {hora_actual} del {data_actual} |
+        Font: <a href="https://meteo.cat" style="color:#4dabf7;">Servei Meteorològic de Catalunya</a> |
+        Via: <a href="https://joandecorts.github.io/meteo-rss-auto/meteo.rss" style="color:#4dabf7;">RSS Automàtic</a>
+    </div>
+</body>
+</html>'''
+    return html
+
+# ============================================================================
+# EXECUCIÓ PRINCIPAL
+# ============================================================================
 
 def main():
-    try:
-        generate_rss()
-        return 0
-    except Exception as e:
-        print(f"❌ Error: {e}")
-        return 1
+    print("=" * 60)
+    print("INICIANT GENERACIÓ DEL TICKER DES DEL RSS")
+    print("=" * 60)
+    
+    # 1. OBTENIR DADES DEL RSS
+    print("\n[1] Obtenint dades del RSS...")
+    estacions = obtenir_dades_del_rss()
+    
+    if not estacions:
+        print("[ERROR] No s'han pogut obtenir dades del RSS. Surtint.", file=sys.stderr)
+        sys.exit(1)
+    
+    print(f"[OK] Obtingudes {len(estacions)} estacions")
+    
+    # 2. GUARDAR DADES EN FORMAT JSON (opcional, per a càrrega ràpida)
+    data_avui = datetime.now().strftime('%Y-%m-%d')
+    nom_fitxer_cache = f"meteo_cache_rss_{data_avui}.json"
+    
+    with open(nom_fitxer_cache, 'w', encoding='utf-8') as f:
+        json.dump({
+            'data_processament': datetime.now().isoformat(),
+            'estacions': estacions,
+            'total_estacions': len(estacions)
+        }, f, indent=2, ensure_ascii=False)
+    
+    print(f"[OK] Dades guardades a: {nom_fitxer_cache}")
+    
+    # 3. GENERAR HTML
+    print("[2] Generant HTML del ticker...")
+    html_final = renderitzar_html(estacions)
+    
+    # 4. ESCRIURE FITXER
+    output_file = Path("index.html")
+    output_file.write_text(html_final, encoding='utf-8')
+    
+    print(f"[OK] HTML generat: {output_file.resolve()}")
+    print("\n✅ TICKER ACTUALITZAT CORRECTAMENT DES DEL RSS")
+    print("=" * 60)
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()
