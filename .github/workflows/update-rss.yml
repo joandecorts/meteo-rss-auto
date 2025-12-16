@@ -5,56 +5,37 @@ on:
     - cron: '*/10 * * * *'  # Cada 10 minuts
   workflow_dispatch:  # Permet execució manual
   push:
-    paths:
-      - 'scripts/generate_meteo_rss.py'
+    branches: [ main ]
+    paths: [ 'scripts/generate_meteo_rss.py' ]
 
 jobs:
-  update-rss:
+  generate-and-deploy:
     runs-on: ubuntu-latest
     
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        fetch-depth: 0
     
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.9'
     
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install requests
-    
     - name: Generate RSS file
       run: |
+        echo "🔄 Generant meteo.rss..."
         python scripts/generate_meteo_rss.py
-    
-    - name: Commit and push changes
-      run: |
-        git config --global user.name "GitHub Actions Bot"
-        git config --global user.email "actions@github.com"
         
-        # Verificar si hi ha canvis
-        if git diff --quiet meteo.rss; then
-          echo "No hi ha canvis en meteo.rss"
-        else
-          git add meteo.rss
-          git commit -m "📡 Actualització automàtica meteo.rss $(date +'%Y-%m-%d %H:%M')"
-          git push
-        fi
+        echo "📋 Contingut generat:"
+        head -40 meteo.rss
     
-    - name: Verify RSS file
-      run: |
-        echo "🔍 Verificant estructura RSS..."
-        if [ -f "meteo.rss" ]; then
-          echo "✅ Fitxer meteo.rss existeix"
-          echo "📏 Mida: $(wc -l < meteo.rss) línies"
-          echo "📋 Primeres línies:"
-          head -20 meteo.rss
-        else
-          echo "❌ ERROR: meteo.rss no s'ha generat"
-          exit 1
-        fi
+    - name: Deploy to gh-pages branch
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: .  # Desa tot el directori actual
+        branch: gh-pages
+        clean: false  # No esborra altres fitxers de gh-pages
+        single-commit: true
+        commit-message: "📡 Actualització RSS: $(date +'%Y-%m-%d %H:%M')"
