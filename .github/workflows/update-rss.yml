@@ -2,29 +2,17 @@ name: Update Meteo RSS
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '*/10 * * * *'
   push:
     branches: [main]
 
 jobs:
   update:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    - name: Create RSS
-      run: |
-        echo '<?xml version="1.0"?>
-<rss version="2.0">
-<channel>
-<title>Test</title>
-<item><title>Test 1</title></item>
-<item><title>Test 2</title></item>
-</channel>
-</rss>' > meteo.rss
+    - name: Create file
+      run: echo "test" > test.txt
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
