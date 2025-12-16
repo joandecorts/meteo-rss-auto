@@ -1,13 +1,13 @@
 {
-  "data": "2025-12-15",
+  "data": "2025-12-16",
   "estacio": "UO",
   "maximes_periodes": [
-    10.3
+    11.4
   ],
   "minimes_periodes": [
-    9.5
+    10.9
   ],
   "pluja_periodes": [
-    0.0
+    0.1
   ]
 }
