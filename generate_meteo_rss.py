@@ -1,315 +1,165 @@
-#!/usr/bin/env python3
-"""
-Script principal per generar l'HTML del ticker meteorològic.
-Actualitza les dades de Girona (XJ) i Fornells de la Selva (UO).
-"""
-
-import requests
-from bs4 import BeautifulSoup
-import json
-from datetime import datetime
-from pathlib import Path
-from typing import Dict, Any, Optional
-import sys
-
-# ============================================================================
-# FUNCIÓ PRINCIPAL D'OBTENCIÓ DE DADES (VERSIÓ CORREGIDA DEFINITIVA)
-# ============================================================================
-
-def obtenir_dades_estacio(codi_estacio: str, cache_file_prefix: str = "meteo_cache") -> Optional[Dict[str, Any]]:
+def obtenir_dades_del_rss(url_rss: str = 'https://joandecorts.github.io/meteo-rss-auto/meteo.rss') -> List[Dict[str, Any]]:
     """
-    Obté i processa les dades d'una estació XEMA de Meteo.cat.
-    CORRECCIÓ: Cerca la fila que conté 'Període' a la capçalera, no l'id de la taula.
+    Llegeix el fitxer RSS i extreu les dades de totes les estacions.
+    FILTRA només les estacions de Girona i Fornells de la Selva.
     """
-    base_url = "https://www.meteo.cat/observacions/xema/dades"
-    url = f"{base_url}?codi={codi_estacio}"
-    
     try:
-        response = requests.get(url, timeout=10)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.content, 'html.parser')
+        print(f"[INFO] Obtenint dades del RSS: {url_rss}")
         
-        # --- CORRECCIÓ CLAU AQUÍ ---
-        # 1. TROBAR LA FILA DE LA CAPÇALERA QUE CONTÉ 'Període'
-        # =====================================================
-        # Busquem qualsevol fila (<tr>) que contingui una cel·la de capçalera (<th>)
-        # amb el text exacte 'Període'. Aquesta és la fila que ens interessa.
-        fila_capsalera = None
-        for fila in soup.find_all('tr'):
-            if fila.find('th', string='Període'):
-                fila_capsalera = fila
-                break
-        # --- FI DE LA CORRECCIÓ ---
+        with urllib.request.urlopen(url_rss) as response:
+            rss_content = response.read().decode('utf-8')
         
-        if not fila_capsalera:
-            # Si no trobem 'Període', provem una variant com 'PeríodeTU' per seguretat
-            for fila in soup.find_all('tr'):
-                if fila.find('th', string=lambda t: t and 'Període' in t):
-                    fila_capsalera = fila
-                    break
+        print("[OK] RSS obtingut correctament")
         
-        if not fila_capsalera:
-            print(f"[ERROR] No s'ha trobat la fila de capçalera 'Període' per a {codi_estacio}", file=sys.stderr)
-            return None
+        # Trobar TOTS els items del RSS
+        items = re.findall(r'<item>(.*?)</item>', rss_content, re.DOTALL)
+        print(f"[INFO] Trobats {len(items)} items totals al RSS")
         
-        # 2. LA TAULA SERÀ L'ELEMENT 'table' PARE D'AQUESTA FILA
-        taula = fila_capsalera.find_parent('table')
-        if not taula:
-            print(f"[ERROR] No s'ha pogut trobar la taula pare per a {codi_estacio}", file=sys.stderr)
-            return None
+        stations_data = []
+        estacions_demanades = ['Girona', 'Fornells de la Selva']
+        estacions_trobades = []
         
-        print(f"[OK] Taula localitzada per a {codi_estacio}")
-        
-        # 3. MAPEJAR CAPÇALERES A PARTIR DE LA FILA TROBADA
-        capsaleres = [th.get_text(strip=True) for th in fila_capsalera.find_all(['th', 'td'])]
-        index_columna = {nom: idx for idx, nom in enumerate(capsaleres) if nom}
-        
-        # 4. DEFINIR QUINES COLUMNES BUSCAR (AMB NOMS POSSIBLES)
-        columnes_a_buscar = {
-            'periode': ['Període', 'PeríodeTU'],
-            'tm_actual': ['TM', 'TM°C'],
-            'tx': ['TX', 'TX°C'],
-            'tn': ['TN', 'TN°C'],
-            'humitat': ['HRM', 'HRM%'],
-            'pluja': ['PPT', 'PPTmm'],
-            'vent_vel_mitjana': ['VVM', 'VVM (10 m)km/h'],
-            'vent_dir_mitjana': ['DVM', 'DVM (10 m)graus'],
-            'vent_vel_maxima': ['VVX', 'VVX (10 m)km/h'],
-            'pressio': ['PM', 'PMhPa'],
-            'radiacio': ['RS', 'RSW/m2']
-        }
-        
-        # 5. RECOLLIR TOTES LES FILES DE DADES DEL DIA (les que venen després de la capçalera)
-        files_dades = []
-        for fila in fila_capsalera.find_next_siblings('tr'):
-            cel·les = fila.find_all(['td', 'th'])
-            if len(cel·les) < len(capsaleres):
+        for i, item in enumerate(items):
+            # Extreure el títol de l'ítem
+            title_match = re.search(r'<title>(.*?)</title>', item, re.DOTALL)
+            
+            if not title_match:
                 continue
             
-            fila_dict = {}
-            for clau, possibles_noms in columnes_a_buscar.items():
-                valor = None
-                for nom in possibles_noms:
-                    if nom in index_columna:
-                        idx = index_columna[nom]
-                        if idx < len(cel·les):
-                            text_valor = cel·les[idx].get_text(strip=True)
-                            if text_valor and text_valor not in ('(s/d)', '-', 'N/D', ''):
-                                try:
-                                    # Convertir a float si sembla un número
-                                    if any(caracter in nom for caracter in ['°C', '%', 'mm', 'km/h', 'hPa', '/m2']):
-                                        valor = float(text_valor)
-                                    else:
-                                        valor = text_valor
-                                except ValueError:
-                                    valor = text_valor
-                        break
-                fila_dict[clau] = valor
+            title_text = title_match.group(1).strip()
             
-            if fila_dict.get('periode'):
-                files_dades.append(fila_dict)
+            # DETECTAR SI AQUEST ÉS UN ITEM VÀLID D'ESTACIÓ METEOROLÒGICA
+            # Busquem patrons que indiquin que és una estació meteorològica
+            es_estacio_meteo = False
+            nom_estacio = None
+            
+            # Patró 1: Conté l'emoji de núvol i temperatura 🌤️
+            if '🌤️' in title_text:
+                es_estacio_meteo = True
+                # Extreure nom entre 🌤️ i |
+                name_match = re.search(r'🌤️\s*(.*?)\s*\|', title_text)
+                if name_match:
+                    nom_estacio = name_match.group(1).strip()
+            
+            # Patró 2: Conté paraules clau meteorològiques
+            elif any(keyword in title_text for keyword in ['Temp.', 'Humitat:', 'Vent:', 'Precipitació:']):
+                es_estacio_meteo = True
+                # Intentar extreure nom del títol
+                nom_estacio = "Estació Meteorològica"
+            
+            # Si no és una estació meteorològica, saltem aquest ítem
+            if not es_estacio_meteo:
+                continue
+            
+            # FILTRAR: Només processem Girona i Fornells de la Selva
+            if nom_estacio and any(estacio_demanada in nom_estacio for estacio_demanada in estacions_demanades):
+                estacions_trobades.append(nom_estacio)
+                
+                # Inicialitzar dades de l'estació
+                station_data = {
+                    'name': nom_estacio,
+                    'code': "",
+                    # Temperatures
+                    'temp_actual': None,
+                    'temp_maxima': None,
+                    'temp_minima': None,
+                    # Humitat i precipitació
+                    'humitat': None,
+                    'precipitacio': '0.0',
+                    # Vent
+                    'vent': None,
+                    'vent_direccio': None,
+                    'vent_maxim': None,
+                    # Pressió i radiació
+                    'pressio': None,
+                    'radiacio': None,
+                    # Dades addicionals
+                    'periode': None,
+                    'actualitzacio': None
+                }
+                
+                # Determinar codi de l'estació pel nom
+                if 'Girona' in nom_estacio:
+                    station_data['code'] = 'XJ'
+                elif 'Fornells' in nom_estacio:
+                    station_data['code'] = 'UO'
+                
+                # EXTREURE LES DADES METEOROLÒGIQUES (mateix codi que abans)
+                # Temperatura Actual
+                temp_actual_match = re.search(r'(?:Actual|Temp\. Mitjana):\s*([\d.-]+)°C', title_text)
+                if temp_actual_match:
+                    station_data['temp_actual'] = temp_actual_match.group(1)
+                
+                # Temperatura Màxima
+                temp_maxima_match = re.search(r'(?:Temp\. Màxima|Màxima):\s*([\d.-]+)°C', title_text)
+                if temp_maxima_match:
+                    station_data['temp_maxima'] = temp_maxima_match.group(1)
+                
+                # Temperatura Mínima
+                temp_minima_match = re.search(r'(?:Temp\. Mínima|Mínima):\s*([\d.-]+)°C', title_text)
+                if temp_minima_match:
+                    station_data['temp_minima'] = temp_minima_match.group(1)
+                
+                # Humitat
+                humitat_match = re.search(r'Humitat:\s*([\d.-]+)%', title_text)
+                if humitat_match:
+                    station_data['humitat'] = humitat_match.group(1)
+                
+                # Precipitació
+                precipitacio_match = re.search(r'Precipitació:\s*([\d.-]+)mm', title_text)
+                if precipitacio_match:
+                    station_data['precipitacio'] = precipitacio_match.group(1)
+                
+                # Vent (mitjà)
+                vent_match = re.search(r'(?:Vent|Vent mitjà):\s*([\d.-]+)km/h', title_text)
+                if vent_match:
+                    station_data['vent'] = vent_match.group(1)
+                
+                # Direcció Vent
+                vent_dir_match = re.search(r'(?:Dir\.Vent|Direcció vent):\s*([\d.-]+)°', title_text)
+                if vent_dir_match:
+                    station_data['vent_direccio'] = vent_dir_match.group(1)
+                
+                # Vent Màxim
+                vent_max_match = re.search(r'(?:Vent Màx|Ratxa màxima):\s*([\d.-]+)km/h', title_text)
+                if vent_max_match:
+                    station_data['vent_maxim'] = vent_max_match.group(1)
+                
+                # Pressió
+                pressio_match = re.search(r'Pressió:\s*([\d.-]+)hPa', title_text)
+                if pressio_match:
+                    station_data['pressio'] = pressio_match.group(1)
+                
+                # Radiació
+                radiacio_match = re.search(r'Radiació:\s*([\d.-]+)W/m²', title_text)
+                if radiacio_match:
+                    station_data['radiacio'] = radiacio_match.group(1)
+                
+                # Període
+                periode_match = re.search(r'Període:\s*([\d:\s-]+)', title_text)
+                if periode_match:
+                    station_data['periode'] = periode_match.group(1).strip()
+                
+                # Actualització
+                actualitzacio_match = re.search(r'Actualitzat:\s*([\d:]+)', title_text)
+                if actualitzacio_match:
+                    station_data['actualitzacio'] = actualitzacio_match.group(1)
+                
+                stations_data.append(station_data)
+                print(f"[OK] Processada estació vàlida: {nom_estacio}")
         
-        if not files_dades:
-            print(f"[ERROR] No s'han trobat dades vàlides per a {codi_estacio}", file=sys.stderr)
-            return None
+        print(f"[OK] Estacions filtrades: {', '.join(estacions_trobades)}")
+        print(f"[OK] Total estacions vàlides: {len(stations_data)}")
         
-        # 6. OBTENCIÓ DE L'ÚLTIM PERÍODE VÀLID
-        dades_actuals = None
-        for fila in reversed(files_dades):
-            if fila.get('tm_actual') is not None:
-                dades_actuals = fila
-                break
-        if not dades_actuals:
-            dades_actuals = files_dades[-1]
+        # Si no hem trobat cap estació vàlida, provem una estratègia més agressiva
+        if len(stations_data) == 0:
+            print("[WARNING] No s'han trobat estacions amb els filtres. Processant totes...")
+            # Aquí podries afegir codi de backup per processar tots els ítems
         
-        # 7. CÀLCUL DE MÀXIMES, MÍNIMES I PLUJA ACUMULADA
-        valors_tx = [f['tx'] for f in files_dades if f.get('tx') is not None]
-        valors_tn = [f['tn'] for f in files_dades if f.get('tn') is not None]
-        valors_pluja = [f['pluja'] for f in files_dades if f.get('pluja') is not None]
+        return stations_data
         
-        temperatura_maxima = max(valors_tx) if valors_tx else None
-        temperatura_minima = min(valors_tn) if valors_tn else None
-        pluja_acumulada = sum(valors_pluja) if valors_pluja else 0.0
-        
-        # 8. GENERAR EL FITXER JSON DE TREBALL
-        data_avui = datetime.now().strftime('%Y-%m-%d')
-        nom_fitxer_cache = f"{cache_file_prefix}_{codi_estacio}_{data_avui}.json"
-        
-        dades_diaries = {
-            'estacio': codi_estacio,
-            'data_processament': datetime.now().isoformat(),
-            'url_font': url,
-            'dades_periodiques': files_dades,
-            'calculs': {
-                'temperatura_maxima': temperatura_maxima,
-                'temperatura_minima': temperatura_minima,
-                'pluja_acumulada': pluja_acumulada,
-                'periode_referencia': dades_actuals.get('periode'),
-                'total_periodes': len(files_dades)
-            }
-        }
-        
-        with open(nom_fitxer_cache, 'w', encoding='utf-8') as f:
-            json.dump(dades_diaries, f, indent=2, ensure_ascii=False)
-        
-        # 9. PREPARAR EL RESULTAT PER AL TICKER
-        resultat = {
-            'estacio': codi_estacio,
-            'url_font': url,
-            'actual': {
-                'periode': dades_actuals.get('periode'),
-                'temperatura': dades_actuals.get('tm_actual'),
-                'humitat': dades_actuals.get('humitat'),
-                'vent_vel_mitjana': dades_actuals.get('vent_vel_mitjana'),
-                'vent_dir_mitjana': dades_actuals.get('vent_dir_mitjana'),
-                'pressio': dades_actuals.get('pressio'),
-                'radiacio': dades_actuals.get('radiacio')
-            },
-            'resum_dia': {
-                'temperatura_maxima': temperatura_maxima,
-                'temperatura_minima': temperatura_minima,
-                'pluja_acumulada': pluja_acumulada
-            },
-            'fitxer_cache': nom_fitxer_cache,
-            'total_periodes': len(files_dades)
-        }
-        
-        print(f"[OK] Dades processades per a {codi_estacio} ({len(files_dades)} períodes)")
-        return resultat
-        
-    except requests.exceptions.RequestException as e:
-        print(f"[ERROR] Fallada de xarxa per a {codi_estacio}: {e}", file=sys.stderr)
     except Exception as e:
-        print(f"[ERROR] Processant {codi_estacio}: {e}", file=sys.stderr)
+        print(f"[ERROR] Obtenint dades del RSS: {e}", file=sys.stderr)
         import traceback
         traceback.print_exc()
-    
-    return None
-
-# ============================================================================
-# GENERACIÓ DE L'HTML (EL TEU DISSENY - SENSE CANVIS)
-# ============================================================================
-
-def renderitzar_html(dades_XJ: Dict, dades_UO: Dict) -> str:
-    """Genera el codi HTML del ticker."""
-    
-    def fmt(val, unitat=''):
-        """Formata un valor per a mostrar-lo."""
-        if val is None:
-            return 'N/D'
-        if isinstance(val, float):
-            if val.is_integer():
-                return f'{int(val)}{unitat}'
-            return f'{val:.1f}{unitat}'.rstrip('0').rstrip('.') + unitat
-        return str(val)
-    
-    hora_actual = datetime.now().strftime('%H:%M')
-    data_actual = datetime.now().strftime('%d/%m/%Y')
-    
-    html = f'''<!DOCTYPE html>
-<html lang="ca">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ticker Meteorològic</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body {{ margin: 0; padding: 0; background: #111; color: #eee; font-family: 'Segoe UI', sans-serif; overflow: hidden; }}
-        .ticker {{ display: flex; background: linear-gradient(90deg, #1a3c5f, #2a2a2a); padding: 10px 20px; border-bottom: 3px solid #0cf; }}
-        .estacio {{ flex: 1; padding: 0 20px; border-right: 1px solid #444; }}
-        .estacio:last-child {{ border-right: none; }}
-        .header {{ display: flex; align-items: center; margin-bottom: 8px; color: #0cf; }}
-        .header i {{ margin-right: 10px; font-size: 1.2em; }}
-        .dades {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }}
-        .dada {{ background: rgba(255,255,255,0.05); padding: 8px 12px; border-radius: 6px; }}
-        .etiqueta {{ font-size: 0.85em; color: #aaa; }}
-        .valor {{ font-size: 1.4em; font-weight: bold; color: #fff; }}
-        .unitat {{ font-size: 0.9em; color: #0cf; margin-left: 3px; }}
-        .temps-actual {{ font-size: 0.9em; color: #8f8; margin-top: 5px; }}
-        .timestamp {{ text-align: center; padding: 10px; color: #aaa; font-size: 0.9em; border-top: 1px solid #333; }}
-        .fa-temperature-high {{ color: #ff6b6b; }}
-        .fa-temperature-low {{ color: #4dabf7; }}
-        .fa-tint {{ color: #339af0; }}
-        .fa-wind {{ color: #a9e34b; }}
-        .fa-compress-alt {{ color: #da77f2; }}
-        .fa-sun {{ color: #ffd43b; }}
-    </style>
-</head>
-<body>
-    <div class="ticker">
-        <!-- GIRONA -->
-        <div class="estacio">
-            <div class="header">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>GIRONA</h3>
-            </div>
-            <div class="temps-actual">Període: {dades_XJ.get('actual', {}).get('periode', 'N/D')}</div>
-            <div class="dades">
-                <div class="dada"><div class="etiqueta"><i class="fas fa-temperature-high"></i> Actual</div><div class="valor">{fmt(dades_XJ.get('actual', {}).get('temperatura'), '°')}<span class="unitat">C</span></div></div>
-                <div class="dada"><div class="etiqueta"><i class="fas fa-temperature-high"></i> Màx</div><div class="valor">{fmt(dades_XJ.get('resum_dia', {}).get('temperatura_maxima'), '°')}<span class="unitat">C</span></div></div>
-                <div class="dada"><div class="etiqueta"><i class="fas fa-temperature-low"></i> Mín</div><div class="valor">{fmt(dades_XJ.get('resum_dia', {}).get('temperatura_minima'), '°')}<span class="unitat">C</span></div></div>
-                <div class="dada"><div class="etiqueta"><i class="fas fa-tint"></i> Humitat</div><div class="valor">{fmt(dades_XJ.get('actual', {}).get('humitat'), '')}<span class="unitat">%</span></div></div>
-                <div class="dada"><div class="etiqueta"><i class="fas fa-cloud-rain"></i> Pluja</div><div class="valor">{fmt(dades_XJ.get('resum_dia', {}).get('pluja_acumulada'), '')}<span class="unitat">mm</span></div></div>
-                <div class="dada"><div class="etiqueta"><i class="fas fa-wind"></i> Vent</div><div class="valor">{fmt(dades_XJ.get('actual', {}).get('vent_vel_mitjana'), '')}<span class="unitat">km/h</span></div></div>
-            </div>
-        </div>
-        
-        <!-- FORNELLS -->
-        <div class="estacio">
-            <div class="header">
-                <i class="fas fa-map-marker-alt"></i>
-                <h3>FORNELLS DE LA SELVA</h3>
-            </div>
-            <div class="temps-actual">Període: {dades_UO.get('actual', {}).get('periode', 'N/D')}</div>
-            <div class="dades">
-                <div class="dada"><div class="etiqueta"><i class="fas fa-temperature-high"></i> Actual</div><div class="valor">{fmt(dades_UO.get('actual', {}).get('temperatura'), '°')}<span class="unitat">C</span></div></div>
-                <div class="dada"><div class="etiqueta"><i class="fas fa-temperature-high"></i> Màx</div><div class="valor">{fmt(dades_UO.get('resum_dia', {}).get('temperatura_maxima'), '°')}<span class="unitat">C</span></div></div>
-                <div class="dada"><div class="etiqueta"><i class="fas fa-temperature-low"></i> Mín</div><div class="valor">{fmt(dades_UO.get('resum_dia', {}).get('temperatura_minima'), '°')}<span class="unitat">C</span></div></div>
-                <div class="dada"><div class="etiqueta"><i class="fas fa-tint"></i> Humitat</div><div class="valor">{fmt(dades_UO.get('actual', {}).get('humitat'), '')}<span class="unitat">%</span></div></div>
-                <div class="dada"><div class="etiqueta"><i class="fas fa-cloud-rain"></i> Pluja</div><div class="valor">{fmt(dades_UO.get('resum_dia', {}).get('pluja_acumulada', 0), '')}<span class="unitat">mm</span></div></div>
-                <div class="dada"><div class="etiqueta"><i class="fas fa-wind"></i> Vent</div><div class="valor">{fmt(dades_UO.get('actual', {}).get('vent_vel_mitjana'), '')}<span class="unitat">km/h</span></div></div>
-            </div>
-        </div>
-    </div>
-    
-    <div class="timestamp">
-        <i class="far fa-clock"></i> Dades actualitzades a les {hora_actual} del {data_actual} |
-        Font: <a href="https://meteo.cat" style="color:#4dabf7;">Servei Meteorològic de Catalunya</a>
-    </div>
-</body>
-</html>'''
-    return html
-
-# ============================================================================
-# EXECUCIÓ PRINCIPAL
-# ============================================================================
-
-def main():
-    print("=" * 60)
-    print("INICIANT GENERACIÓ DEL TICKER METEOROLÒGIC")
-    print("=" * 60)
-    
-    # 1. OBTENIR DADES
-    print("\n[1] Obtenint dades de Meteo.cat...")
-    dades_XJ = obtenir_dades_estacio('XJ')
-    dades_UO = obtenir_dades_estacio('UO')
-    
-    if not dades_XJ or not dades_UO:
-        print("[ERROR] No s'han pogut obtenir dades completes. Surtint.", file=sys.stderr)
-        sys.exit(1)
-    
-    # 2. GENERAR HTML
-    print("[2] Generant HTML...")
-    html_final = renderitzar_html(dades_XJ, dades_UO)
-    
-    # 3. ESCRIURE FITXER
-    output_file = Path("index.html")
-    output_file.write_text(html_final, encoding='utf-8')
-    
-    print(f"[OK] HTML generat: {output_file.resolve()}")
-    print(f"[OK] Fitxers JSON creats: {dades_XJ.get('fitxer_cache')}, {dades_UO.get('fitxer_cache')}")
-    print("\n✅ TICKER ACTUALITZAT CORRECTAMENT")
-    print("=" * 60)
-
-if __name__ == "__main__":
-    main()
+        return []
