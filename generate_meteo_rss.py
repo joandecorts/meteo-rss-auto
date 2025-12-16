@@ -2,7 +2,6 @@
 """
 Script principal per generar l'HTML del ticker meteorològic.
 Actualitza les dades de Girona (XJ) i Fornells de la Selva (UO).
-Funciona amb l'estructura HTML de www.meteo.cat.
 """
 
 import requests
@@ -14,13 +13,13 @@ from typing import Dict, Any, Optional
 import sys
 
 # ============================================================================
-# FUNCIÓ PRINCIPAL D'OBTENCIÓ DE DADES (VERSIÓ DEFINITIVA)
+# FUNCIÓ PRINCIPAL D'OBTENCIÓ DE DADES (VERSIÓ CORREGIDA DEFINITIVA)
 # ============================================================================
 
 def obtenir_dades_estacio(codi_estacio: str, cache_file_prefix: str = "meteo_cache") -> Optional[Dict[str, Any]]:
     """
     Obté i processa les dades d'una estació XEMA de Meteo.cat.
-    Cerca la taula per l'id 'tblperiode' i processa totes les files del dia.
+    CORRECCIÓ: Cerca la fila que conté 'Període' a la capçalera, no l'id de la taula.
     """
     base_url = "https://www.meteo.cat/observacions/xema/dades"
     url = f"{base_url}?codi={codi_estacio}"
@@ -30,103 +29,83 @@ def obtenir_dades_estacio(codi_estacio: str, cache_file_prefix: str = "meteo_cac
         response.raise_for_status()
         soup = BeautifulSoup(response.content, 'html.parser')
         
-        # 1. LOCALITZAR LA TAULA PER ID (COM AL TEU XAT ANTERIOR)
+        # --- CORRECCIÓ CLAU AQUÍ ---
+        # 1. TROBAR LA FILA DE LA CAPÇALERA QUE CONTÉ 'Període'
         # =====================================================
-        taula = soup.find('table', {'id': 'tblperiode'})
+        # Busquem qualsevol fila (<tr>) que contingui una cel·la de capçalera (<th>)
+        # amb el text exacte 'Període'. Aquesta és la fila que ens interessa.
+        fila_capsalera = None
+        for fila in soup.find_all('tr'):
+            if fila.find('th', string='Període'):
+                fila_capsalera = fila
+                break
+        # --- FI DE LA CORRECCIÓ ---
         
-        if not taula:
-            # Si per algun motiu no troba l'id, prova amb una cerca de seguretat
-            print(f"[INFO] No s'ha trobat 'tblperiode' per a {codi_estacio}. Cercant per encapçalament...")
-            for table in soup.find_all('table'):
-                if table.find('th', string=lambda t: t and 'Període' in t):
-                    taula = table
+        if not fila_capsalera:
+            # Si no trobem 'Període', provem una variant com 'PeríodeTU' per seguretat
+            for fila in soup.find_all('tr'):
+                if fila.find('th', string=lambda t: t and 'Període' in t):
+                    fila_capsalera = fila
                     break
         
-        if not taula:
-            print(f"[ERROR] No s'ha trobat la taula de dades per a {codi_estacio}", file=sys.stderr)
-            return None
-        
-        # 2. EXTREURE CAPÇALERES PER MAPEJAR COLUMNES
-        # ============================================
-        fila_capsalera = taula.find('tr')
         if not fila_capsalera:
-            print(f"[ERROR] La taula no té capçalera per a {codi_estacio}", file=sys.stderr)
+            print(f"[ERROR] No s'ha trobat la fila de capçalera 'Període' per a {codi_estacio}", file=sys.stderr)
             return None
         
-        # Obtenir tots els textos dels encapçalaments (th o td de la primera fila)
-        capsaleres = []
-        for cell in fila_capsalera.find_all(['th', 'td']):
-            text = cell.get_text(strip=True)
-            # Netejar el text: alguns poden tenir espais o salts de línia
-            capsaleres.append(text)
+        # 2. LA TAULA SERÀ L'ELEMENT 'table' PARE D'AQUESTA FILA
+        taula = fila_capsalera.find_parent('table')
+        if not taula:
+            print(f"[ERROR] No s'ha pogut trobar la taula pare per a {codi_estacio}", file=sys.stderr)
+            return None
         
-        # Crear un diccionari per trobar l'índex d'una columna pel seu nom
-        # Exemple: {'Període': 0, 'TM°C': 1, 'TX°C': 2, ...}
-        index_columna = {}
-        for idx, nom in enumerate(capsaleres):
-            # Si hi ha múltiples columnes amb el mateix nom (poc probable),
-            # només guardem el primer índex
-            if nom not in index_columna:
-                index_columna[nom] = idx
+        print(f"[OK] Taula localitzada per a {codi_estacio}")
         
-        # 3. DEFINIR QUINES COLUMNES ENS INTERESSEN
-        # =========================================
-        # Aquestes són les columnes que podrien aparèixer a la taula
-        # Afegim múltiples possibles noms per a la mateixa dada per ser flexibles
+        # 3. MAPEJAR CAPÇALERES A PARTIR DE LA FILA TROBADA
+        capsaleres = [th.get_text(strip=True) for th in fila_capsalera.find_all(['th', 'td'])]
+        index_columna = {nom: idx for idx, nom in enumerate(capsaleres) if nom}
+        
+        # 4. DEFINIR QUINES COLUMNES BUSCAR (AMB NOMS POSSIBLES)
         columnes_a_buscar = {
             'periode': ['Període', 'PeríodeTU'],
-            'tm_actual': ['TM', 'TM°C', 'Temperatura mitjana'],
-            'tx': ['TX', 'TX°C', 'Temperatura màxima'],
-            'tn': ['TN', 'TN°C', 'Temperatura mínima'],
-            'humitat': ['HRM', 'HRM%', 'Humitat relativa mitjana'],
-            'pluja': ['PPT', 'PPTmm', 'Precipitació'],
-            'vent_vel_mitjana': ['VVM', 'VVM (10 m)km/h', 'Vent mitjà'],
-            'vent_dir_mitjana': ['DVM', 'DVM (10 m)graus', 'Direcció vent mitjà'],
-            'vent_vel_maxima': ['VVX', 'VVX (10 m)km/h', 'Ratxa màxima'],
-            'pressio': ['PM', 'PMhPa', 'Pressió'],
-            'radiacio': ['RS', 'RSW/m2', 'Radiació']
+            'tm_actual': ['TM', 'TM°C'],
+            'tx': ['TX', 'TX°C'],
+            'tn': ['TN', 'TN°C'],
+            'humitat': ['HRM', 'HRM%'],
+            'pluja': ['PPT', 'PPTmm'],
+            'vent_vel_mitjana': ['VVM', 'VVM (10 m)km/h'],
+            'vent_dir_mitjana': ['DVM', 'DVM (10 m)graus'],
+            'vent_vel_maxima': ['VVX', 'VVX (10 m)km/h'],
+            'pressio': ['PM', 'PMhPa'],
+            'radiacio': ['RS', 'RSW/m2']
         }
         
-        # 4. RECOLLIR TOTES LES FILES DE DADES DEL DIA
-        # ============================================
+        # 5. RECOLLIR TOTES LES FILES DE DADES DEL DIA (les que venen després de la capçalera)
         files_dades = []
-        files_taula = taula.find_all('tr')[1:]  # Saltem la primera fila (capçalera)
-        
-        for fila in files_taula:
+        for fila in fila_capsalera.find_next_siblings('tr'):
             cel·les = fila.find_all(['td', 'th'])
-            
-            # Només processem files amb el nombre correcte de cel·les
-            if len(cel·les) < 3:  # Com a mínim ha de tenir Període, TM i una altra dada
+            if len(cel·les) < len(capsaleres):
                 continue
             
             fila_dict = {}
-            
-            # Per a cada tipus de dada que volem, busquem la columna corresponent
             for clau, possibles_noms in columnes_a_buscar.items():
                 valor = None
-                
-                # Busquem quina columna coincideix amb els noms possibles
-                for nom_possible in possibles_noms:
-                    if nom_possible in index_columna:
-                        idx = index_columna[nom_possible]
+                for nom in possibles_noms:
+                    if nom in index_columna:
+                        idx = index_columna[nom]
                         if idx < len(cel·les):
                             text_valor = cel·les[idx].get_text(strip=True)
-                            
-                            # Tractar valors especials
                             if text_valor and text_valor not in ('(s/d)', '-', 'N/D', ''):
                                 try:
-                                    # Intentar convertir a float si sembla un número
-                                    if '°' in nom_possible or '%' in nom_possible or 'mm' in nom_possible or 'km/h' in nom_possible or 'hPa' in nom_possible:
+                                    # Convertir a float si sembla un número
+                                    if any(caracter in nom for caracter in ['°C', '%', 'mm', 'km/h', 'hPa', '/m2']):
                                         valor = float(text_valor)
                                     else:
                                         valor = text_valor
                                 except ValueError:
                                     valor = text_valor
-                        break  # Sortim del bucle de noms possibles si trobem una coincidència
-                
+                        break
                 fila_dict[clau] = valor
             
-            # Només afegim la fila si té un període definit
             if fila_dict.get('periode'):
                 files_dades.append(fila_dict)
         
@@ -134,21 +113,16 @@ def obtenir_dades_estacio(codi_estacio: str, cache_file_prefix: str = "meteo_cac
             print(f"[ERROR] No s'han trobat dades vàlides per a {codi_estacio}", file=sys.stderr)
             return None
         
-        # 5. OBTENCIÓ DE L'ÚLTIM PERÍODE VÀLID (Ítems 1 i 2)
-        # ====================================================
+        # 6. OBTENCIÓ DE L'ÚLTIM PERÍODE VÀLID
         dades_actuals = None
         for fila in reversed(files_dades):
             if fila.get('tm_actual') is not None:
                 dades_actuals = fila
                 break
-        
-        # Fallback: si no trobem dades vàlides, agafem l'última fila
         if not dades_actuals:
             dades_actuals = files_dades[-1]
         
-        # 6. CÀLCUL DE MÀXIMES, MÍNIMES I PLUJA ACUMULADA (Ítems 3 i 4)
-        # =============================================================
-        # Agafem valors vàlids (no None) de totes les files
+        # 7. CÀLCUL DE MÀXIMES, MÍNIMES I PLUJA ACUMULADA
         valors_tx = [f['tx'] for f in files_dades if f.get('tx') is not None]
         valors_tn = [f['tn'] for f in files_dades if f.get('tn') is not None]
         valors_pluja = [f['pluja'] for f in files_dades if f.get('pluja') is not None]
@@ -157,8 +131,7 @@ def obtenir_dades_estacio(codi_estacio: str, cache_file_prefix: str = "meteo_cac
         temperatura_minima = min(valors_tn) if valors_tn else None
         pluja_acumulada = sum(valors_pluja) if valors_pluja else 0.0
         
-        # 7. GENERAR EL FITXER DE TREBALL JSON (Ítem 6)
-        # ============================================
+        # 8. GENERAR EL FITXER JSON DE TREBALL
         data_avui = datetime.now().strftime('%Y-%m-%d')
         nom_fitxer_cache = f"{cache_file_prefix}_{codi_estacio}_{data_avui}.json"
         
@@ -179,8 +152,7 @@ def obtenir_dades_estacio(codi_estacio: str, cache_file_prefix: str = "meteo_cac
         with open(nom_fitxer_cache, 'w', encoding='utf-8') as f:
             json.dump(dades_diaries, f, indent=2, ensure_ascii=False)
         
-        # 8. PREPARAR EL RESULTAT PER AL TICKER HTML
-        # ==========================================
+        # 9. PREPARAR EL RESULTAT PER AL TICKER
         resultat = {
             'estacio': codi_estacio,
             'url_font': url,
@@ -209,11 +181,13 @@ def obtenir_dades_estacio(codi_estacio: str, cache_file_prefix: str = "meteo_cac
         print(f"[ERROR] Fallada de xarxa per a {codi_estacio}: {e}", file=sys.stderr)
     except Exception as e:
         print(f"[ERROR] Processant {codi_estacio}: {e}", file=sys.stderr)
+        import traceback
+        traceback.print_exc()
     
     return None
 
 # ============================================================================
-# GENERACIÓ DE L'HTML (EL TEU DISSENY)
+# GENERACIÓ DE L'HTML (EL TEU DISSENY - SENSE CANVIS)
 # ============================================================================
 
 def renderitzar_html(dades_XJ: Dict, dades_UO: Dict) -> str:
@@ -224,17 +198,14 @@ def renderitzar_html(dades_XJ: Dict, dades_UO: Dict) -> str:
         if val is None:
             return 'N/D'
         if isinstance(val, float):
-            # Sense colors als dígits (només text blanc)
             if val.is_integer():
                 return f'{int(val)}{unitat}'
-            # Mostra un decimal, neteja zeros innecessaris
             return f'{val:.1f}{unitat}'.rstrip('0').rstrip('.') + unitat
         return str(val)
     
     hora_actual = datetime.now().strftime('%H:%M')
     data_actual = datetime.now().strftime('%d/%m/%Y')
     
-    # TEMPLATE HTML
     html = f'''<!DOCTYPE html>
 <html lang="ca">
 <head>
