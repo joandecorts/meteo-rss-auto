@@ -12,16 +12,45 @@ jobs:
       - uses: actions/checkout@v3
       - name: Generate RSS
         run: |
-          cat > meteo.rss << 'XML'
-<?xml version="1.0"?>
-<rss version="2.0">
-<channel>
-<title>Dades Meteo</title>
-<item><title>Item 1</title></item>
-<item><title>Item 2</title></item>
-</channel>
-</rss>
-XML
+          # Iniciar RSS
+          echo '<?xml version="1.0" encoding="UTF-8"?>' > meteo.rss
+          echo '<rss version="2.0">' >> meteo.rss
+          echo '<channel>' >> meteo.rss
+          echo '<title>Dades Meteorològiques Gironès</title>' >> meteo.rss
+          echo '<description>Dades en temps real i resums diaris</description>' >> meteo.rss
+          echo '<link>https://www.meteo.cat</link>' >> meteo.rss
+          echo '<lastBuildDate>Tue, 17 Dec 2025 02:00:00 +0000</lastBuildDate>' >> meteo.rss
+          
+          # Ítem 1
+          echo '<item>' >> meteo.rss
+          echo '<title>🌤️ Girona | Període: 01:30-02:00</title>' >> meteo.rss
+          echo '<pubDate>Tue, 17 Dec 2025 02:00:00 +0000</pubDate>' >> meteo.rss
+          echo '</item>' >> meteo.rss
+          
+          # Ítem 2
+          echo '<item>' >> meteo.rss
+          echo '<title>🌤️ Fornells de la Selva | Període: 01:30-02:00</title>' >> meteo.rss
+          echo '<pubDate>Tue, 17 Dec 2025 02:00:00 +0000</pubDate>' >> meteo.rss
+          echo '</item>' >> meteo.rss
+          
+          # Ítem 3
+          echo '<item>' >> meteo.rss
+          echo '<title>📊 RESUM DEL DIA Girona | Data: 17-12-2025</title>' >> meteo.rss
+          echo '<pubDate>Tue, 17 Dec 2025 02:00:00 +0000</pubDate>' >> meteo.rss
+          echo '</item>' >> meteo.rss
+          
+          # Ítem 4
+          echo '<item>' >> meteo.rss
+          echo '<title>📊 RESUM DEL DIA Fornells de la Selva | Data: 17-12-2025</title>' >> meteo.rss
+          echo '<pubDate>Tue, 17 Dec 2025 02:00:00 +0000</pubDate>' >> meteo.rss
+          echo '</item>' >> meteo.rss
+          
+          echo '</channel>' >> meteo.rss
+          echo '</rss>' >> meteo.rss
+          
+          echo "✅ RSS generat"
+          head -20 meteo.rss
+      
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
