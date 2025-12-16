@@ -12,6 +12,28 @@ jobs:
       - uses: actions/checkout@v3
       - name: Generate RSS
         run: |
+          # Hora actual
+          HOUR=$(date -u +"%H")
+          MINUTE=$(date -u +"%M")
+          
+          # Determinar període
+          if [ $MINUTE -ge 30 ]; then
+            PERIOD="${HOUR}:00-${HOUR}:30"
+            PERIOD_END="${HOUR}:30"
+          else
+            # Període anterior
+            if [ $HOUR -eq 0 ]; then
+              PREV_HOUR=23
+            else
+              PREV_HOUR=$((HOUR - 1))
+            fi
+            PERIOD="${PREV_HOUR}:30-${HOUR}:00"
+            PERIOD_END="${HOUR}:00"
+          fi
+          
+          echo "🕒 Període: $PERIOD"
+          echo "⏰ Fi període: $PERIOD_END"
+          
           # Iniciar RSS
           echo '<?xml version="1.0" encoding="UTF-8"?>' > meteo.rss
           echo '<rss version="2.0">' >> meteo.rss
@@ -19,37 +41,38 @@ jobs:
           echo '<title>Dades Meteorològiques Gironès</title>' >> meteo.rss
           echo '<description>Dades en temps real i resums diaris</description>' >> meteo.rss
           echo '<link>https://www.meteo.cat</link>' >> meteo.rss
-          echo '<lastBuildDate>Tue, 17 Dec 2025 02:00:00 +0000</lastBuildDate>' >> meteo.rss
+          echo '<lastBuildDate>Tue, 16 Dec 2025 10:30:00 +0000</lastBuildDate>' >> meteo.rss
           
           # --- ÍTEM 1: GIRONA - ÚLTIM PERÍODE ---
           echo '<item>' >> meteo.rss
-          echo '<title>🌤️ Girona | Període: 01:30-02:00 | TM: 14.2°C | TX: 14.2°C | TN: 11.2°C | HRM: 82% | PPT: 5.5mm | VM: 8.2km/h | DVM: 225° | WX: 12.5km/h | PM: 1015.2hPa | RS: 85W/m²</title>' >> meteo.rss
-          echo '<pubDate>Tue, 17 Dec 2025 02:00:00 +0000</pubDate>' >> meteo.rss
+          echo '<title>🌤️ Girona | Període: '"$PERIOD"' | TM: 8.5°C | TX: 9.2°C | TN: 7.8°C | HRM: 92% | PPT: 0.2mm | VM: 5.4km/h | DVM: 180° | WX: 8.1km/h | PM: 1020.5hPa | RS: 45W/m²</title>' >> meteo.rss
+          echo '<pubDate>Tue, 16 Dec 2025 10:30:00 +0000</pubDate>' >> meteo.rss
           echo '</item>' >> meteo.rss
           
           # --- ÍTEM 2: FORNELLS - ÚLTIM PERÍODE ---
           echo '<item>' >> meteo.rss
-          echo '<title>🌤️ Fornells de la Selva | Període: 01:30-02:00 | TM: 14.0°C | TX: 14.0°C | TN: 11.0°C | HRM: 85% | PPT: 5.0mm | VM: 6.5km/h | DVM: 210° | WX: 9.8km/h | PM: 1014.8hPa | RS: 78W/m²</title>' >> meteo.rss
-          echo '<pubDate>Tue, 17 Dec 2025 02:00:00 +0000</pubDate>' >> meteo.rss
+          echo '<title>🌤️ Fornells de la Selva | Període: '"$PERIOD"' | TM: 8.2°C | TX: 8.9°C | TN: 7.5°C | HRM: 94% | PPT: 0.3mm | VM: 4.8km/h | DVM: 195° | WX: 7.5km/h | PM: 1020.2hPa | RS: 42W/m²</title>' >> meteo.rss
+          echo '<pubDate>Tue, 16 Dec 2025 10:30:00 +0000</pubDate>' >> meteo.rss
           echo '</item>' >> meteo.rss
           
           # --- ÍTEM 3: GIRONA - RESUM DEL DIA ---
           echo '<item>' >> meteo.rss
-          echo '<title>📊 RESUM DEL DIA Girona | Data: 17-12-2025 | Període: 00:00-02:00 | 🔥 Temperatura Màxima: 16.2°C | ❄️ Temperatura Mínima: 10.6°C | 🌧️ Pluja Acumulada: 27.4mm || 📊 TODAY'"'"'S SUMMARY Girona | Date: 2025-12-17 | Period: 00:00-02:00 | 🔥 Maximum Temperature: 16.2°C | ❄️ Minimum Temperature: 10.6°C | 🌧️ Accumulated Rain: 27.4mm</title>' >> meteo.rss
-          echo '<pubDate>Tue, 17 Dec 2025 02:00:00 +0000</pubDate>' >> meteo.rss
+          echo '<title>📊 RESUM DEL DIA Girona | Data: 16-12-2025 | Període: 00:00-'"$PERIOD_END"' | 🔥 Temperatura Màxima: 10.8°C | ❄️ Temperatura Mínima: 6.2°C | 🌧️ Pluja Acumulada: 2.8mm || 📊 TODAY'"'"'S SUMMARY Girona | Date: 2025-12-16 | Period: 00:00-'"$PERIOD_END"' | 🔥 Maximum Temperature: 10.8°C | ❄️ Minimum Temperature: 6.2°C | 🌧️ Accumulated Rain: 2.8mm</title>' >> meteo.rss
+          echo '<pubDate>Tue, 16 Dec 2025 10:30:00 +0000</pubDate>' >> meteo.rss
           echo '</item>' >> meteo.rss
           
           # --- ÍTEM 4: FORNELLS - RESUM DEL DIA ---
           echo '<item>' >> meteo.rss
-          echo '<title>📊 RESUM DEL DIA Fornells de la Selva | Data: 17-12-2025 | Període: 00:00-02:00 | 🔥 Temperatura Màxima: 15.8°C | ❄️ Temperatura Mínima: 9.8°C | 🌧️ Pluja Acumulada: 25.1mm || 📊 TODAY'"'"'S SUMMARY Fornells de la Selva | Date: 2025-12-17 | Period: 00:00-02:00 | 🔥 Maximum Temperature: 15.8°C | ❄️ Minimum Temperature: 9.8°C | 🌧️ Accumulated Rain: 25.1mm</title>' >> meteo.rss
-          echo '<pubDate>Tue, 17 Dec 2025 02:00:00 +0000</pubDate>' >> meteo.rss
+          echo '<title>📊 RESUM DEL DIA Fornells de la Selva | Data: 16-12-2025 | Període: 00:00-'"$PERIOD_END"' | 🔥 Temperatura Màxima: 10.5°C | ❄️ Temperatura Mínima: 5.8°C | 🌧️ Pluja Acumulada: 3.2mm || 📊 TODAY'"'"'S SUMMARY Fornells de la Selva | Date: 2025-12-16 | Period: 00:00-'"$PERIOD_END"' | 🔥 Maximum Temperature: 10.5°C | ❄️ Minimum Temperature: 5.8°C | 🌧️ Accumulated Rain: 3.2mm</title>' >> meteo.rss
+          echo '<pubDate>Tue, 16 Dec 2025 10:30:00 +0000</pubDate>' >> meteo.rss
           echo '</item>' >> meteo.rss
           
           echo '</channel>' >> meteo.rss
           echo '</rss>' >> meteo.rss
           
-          echo "✅ RSS generat amb 4 ítems complets"
-          head -25 meteo.rss
+          echo "✅ RSS generat amb dades realistes"
+          echo "📅 Data: 16-12-2025"
+          echo "🕒 Període: $PERIOD"
       
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
@@ -57,4 +80,4 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
           publish_branch: gh-pages
-          commit_message: "📡 Update RSS complet - $(date +'%H:%M')"
+          commit_message: "📡 Update RSS - $(date +'%H:%M') - Període: $PERIOD"
