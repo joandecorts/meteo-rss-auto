@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# generate_meteo_rss.py - VERSIÓ DEFINITIVA CORREGIDA
+# generate_meteo_rss.py - VERSIÓ DEFINITIVA CORREGIDA (Llegendes completes)
 import requests
 from bs4 import BeautifulSoup
 import pytz
@@ -161,7 +161,7 @@ def guardar_dades(dades_estacions):
         write_log(f"⚠️ Error guardant dades: {e}")
 
 def create_rss_feed():
-    """Crea l'arxiu RSS amb totes les dades - VERSIÓ SIMPLIFICADA"""
+    """Crea l'arxiu RSS amb totes les dades - VERSIÓ CORREGIDA (Llegendes completes)"""
     
     write_log("\n🚀 GENERADOR RSS METEOCAT - DEFINITIU")
     write_log("=" * 60)
@@ -179,8 +179,13 @@ def create_rss_feed():
         }
     ]
     
-    cet = pytz.timezone('CET')
-    now = datetime.now(cet)
+    # 🕐 CORRECCIÓ DEFINITIVA: Utilitzar UTC per a les dates del RSS
+    # Això evita problemes amb futurs temps a GitHub Actions
+    utc_now = datetime.now(pytz.utc)
+    # Hora per mostrar al text (hora local d'Espanya)
+    display_tz = pytz.timezone('Europe/Madrid')
+    display_time = utc_now.astimezone(display_tz)
+    # --------------------------------------------------------
     
     # Llegim les dades guardades de totes les estacions
     dades_estacions = llegir_dades_guardades()
@@ -216,42 +221,42 @@ def create_rss_feed():
     entrades = []
     
     for station_code, dades in dades_actualitzades.items():
-        # ✅ VERSIÓ CATALÀ - només amb les dades que existeixen
+        # ✅ VERSIÓ CATALÀ - TEXT COMPLET (sense abreviatures)
         parts_cat = [
             f"🌤️ {dades['station_name']}",
-            f"Actualitzat: {now.strftime('%H:%M')}",
+            f"Actualitzat: {display_time.strftime('%H:%M')}",
             f"Període: {dades.get('periode', 'N/D')}",
-            f"🌡️ TM: {dades['tm']}°C",
-            f"🔥 TX: {dades['tx']}°C", 
-            f"❄️ TN: {dades['tn']}°C",
-            f"💧 HRM: {dades['hr']}%",
-            f"🌧️ PPT: {dades['ppt']}mm"
+            f"🌡️ Temp. Mitjana: {dades['tm']}°C",
+            f"🔥 Temp. Màxima: {dades['tx']}°C", 
+            f"❄️ Temp. Mínima: {dades['tn']}°C",
+            f"💧 Humitat: {dades['hr']}%",
+            f"🌧️ Precipitació: {dades['ppt']}mm"
         ]
         
         # Afegim dades de vent SOLAMENT si existeixen
         if 'vvm' in dades and dades['vvm'] is not None:
-            parts_cat.append(f"💨 VM: {dades['vvm']}km/h")
+            parts_cat.append(f"💨 Vent: {dades['vvm']}km/h")
             
         if 'dvm' in dades and dades['dvm'] is not None:
-            parts_cat.append(f"🧭 DVM: {dades['dvm']}°")
+            parts_cat.append(f"🧭 Dir.Vent: {dades['dvm']}°")
             
         if 'vvx' in dades and dades['vvx'] is not None:
-            parts_cat.append(f"💨 VVX: {dades['vvx']}km/h")
+            parts_cat.append(f"💨 Vent Màx: {dades['vvx']}km/h")
         
         # Afegim pressió SOLAMENT si existeix
         if 'pm' in dades and dades['pm'] is not None:
-            parts_cat.append(f"📊 PM: {dades['pm']}hPa")
+            parts_cat.append(f"📊 Pressió: {dades['pm']}hPa")
         
         # Afegim radiació solar SOLAMENT si existeix
         if 'rs' in dades and dades['rs'] is not None:
-            parts_cat.append(f"☀️ RS: {dades['rs']}W/m²")
+            parts_cat.append(f"☀️ Radiació: {dades['rs']}W/m²")
         
         titol_cat = " | ".join(parts_cat)
         
-        # ✅ VERSIÓ ANGLÈS - només amb les dades que existeixen
+        # ✅ VERSIÓ ANGLÈS - TEXT COMPLET
         parts_en = [
             f"🌤️ {dades['station_name']}",
-            f"Updated: {now.strftime('%H:%M')}",
+            f"Updated: {display_time.strftime('%H:%M')}",
             f"Period: {dades.get('periode', 'N/D')}",
             f"🌡️ Avg Temp: {dades['tm']}°C",
             f"🔥 Max Temp: {dades['tx']}°C", 
@@ -286,8 +291,8 @@ def create_rss_feed():
         entrada = f'''  <item>
     <title>{titol}</title>
     <link>https://www.meteo.cat/observacions/xema/dades?codi={dades.get('station_code', station_code)}</link>
-    <description>Dades meteorològiques de {dades['station_name']} / Weather data from {dades['station_name']} - Actualitzat el {now.strftime("%d/%m/%Y a les %H:%M")} / Updated on {now.strftime("%d/%m/%Y at %H:%M")}</description>
-    <pubDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</pubDate>
+    <description>Dades meteorològiques de {dades['station_name']} / Weather data from {dades['station_name']} - Actualitzat el {display_time.strftime("%d/%m/%Y a les %H:%M")} / Updated on {display_time.strftime("%d/%m/%Y at %H:%M")}</description>
+    <pubDate>{utc_now.strftime("%a, %d %b %Y %H:%M:%S +0000")}</pubDate>
   </item>'''
         
         entrades.append(entrada)
@@ -302,7 +307,7 @@ def create_rss_feed():
   <title>Dades Meteo Locals Completes</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estacions Girona i Fornells de la Selva / Real-time weather data - Girona and Fornells de la Selva stations</description>
-  <lastBuildDate>{now.strftime("%a, %d %b %Y %H:%M:%S CET")}</lastBuildDate>
+  <lastBuildDate>{utc_now.strftime("%a, %d %b %Y %H:%M:%S +0000")}</lastBuildDate>
 {chr(10).join(entrades)}
 </channel>
 </rss>'''
@@ -314,13 +319,13 @@ def create_rss_feed():
         
         print(f"\n{'='*60}")
         print(f"✅ RSS generat amb {len(entrades)} estacions")
-        print(f"🕐 {now.strftime('%H:%M:%S CET')}")
+        print(f"🕐 UTC: {utc_now.strftime('%H:%M:%S')} | Local (CAT): {display_time.strftime('%H:%M:%S')}")
         
         # Mostrar resum
         for station_code, dades in dades_actualitzades.items():
             print(f"   • {dades['station_name']}: {len([k for k in dades.keys() if k not in ['station_name', 'station_code', 'periode']])} dades | {dades.get('periode', 'N/D')}")
         
-        # Mostrar contingut del RSS - CORREGIT
+        # Mostrar contingut del RSS
         print(f"\n📄 CONTINGUT meteo.rss:")
         print("-" * 60)
         # Mostrar només la capçalera i el primer item per no saturar
@@ -359,7 +364,7 @@ def setup_automatic_update():
 if __name__ == "__main__":
     # Netejar log anterior
     with open('debug.log', 'w', encoding='utf-8') as f:
-        f.write(f"=== INICI: {datetime.now()} ===\n")
+        f.write(f"=== INICI: {datetime.now(pytz.utc).strftime('%Y-%m-%d %H:%M:%S UTC')} ===\n")
     
     try:
         exit_code = create_rss_feed()
