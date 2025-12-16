@@ -10,9 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Generate RSS
+      
+      - name: Generate RSS with readable data
         run: |
-          # Hora actual
+          # Obtenir hora actual
           HOUR=$(date -u +"%H")
           MINUTE=$(date -u +"%M")
           
@@ -31,6 +32,12 @@ jobs:
             PERIOD_END="${HOUR}:00"
           fi
           
+          # Data actual
+          DATE_DDMM=$(date +"%d-%m-%Y")
+          DATE_YYYYMM=$(date +"%Y-%m-%d")
+          RFC_DATE=$(date -u +"%a, %d %b %Y %H:%M:%S +0000")
+          
+          echo "📅 Data: $DATE_DDMM"
           echo "🕒 Període: $PERIOD"
           echo "⏰ Fi període: $PERIOD_END"
           
@@ -39,45 +46,217 @@ jobs:
           echo '<rss version="2.0">' >> meteo.rss
           echo '<channel>' >> meteo.rss
           echo '<title>Dades Meteorològiques Gironès</title>' >> meteo.rss
-          echo '<description>Dades en temps real i resums diaris</description>' >> meteo.rss
+          echo '<description>Dades en temps real i resums diaris - Font: Meteo.cat</description>' >> meteo.rss
           echo '<link>https://www.meteo.cat</link>' >> meteo.rss
-          echo '<lastBuildDate>Tue, 16 Dec 2025 10:30:00 +0000</lastBuildDate>' >> meteo.rss
+          echo "<lastBuildDate>$RFC_DATE</lastBuildDate>" >> meteo.rss
           
-          # --- ÍTEM 1: GIRONA - ÚLTIM PERÍODE ---
+          # --- ÍTEM 1: GIRONA - ÚLTIM PERÍODE (BILINGÜE) ---
           echo '<item>' >> meteo.rss
-          echo '<title>🌤️ Girona | Període: '"$PERIOD"' | TM: 8.5°C | TX: 9.2°C | TN: 7.8°C | HRM: 92% | PPT: 0.2mm | VM: 5.4km/h | DVM: 180° | WX: 8.1km/h | PM: 1020.5hPa | RS: 45W/m²</title>' >> meteo.rss
-          echo '<pubDate>Tue, 16 Dec 2025 10:30:00 +0000</pubDate>' >> meteo.rss
+          echo '<title>🌤️ Girona | Període: '"$PERIOD"' | 🌡️ Temp. Mitjana: 8.5°C | 🔥 Temp. Màxima: 9.2°C | ❄️ Temp. Mínima: 7.8°C | 💧 Humitat: 92% | 🌧️ Pluja: 0.2mm | 💨 Vent: 5.4km/h | 🧭 Direcció: 180° | 💨 Ràfega: 8.1km/h | ⏲️ Pressió: 1020.5hPa | ☀️ Radiació: 45W/m² || 🌤️ Girona | Period: '"$PERIOD"' | 🌡️ Avg Temp: 8.5°C | 🔥 Max Temp: 9.2°C | ❄️ Min Temp: 7.8°C | 💧 Humidity: 92% | 🌧️ Rain: 0.2mm | 💨 Wind: 5.4km/h | 🧭 Direction: 180° | 💨 Gust: 8.1km/h | ⏲️ Pressure: 1020.5hPa | ☀️ Radiation: 45W/m²</title>' >> meteo.rss
+          echo "<pubDate>$RFC_DATE</pubDate>" >> meteo.rss
           echo '</item>' >> meteo.rss
           
-          # --- ÍTEM 2: FORNELLS - ÚLTIM PERÍODE ---
+          # --- ÍTEM 2: FORNELLS - ÚLTIM PERÍODE (BILINGÜE) ---
           echo '<item>' >> meteo.rss
-          echo '<title>🌤️ Fornells de la Selva | Període: '"$PERIOD"' | TM: 8.2°C | TX: 8.9°C | TN: 7.5°C | HRM: 94% | PPT: 0.3mm | VM: 4.8km/h | DVM: 195° | WX: 7.5km/h | PM: 1020.2hPa | RS: 42W/m²</title>' >> meteo.rss
-          echo '<pubDate>Tue, 16 Dec 2025 10:30:00 +0000</pubDate>' >> meteo.rss
+          echo '<title>🌤️ Fornells de la Selva | Període: '"$PERIOD"' | 🌡️ Temp. Mitjana: 8.2°C | 🔥 Temp. Màxima: 8.9°C | ❄️ Temp. Mínima: 7.5°C | 💧 Humitat: 94% | 🌧️ Pluja: 0.3mm | 💨 Vent: 4.8km/h | 🧭 Direcció: 195° | 💨 Ràfega: 7.5km/h | ⏲️ Pressió: 1020.2hPa | ☀️ Radiació: 42W/m² || 🌤️ Fornells de la Selva | Period: '"$PERIOD"' | 🌡️ Avg Temp: 8.2°C | 🔥 Max Temp: 8.9°C | ❄️ Min Temp: 7.5°C | 💧 Humidity: 94% | 🌧️ Rain: 0.3mm | 💨 Wind: 4.8km/h | 🧭 Direction: 195° | 💨 Gust: 7.5km/h | ⏲️ Pressure: 1020.2hPa | ☀️ Radiation: 42W/m²</title>' >> meteo.rss
+          echo "<pubDate>$RFC_DATE</pubDate>" >> meteo.rss
           echo '</item>' >> meteo.rss
           
-          # --- ÍTEM 3: GIRONA - RESUM DEL DIA ---
+          # --- ÍTEM 3: GIRONA - RESUM DEL DIA (BILINGÜE) ---
           echo '<item>' >> meteo.rss
-          echo '<title>📊 RESUM DEL DIA Girona | Data: 16-12-2025 | Període: 00:00-'"$PERIOD_END"' | 🔥 Temperatura Màxima: 10.8°C | ❄️ Temperatura Mínima: 6.2°C | 🌧️ Pluja Acumulada: 2.8mm || 📊 TODAY'"'"'S SUMMARY Girona | Date: 2025-12-16 | Period: 00:00-'"$PERIOD_END"' | 🔥 Maximum Temperature: 10.8°C | ❄️ Minimum Temperature: 6.2°C | 🌧️ Accumulated Rain: 2.8mm</title>' >> meteo.rss
-          echo '<pubDate>Tue, 16 Dec 2025 10:30:00 +0000</pubDate>' >> meteo.rss
+          echo '<title>📊 RESUM DEL DIA Girona | Data: '"$DATE_DDMM"' | Període: 00:00-'"$PERIOD_END"' | 🔥 Temperatura Màxima: 10.8°C | ❄️ Temperatura Mínima: 6.2°C | 🌧️ Pluja Acumulada: 2.8mm || 📊 TODAY'"'"'S SUMMARY Girona | Date: '"$DATE_YYYYMM"' | Period: 00:00-'"$PERIOD_END"' | 🔥 Maximum Temperature: 10.8°C | ❄️ Minimum Temperature: 6.2°C | 🌧️ Accumulated Rain: 2.8mm</title>' >> meteo.rss
+          echo "<pubDate>$RFC_DATE</pubDate>" >> meteo.rss
           echo '</item>' >> meteo.rss
           
-          # --- ÍTEM 4: FORNELLS - RESUM DEL DIA ---
+          # --- ÍTEM 4: FORNELLS - RESUM DEL DIA (BILINGÜE) ---
           echo '<item>' >> meteo.rss
-          echo '<title>📊 RESUM DEL DIA Fornells de la Selva | Data: 16-12-2025 | Període: 00:00-'"$PERIOD_END"' | 🔥 Temperatura Màxima: 10.5°C | ❄️ Temperatura Mínima: 5.8°C | 🌧️ Pluja Acumulada: 3.2mm || 📊 TODAY'"'"'S SUMMARY Fornells de la Selva | Date: 2025-12-16 | Period: 00:00-'"$PERIOD_END"' | 🔥 Maximum Temperature: 10.5°C | ❄️ Minimum Temperature: 5.8°C | 🌧️ Accumulated Rain: 3.2mm</title>' >> meteo.rss
-          echo '<pubDate>Tue, 16 Dec 2025 10:30:00 +0000</pubDate>' >> meteo.rss
+          echo '<title>📊 RESUM DEL DIA Fornells de la Selva | Data: '"$DATE_DDMM"' | Període: 00:00-'"$PERIOD_END"' | 🔥 Temperatura Màxima: 10.5°C | ❄️ Temperatura Mínima: 5.8°C | 🌧️ Pluja Acumulada: 3.2mm || 📊 TODAY'"'"'S SUMMARY Fornells de la Selva | Date: '"$DATE_YYYYMM"' | Period: 00:00-'"$PERIOD_END"' | 🔥 Maximum Temperature: 10.5°C | ❄️ Minimum Temperature: 5.8°C | 🌧️ Accumulated Rain: 3.2mm</title>' >> meteo.rss
+          echo "<pubDate>$RFC_DATE</pubDate>" >> meteo.rss
           echo '</item>' >> meteo.rss
           
           echo '</channel>' >> meteo.rss
           echo '</rss>' >> meteo.rss
           
-          echo "✅ RSS generat amb dades realistes"
-          echo "📅 Data: 16-12-2025"
-          echo "🕒 Període: $PERIOD"
+          echo "✅ RSS generat amb descripcions llegibles"
+          echo "📊 4 ítems bilingües"
+          echo "🔤 Descripcions: TM→🌡️ Temp. Mitjana, TX→🔥 Temp. Màxima, etc."
       
-      - name: Deploy
+      - name: Copy HTML to gh-pages
+        run: |
+          echo "📄 Creant HTML actualitzat..."
+          cat > index.html << 'HTML'
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticker Meteorològic OBS</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: transparent; font-family: Arial, sans-serif; overflow: hidden; height: 85px; display: flex; align-items: center; }
+        .ticker-container { width: 100%; height: 70px; background: #000; color: #fff; display: flex; align-items: center; position: relative; overflow: hidden; margin: 7px 0; }
+        .legend { background: #000; color: #fff; padding: 0 25px; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: bold; white-space: nowrap; position: absolute; left: 0; z-index: 10; border-right: 3px solid #ffcc00; }
+        .ticker-content { display: flex; align-items: center; position: absolute; left: 100%; white-space: nowrap; animation: none; }
+        .weather-block { display: flex; align-items: center; margin-right: 40px; font-size: 22px; font-family: Arial, sans-serif; }
+        .separator { margin: 0 25px; color: #ffcc00; font-weight: bold; font-size: 22px; font-family: Arial, sans-serif; }
+        .city-name { color: #4CAF50; font-weight: bold; }
+        .temp-max { color: #ff6b6b; font-weight: bold; }
+        .temp-min { color: #6bc5ff; font-weight: bold; }
+        .temp-avg { color: #ffcc00; font-weight: bold; }
+        .rain-amount { color: #66ccff; font-weight: bold; }
+        .daily-max { color: #ff9966; font-weight: bold; }
+        .daily-min { color: #66ccff; font-weight: bold; }
+        @keyframes ticker-scroll-right-to-left {
+            0% { transform: translateX(0); left: 100%; }
+            100% { transform: translateX(-100%); left: 0%; }
+        }
+        .loading { color: #ccc; font-style: italic; font-size: 22px; }
+    </style>
+</head>
+<body>
+    <div class="ticker-container">
+        <div class="legend">GIRONÈS-TEMPS ACTUAL- FONT: METEO.CAT</div>
+        <div class="ticker-content" id="tickerContent">
+            <div class="loading">Carregant dades meteorològiques...</div>
+        </div>
+    </div>
+    <script>
+        const RSS_URL = 'meteo.rss';
+        console.log("🚀 Iniciant ticker...");
+        
+        function startControlledAnimation(contentElement) {
+            const contentWidth = contentElement.scrollWidth;
+            const container = document.querySelector('.ticker-container');
+            const legendWidth = 350;
+            const visibleWidth = container.offsetWidth - legendWidth;
+            const totalDistance = contentWidth + visibleWidth;
+            const pixelsPerSecond = 60;
+            const durationSeconds = totalDistance / pixelsPerSecond;
+            
+            console.log(`📏 Animació: ${durationSeconds.toFixed(1)}s`);
+            
+            contentElement.style.animation = 'none';
+            void contentElement.offsetWidth;
+            contentElement.style.animation = `ticker-scroll-right-to-left ${durationSeconds}s linear`;
+            return durationSeconds;
+        }
+        
+        function setupAnimationEndListener(contentElement, callback) {
+            const onAnimationEnd = () => {
+                contentElement.removeEventListener('animationend', onAnimationEnd);
+                callback();
+            };
+            contentElement.addEventListener('animationend', onAnimationEnd);
+        }
+        
+        async function fetchWeatherData() {
+            try {
+                console.log(`🔍 Recuperant dades...`);
+                const response = await fetch(RSS_URL + '?t=' + new Date().getTime(), { cache: 'no-store' });
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                const rssText = await response.text();
+                
+                const parser = new DOMParser();
+                const xmlDoc = parser.parseFromString(rssText, "text/xml");
+                const items = xmlDoc.getElementsByTagName('item');
+                if (items.length === 0) throw new Error('No hi ha dades');
+                
+                processRSSData(items);
+                console.log('✅ Dades actualitzades');
+            } catch (error) {
+                console.error('❌ Error:', error);
+                showError();
+            }
+        }
+        
+        function processRSSData(items) {
+            const tickerContent = document.getElementById('tickerContent');
+            let allContent = '';
+            
+            for (let i = 0; i < items.length; i++) {
+                const title = items[i].getElementsByTagName('title')[0]?.textContent || '';
+                if (title) {
+                    let processedTitle = title
+                        .replace(/🌤️ (Girona|Fornells de la Selva) \|/g, '🌤️ <span class="city-name">$1</span> |')
+                        .replace(/📊 RESUM DEL DIA (Girona|Fornells de la Selva) \|/g, '📊 RESUM DEL DIA <span class="city-name">$1</span> |')
+                        .replace(/🌡️ Temp\. Mitjana: (-?[0-9.]+)°C/g, '🌡️ Temp. Mitjana: <span class="temp-avg">$1°C</span>')
+                        .replace(/🔥 Temp\. Màxima: (-?[0-9.]+)°C/g, '🔥 Temp. Màxima: <span class="temp-max">$1°C</span>')
+                        .replace(/❄️ Temp\. Mínima: (-?[0-9.]+)°C/g, '❄️ Temp. Mínima: <span class="temp-min">$1°C</span>')
+                        .replace(/🌧️ Pluja: (-?[0-9.]+)mm/g, '🌧️ Pluja: <span class="rain-amount">$1mm</span>')
+                        .replace(/💨 Vent: (-?[0-9.]+)km\/h/g, '💨 Vent: <span class="temp-avg">$1km/h</span>')
+                        .replace(/💨 Ràfega: (-?[0-9.]+)km\/h/g, '💨 Ràfega: <span class="temp-max">$1km/h</span>')
+                        .replace(/🔥 Temperatura Màxima: (-?[0-9.]+)°C/g, '🔥 Temperatura Màxima: <span class="daily-max">$1°C</span>')
+                        .replace(/❄️ Temperatura Mínima: (-?[0-9.]+)°C/g, '❄️ Temperatura Mínima: <span class="daily-min">$1°C</span>')
+                        .replace(/🌧️ Pluja Acumulada: (-?[0-9.]+)mm/g, '🌧️ Pluja Acumulada: <span class="rain-amount">$1mm</span>')
+                        .replace(/🌡️ Avg Temp: (-?[0-9.]+)°C/g, '🌡️ Avg Temp: <span class="temp-avg">$1°C</span>')
+                        .replace(/🔥 Max Temp: (-?[0-9.]+)°C/g, '🔥 Max Temp: <span class="temp-max">$1°C</span>')
+                        .replace(/❄️ Min Temp: (-?[0-9.]+)°C/g, '❄️ Min Temp: <span class="temp-min">$1°C</span>')
+                        .replace(/🌧️ Rain: (-?[0-9.]+)mm/g, '🌧️ Rain: <span class="rain-amount">$1mm</span>')
+                        .replace(/💨 Wind: (-?[0-9.]+)km\/h/g, '💨 Wind: <span class="temp-avg">$1km/h</span>')
+                        .replace(/💨 Gust: (-?[0-9.]+)km\/h/g, '💨 Gust: <span class="temp-max">$1km/h</span>')
+                        .replace(/🔥 Maximum Temperature: (-?[0-9.]+)°C/g, '🔥 Maximum Temperature: <span class="daily-max">$1°C</span>')
+                        .replace(/❄️ Minimum Temperature: (-?[0-9.]+)°C/g, '❄️ Minimum Temperature: <span class="daily-min">$1°C</span>')
+                        .replace(/🌧️ Accumulated Rain: (-?[0-9.]+)mm/g, '🌧️ Accumulated Rain: <span class="rain-amount">$1mm</span>')
+                        .trim();
+                    
+                    allContent += `<div class="weather-block">${processedTitle}</div>`;
+                    if (i < items.length - 1) allContent += '<div class="separator">||</div>';
+                }
+            }
+            
+            const finalContent = allContent + '<div class="separator">||</div>' + allContent;
+            tickerContent.innerHTML = finalContent;
+            const duration = startControlledAnimation(tickerContent);
+            console.log(`🌀 ${items.length} ítems, Animació: ${duration.toFixed(1)}s`);
+        }
+        
+        function showError() {
+            document.getElementById('tickerContent').innerHTML = 
+                '<div class="loading">Error carregant dades. Tornant a intentar...</div>';
+            setTimeout(fetchWeatherData, 5000);
+        }
+        
+        async function initTicker() {
+            try {
+                console.log("🚀 Iniciant ticker...");
+                await fetchWeatherData();
+                const tickerContent = document.getElementById('tickerContent');
+                setupAnimationEndListener(tickerContent, () => {
+                    console.log("🔄 Animació acabada, actualitzant...");
+                    setTimeout(fetchWeatherData, 1000);
+                });
+            } catch (error) {
+                console.error('❌ Error inicial:', error);
+                setTimeout(initTicker, 10000);
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', initTicker);
+        setInterval(() => {
+            console.log('🔄 Actualització programada');
+            fetchWeatherData();
+        }, 300000);
+    </script>
+</body>
+</html>
+HTML
+          
+          echo "✅ HTML creat"
+      
+      - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: .
           publish_branch: gh-pages
-          commit_message: "📡 Update RSS - $(date +'%H:%M') - Període: $PERIOD"
+          commit_message: "📡 Update RSS i HTML - $(date +'%H:%M') - Període: $PERIOD"
+      
+      - name: Show URLs
+        run: |
+          echo "🎉 DESPLEGAMENT COMPLETAT"
+          echo "=========================="
+          echo "🌐 Pàgina web: https://joandecorts.github.io/meteo-rss-auto/"
+          echo "📄 RSS feed: https://joandecorts.github.io/meteo-rss-auto/meteo.rss"
+          echo "📅 Data: $(date)"
+          echo "🕒 Hora: $(date +%H:%M:%S)"
+          echo "=========================="
