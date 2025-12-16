@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Script per generar el ticker HTML a partir del fitxer RSS que ja tens.
-Versió simplificada - només processa Girona i Fornells de la Selva.
+Script per generar el ticker HTML a partir del fitxer RSS.
+Versió CORREGIDA - troba l'ÚLTIM item vàlid per a cada estació.
 """
 
 import urllib.request
@@ -38,8 +38,13 @@ def extreure_dades_estacio(title_text: str, nom_estacio: str, codi_estacio: str)
         'radiacio': None,
         # Dades addicionals
         'periode': None,
-        'actualitzacio': None
+        'actualitzacio': None,
+        # Per a debug
+        'title_preview': title_text[:100] + "..." if len(title_text) > 100 else title_text
     }
+    
+    # DEBUG: Mostrar el títol que estem processant
+    print(f"[DEBUG] Processant títol de {nom_estacio}: {title_text[:80]}...")
     
     # EXTREURE TOTES LES DADES METEOROLÒGIQUES DEL TÍTOL
     
@@ -47,6 +52,7 @@ def extreure_dades_estacio(title_text: str, nom_estacio: str, codi_estacio: str)
     temp_actual_match = re.search(r'(?:Actual|Temp\. Mitjana):\s*([\d.-]+)°C', title_text)
     if temp_actual_match:
         station_data['temp_actual'] = temp_actual_match.group(1)
+        print(f"[DEBUG] {nom_estacio} - Temp actual trobada: {station_data['temp_actual']}")
     
     # Temperatura Màxima
     temp_maxima_match = re.search(r'(?:Temp\. Màxima|Màxima):\s*([\d.-]+)°C', title_text)
@@ -105,10 +111,52 @@ def extreure_dades_estacio(title_text: str, nom_estacio: str, codi_estacio: str)
     
     return station_data
 
+def obtenir_ultim_item_valid(items: List[str], nom_estacio: str) -> Dict[str, Any]:
+    """
+    Troba l'ÚLTIM item vàlid (amb dades reals) per a una estació.
+    Retorna enrere fins a trobar un item amb temperatura actual.
+    """
+    print(f"[INFO] Buscant últim item vàlid per a {nom_estacio} entre {len(items)} items...")
+    
+    # Determinar codi
+    codi = 'XJ' if 'Girona' in nom_estacio else 'UO'
+    
+    # Recórrer items DE DARRERE CAP ENDAVANT (per trobar l'últim vàlid)
+    for i in range(len(items) - 1, -1, -1):
+        item = items[i]
+        
+        # Extreure el títol
+        title_match = re.search(r'<title>(.*?)</title>', item, re.DOTALL)
+        if not title_match:
+            continue
+        
+        title_text = title_match.group(1).strip()
+        
+        # Comprovar si aquest item és per a l'estació que busquem
+        if nom_estacio not in title_text:
+            continue
+        
+        print(f"[DEBUG] Examinant item {i+1}/{len(items)} per a {nom_estacio}")
+        
+        # Extreure dades
+        station_data = extreure_dades_estacio(title_text, nom_estacio, codi)
+        
+        # Verificar si aquest item té dades vàlides (temperatura actual)
+        if station_data.get('temp_actual') is not None:
+            print(f"[OK] Trobat item vàlid per a {nom_estacio} (item {i+1})")
+            print(f"     Temperatura: {station_data['temp_actual']}°C, Període: {station_data.get('periode', 'N/D')}")
+            return station_data
+        else:
+            print(f"[INFO] Item {i+1} no té temperatura actual, cercant prèvi...")
+    
+    # Si no troba cap item amb dades, retorna el primer que hagi trobat (per si de cas)
+    print(f"[WARNING] No s'ha trobat cap item amb dades vàlides per a {nom_estacio}")
+    return None
+
 def obtenir_dades_del_rss(url_rss: str = 'https://joandecorts.github.io/meteo-rss-auto/meteo.rss') -> List[Dict[str, Any]]:
     """
     Llegeix el fitxer RSS i extreu les dades només de Girona i Fornells.
-    Versió SIMPLIFICADA i ROBUSTA - ignora la resta d'ítems.
+    CORREGIT: Troba l'ÚLTIM item vàlid per a cada estació.
     """
     try:
         print(f"[INFO] Obtenint dades del RSS: {url_rss}")
@@ -118,50 +166,37 @@ def obtenir_dades_del_rss(url_rss: str = 'https://joandecorts.github.io/meteo-rs
         
         print("[OK] RSS obtingut correctament")
         
-        # Buscar DIRECTAMENT les dues estacions que ens interessen
+        # Trobar TOTS els items del RSS
+        items = re.findall(r'<item>(.*?)</item>', rss_content, re.DOTALL)
+        print(f"[INFO] Trobats {len(items)} items totals al RSS")
+        
+        # DEBUG: Mostrar quins items hi ha
+        print(f"[DEBUG] Mostrant els primers 100 caràcters de cada item:")
+        for i, item in enumerate(items[:6]):  # Mostra els primers 6 items
+            title_match = re.search(r'<title>(.*?)</title>', item, re.DOTALL)
+            if title_match:
+                title_preview = title_match.group(1).strip()[:80]
+                print(f"  Item {i+1}: {title_preview}...")
+            else:
+                print(f"  Item {i+1}: Sense títol")
+        
         stations_data = []
         
-        # Patró per trobar el títol COMPLET d'una estació (inclou totes les dades)
-        # Busquem des del nom de l'estació fins al final del títol
-        patron_estacio = r'<title>.*?({}).*?</title>'
-        
-        # Buscar Girona
-        girona_patron = patron_estacio.format('Girona')
-        girona_match = re.search(girona_patron, rss_content, re.IGNORECASE | re.DOTALL)
-        if girona_match:
-            titol_complet = girona_match.group(0)  # Tota la etiqueta <title>...</title>
-            # Extreure només el contingut del títol (sense les etiquetes)
-            titol_contingut_match = re.search(r'<title>(.*?)</title>', titol_complet, re.DOTALL)
-            if titol_contingut_match:
-                title_text = titol_contingut_match.group(1).strip()
-                station_data = extreure_dades_estacio(title_text, "Girona", "XJ")
-                if station_data:
-                    stations_data.append(station_data)
-                    print(f"[OK] Processada: Girona")
-        
-        # Buscar Fornells
-        fornells_patron = patron_estacio.format('Fornells')
-        fornells_match = re.search(fornells_patron, rss_content, re.IGNORECASE | re.DOTALL)
-        if fornells_match:
-            titol_complet = fornells_match.group(0)
-            titol_contingut_match = re.search(r'<title>(.*?)</title>', titol_complet, re.DOTALL)
-            if titol_contingut_match:
-                title_text = titol_contingut_match.group(1).strip()
-                station_data = extreure_dades_estacio(title_text, "Fornells de la Selva", "UO")
-                if station_data:
-                    stations_data.append(station_data)
-                    print(f"[OK] Processada: Fornells de la Selva")
-        
-        # Informe del que s'ha trobat
-        if stations_data:
-            print(f"[OK] S'han trobat {len(stations_data)} estacions vàlides")
-            for estacio in stations_data:
-                print(f"  - {estacio['name']}: T={estacio.get('temp_actual', 'N/D')}°C, H={estacio.get('humitat', 'N/D')}%")
+        # Buscar l'ÚLTIM item vàlid per a Girona
+        girona_data = obtenir_ultim_item_valid(items, "Girona")
+        if girona_data:
+            stations_data.append(girona_data)
+            print(f"[OK] Dades de Girona obtingudes: T={girona_data.get('temp_actual', 'N/D')}°C")
         else:
-            print("[ERROR] No s'han trobat les estacions buscades al RSS")
-            # DEBUG: Mostrar una mostra del RSS per veure què hi ha
-            print("[DEBUG] Mostrant els primers 500 caràcters del RSS:")
-            print(rss_content[:500])
+            print("[ERROR] No s'han trobat dades vàlides per a Girona")
+        
+        # Buscar l'ÚLTIM item vàlid per a Fornells
+        fornells_data = obtenir_ultim_item_valid(items, "Fornells")
+        if fornells_data:
+            stations_data.append(fornells_data)
+            print(f"[OK] Dades de Fornells obtingudes: T={fornells_data.get('temp_actual', 'N/D')}°C")
+        else:
+            print("[ERROR] No s'han trobat dades vàlides per a Fornells")
         
         return stations_data
         
@@ -172,7 +207,7 @@ def obtenir_dades_del_rss(url_rss: str = 'https://joandecorts.github.io/meteo-rs
         return []
 
 # ============================================================================
-# GENERACIÓ DE L'HTML (ADAPTADA PER A LES DADES DEL RSS)
+# GENERACIÓ DE L'HTML (MANTINGUT IGUAL)
 # ============================================================================
 
 def renderitzar_html(estacions: List[Dict[str, Any]]) -> str:
@@ -183,7 +218,6 @@ def renderitzar_html(estacions: List[Dict[str, Any]]) -> str:
         if val is None:
             return 'N/D'
         try:
-            # Intentar convertir a float per arrodonir
             num = float(val)
             if num.is_integer():
                 return f'{int(num)}{unitat}'
@@ -194,11 +228,9 @@ def renderitzar_html(estacions: List[Dict[str, Any]]) -> str:
     hora_actual = datetime.now().strftime('%H:%M')
     data_actual = datetime.now().strftime('%d/%m/%Y')
     
-    # Separar estacions per al ticker
     estacio1 = estacions[0] if len(estacions) > 0 else {}
     estacio2 = estacions[1] if len(estacions) > 1 else {}
     
-    # Determinar noms per a les columnes del ticker
     nom_estacio1 = estacio1.get('name', 'GIRONA')
     nom_estacio2 = estacio2.get('name', 'FORNELLS DE LA SELVA')
     
@@ -250,7 +282,7 @@ def renderitzar_html(estacions: List[Dict[str, Any]]) -> str:
             </div>
         </div>
         
-        <!-- SEGONA ESTACIÓ (si existeix) -->
+        <!-- SEGONA ESTACIÓ -->
         <div class="estacio">
             <div class="header">
                 <i class="fas fa-map-marker-alt"></i>
@@ -286,19 +318,17 @@ def main():
     print("INICIANT GENERACIÓ DEL TICKER DES DEL RSS")
     print("=" * 60)
     
-    # 1. OBTENIR DADES DEL RSS
     print("\n[1] Obtenint dades del RSS...")
     estacions = obtenir_dades_del_rss()
     
     if len(estacions) < 2:
-        print(f"[WARNING] Només s'han trobat {len(estacions)} estacions (esperades: 2)")
-        if len(estacions) == 0:
-            print("[ERROR] No s'han pogut obtenir dades. Surtint.", file=sys.stderr)
-            sys.exit(1)
+        print(f"[ERROR] Només s'han trobat {len(estacions)} estacions (necessàries: 2)", file=sys.stderr)
+        sys.exit(1)
     
-    print(f"[OK] Obtingudes {len(estacions)} estacions")
+    print(f"\n[OK] Obtingudes {len(estacions)} estacions amb dades vàlides")
+    for estacio in estacions:
+        print(f"  - {estacio['name']}: T={estacio.get('temp_actual', 'N/D')}°C, H={estacio.get('humitat', 'N/D')}%, Periode={estacio.get('periode', 'N/D')}")
     
-    # 2. GUARDAR DADES EN FORMAT JSON (opcional, per a càrrega ràpida)
     data_avui = datetime.now().strftime('%Y-%m-%d')
     nom_fitxer_cache = f"meteo_cache_rss_{data_avui}.json"
     
@@ -311,11 +341,9 @@ def main():
     
     print(f"[OK] Dades guardades a: {nom_fitxer_cache}")
     
-    # 3. GENERAR HTML
     print("[2] Generant HTML del ticker...")
     html_final = renderitzar_html(estacions)
     
-    # 4. ESCRIURE FITXER
     output_file = Path("index.html")
     output_file.write_text(html_final, encoding='utf-8')
     
