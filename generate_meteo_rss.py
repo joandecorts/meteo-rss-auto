@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# generate_meteo_rss.py - VERSIÓ DEFINITIVA CORREGIDA
+# generate_meteo_rss.py - VERSIÓ DEFINITIVA CORREGIDA (Zona Horària Fixa)
 import requests
 from bs4 import BeautifulSoup
 import pytz
@@ -161,7 +161,7 @@ def guardar_dades(dades_estacions):
         write_log(f"⚠️ Error guardant dades: {e}")
 
 def create_rss_feed():
-    """Crea l'arxiu RSS amb totes les dades - VERSIÓ SIMPLIFICADA"""
+    """Crea l'arxiu RSS amb totes les dades - VERSIÓ CORREGIDA (Zona Horària Fixa)"""
     
     write_log("\n🚀 GENERADOR RSS METEOCAT - DEFINITIU")
     write_log("=" * 60)
@@ -179,8 +179,13 @@ def create_rss_feed():
         }
     ]
     
-    cet = pytz.timezone('CET')
-    now = datetime.now(cet)
+    # 🕐 CORRECCIÓ CLAU: Obtenir hora consistent en qualsevol entorn
+    # 1. Agafem l'hora actual en UTC (universal i consistent)
+    utc_now = datetime.now(pytz.utc)
+    # 2. La convertim a la zona horària d'Espanya (que gestiona CET/CEST automàticament)
+    spain_tz = pytz.timezone('Europe/Madrid')
+    now = utc_now.astimezone(spain_tz)
+    # --------------------------------------------------------
     
     # Llegim les dades guardades de totes les estacions
     dades_estacions = llegir_dades_guardades()
@@ -320,7 +325,7 @@ def create_rss_feed():
         for station_code, dades in dades_actualitzades.items():
             print(f"   • {dades['station_name']}: {len([k for k in dades.keys() if k not in ['station_name', 'station_code', 'periode']])} dades | {dades.get('periode', 'N/D')}")
         
-        # Mostrar contingut del RSS - CORREGIT
+        # Mostrar contingut del RSS
         print(f"\n📄 CONTINGUT meteo.rss:")
         print("-" * 60)
         # Mostrar només la capçalera i el primer item per no saturar
@@ -359,7 +364,7 @@ def setup_automatic_update():
 if __name__ == "__main__":
     # Netejar log anterior
     with open('debug.log', 'w', encoding='utf-8') as f:
-        f.write(f"=== INICI: {datetime.now()} ===\n")
+        f.write(f"=== INICI: {datetime.now(pytz.utc).astimezone(pytz.timezone('Europe/Madrid')).strftime('%Y-%m-%d %H:%M:%S CET')} ===\n")
     
     try:
         exit_code = create_rss_feed()
