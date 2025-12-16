@@ -1,49 +1,60 @@
-name: Update RSS Feeds
+name: Update Meteo RSS
 
 on:
   schedule:
-    - cron: '*/30 * * * *'  # S'executa cada 30 minuts
-  workflow_dispatch:         # Permet l'execució manual
+    - cron: '*/10 * * * *'  # Cada 10 minuts
+  workflow_dispatch:  # Permet execució manual
+  push:
+    paths:
+      - 'scripts/generate_meteo_rss.py'
 
 jobs:
-  update-feeds:
+  update-rss:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: 📥 Agafar el codi
-        uses: actions/checkout@v4
-
-      - name: 🐍 Configurar Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.10'
-
-      - name: 📦 Instal·lar dependències
-        run: pip install -r requirements.txt
-
-      - name: 📊 Executar update_rss.py (TEMPS REAL)
-        run: python update_rss.py
-
-      - name: 📅 Executar update_rss_daily.py (RESUM DIARI)  # CORREGIT: dayly → daily
-        run: python update_rss_daily.py  # CORREGIT: dayly → daily
-
-      - name: 📁 Crear carpeta /docs i copiar resultats
-        run: |
-          mkdir -p docs
-          # Copiar els RSS reals
-          cp -f update_meteo.rss docs/
-          cp -f update_meteo_daily.rss docs/  # CORREGIT: dayly → daily
-          # Crear també meteo.rss per compatibilitat (opcional)
-          cp -f update_meteo.rss docs/meteo.rss
-          # Copiar logs i dades de suport
-          cp -f debug.log docs/ 2>/dev/null || true
-          cp -f debug_daily.log docs/ 2>/dev/null || true  # CORREGIT: dayly → daily
-          cp -f acumulacio_*.json docs/ 2>/dev/null || true
-          cp -f weather_data.json docs/ 2>/dev/null || true
-          cp -f daily_summary.json docs/ 2>/dev/null || true
-
-      - name: 💾 Publicar a la branca gh-pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs
-          publish_branch: gh-pages
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests
+    
+    - name: Generate RSS file
+      run: |
+        python scripts/generate_meteo_rss.py
+    
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "GitHub Actions Bot"
+        git config --global user.email "actions@github.com"
+        
+        # Verificar si hi ha canvis
+        if git diff --quiet meteo.rss; then
+          echo "No hi ha canvis en meteo.rss"
+        else
+          git add meteo.rss
+          git commit -m "📡 Actualització automàtica meteo.rss $(date +'%Y-%m-%d %H:%M')"
+          git push
+        fi
+    
+    - name: Verify RSS file
+      run: |
+        echo "🔍 Verificant estructura RSS..."
+        if [ -f "meteo.rss" ]; then
+          echo "✅ Fitxer meteo.rss existeix"
+          echo "📏 Mida: $(wc -l < meteo.rss) línies"
+          echo "📋 Primeres línies:"
+          head -20 meteo.rss
+        else
+          echo "❌ ERROR: meteo.rss no s'ha generat"
+          exit 1
+        fi
