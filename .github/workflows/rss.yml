@@ -1,46 +1,55 @@
-name: Update Meteo RSS
+name: Update Meteo RSS Automatic
 
 on:
-  workflow_dispatch:       # Permet executar manualment
+  # S'executa cada 10 minuts
   schedule:
-    - cron: '*/10 * * * *'  # Cada 10 minuts
+    - cron: '*/10 * * * *'
+  # Permet executar manualment des de GitHub
+  workflow_dispatch:
 
 jobs:
-  update:
+  build:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Checkout repository
+    # 1. DESCARREGAR EL CODI
+    - name: Checkout code
       uses: actions/checkout@v3
       with:
-        ref: main  # IMPORTANT: Treballa des de main
+        fetch-depth: 0  # Agafa tot l'historial
         
+    # 2. CONFIGURAR PYTHON
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.10'
         
+    # 3. INSTAL·LAR DEPENDÈNCIES
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip
-        pip install requests beautifulsoup4 pytz
+        pip install --upgrade pip
+        pip install requests beautifulsoup4 pytz lxml
         
-    - name: Run Python RSS generator
+    # 4. EXECUTAR EL TEU SCRIPT (EL QUE REALMENT FUNCIONA)
+    - name: Run your Python script
       run: |
-        echo "🚀 Executant generate_meteo_rss.py..."
+        echo "=== EXECUTANT EL TEU SCRIPT PYTHON ==="
         python generate_meteo_rss.py
-        echo "✅ Script executat"
+        echo "=== SCRIPT FINALITZAT ==="
         
-    - name: Verify generated file
+    # 5. MOSTRAR QUÈ S'HA GENERAT (per debug)
+    - name: Show generated RSS
       run: |
-        echo "📄 Contingut de meteo.rss (primera part):"
-        head -20 meteo.rss || echo "ERROR: No s'ha generat meteo.rss"
+        echo "=== CONTINGUT GENERAT ==="
+        cat meteo.rss || echo "ERROR: No s'ha generat meteo.rss"
+        echo "=== FI DEL CONTINGUT ==="
         
-    - name: Deploy to gh-pages
+    # 6. PENJAR A GITHUB PAGES
+    - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: .
+        publish_dir: ./
         publish_branch: gh-pages
         keep_files: true
-        commit_message: "📡 Actualització automàtica RSS - $(date -u +'%H:%M UTC')"
+        commit_message: "🤖 Actualització automàtica RSS - $(date -u +'%Y-%m-%d %H:%M UTC')"
