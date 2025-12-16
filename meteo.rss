@@ -1,1 +1,25 @@
-<?xml version="1.0"?><rss><channel><title>Test</title></channel></rss>
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+<title>Dades Meteorològiques Gironès</title>
+<description>Dades en temps real i resums diaris</description>
+<link>https://www.meteo.cat</link>
+<lastBuildDate>Tue, 17 Dec 2025 02:00:00 +0000</lastBuildDate>
+<item>
+<title>🌤️ Girona | Període: 01:30-02:00</title>
+<pubDate>Tue, 17 Dec 2025 02:00:00 +0000</pubDate>
+</item>
+<item>
+<title>🌤️ Fornells de la Selva | Període: 01:30-02:00</title>
+<pubDate>Tue, 17 Dec 2025 02:00:00 +0000</pubDate>
+</item>
+<item>
+<title>📊 RESUM DEL DIA Girona | Data: 17-12-2025</title>
+<pubDate>Tue, 17 Dec 2025 02:00:00 +0000</pubDate>
+</item>
+<item>
+<title>📊 RESUM DEL DIA Fornells de la Selva | Data: 17-12-2025</title>
+<pubDate>Tue, 17 Dec 2025 02:00:00 +0000</pubDate>
+</item>
+</channel>
+</rss>
