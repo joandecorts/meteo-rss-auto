@@ -12,24 +12,19 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    
     steps:
     - name: Checkout
       uses: actions/checkout@v3
-    
     - name: Create RSS
       run: |
         echo '<?xml version="1.0"?>
 <rss version="2.0">
 <channel>
-<title>Dades Meteorològiques</title>
-<item><title>🌤️ Girona | 20:00-20:30</title></item>
-<item><title>🌤️ Fornells | 20:00-20:30</title></item>
-<item><title>📊 RESUM Girona | 16-12-2025</title></item>
-<item><title>📊 RESUM Fornells | 16-12-2025</title></item>
+<title>Test</title>
+<item><title>Test 1</title></item>
+<item><title>Test 2</title></item>
 </channel>
 </rss>' > meteo.rss
-    
     - name: Deploy
       uses: peaceiris/actions-gh-pages@v3
       with:
