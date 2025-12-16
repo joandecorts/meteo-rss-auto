@@ -1,91 +1,41 @@
 name: Update Meteo RSS
+
 on:
-  workflow_dispatch:
+  workflow_dispatch:       # Permet executar manualment
   schedule:
-    - cron: '*/10 * * * *'
+    - cron: '*/10 * * * *'  # Cada 10 minuts (ajusta-ho si vols cada 5)
+
 jobs:
   update:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
-          ref: gh-pages
+          ref: main  # ✅ Canvia de 'gh-pages' a 'main'
       
-      - name: Generate complete bilingual RSS
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          
+      - name: Install Python dependencies
         run: |
-          # Hora actual (hora local de Girona, UTC+1)
-          HORA_LOCAL=$(date +"%H")
-          MINUT_LOCAL=$(date +"%M")
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 pytz lxml
           
-          echo "🕒 Hora local Girona: $HORA_LOCAL:$MINUT_LOCAL"
+      - name: Generate RSS with real data
+        run: |
+          echo "🚀 Executant el generador RSS..."
+          python generate_meteo_rss.py
+          echo "✅ RSS generat amb dades reals"
           
-          # PERÍODE ACTUAL (últim període informat)
-          # Si són les 09:15 → període 09:00-09:30 (encara no acabat, mostrem 08:30-09:00)
-          # Si són les 09:45 → període 09:00-09:30
+      - name: Show generated RSS preview
+        run: |
+          echo "📄 Previsualització del RSS generat:"
+          head -30 meteo.rss || echo "No s'ha generat el fitxer"
           
-          if [ $MINUT_LOCAL -lt 30 ]; then
-            # Exemple: 09:15 → mostrem 08:30-09:00
-            if [ $HORA_LOCAL -eq 0 ]; then
-              HORA_ANT=23
-            else
-              HORA_ANT=$((HORA_LOCAL - 1))
-            fi
-            PERIODE="${HORA_ANT}:30-${HORA_LOCAL}:00"
-            FI_PERIODE="${HORA_LOCAL}:00"
-          else
-            # Exemple: 09:45 → mostrem 09:00-09:30
-            PERIODE="${HORA_LOCAL}:00-${HORA_LOCAL}:30"
-            FI_PERIODE="${HORA_LOCAL}:30"
-          fi
-          
-          # Dates
-          DATA_AVUI=$(date +"%d-%m-%Y")
-          DATA_AVUI_EN=$(date +"%Y-%m-%d")
-          DATA_RFC=$(date -u +"%a, %d %b %Y %H:%M:%S +0000")
-          
-          echo "📅 Data: $DATA_AVUI"
-          echo "🕒 Període: $PERIODE"
-          echo "⏰ Fi període: $FI_PERIODE"
-          
-          # Crear RSS amb 4 ítems BILINGÜES
-          echo '<?xml version="1.0" encoding="UTF-8"?>' > meteo.rss
-          echo '<rss version="2.0">' >> meteo.rss
-          echo '<channel>' >> meteo.rss
-          echo '<title>Dades Meteorològiques Gironès</title>' >> meteo.rss
-          echo '<description>Dades en temps real i resums diaris - Font: Meteo.cat</description>' >> meteo.rss
-          echo '<link>https://www.meteo.cat</link>' >> meteo.rss
-          echo "<lastBuildDate>$DATA_RFC</lastBuildDate>" >> meteo.rss
-          
-          # --- ÍTEM 1: GIRONA - BILINGÜE amb llegendes clares ---
-          echo '<item>' >> meteo.rss
-          echo '<title>🌤️ Girona | Període: '"$PERIODE"' | 🌡️ Temp. Mitjana: 12.5°C | 🔥 Temp. Màxima: 13.2°C | ❄️ Temp. Mínima: 11.8°C | 💧 Humitat: 85% | 🌧️ Pluja: 0.0mm | 💨 Vent: 8.5km/h | 🧭 Direcció: 210° | 💨 Ràfega: 12.8km/h | ⏲️ Pressió: 1018.5hPa | ☀️ Radiació: 125W/m² || 🌤️ Girona | Period: '"$PERIODE"' | 🌡️ Avg Temp: 12.5°C | 🔥 Max Temp: 13.2°C | ❄️ Min Temp: 11.8°C | 💧 Humidity: 85% | 🌧️ Rain: 0.0mm | 💨 Wind: 8.5km/h | 🧭 Direction: 210° | 💨 Gust: 12.8km/h | ⏲️ Pressure: 1018.5hPa | ☀️ Radiation: 125W/m²</title>' >> meteo.rss
-          echo "<pubDate>$DATA_RFC</pubDate>" >> meteo.rss
-          echo '</item>' >> meteo.rss
-          
-          # --- ÍTEM 2: FORNELLS - BILINGÜE amb llegendes clares ---
-          echo '<item>' >> meteo.rss
-          echo '<title>🌤️ Fornells de la Selva | Període: '"$PERIODE"' | 🌡️ Temp. Mitjana: 12.2°C | 🔥 Temp. Màxima: 12.9°C | ❄️ Temp. Mínima: 11.5°C | 💧 Humitat: 87% | 🌧️ Pluja: 0.0mm | 💨 Vent: 7.8km/h | 🧭 Direcció: 195° | 💨 Ràfega: 11.5km/h | ⏲️ Pressió: 1018.2hPa | ☀️ Radiació: 118W/m² || 🌤️ Fornells de la Selva | Period: '"$PERIODE"' | 🌡️ Avg Temp: 12.2°C | 🔥 Max Temp: 12.9°C | ❄️ Min Temp: 11.5°C | 💧 Humidity: 87% | 🌧️ Rain: 0.0mm | 💨 Wind: 7.8km/h | 🧭 Direction: 195° | 💨 Gust: 11.5km/h | ⏲️ Pressure: 1018.2hPa | ☀️ Radiation: 118W/m²</title>' >> meteo.rss
-          echo "<pubDate>$DATA_RFC</pubDate>" >> meteo.rss
-          echo '</item>' >> meteo.rss
-          
-          # --- ÍTEM 3: GIRONA - RESUM DIARI BILINGÜE ---
-          echo '<item>' >> meteo.rss
-          echo '<title>📊 RESUM DEL DIA Girona | Data: '"$DATA_AVUI"' | Període: 00:00-'"$FI_PERIODE"' | 🔥 Temperatura Màxima: 14.8°C | ❄️ Temperatura Mínima: 8.2°C | 🌧️ Pluja Acumulada: 0.5mm || 📊 TODAY'"'"'S SUMMARY Girona | Date: '"$DATA_AVUI_EN"' | Period: 00:00-'"$FI_PERIODE"' | 🔥 Maximum Temperature: 14.8°C | ❄️ Minimum Temperature: 8.2°C | 🌧️ Accumulated Rain: 0.5mm</title>' >> meteo.rss
-          echo "<pubDate>$DATA_RFC</pubDate>" >> meteo.rss
-          echo '</item>' >> meteo.rss
-          
-          # --- ÍTEM 4: FORNELLS - RESUM DIARI BILINGÜE ---
-          echo '<item>' >> meteo.rss
-          echo '<title>📊 RESUM DEL DIA Fornells de la Selva | Data: '"$DATA_AVUI"' | Període: 00:00-'"$FI_PERIODE"' | 🔥 Temperatura Màxima: 14.5°C | ❄️ Temperatura Mínima: 7.8°C | 🌧️ Pluja Acumulada: 0.8mm || 📊 TODAY'"'"'S SUMMARY Fornells de la Selva | Date: '"$DATA_AVUI_EN"' | Period: 00:00-'"$FI_PERIODE"' | 🔥 Maximum Temperature: 14.5°C | ❄️ Minimum Temperature: 7.8°C | 🌧️ Accumulated Rain: 0.8mm</title>' >> meteo.rss
-          echo "<pubDate>$DATA_RFC</pubDate>" >> meteo.rss
-          echo '</item>' >> meteo.rss
-          
-          echo '</channel>' >> meteo.rss
-          echo '</rss>' >> meteo.rss
-          
-          echo "✅ RSS generat amb 4 ítems BILINGÜES"
-          echo "🔤 Llegendes: TM→🌡️, TX→🔥, TN→❄️, HRM→💧, PPT→🌧️"
-      
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -93,4 +43,4 @@ jobs:
           publish_dir: .
           publish_branch: gh-pages
           keep_files: true
-          commit_message: "📡 Update RSS bilingüe - $(date +'%H:%M')"
+          commit_message: "📡 Update RSS amb dades reals - $(date +'%H:%M')"
