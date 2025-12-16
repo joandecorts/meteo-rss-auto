@@ -13,17 +13,16 @@ jobs:
         with:
           ref: 'gh-pages'
       
-      - name: Generate complete RSS
+      - name: Generate RSS
         run: |
-          # Hora actual en UTC
+          # Hora UTC
           HOUR_UTC=$(date -u +"%H")
           MINUTE_UTC=$(date -u +"%M")
           
           echo "🕒 Hora UTC: $HOUR_UTC:$MINUTE_UTC"
           
-          # Determinar període
+          # Període
           if [ $MINUTE_UTC -lt 30 ]; then
-            # Període anterior (ex: 07:30-08:00 si ara són 08:15)
             if [ $HOUR_UTC -eq 0 ]; then
               PREV_HOUR=23
             else
@@ -32,21 +31,19 @@ jobs:
             PERIOD="${PREV_HOUR}:30-${HOUR_UTC}:00"
             PERIOD_END="${HOUR_UTC}:00"
           else
-            # Període actual (ex: 08:00-08:30 si ara són 08:45)
             PERIOD="${HOUR_UTC}:00-${HOUR_UTC}:30"
             PERIOD_END="${HOUR_UTC}:30"
           fi
           
-          # Data actual (hora local de Girona, UTC+1)
+          # Dates
           DATE_DDMM=$(date +"%d-%m-%Y")
           DATE_YYYYMM=$(date +"%Y-%m-%d")
           RFC_DATE=$(date -u +"%a, %d %b %Y %H:%M:%S +0000")
           
           echo "📅 Data: $DATE_DDMM"
           echo "🕒 Període: $PERIOD"
-          echo "⏰ Fi període: $PERIOD_END"
           
-          # Crear RSS amb les variables correctament inserides
+          # RSS
           cat > meteo.rss << EOF
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -80,8 +77,7 @@ jobs:
 EOF
           
           echo "✅ RSS generat"
-          echo "📋 Contingut:"
-          head -20 meteo.rss
+          echo "$PERIOD" > period.txt  # Guardar període per al següent pas
       
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
@@ -90,4 +86,4 @@ EOF
           publish_dir: .
           publish_branch: gh-pages
           keep_files: true
-          commit_message: "📡 Update RSS - Període: $PERIOD"
+          commit_message: "📡 Update RSS - $(date +'%H:%M')"
