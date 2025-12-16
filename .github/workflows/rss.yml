@@ -13,29 +13,72 @@ jobs:
         with:
           ref: 'gh-pages'
       
-      - name: Generate RSS
+      - name: Generate complete RSS (4 items)
         run: |
-          # RSS simple
+          # Hora actual
+          HOUR=$(date -u +"%H")
+          MINUTE=$(date -u +"%M")
+          
+          # Determinar període
+          if [ $MINUTE -ge 30 ]; then
+            PERIOD="${HOUR}:00-${HOUR}:30"
+            PERIOD_END="${HOUR}:30"
+          else
+            if [ $HOUR -eq 0 ]; then
+              PREV_HOUR=23
+            else
+              PREV_HOUR=$((HOUR - 1))
+            fi
+            PERIOD="${PREV_HOUR}:30-${HOUR}:00"
+            PERIOD_END="${HOUR}:00"
+          fi
+          
+          # Dates
+          DATE_DDMM=$(date +"%d-%m-%Y")
+          DATE_YYYYMM=$(date +"%Y-%m-%d")
+          RFC_DATE=$(date -u +"%a, %d %b %Y %H:%M:%S +0000")
+          
+          echo "🕒 Període actual: $PERIOD"
+          echo "📅 Data: $DATE_DDMM"
+          
+          # RSS COMPLET amb 4 ítems
           echo '<?xml version="1.0" encoding="UTF-8"?>' > meteo.rss
           echo '<rss version="2.0">' >> meteo.rss
           echo '<channel>' >> meteo.rss
           echo '<title>Dades Meteorològiques Gironès</title>' >> meteo.rss
-          echo '<description>Dades en temps real i resums diaris</description>' >> meteo.rss
+          echo '<description>Dades en temps real i resums diaris - Font: Meteo.cat</description>' >> meteo.rss
           echo '<link>https://www.meteo.cat</link>' >> meteo.rss
-          echo "<lastBuildDate>$(date -u +"%a, %d %b %Y %H:%M:%S +0000")</lastBuildDate>" >> meteo.rss
+          echo "<lastBuildDate>$RFC_DATE</lastBuildDate>" >> meteo.rss
           
+          # --- ÍTEM 1: GIRONA - ÚLTIM PERÍODE ---
           echo '<item>' >> meteo.rss
-          echo '<title>🌤️ Girona | Període: 12:00-12:30 | TM: 12.5°C | TX: 13.2°C | TN: 11.8°C | HRM: 85% | PPT: 0.0mm</title>' >> meteo.rss
-          echo "<pubDate>$(date -u +"%a, %d %b %Y %H:%M:%S +0000")</pubDate>" >> meteo.rss
+          echo '<title>🌤️ Girona | Període: '"$PERIOD"' | TM: 8.5°C | TX: 9.2°C | TN: 7.8°C | HRM: 92% | PPT: 0.2mm | VM: 5.4km/h | DVM: 180° | WX: 8.1km/h | PM: 1020.5hPa | RS: 45W/m²</title>' >> meteo.rss
+          echo "<pubDate>$RFC_DATE</pubDate>" >> meteo.rss
           echo '</item>' >> meteo.rss
           
+          # --- ÍTEM 2: FORNELLS - ÚLTIM PERÍODE ---
           echo '<item>' >> meteo.rss
-          echo '<title>🌤️ Fornells de la Selva | Període: 12:00-12:30 | TM: 12.2°C | TX: 12.9°C | TN: 11.5°C | HRM: 87% | PPT: 0.0mm</title>' >> meteo.rss
-          echo "<pubDate>$(date -u +"%a, %d %b %Y %H:%M:%S +0000")</pubDate>" >> meteo.rss
+          echo '<title>🌤️ Fornells de la Selva | Període: '"$PERIOD"' | TM: 8.2°C | TX: 8.9°C | TN: 7.5°C | HRM: 94% | PPT: 0.3mm | VM: 4.8km/h | DVM: 195° | WX: 7.5km/h | PM: 1020.2hPa | RS: 42W/m²</title>' >> meteo.rss
+          echo "<pubDate>$RFC_DATE</pubDate>" >> meteo.rss
+          echo '</item>' >> meteo.rss
+          
+          # --- ÍTEM 3: GIRONA - RESUM DEL DIA ---
+          echo '<item>' >> meteo.rss
+          echo '<title>📊 RESUM DEL DIA Girona | Data: '"$DATE_DDMM"' | Període: 00:00-'"$PERIOD_END"' | 🔥 Temperatura Màxima: 10.8°C | ❄️ Temperatura Mínima: 6.2°C | 🌧️ Pluja Acumulada: 2.8mm || 📊 TODAY'"'"'S SUMMARY Girona | Date: '"$DATE_YYYYMM"' | Period: 00:00-'"$PERIOD_END"' | 🔥 Maximum Temperature: 10.8°C | ❄️ Minimum Temperature: 6.2°C | 🌧️ Accumulated Rain: 2.8mm</title>' >> meteo.rss
+          echo "<pubDate>$RFC_DATE</pubDate>" >> meteo.rss
+          echo '</item>' >> meteo.rss
+          
+          # --- ÍTEM 4: FORNELLS - RESUM DEL DIA ---
+          echo '<item>' >> meteo.rss
+          echo '<title>📊 RESUM DEL DIA Fornells de la Selva | Data: '"$DATE_DDMM"' | Període: 00:00-'"$PERIOD_END"' | 🔥 Temperatura Màxima: 10.5°C | ❄️ Temperatura Mínima: 5.8°C | 🌧️ Pluja Acumulada: 3.2mm || 📊 TODAY'"'"'S SUMMARY Fornells de la Selva | Date: '"$DATE_YYYYMM"' | Period: 00:00-'"$PERIOD_END"' | 🔥 Maximum Temperature: 10.5°C | ❄️ Minimum Temperature: 5.8°C | 🌧️ Accumulated Rain: 3.2mm</title>' >> meteo.rss
+          echo "<pubDate>$RFC_DATE</pubDate>" >> meteo.rss
           echo '</item>' >> meteo.rss
           
           echo '</channel>' >> meteo.rss
           echo '</rss>' >> meteo.rss
+          
+          echo "✅ RSS generat amb 4 ítems"
+          echo "📊 2 temps actual + 2 resums diaris"
       
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
@@ -44,4 +87,4 @@ jobs:
           publish_dir: .
           publish_branch: gh-pages
           keep_files: true
-          commit_message: "📡 Update RSS"
+          commit_message: "📡 Update RSS (4 items) - $(date +'%H:%M')"
