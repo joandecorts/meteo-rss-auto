@@ -10,8 +10,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Create RSS
-        run: echo '<?xml version="1.0"?><rss><channel><title>Test</title></channel></rss>' > meteo.rss
+      - name: Generate RSS
+        run: |
+          cat > meteo.rss << 'XML'
+<?xml version="1.0"?>
+<rss version="2.0">
+<channel>
+<title>Dades Meteo</title>
+<item><title>Item 1</title></item>
+<item><title>Item 2</title></item>
+</channel>
+</rss>
+XML
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
