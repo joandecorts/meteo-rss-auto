@@ -1,10 +1,9 @@
 name: Update Meteo RSS Automatic
 
 on:
-  # S'executa cada 10 minuts
+  # Execució cada hora als :05 per tenir un patró més previsible
   schedule:
-    - cron: '*/10 * * * *'
-  # Permet executar manualment des de GitHub
+    - cron: '5 * * * *'
   workflow_dispatch:
 
 jobs:
@@ -16,7 +15,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0  # Agafa tot l'historial
+        fetch-depth: 0
         
     # 2. CONFIGURAR PYTHON
     - name: Set up Python
@@ -30,21 +29,25 @@ jobs:
         pip install --upgrade pip
         pip install requests beautifulsoup4 pytz lxml
         
-    # 4. EXECUTAR EL TEU SCRIPT (EL QUE REALMENT FUNCIONA)
+    # 4. AFEGIR DEBUG MÉS DETALLAT
     - name: Run your Python script
       run: |
-        echo "=== EXECUTANT EL TEU SCRIPT PYTHON ==="
+        echo "=== INICI SCRIPT ==="
+        echo "Directori actual: $(pwd)"
+        echo "Contingut directori:"
+        ls -la
+        echo "=== EXECUTANT SCRIPT ==="
         python generate_meteo_rss.py
-        echo "=== SCRIPT FINALITZAT ==="
+        echo "=== COMPROVANT RESULTAT ==="
+        if [ -f "meteo.rss" ]; then
+          echo "✅ meteo.rss generat"
+          echo "Mida del fitxer: $(wc -l < meteo.rss) línies"
+          head -5 meteo.rss
+        else
+          echo "❌ ERROR: No s'ha generat meteo.rss"
+        fi
         
-    # 5. MOSTRAR QUÈ S'HA GENERAT (per debug)
-    - name: Show generated RSS
-      run: |
-        echo "=== CONTINGUT GENERAT ==="
-        cat meteo.rss || echo "ERROR: No s'ha generat meteo.rss"
-        echo "=== FI DEL CONTINGUT ==="
-        
-    # 6. PENJAR A GITHUB PAGES
+    # 5. PENJAR A GITHUB PAGES
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
       with:
