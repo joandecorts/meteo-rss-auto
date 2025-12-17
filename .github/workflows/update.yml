@@ -1,12 +1,13 @@
 name: Update Meteo RSS Automatic
 
 on:
-  # Permetre que cron-job.org dispari l'acció
+  # Permetre que cron-job.org dispari l'acció (cada 5 minuts)
   repository_dispatch:
     types: [trigger_update]
-  # Execució cada hora als :05 per tenir un patró més previsible
+  # Execució programada interna per redundància (cada 5 minuts)
   schedule:
-    - cron: '5 * * * *'
+    - cron: '*/5 * * * *'
+  # Permetre execucions manuals des de la pestanya d'Accions
   workflow_dispatch:
 
 jobs:
