@@ -1,8 +1,15 @@
 name: Update Meteo RSS
 on:
-  workflow_dispatch:  # Permet executar manualment
+  # 1. DISPARAT PER CRON-JOB.ORG CADA 5 MINUTS
+  repository_dispatch:
+    types: [trigger_update]
+  
+  # 2. DISPARAT MANUALMENT DES DE GITHUB
+  workflow_dispatch:
+  
+  # 3. ACTUALITZACIÓ PROGRAMADA DELS HTMLs
   schedule:
-    - cron: "0 */6 * * *"  # Cada 6 hores
+    - cron: "15,45 * * * *"  # ✅ CORREGIT: Hores:15 i :45
 
 jobs:
   update:
@@ -25,24 +32,17 @@ jobs:
       - run: python generate_fullscreen_html.py
       - run: python generate_meteo_rss.py
       
-      # 5. COMPROVA QUÈ S'HA GENERAT (opcional, per debug)
-      - name: Llista arxius generats
+      # 5. COMPROVA QUÈ S'HA GENERAT
+      - name: Verifica arxius generats
         run: |
-          echo "=== Arxius HTML generats ==="
-          ls -la *.html 2>/dev/null || echo "No hi ha HTMLs"
-          echo ""
-          echo "=== Arxius RSS ==="
-          ls -la *.rss *.xml 2>/dev/null || echo "No hi ha RSS"
-          echo ""
-          echo "=== Tots els arxius ==="
-          ls -la
+          echo "🕒 Última actualització: $(date)"
+          echo "📁 Arxius a gh-pages:"
+          ls -la *.html *.rss *.json 2>/dev/null | head -10
       
       # 6. PUJA TOT A GH-PAGES
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .                # Puja TOT el directori actual
-          publish_branch: gh-pages      # A la branca gh-pages
-          keep_files: false             # Esborra l'anterior i posa el nou
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
+          publish_dir: .
+          publish_branch: gh-pages
+          keep_files: false
