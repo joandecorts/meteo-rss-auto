@@ -1,4 +1,4 @@
-=== INICI: 2025-12-20 17:30:56 UTC ===
+=== INICI: 2025-12-20 17:40:46 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -8,13 +8,13 @@
 📡 Processant: Fornells de la Selva [UO]
 🌐 Connectant a Fornells de la Selva...
 📊 36 files trobades
-✅ Dades RECENTS trobades: 16:30 - 17:00
+✅ Dades RECENTS trobades: 17:00 - 17:30
 🔍 Columnes disponibles: 6
 📊 Dades extretes:
-   • tm: 13.5
-   • tx: 13.8
-   • tn: 13.1
-   • hr: 94.0
+   • tm: 13.1
+   • tx: 13.2
+   • tn: 13.0
+   • hr: 96.0
    • ppt: 0.0
 ✅ Fornells de la Selva actualitzada
 
@@ -22,17 +22,17 @@
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
 📊 36 files trobades
-✅ Dades RECENTS trobades: 16:30 - 17:00
+✅ Dades RECENTS trobades: 17:00 - 17:30
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   • tm: 13.7
-   • tx: 14.1
-   • tn: 13.4
-   • hr: 94.0
+   • tm: 13.2
+   • tx: 13.4
+   • tn: 13.2
+   • hr: 98.0
    • ppt: 0.0
-   • vvm: 0.7
-   • dvm: 206.0
-   • vvx: 3.2
+   • vvm: 1.8
+   • dvm: 289.0
+   • vvx: 5.0
    • pm: 1012.5
    • rs: 0.0
 ✅ Girona actualitzada
