@@ -1,32 +1,35 @@
-# 1. Elimina completament el fitxer
-Remove-Item ".github\workflows\update.yml" -Force
-
-# 2. Crea un fitxer nou DES DE ZERO amb PowerShell
-#    Sense copiar/enganxar, escriu directament
-$yamlContent = @'
-name: Test Workflow
-on: workflow_dispatch
+# Versió completament corregida
+$yaml = @'
+name: Update Meteo
+on: 
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */2 * * *"
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "Hello World"
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - run: pip install requests beautifulsoup4
+      - run: python daily_weather_scraper.py
+      - run: python generate_meteo_rss.py
 '@
 
-# 3. Guarda amb encoding UTF8 sense BOM
+# Guarda
 [System.IO.File]::WriteAllText(
     "$PWD\.github\workflows\update.yml",
-    $yamlContent,
-    [System.Text.UTF8Encoding]::new($false)  # sense BOM
+    $yaml,
+    [System.Text.UTF8Encoding]::new($false)
 )
 
-# 4. Verifica EXACTAMENT el que s'ha guardat
-Write-Host "=== CONTINGUT DEL FITXER ==="
-Get-Content ".github\workflows\update.yml" -Raw
-Write-Host "=== HEX DUMP (primers bytes) ==="
-format-hex ".github\workflows\update.yml" | Select-Object -First 20
+# Mostra línies 5-10
+Write-Host "Línies 5-10:"
+(Get-Content ".github\workflows\update.yml")[4..9] | ForEach-Object { "  $_" }
 
-# 5. Puja
+# Puja
 git add ".github\workflows\update.yml"
-git commit -m "FIX: Create clean workflow file"
+git commit -m "FIX: Correct YAML structure"
 git push origin main
