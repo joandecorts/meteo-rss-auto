@@ -1,35 +1,47 @@
-# Versió completament corregida
-$yaml = @'
-name: Update Meteo
-on: 
+# 1. ELIMINA completament la carpeta workflows
+Remove-Item ".github\workflows" -Recurse -Force
+
+# 2. Crea una carpeta nova
+New-Item -ItemType Directory -Path ".github\workflows" -Force
+
+# 3. Crea el fitxer amb una eina que garanteixi YAML vàlid
+#    Primer descarrega una eina per validar YAML
+#    O millor, crea'l pas a pas:
+
+# 4. Crea el fitxer línea per línea manualment
+$content = @"
+name: Update Meteo RSS
+on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 */2 * * *"
 jobs:
-  build:
+  update:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
-          python-version: "3.10"
-      - run: pip install requests beautifulsoup4
+          python-version: '3.10'
+      - run: pip install requests beautifulsoup4 pytz
       - run: python daily_weather_scraper.py
+      - run: python generate_fullscreen_html.py
       - run: python generate_meteo_rss.py
-'@
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: `${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./outputs
+          publish_branch: gh-pages
+"@
 
-# Guarda
-[System.IO.File]::WriteAllText(
-    "$PWD\.github\workflows\update.yml",
-    $yaml,
-    [System.Text.UTF8Encoding]::new($false)
-)
+# 5. Guarda amb UTF8 sense BOM i sense cap caràcter estrany
+$utf8NoBom = New-Object System.Text.UTF8Encoding $false
+[System.IO.File]::WriteAllText("$PWD\.github\workflows\update.yml", $content, $utf8NoBom)
 
-# Mostra línies 5-10
-Write-Host "Línies 5-10:"
-(Get-Content ".github\workflows\update.yml")[4..9] | ForEach-Object { "  $_" }
+# 6. VERIFICA EXACTAMENT el que s'ha escrit
+Write-Host "=== CONTINGUT EXACTE ==="
+Get-Content ".github\workflows\update.yml" -Raw
+Write-Host "=== FINAL CONTINGUT ==="
 
-# Puja
+# 7. Puja
 git add ".github\workflows\update.yml"
-git commit -m "FIX: Correct YAML structure"
+git commit -m "FINAL FIX: Completely recreate workflow file"
 git push origin main
