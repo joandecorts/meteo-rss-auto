@@ -1,5 +1,9 @@
-# Versió super simple de prova
-@'
+# 1. Elimina completament el fitxer
+Remove-Item ".github\workflows\update.yml" -Force
+
+# 2. Crea un fitxer nou DES DE ZERO amb PowerShell
+#    Sense copiar/enganxar, escriu directament
+$yamlContent = @'
 name: Test Workflow
 on: workflow_dispatch
 jobs:
@@ -7,9 +11,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Hello World"
-'@ | Set-Content ".github\workflows\update.yml" -Encoding UTF8
+'@
 
-# Puja
+# 3. Guarda amb encoding UTF8 sense BOM
+[System.IO.File]::WriteAllText(
+    "$PWD\.github\workflows\update.yml",
+    $yamlContent,
+    [System.Text.UTF8Encoding]::new($false)  # sense BOM
+)
+
+# 4. Verifica EXACTAMENT el que s'ha guardat
+Write-Host "=== CONTINGUT DEL FITXER ==="
+Get-Content ".github\workflows\update.yml" -Raw
+Write-Host "=== HEX DUMP (primers bytes) ==="
+format-hex ".github\workflows\update.yml" | Select-Object -First 20
+
+# 5. Puja
 git add ".github\workflows\update.yml"
-git commit -m "test: Minimal workflow"
+git commit -m "FIX: Create clean workflow file"
 git push origin main
