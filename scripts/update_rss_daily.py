@@ -119,7 +119,7 @@ def obtenir_dades_estacio(codi_estacio: str, cache_file_prefix: str = "daily_cac
         
         # 7. GENERAR I GUARDAR EL FITXER DE TREBALL (JSON)
         data_avui = datetime.now().strftime('%Y-%m-%d')
-        nom_fitxer_cache = f"{cache_file_prefix}_{codi_estacio}_{data_avui}.json"
+        nom_fitxer_cache = f"data/{cache_file_prefix}_{codi_estacio}_{data_avui}.json"  # MODIFICAT
         
         dades_diaries = {
             'estacio': codi_estacio,
@@ -324,7 +324,7 @@ def main():
     html_final = renderitzar_html(dades_XJ, dades_UO)
     
     # 4. ESCRIURE EL FITXER INDEX.HTML
-    output_file = Path("index.html")
+    output_file = Path("outputs/index.html")  # MODIFICAT
     output_file.write_text(html_final, encoding='utf-8')
     
     print(f"[OK] HTML generat correctament a: {output_file.resolve()}")

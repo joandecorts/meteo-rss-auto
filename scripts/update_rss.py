@@ -12,7 +12,7 @@ import json
 # ============================================================================
 def llegir_acumulacio_estacio(codi_estacio):
     """Llegeix les dades acumulades d'una estació per al dia d'avui"""
-    fitxer = f"acumulacio_{codi_estacio}.json"
+    fitxer = f"data/acumulacio_{codi_estacio}.json"  # MODIFICAT
     
     if os.path.exists(fitxer):
         try:
@@ -48,7 +48,7 @@ def llegir_acumulacio_estacio(codi_estacio):
 def guardar_acumulacio_estacio(dades):
     """Guarda les dades acumulades d'una estació"""
     codi_estacio = dades.get('estacio', 'desconegut')
-    fitxer = f"acumulacio_{codi_estacio}.json"
+    fitxer = f"data/acumulacio_{codi_estacio}.json"  # MODIFICAT
     
     try:
         with open(fitxer, 'w', encoding='utf-8') as f:
@@ -117,7 +117,7 @@ def calcular_resums_estacio(dades=None, codi_estacio=None):
 def write_log(message):
     """Escriu un missatge al log i també el mostra per pantalla"""
     print(message)
-    with open('debug.log', 'a', encoding='utf-8') as f:
+    with open('outputs/debug.log', 'a', encoding='utf-8') as f:  # MODIFICAT
         f.write(message + '\n')
 
 def get_meteo_data(station_code, station_name):
@@ -227,8 +227,8 @@ def ajustar_periode(periode_str):
 def llegir_dades_guardades():
     """Llegeix les dades guardades de totes les estacions (període)"""
     try:
-        if os.path.exists('weather_data.json'):
-            with open('weather_data.json', 'r', encoding='utf-8') as f:
+        if os.path.exists('data/weather_data.json'):  # MODIFICAT
+            with open('data/weather_data.json', 'r', encoding='utf-8') as f:  # MODIFICAT
                 return json.load(f)
         else:
             return {}
@@ -239,7 +239,7 @@ def llegir_dades_guardades():
 def guardar_dades(dades_estacions):
     """Guarda les dades de totes les estacions (període) - AMB RESUM_DIA"""
     try:
-        with open('weather_data.json', 'w', encoding='utf-8') as f:
+        with open('data/weather_data.json', 'w', encoding='utf-8') as f:  # MODIFICAT
             json.dump(dades_estacions, f, ensure_ascii=False, indent=2)
     except Exception as e:
         write_log(f"⚠️ Error guardant dades: {e}")
@@ -395,22 +395,22 @@ def generar_rss():
     
     try:
         # Generem l'arxiu RSS final
-        with open('update_meteo.rss', 'w', encoding='utf-8') as f:
+        with open('outputs/update_meteo.rss', 'w', encoding='utf-8') as f:  # MODIFICAT
             f.write(rss_content)
         
         # Crear també meteo.rss per compatibilitat amb el workflow
-        with open('meteo.rss', 'w', encoding='utf-8') as f:
+        with open('outputs/meteo.rss', 'w', encoding='utf-8') as f:  # MODIFICAT
             f.write(rss_content)
         
-        write_log("✅ RSS generat correctament (update_meteo.rss i meteo.rss)")
-        write_log(f"📁 Arxius: update_meteo.rss, meteo.rss")
+        write_log("✅ RSS generat correctament (outputs/update_meteo.rss i outputs/meteo.rss)")  # MODIFICAT
+        write_log(f"📁 Arxius: outputs/update_meteo.rss, outputs/meteo.rss")  # MODIFICAT
         return True
     except Exception as e:
         write_log(f"❌ Error guardant RSS: {e}")
         return False
 
 if __name__ == "__main__":
-    with open('debug.log', 'w', encoding='utf-8') as f:
+    with open('outputs/debug.log', 'w', encoding='utf-8') as f:  # MODIFICAT
         f.write(f"=== INICI: {datetime.now()} ===\n")
     
     write_log("🚀 Script de dades del període actual (amb acumulació)")

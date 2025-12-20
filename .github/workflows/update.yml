@@ -13,44 +13,53 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    
+
     steps:
     # 1. DESCARREGAR EL CODI
     - name: Checkout code
       uses: actions/checkout@v3
       with:
         fetch-depth: 0
-        
+
     # 2. CONFIGURAR PYTHON
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
-        
+
     # 3. INSTAL·LAR DEPENDÈNCIES
     - name: Install dependencies
       run: |
         pip install --upgrade pip
         pip install requests beautifulsoup4 pytz lxml
-        
-    # 4. AFEGIR DEBUG MÉS DETALLAT
-    - name: Run your Python script
+
+    # 4. EXECUTAR ELS SCRIPTS (amb noves rutes)
+    - name: Run Python scripts
       run: |
-        echo "=== INICI SCRIPT ==="
+        echo "=== INICI SCRIPTS ==="
         echo "Directori actual: $(pwd)"
         echo "Contingut directori:"
         ls -la
-        echo "=== EXECUTANT SCRIPT ==="
-        python generate_meteo_rss.py
-        echo "=== COMPROVANT RESULTAT ==="
-        if [ -f "meteo.rss" ]; then
-          echo "✅ meteo.rss generat"
-          echo "Mida del fitxer: $(wc -l < meteo.rss) línies"
-          head -5 meteo.rss
-        else
-          echo "❌ ERROR: No s'ha generat meteo.rss"
-        fi
         
+        echo "=== GENERANT RSS ==="
+        python scripts/generate_meteo_rss.py
+        
+        echo "=== GENERANT HTMLs ==="
+        # Primer necessitem les dades diàries
+        python scripts/daily_weather_scraper.py
+        python scripts/generate_fullscreen_html.py
+        
+        echo "=== COMPROVANT RESULTATS ==="
+        echo "Fitxers a outputs/:"
+        ls -la outputs/
+        
+        if [ -f "outputs/meteo.rss" ]; then
+          echo "✅ outputs/meteo.rss generat"
+          echo "Mida: $(wc -l < outputs/meteo.rss) línies"
+        else
+          echo "❌ ERROR: No s'ha generat outputs/meteo.rss"
+        fi
+
     # 5. PENJAR A GITHUB PAGES
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
@@ -59,4 +68,4 @@ jobs:
         publish_dir: ./
         publish_branch: gh-pages
         keep_files: true
-        commit_message: "🤖 Actualització automàtica RSS - $(date -u +'%Y-%m-%d %H:%M UTC')"
+        commit_message: "🤖 Actualització automàtica - $(date -u +'%Y-%m-%d %H:%M UTC')"

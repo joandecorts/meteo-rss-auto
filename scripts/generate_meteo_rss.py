@@ -12,7 +12,7 @@ import json
 def write_log(message):
     """Escriu un missatge al log i també el mostra per pantalla"""
     print(message)
-    with open('debug.log', 'a', encoding='utf-8') as f:
+    with open('outputs/debug.log', 'a', encoding='utf-8') as f:  # MODIFICAT
         f.write(message + '\n')
 
 def scrape_meteocat_data(url, station_name):
@@ -143,8 +143,8 @@ def convertir_hora_tu_a_local(hora_tu_str):
 def llegir_dades_guardades():
     """Llegeix les dades guardades de totes les estacions"""
     try:
-        if os.path.exists('weather_data.json'):
-            with open('weather_data.json', 'r', encoding='utf-8') as f:
+        if os.path.exists('data/weather_data.json'):  # MODIFICAT
+            with open('data/weather_data.json', 'r', encoding='utf-8') as f:  # MODIFICAT
                 return json.load(f)
         else:
             return {}
@@ -155,7 +155,7 @@ def llegir_dades_guardades():
 def guardar_dades(dades_estacions):
     """Guarda les dades de totes les estacions"""
     try:
-        with open('weather_data.json', 'w', encoding='utf-8') as f:
+        with open('data/weather_data.json', 'w', encoding='utf-8') as f:  # MODIFICAT
             json.dump(dades_estacions, f, ensure_ascii=False, indent=2)
     except Exception as e:
         write_log(f"⚠️ Error guardant dades: {e}")
@@ -314,7 +314,7 @@ def create_rss_feed():
     
     # Guardar RSS
     try:
-        with open('meteo.rss', 'w', encoding='utf-8') as f:
+        with open('outputs/meteo.rss', 'w', encoding='utf-8') as f:  # MODIFICAT
             f.write(rss_content)
         
         print(f"\n{'='*60}")
@@ -326,7 +326,7 @@ def create_rss_feed():
             print(f"   • {dades['station_name']}: {len([k for k in dades.keys() if k not in ['station_name', 'station_code', 'periode']])} dades | {dades.get('periode', 'N/D')}")
         
         # Mostrar contingut del RSS
-        print(f"\n📄 CONTINGUT meteo.rss:")
+        print(f"\n📄 CONTINGUT outputs/meteo.rss:")  # MODIFICAT
         print("-" * 60)
         # Mostrar només la capçalera i el primer item per no saturar
         lines = rss_content.split('\n')
@@ -362,8 +362,8 @@ def setup_automatic_update():
     print("=" * 60)
 
 if __name__ == "__main__":
-    # Netejar log anterior
-    with open('debug.log', 'w', encoding='utf-8') as f:
+    # Netejar log anterior - MODIFICAT
+    with open('outputs/debug.log', 'w', encoding='utf-8') as f:  # MODIFICAT
         f.write(f"=== INICI: {datetime.now(pytz.utc).strftime('%Y-%m-%d %H:%M:%S UTC')} ===\n")
     
     try:
