@@ -1,67 +1,56 @@
-# 1. Primer, elimina el fitxer actual (que està malament)
+# Elimina el fitxer actual
 Remove-Item ".github\workflows\update.yml" -Force
 
-# 2. Crea un nou fitxer amb només el contingut YAML correcte
+# Crea una versió simplificada i correcta
 @'
-name: Update Meteo RSS and HTML Automatically
+name: Update Meteo RSS
 
 on:
-  # Permetre que cron-job.org dispari l'acció (cada 5 minuts)
+  workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
   repository_dispatch:
     types: [trigger_update]
-  # Execució programada interna (cada 5 minuts)
-  schedule:
-    - cron: '*/5 * * * *'
-  # Permetre execucions manuals des de la pestanya d'Accions
-  workflow_dispatch:
 
 jobs:
-  build-and-deploy:
+  update:
     runs-on: ubuntu-latest
-
+    
     steps:
-    # 1. DESCARREGAR EL CODI
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
-
-    # 2. CONFIGURAR PYTHON
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.10'
-
-    # 3. INSTAL·LAR DEPENDÈNCIES
-    - name: Install dependencies
-      run: |
-        pip install --upgrade pip
-        pip install requests beautifulsoup4 pytz lxml
-
-    # 4. EXECUTAR TOTS ELS SCRIPTS (RSS + HTMLs)
-    - name: Run all Python scripts
-      run: |
-        echo "=== INICI DEL PROCÉS ==="
-        python daily_weather_scraper.py
-        python generate_fullscreen_html.py
-        python generate_meteo_rss.py
-        echo "=== PROCÉS FINALITZAT ==="
-
-    # 5. PENJAR NOMÉS 'outputs/' A GITHUB PAGES
-    - name: Deploy Outputs to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./outputs
-        publish_branch: gh-pages
-        keep_files: false
-        commit_message: "🌤️ Actualització dades i HTMLs - $(date -u +'%Y-%m-%d %H:%M UTC')"
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+          
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests beautifulsoup4 pytz lxml
+        
+      - name: Run all scripts
+        run: |
+          python daily_weather_scraper.py
+          python generate_fullscreen_html.py
+          python generate_meteo_rss.py
+          
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./outputs
+          publish_branch: gh-pages
+          keep_files: false
 '@ | Set-Content -Path ".github\workflows\update.yml" -Encoding UTF8
 
-# 3. Verifica que ara sí que té contingut YAML correcte
-Get-Content ".github\workflows\update.yml" | Select-Object -First 10
+# Verifica
+Get-Content ".github\workflows\update.yml" | Select-Object -First 15
 
-# 4. Puja la correcció
+# Puja
 git add ".github\workflows\update.yml"
-git commit -m "FIX: Correct workflow YAML file (was corrupted)"
+git commit -m "FIX: Correct YAML syntax error in workflow"
 git push origin main
