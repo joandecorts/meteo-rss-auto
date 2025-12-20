@@ -1,22 +1,19 @@
 name: Update Meteo RSS
 on:
-  # 1. DISPARAT PER CRON-JOB.ORG CADA 5 MINUTS
-  repository_dispatch:
-    types: [trigger_update]
-  
-  # 2. DISPARAT MANUALMENT DES DE GITHUB
+  # 1. DISPARAT MANUALMENT
   workflow_dispatch:
   
-  # 3. ACTUALITZACIÓ PROGRAMADA DELS HTMLs
+  # 2. TODO AUTOMÀTIC A GITHUB
   schedule:
-    - cron: "15,45 * * * *"  # ✅ CORREGIT: Hores:15 i :45
+    - cron: "*/5 * * * *"      # 📡 RSS cada 5 minuts
+    - cron: "15,45 * * * *"    # 🌤️ HTMLs a hores:15 i :45
 
 jobs:
   update:
     runs-on: ubuntu-latest
     
     steps:
-      # 1. DESCARREGA EL REPOSITORI
+      # 1. DESCARREGA REPOSITORI
       - uses: actions/checkout@v3
       
       # 2. CONFIGURA PYTHON
@@ -27,22 +24,24 @@ jobs:
       # 3. INSTAL·LA LLIBRERIES
       - run: pip install requests beautifulsoup4 pytz lxml
       
-      # 4. EXECUTA ELS TEUS SCRIPTS
+      # 4. EXECUTA ELS SCRIPTS (tot cada vegada)
       - run: python daily_weather_scraper.py
       - run: python generate_fullscreen_html.py
       - run: python generate_meteo_rss.py
       
-      # 5. COMPROVA QUÈ S'HA GENERAT
-      - name: Verifica arxius generats
+      # 5. VERIFICA (opcional)
+      - name: Mostra arxius generats
         run: |
-          echo "🕒 Última actualització: $(date)"
-          echo "📁 Arxius a gh-pages:"
-          ls -la *.html *.rss *.json 2>/dev/null | head -10
+          echo "✅ Última actualització: $(date '+%H:%M:%S')"
+          echo "📁 Arxius:"
+          ls -la *.html *.rss 2>/dev/null || echo "No s'han generat arxius"
       
-      # 6. PUJA TOT A GH-PAGES
+      # 6. PUJA A GH-PAGES
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
-          publish_branch: gh-pages
-          keep_files: false
+          publish_dir: .                # Puja TOT
+          publish_branch: gh-pages      # A la branca gh-pages
+          keep_files: false             # Neteja l'anterior
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
