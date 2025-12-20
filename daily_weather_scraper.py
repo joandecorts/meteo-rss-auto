@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-# daily_weather_scraper.py - VERSIÓ COMPLETA DEL DIA
-# PAS 1: Scrapeja TOTES les dades del dia i calcula màximes/mínimes/acumulats
+# daily_weather_scraper.py - VERSIÓ COMPLETA DEL DIA (UTC)
+# VERSIÓ CORREGIDA: Guarda hora REAL de l'actualització
 
 import requests
 from bs4 import BeautifulSoup
@@ -26,64 +26,22 @@ def convertir_a_numero(text, default=None):
     if not text or text in ['(s/d)', '-', '', 'n/d', 'N/D']:
         return None
     try:
-        # Netejar possibles símboles
+        # Netejar possibles símbols
         text = text.replace(',', '.').replace('°', '').replace('mm', '').replace('hPa', '').replace('W/m²', '')
         return float(text.strip())
     except:
         return None
 
 def convertir_hora_tu_a_local(hora_tu_str):
-    """Converteix hora TU (UTC) a hora local (CET = UTC+1)"""
+    """Deixa les hores en UTC (sense conversió) - Només neteja"""
     if not hora_tu_str:
         return hora_tu_str
-    
-    try:
-        # Netejar i normalitzar
-        hora_tu_str = re.sub(r'\s+', ' ', hora_tu_str.strip())
-        
-        # Trobar separador
-        separador = '-' if '-' in hora_tu_str else '–' if '–' in hora_tu_str else None
-        if not separador:
-            return hora_tu_str
-        
-        parts = hora_tu_str.split(separador)
-        if len(parts) != 2:
-            return hora_tu_str
-        
-        def convertir_hora(hora):
-            hora = hora.strip()
-            if ':' in hora:
-                try:
-                    h_str, m_part = hora.split(':', 1)
-                    # Agafar només els dos primers dígits dels minuts
-                    m_str = m_part[:2] if len(m_part) >= 2 else '00'
-                    
-                    h = int(h_str)
-                    m = int(m_str) if m_str.isdigit() else 0
-                    
-                    # Sumar 1 hora per CET (UTC+1)
-                    h_local = h + 1
-                    if h_local >= 24:
-                        h_local -= 24
-                    
-                    return f"{h_local:02d}:{m:02d}"
-                except:
-                    return hora
-            return hora
-        
-        inicio = convertir_hora(parts[0])
-        fin = convertir_hora(parts[1])
-        
-        resultat = f"{inicio} - {fin}"
-        return resultat
-    
-    except Exception as e:
-        write_log(f"⚠️  Error conversió hora: {e}")
-        return hora_tu_str
+    # Netejar espais extra i retornar tal qual
+    return re.sub(r'\s+', ' ', hora_tu_str.strip())
 
 def scrape_all_today_data(url, station_name):
     """
-    Extreu TOTES les dades del dia actual de l'estació
+    Extreu TOTES les dades del dia actual de l'estació en UTC
     
     Retorna:
     - periods_data: Llista amb totes les dades de cada període
@@ -114,7 +72,7 @@ def scrape_all_today_data(url, station_name):
         temp_min_values = []
         rain_values = []
         
-        # Data actual per filtrar (si calgués)
+        # Data actual
         today = datetime.now().strftime('%Y-%m-%d')
         
         # Recórrer totes les files (excepte capçaleres)
@@ -129,14 +87,15 @@ def scrape_all_today_data(url, station_name):
             
             # Verificar si és un període vàlid (hh:mm - hh:mm)
             if re.match(r'\d{1,2}:\d{2}\s*[-–]\s*\d{1,2}:\d{2}', periode):
-                # Convertir hora TU a local
-                periode_local = convertir_hora_tu_a_local(periode)
+                # Deixar període en UTC (sense conversió)
+                periode_utc = convertir_hora_tu_a_local(periode)
                 
                 # Extreure totes les dades disponibles
                 period_data = {
                     'station_name': station_name,
                     'date': today,
-                    'period': periode_local,
+                    'period': periode_utc,
+                    'period_utc': periode_utc,  # Explicítament marcat com UTC
                     'tm': convertir_a_numero(cells[1].get_text(strip=True)) if len(cells) > 1 else None,  # Temp mitjana
                     'tx': convertir_a_numero(cells[2].get_text(strip=True)) if len(cells) > 2 else None,  # Temp màxima
                     'tn': convertir_a_numero(cells[3].get_text(strip=True)) if len(cells) > 3 else None,  # Temp mínima
@@ -168,7 +127,7 @@ def scrape_all_today_data(url, station_name):
                     if period_data['ppt'] is not None:
                         rain_values.append(period_data['ppt'])
                     
-                    write_log(f"   ✅ Període: {periode_local} | TX: {period_data['tx']} | TN: {period_data['tn']} | Pluja: {period_data['ppt']}")
+                    write_log(f"   ✅ Període UTC: {periode_utc} | TX: {period_data['tx']} | TN: {period_data['tn']} | Pluja: {period_data['ppt']}")
         
         write_log(f"📈 Total períodes vàlids trobats: {len(all_periods)}")
         
@@ -176,13 +135,15 @@ def scrape_all_today_data(url, station_name):
             write_log("❌ No s'han trobat dades vàlides per al dia d'avui")
             return None, None
         
-        # Calcular resums
+        # Calcular resums - IMPORTANT: Guardar l'hora REAL de l'actualització
+        update_time = datetime.now().strftime('%H:%M')
         summary = {
             'station_name': station_name,
             'date': today,
             'date_spanish': get_today_date_spanish(),
             'last_period': all_periods[-1]['period'] if all_periods else "N/D",
-            'updated_at': datetime.now().strftime('%H:%M'),
+            'last_period_utc': all_periods[-1]['period'] if all_periods else "N/D",
+            'updated_at': update_time,  # HORA REAL de l'actualització (NO canvia)
             'total_periods': len(all_periods),
             'max_temp': max(temp_max_values) if temp_max_values else None,
             'min_temp': min(temp_min_values) if temp_min_values else None,
@@ -191,14 +152,16 @@ def scrape_all_today_data(url, station_name):
                 'temp_max': len(temp_max_values),
                 'temp_min': len(temp_min_values),
                 'rain': len(rain_values)
-            }
+            },
+            'timezone_note': 'Les hores estan en UTC (Temps Universal Coordinat). Per obtenir l\'hora local, suma 1 hora (hivern) o 2 hores (estiu).'
         }
         
         write_log(f"📊 RESUM CALCULAT:")
         write_log(f"   • Màxima del dia: {summary['max_temp']}°C")
         write_log(f"   • Mínima del dia: {summary['min_temp']}°C")
         write_log(f"   • Pluja acumulada: {summary['total_rain']}mm")
-        write_log(f"   • Últim període: {summary['last_period']}")
+        write_log(f"   • Últim període: {summary['last_period']} UTC")
+        write_log(f"   • Hora actualització: {summary['updated_at']}")
         
         return all_periods, summary
         
@@ -242,7 +205,7 @@ def main():
     """Funció principal"""
     
     write_log("=" * 60)
-    write_log("🌤️  DAILY WEATHER SCRAPER - VERSIÓ COMPLETA DEL DIA")
+    write_log("🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC")
     write_log("=" * 60)
     
     # Configuració de les estacions
@@ -266,6 +229,8 @@ def main():
     all_data = {
         'metadata': {
             'generated_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'timezone': 'UTC',
+            'note': 'Les hores estan en UTC. Per hora local: +1h (hivern) o +2h (estiu)',
             'total_stations': len(stations)
         },
         'stations': {}
@@ -317,6 +282,8 @@ def main():
     summary_for_html = {
         'generated_at': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
         'date_spanish': get_today_date_spanish(),
+        'timezone': 'UTC',
+        'timezone_note': 'Les hores estan en UTC. Per hora local: +1h (hivern) o +2h (estiu)',
         'stations': {}
     }
     
@@ -328,7 +295,7 @@ def main():
     
     # Mostrar resum final
     write_log("\n" + "=" * 60)
-    write_log("📋 RESUM FINAL DEL DIA")
+    write_log("📋 RESUM FINAL DEL DIA (UTC)")
     write_log("=" * 60)
     
     for station_code, data in all_data['stations'].items():
@@ -339,7 +306,8 @@ def main():
             write_log(f"   • Màxima: {summary['max_temp']}°C")
             write_log(f"   • Mínima: {summary['min_temp']}°C")
             write_log(f"   • Pluja: {summary['total_rain']}mm")
-            write_log(f"   • Últim període: {summary['last_period']}")
+            write_log(f"   • Últim període: {summary['last_period']} UTC")
+            write_log(f"   • Actualització: {summary['updated_at']}")
         else:
             write_log(f"\n⚠️  {station_code}: Sense dades")
     
@@ -356,7 +324,7 @@ def main():
 if __name__ == "__main__":
     # Netejar log anterior
     with open('debug_daily.log', 'w', encoding='utf-8') as f:
-        f.write(f"=== INICI DAILY SCRAPER: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===\n")
+        f.write(f"=== INICI DAILY SCRAPER (UTC): {datetime.now().strftime('%Y-%m-%d %H:%M:%S')} ===\n")
     
     try:
         result = main()
