@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+<title>Meteo RSS Auto</title>
+<link>https://joandecorts.github.io/meteo-rss-auto/</link>
+<description>Dades meteorològiques de Girona i Fornells de la Selva</description>
+<lastBuildDate>Sat, 20 Dec 2025 16:15:00 +0000</lastBuildDate>
+<item>
+<title>Sistema en funcionament</title>
+<link>https://github.com/joandecorts/meteo-rss-auto</link>
+<description>El sistema està funcionant. Les dades s'actualitzen automàticament.</description>
+<pubDate>Sat, 20 Dec 2025 16:15:00 +0000</pubDate>
+</item>
+</channel>
+</rss>
