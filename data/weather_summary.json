@@ -1,0 +1,44 @@
+{
+  "generated_at": "2025-12-20 15:57:56",
+  "date_spanish": "20/12/2025",
+  "timezone": "UTC",
+  "timezone_note": "Les hores estan en UTC. Per hora local: +1h (hivern) o +2h (estiu)",
+  "stations": {
+    "UO": {
+      "station_name": "Fornells de la Selva",
+      "date": "2025-12-20",
+      "date_spanish": "20/12/2025",
+      "last_period": "15:00 - 15:30",
+      "last_period_utc": "15:00 - 15:30",
+      "updated_at": "15:57",
+      "total_periods": 31,
+      "max_temp": 15.6,
+      "min_temp": 10.1,
+      "total_rain": 6.1,
+      "periods_with_data": {
+        "temp_max": 31,
+        "temp_min": 31,
+        "rain": 31
+      },
+      "timezone_note": "Les hores estan en UTC (Temps Universal Coordinat). Per obtenir l'hora local, suma 1 hora (hivern) o 2 hores (estiu)."
+    },
+    "XJ": {
+      "station_name": "Girona",
+      "date": "2025-12-20",
+      "date_spanish": "20/12/2025",
+      "last_period": "15:00 - 15:30",
+      "last_period_utc": "15:00 - 15:30",
+      "updated_at": "15:57",
+      "total_periods": 31,
+      "max_temp": 15.4,
+      "min_temp": 10.0,
+      "total_rain": 13.4,
+      "periods_with_data": {
+        "temp_max": 31,
+        "temp_min": 31,
+        "rain": 31
+      },
+      "timezone_note": "Les hores estan en UTC (Temps Universal Coordinat). Per obtenir l'hora local, suma 1 hora (hivern) o 2 hores (estiu)."
+    }
+  }
+}
