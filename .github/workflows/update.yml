@@ -1,22 +1,48 @@
 name: Update Meteo RSS
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Permet executar manualment
   schedule:
-    - cron: "0 */6 * * *"
+    - cron: "0 */6 * * *"  # Cada 6 hores
+
 jobs:
   update:
     runs-on: ubuntu-latest
+    
     steps:
+      # 1. DESCARREGA EL REPOSITORI
       - uses: actions/checkout@v3
+      
+      # 2. CONFIGURA PYTHON
       - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
+      
+      # 3. INSTAL·LA LLIBRERIES
       - run: pip install requests beautifulsoup4 pytz lxml
+      
+      # 4. EXECUTA ELS TEUS SCRIPTS
       - run: python daily_weather_scraper.py
       - run: python generate_fullscreen_html.py
       - run: python generate_meteo_rss.py
+      
+      # 5. COMPROVA QUÈ S'HA GENERAT (opcional, per debug)
+      - name: Llista arxius generats
+        run: |
+          echo "=== Arxius HTML generats ==="
+          ls -la *.html 2>/dev/null || echo "No hi ha HTMLs"
+          echo ""
+          echo "=== Arxius RSS ==="
+          ls -la *.rss *.xml 2>/dev/null || echo "No hi ha RSS"
+          echo ""
+          echo "=== Tots els arxius ==="
+          ls -la
+      
+      # 6. PUJA TOT A GH-PAGES
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .  # ← AQUEST ÉS L'ÚNIC CANVI
-          publish_branch: gh-pages
+          publish_dir: .                # Puja TOT el directori actual
+          publish_branch: gh-pages      # A la branca gh-pages
+          keep_files: false             # Esborra l'anterior i posa el nou
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
