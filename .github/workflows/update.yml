@@ -1,4 +1,6 @@
-name: Update Meteo RSS and HTML Automatically
+# 1. Copia aquest contingut corregit al teu fitxer
+@'
+[name: Update Meteo RSS and HTML Automatically
 
 on:
   # Permetre que cron-job.org dispari l'acció (cada 5 minuts)
@@ -43,15 +45,15 @@ jobs:
         
         echo ""
         echo "=== 1. OBTENINT DADES DIÀRIES ==="
-        python scripts/daily_weather_scraper.py
+        python daily_weather_scraper.py
         
         echo ""
         echo "=== 2. GENERANT FITXERS HTML ==="
-        python scripts/generate_fullscreen_html.py
+        python generate_fullscreen_html.py
         
         echo ""
         echo "=== 3. GENERANT RSS ==="
-        python scripts/generate_meteo_rss.py
+        python generate_meteo_rss.py
         
         echo ""
         echo "=== COMPROVANT RESULTATS ==="
@@ -81,3 +83,12 @@ jobs:
         publish_branch: gh-pages
         keep_files: false                # ⭐ Neteja la branca gh-pages abans
         commit_message: "🌤️ Actualització dades i HTMLs - $(date -u +'%Y-%m-%d %H:%M UTC')"
+'@ | Set-Content -Path ".github\workflows\update.yml"
+
+# 2. Verifica que s'hagi guardat bé
+Get-Content ".github\workflows\update.yml" | Select-Object -First 15
+
+# 3. Fes commit i push
+git add ".github\workflows\update.yml"
+git commit -m "fix: Correct Python script paths (remove scripts/ folder)"
+git push origin main
