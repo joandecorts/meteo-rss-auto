@@ -179,7 +179,7 @@
             margin-bottom: 8px;
         }
         
-        /* PEU DE PÀGINA */
+        /* PEU DE PÀGINA - CORREGIT */
         .footer {
             font-size: clamp(12px, 1.5vw, 18px);
             color: #A3D5FF;
@@ -288,20 +288,20 @@
             <i class="fas fa-map-marker-alt"></i> Fornells de la Selva
         </div>
         
-        <!-- INFO SUPERIOR -->
+        <!-- INFO SUPERIOR - HORA FIXA (NO canvia) -->
         <div class="header-info fade-in delay-1">
             <div class="info-box">
                 <i class="far fa-calendar-alt"></i> 20/12/2025
             </div>
             <div class="info-box">
-                <i class="fas fa-sync-alt"></i> 08:30
+                <i class="fas fa-sync-alt"></i> 09:49
             </div>
         </div>
         
         <!-- PERÍODE -->
         <div class="period-box fade-in delay-2">
             <div class="period-main">
-                <i class="fas fa-clock"></i> 06:30 - 07:00 UTC<span class="period-asterisk">*</span>
+                <i class="fas fa-clock"></i> 08:00 - 08:30 UTC<span class="period-asterisk">*</span>
             </div>
             <div class="period-note">
                 <span class="note-asterisk">*</span> Sumar 1 hora (hivern) o 2 hores (estiu) per a l'hora local
@@ -341,32 +341,21 @@
             </div>
         </div>
         
-        <!-- PEU -->
+        <!-- PEU CORREGIT -->
         <div class="footer fade-in delay-5">
-            Weather Full Screen | Meteo.cat | Actualització automàtica
+            Weather Full Screen | Font: https://www.meteo.cat/
         </div>
     </div>
     
     <script>
-        // Actualitza hora cada minut
-        function updateTime() {
-            const now = new Date();
-            const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
-                              now.getMinutes().toString().padStart(2, '0');
-            
-            const timeElement = document.querySelector('.info-box:nth-child(2)');
-            if (timeElement) {
-                timeElement.innerHTML = '<i class="fas fa-sync-alt"></i> ' + timeString;
-            }
-        }
+        // REFRESCA CADA 15 MINUTS PER NOUES DADES
+        // La hora NO canvia cada minut, només quan es carreguin dades noves
+        setTimeout(() => { 
+            console.log('🔄 Refrescant per dades noves...');
+            location.reload(); 
+        }, 15 * 60 * 1000); // 15 minuts
         
-        // Inicia l'actualització
-        setInterval(updateTime, 60000);
-        
-        // Refresca cada 15 minuts
-        setTimeout(() => { location.reload(); }, 15 * 60 * 1000);
-        
-        // Mode TV automàtic
+        // MODE TV AUTOMÀTIC
         let mouseTimer;
         const startTVMode = () => {
             if (!document.fullscreenElement) {
@@ -377,7 +366,7 @@
             }
         };
         
-        // Detecta si és TV
+        // Detecta si és TV (sense moviment de ratolí)
         document.addEventListener('mousemove', () => {
             clearTimeout(mouseTimer);
             mouseTimer = setTimeout(startTVMode, 3000);
@@ -385,7 +374,7 @@
         
         mouseTimer = setTimeout(startTVMode, 3000);
         
-        // Efecte visual
+        // EFECTE VISUAL EN CARRREGAR
         document.addEventListener('DOMContentLoaded', () => {
             const boxes = document.querySelectorAll('.data-box');
             boxes.forEach((box, index) => {

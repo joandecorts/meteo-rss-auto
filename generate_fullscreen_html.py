@@ -413,3 +413,158 @@ def create_html_for_station(station_data, station_code, station_name):
         mouseTimer = setTimeout(startTVMode, 3000);
         
         // EFECTE VISUAL EN CARRREGAR
+        document.addEventListener('DOMContentLoaded', () => {{
+            const boxes = document.querySelectorAll('.data-box');
+            boxes.forEach((box, index) => {{
+                setTimeout(() => {{
+                    box.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.6)';
+                    setTimeout(() => {{
+                        box.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.3)';
+                    }}, 400);
+                }}, 150 * (index + 1));
+            }});
+        }});
+    </script>
+</body>
+</html>'''
+    
+    return html_content
+
+def save_html_file(content, filename):
+    """Guarda el contingut HTML a un fitxer"""
+    try:
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write(content)
+        print(f"✅ HTML guardat: {filename}")
+        return True
+    except Exception as e:
+        print(f"❌ Error guardant HTML {filename}: {e}")
+        return False
+
+def main():
+    """Funció principal - GENERA SOLAMENT 2 FITXERS"""
+    
+    print("=" * 60)
+    print("🎨 GENERADOR HTML - VERSIÓ FINAL CORREGIDA")
+    print("=" * 60)
+    print("✅ CORRECCIONS APLICADES:")
+    print("   1. Hora FIXA (no canvia cada minut)")
+    print("   2. Font: https://www.meteo.cat/")
+    print("   3. Genera SOLAMENT 2 fitxers")
+    print("=" * 60)
+    
+    # Llegir dades
+    weather_data = read_weather_summary()
+    
+    if not weather_data:
+        print("❌ No es poden llegir les dades. Executa primer daily_weather_scraper.py")
+        return False
+    
+    stations = weather_data.get('stations', {})
+    
+    if not stations:
+        print("⚠️  No hi ha dades d'estacions")
+        return False
+    
+    print(f"📊 Dades carregades. Estacions: {list(stations.keys())}")
+    
+    # Mapeig de codis a noms
+    station_info = {
+        'UO': 'Fornells de la Selva',
+        'XJ': 'Girona'
+    }
+    
+    # Diccionari per evitar noms duplicats
+    generated_files = {}
+    
+    # Generar HTMLs - SOLAMENT ELS DOS NECESSARIS
+    for station_code, data in stations.items():
+        station_name = station_info.get(station_code, f"Estació {station_code}")
+        
+        print(f"\n📡 Processant: {station_name}")
+        
+        html_content = create_html_for_station(data, station_code, station_name)
+        
+        # NOMS DEFINITIUS I FIXOS - SOLAMENT AQUESTOS DOS
+        if station_code == 'XJ':
+            filename = "girona_full_screen.html"
+        elif station_code == 'UO':
+            filename = "fornells_full_screen.html"
+        else:
+            # No hauria d'arribar aquí, però per si de cas
+            print(f"⚠️  Estació no reconeguda: {station_code}")
+            continue
+        
+        # Verificar que no es generi duplicat
+        if filename in generated_files:
+            print(f"⚠️  Atenció: El fitxer {filename} ja s'ha generat!")
+            continue
+            
+        if save_html_file(html_content, filename):
+            generated_files[filename] = True
+            print(f"✅ Generat: {filename}")
+    
+    # Netejar possibles fitxers antics
+    print("\n" + "=" * 60)
+    print("🧹 NETEGANT FITXERS ANTICS:")
+    print("=" * 60)
+    
+    # Llista de fitxers antics a eliminar
+    old_files = [
+        "fornells_selva_full_screen.html",
+        "fornells_de_la_selva_full_screen.html",
+        "girona_full_screen_old.html",
+        "weather_full_screen.html"
+    ]
+    
+    for old_file in old_files:
+        if os.path.exists(old_file):
+            try:
+                os.remove(old_file)
+                print(f"   ✅ Esborrat: {old_file}")
+            except Exception as e:
+                print(f"   ⚠️  No s'ha pogut esborrar {old_file}: {e}")
+    
+    # Resum final
+    print("\n" + "=" * 60)
+    print("✅ HTMLs GENERATS (sense duplicats):")
+    print("=" * 60)
+    for filename in sorted(generated_files.keys()):
+        print(f"   • {filename}")
+    
+    print("\n🌐 URLs DEFINITIVES:")
+    print("=" * 60)
+    print("   📍 Girona:")
+    print("      https://joandecorts.github.io/meteo-rss-auto/girona_full_screen.html")
+    print("\n   📍 Fornells de la Selva:")
+    print("      https://joandecorts.github.io/meteo-rss-auto/fornells_full_screen.html")
+    
+    print("\n🎯 CARACTERÍSTIQUES:")
+    print("=" * 60)
+    print("   1. ✅ Hora FIXA (la de l'actualització de les dades)")
+    print("   2. ✅ No canvia cada minut")
+    print("   3. ✅ Font correcta: https://www.meteo.cat/")
+    print("   4. ✅ Ultra compacte i responsive")
+    print("   5. ✅ Auto-pantalla completa en TV")
+    
+    print("\n🚀 Pujal'ls a GitHub Pages:")
+    print("=" * 60)
+    print("   git add girona_full_screen.html fornells_full_screen.html")
+    print("   git commit -m 'Correccions: hora fixa i font meteo.cat'")
+    print("   git push origin gh-pages")
+    
+    return True
+
+if __name__ == "__main__":
+    # Verificar que existeix el fitxer de dades
+    if not os.path.exists('data/weather_summary.json'):
+        print("\n❌ ERROR: No es troba data/weather_summary.json")
+        print("💡 Executa abans: python daily_weather_scraper.py")
+        print("\nComandaments:")
+        print("   cd \"C:\\Users\\joant\\Documents\\OBS Scripts\"")
+        print("   python daily_weather_scraper.py")
+        print("   python generate_fullscreen_html.py")
+    else:
+        success = main()
+        if not success:
+            print("\n⚠️  El procés no s'ha completat correctament")
