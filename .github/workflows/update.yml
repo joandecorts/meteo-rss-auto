@@ -1,7 +1,7 @@
 # Elimina el fitxer actual
 Remove-Item ".github\workflows\update.yml" -Force
 
-# Crea una versió simplificada i correcta
+# Versió mínima i funcional sense comentaris
 @'
 name: Update Meteo RSS
 
@@ -17,29 +17,15 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
-          
-      - name: Install dependencies
-        run: |
-          pip install --upgrade pip
-          pip install requests beautifulsoup4 pytz lxml
-        
-      - name: Run all scripts
-        run: |
-          python daily_weather_scraper.py
-          python generate_fullscreen_html.py
-          python generate_meteo_rss.py
-          
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - run: pip install requests beautifulsoup4 pytz lxml
+      - run: python daily_weather_scraper.py
+      - run: python generate_fullscreen_html.py
+      - run: python generate_meteo_rss.py
+      - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./outputs
@@ -47,10 +33,10 @@ jobs:
           keep_files: false
 '@ | Set-Content -Path ".github\workflows\update.yml" -Encoding UTF8
 
-# Verifica
-Get-Content ".github\workflows\update.yml" | Select-Object -First 15
+# Mostra les 10 primeres línies per verificar
+Get-Content ".github\workflows\update.yml" | Select-Object -First 10
 
-# Puja
+# Puja els canvis
 git add ".github\workflows\update.yml"
-git commit -m "FIX: Correct YAML syntax error in workflow"
+git commit -m "fix: Minimal working workflow"
 git push origin main
