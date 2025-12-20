@@ -1,42 +1,15 @@
-# Elimina el fitxer actual
-Remove-Item ".github\workflows\update.yml" -Force
-
-# Versió mínima i funcional sense comentaris
+# Versió super simple de prova
 @'
-name: Update Meteo RSS
-
-on:
-  workflow_dispatch:
-  schedule:
-    - cron: "*/10 * * * *"
-  repository_dispatch:
-    types: [trigger_update]
-
+name: Test Workflow
+on: workflow_dispatch
 jobs:
-  update:
+  test:
     runs-on: ubuntu-latest
-    
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-      - run: pip install requests beautifulsoup4 pytz lxml
-      - run: python daily_weather_scraper.py
-      - run: python generate_fullscreen_html.py
-      - run: python generate_meteo_rss.py
-      - uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./outputs
-          publish_branch: gh-pages
-          keep_files: false
-'@ | Set-Content -Path ".github\workflows\update.yml" -Encoding UTF8
+      - run: echo "Hello World"
+'@ | Set-Content ".github\workflows\update.yml" -Encoding UTF8
 
-# Mostra les 10 primeres línies per verificar
-Get-Content ".github\workflows\update.yml" | Select-Object -First 10
-
-# Puja els canvis
+# Puja
 git add ".github\workflows\update.yml"
-git commit -m "fix: Minimal working workflow"
+git commit -m "test: Minimal workflow"
 git push origin main
