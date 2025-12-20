@@ -3,10 +3,40 @@
 # CORRECCIONS: 
 # 1. Elimina JavaScript que canvia l'hora cada minut
 # 2. Canvia "Meteo.cat" per "Font: https://www.meteo.cat/"
+# 3. Hora d'actualització en CAT (no UTC)
 
 import json
 from datetime import datetime
 import os
+import pytz  # <-- NOU IMPORT
+
+def convert_utc_to_cat(utc_time_str):
+    """Converteix hora UTC a hora local CAT"""
+    try:
+        if not utc_time_str or utc_time_str == 'N/D':
+            return utc_time_str
+            
+        # Parseja l'hora UTC
+        utc_time = datetime.strptime(utc_time_str, "%H:%M")
+        
+        # Assumim que és avui
+        today = datetime.now().date()
+        utc_datetime = datetime.combine(today, utc_time.time())
+        
+        # Aplica zona horària
+        utc_zone = pytz.utc
+        cat_zone = pytz.timezone('Europe/Madrid')
+        
+        # Converteix
+        utc_datetime = utc_zone.localize(utc_datetime)
+        cat_datetime = utc_datetime.astimezone(cat_zone)
+        
+        # Formata com a hora local
+        return cat_datetime.strftime("%H:%M") + " (CAT)"
+        
+    except Exception as e:
+        print(f"⚠️  Error convertint hora {utc_time_str}: {e}")
+        return utc_time_str
 
 def read_weather_summary():
     """Llegeix el fitxer de resum de dades"""
@@ -332,7 +362,7 @@ def create_html_for_station(station_data, station_code, station_name):
                 <i class="far fa-calendar-alt"></i> {station_data.get('date_spanish', 'N/D')}
             </div>
             <div class="info-box">
-                <i class="fas fa-sync-alt"></i> {update_time}
+                <i class="fas fa-sync-alt"></i> {convert_utc_to_cat(update_time)}
             </div>
         </div>
         
@@ -450,7 +480,8 @@ def main():
     print("✅ CORRECCIONS APLICADES:")
     print("   1. Hora FIXA (no canvia cada minut)")
     print("   2. Font: https://www.meteo.cat/")
-    print("   3. Genera SOLAMENT 2 fitxers")
+    print("   3. Hora d'actualització en CAT")
+    print("   4. Genera SOLAMENT 2 fitxers")
     print("=" * 60)
     
     # Llegir dades
@@ -544,8 +575,9 @@ def main():
     print("   1. ✅ Hora FIXA (la de l'actualització de les dades)")
     print("   2. ✅ No canvia cada minut")
     print("   3. ✅ Font correcta: https://www.meteo.cat/")
-    print("   4. ✅ Ultra compacte i responsive")
-    print("   5. ✅ Auto-pantalla completa en TV")
+    print("   4. ✅ Hora d'actualització en CAT")
+    print("   5. ✅ Ultra compacte i responsive")
+    print("   6. ✅ Auto-pantalla completa en TV")
     
     print("\n🚀 Pujal'ls a GitHub Pages:")
     print("=" * 60)
