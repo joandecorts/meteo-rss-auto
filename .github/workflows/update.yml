@@ -1,129 +1,120 @@
 name: Update Meteo RSS
 
 on:
-  # 1. DISPARAT MANUALMENT (des de GitHub)
+  # 1. DISPARAT MANUALMENT
   workflow_dispatch:
-    inputs:
-      source:
-        description: 'Origen de la trigger'
-        required: false
-        default: 'github_manual'
-        type: string
-
-  # 2. DISPARAT DES DE CRON-JOB.ORG
-  repository_dispatch:
-    types: [trigger_update]
-
-  # 3. TODO AUTOMÀTIC A GITHUB
+  
+  # 2. TODO AUTOMÀTIC A GITHUB
   schedule:
     - cron: "*/5 * * * *"      # 📡 RSS cada 5 minuts
     - cron: "15,45 * * * *"    # 🌤️ HTMLs a hores:15 i :45
 
-# Variable per identificar l'origen de l'execució
-env:
-  WORKFLOW_SOURCE: ${{ github.event_name }}
+  # 3. DISPARAT DES DE CRON-JOB.ORG
+  repository_dispatch:
+    types: [trigger_update]
 
 jobs:
   update:
     runs-on: ubuntu-latest
     
     steps:
-      # 1. DESCARREGA REPOSITORI (amb les dues branques)
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-          ref: main  # Assegura que treballem des de main
+      # 1. DESCARREGA REPOSITORI
+      - uses: actions/checkout@v3
       
-      # 2. OBTÉ INFORMACIÓ DE L'ORIGEN
-      - name: Detect trigger source
-        id: trigger-source
+      # 2. IDENTIFICA ORIGEN DEL TRIGGER
+      - name: Identificar origen de l'execució
         run: |
-          SOURCE="${{ github.event_name }}"
-          SOURCE_DETAIL=""
+          echo "🔍 ANALITZANT ORIGEN DE L'EXECUCIÓ"
+          echo "====================================="
           
-          if [ "$SOURCE" = "repository_dispatch" ]; then
-            SOURCE_DETAIL="${{ github.event.client_payload.source || 'cron-job.org' }}"
-            echo "source=cron-job.org" >> $GITHUB_OUTPUT
-            echo "triggered_by=joandecorts" >> $GITHUB_OUTPUT
-            echo "source_detail=$SOURCE_DETAIL" >> $GITHUB_OUTPUT
-          elif [ "$SOURCE" = "workflow_dispatch" ]; then
-            echo "source=${{ github.event.inputs.source || 'github_manual' }}" >> $GITHUB_OUTPUT
-            echo "triggered_by=${{ github.actor }}" >> $GITHUB_OUTPUT
-            echo "source_detail=manual" >> $GITHUB_OUTPUT
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            echo "🚀 AQUESTA EXECUCIÓ VE DE CRON-JOB.ORG"
+            echo "👤 Disparat per: joandecorts"
+            echo "📌 Event type: ${{ github.event.action || 'trigger_update' }}"
+            echo "⏰ Hora del trigger: $(date '+%Y-%m-%d %H:%M:%S %Z')"
+            echo "💾 Client payload: ${{ toJson(github.event.client_payload) || 'No payload' }}"
+          elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "🖱️ AQUESTA EXECUCIÓ VE DE TRIGGER MANUAL (GitHub)"
+            echo "👤 Disparat per: ${{ github.actor }}"
+          elif [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "⏰ AQUESTA EXECUCIÓ VE DE PROGRAMACIÓ INTERNA (GitHub Actions)"
+            echo "📅 Cron: ${{ github.event.schedule || '15,45 * * * *' }}"
           else
-            echo "source=github_schedule" >> $GITHUB_OUTPUT
-            echo "triggered_by=github_actions" >> $GITHUB_OUTPUT
-            echo "source_detail=${{ github.event.schedule }}" >> $GITHUB_OUTPUT
+            echo "❓ ORIGEN DESCONEGUT: ${{ github.event_name }}"
           fi
           
-          echo "🔄 Origen de l'execució: $SOURCE"
-          echo "📋 Detalls: $(cat $GITHUB_OUTPUT)"
+          echo ""
+          echo "📊 RESUM DEL TRIGGER:"
+          echo "--------------------"
+          echo "Event: ${{ github.event_name }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Run ID: ${{ github.run_id }}"
+          echo "SHA: ${{ github.sha }}"
       
       # 3. CONFIGURA PYTHON
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: "3.10"
       
       # 4. INSTAL·LA LLIBRERIES
-      - name: Install dependencies
-        run: pip install requests beautifulsoup4 pytz lxml
+      - run: pip install requests beautifulsoup4 pytz lxml
       
-      # 5. EXECUTA ELS SCRIPTS
-      - name: Run weather scripts
-        run: |
-          echo "🎯 Executant scripts Python..."
-          echo "📊 Origen: ${{ steps.trigger-source.outputs.source }}"
-          echo "👤 Disparat per: ${{ steps.trigger-source.outputs.triggered_by }}"
-          
-          # Executa els scripts
-          python daily_weather_scraper.py
-          python generate_fullscreen_html.py
-          python generate_meteo_rss.py
+      # 5. EXECUTA ELS SCRIPTS (tot cada vegada)
+      - run: python daily_weather_scraper.py
+      - run: python generate_fullscreen_html.py
+      - run: python generate_meteo_rss.py
       
-      # 6. VERIFICA RESULTATS
-      - name: Verify generated files
+      # 6. VERIFICA (opcional)
+      - name: Mostra arxius generats
         run: |
-          echo "✅ Última actualització: $(date '+%Y-%m-%d %H:%M:%S %Z')"
-          echo "🎯 Origen: ${{ steps.trigger-source.outputs.source }}"
-          echo "👤 Trigger: ${{ steps.trigger-source.outputs.triggered_by }}"
-          echo "📁 Arxius generats:"
-          ls -la *.html *.rss 2>/dev/null || echo "No s'han generat arxius"
+          echo "✅ Última actualització: $(date '+%H:%M:%S')"
           
-          # Verifica contingut RSS
-          if [ -f "meteo.rss" ]; then
-            echo "📡 RSS generat correctament"
-            echo "📏 Mida: $(wc -l < meteo.rss) línies"
-            echo "⏰ Última entrada:"
-            grep -A 3 "<pubDate>" meteo.rss | head -4
+          # Afegim missatge específic si ve de cron-job.org
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            echo "🎯 ORIGEN CONFIRMAT: cron-job.org via joandecorts"
           fi
+          
+          echo "📁 Arxius:"
+          ls -la *.html *.rss 2>/dev/null || echo "No s'han generat arxius"
       
       # 7. PUJA A GH-PAGES
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
-          publish_branch: gh-pages
-          keep_files: false
+          publish_dir: .                # Puja TOT
+          publish_branch: gh-pages      # A la branca gh-pages
+          keep_files: false             # Neteja l'anterior
+          
+          # Missatge de commit més informatiu
           commit_message: |
             🤖 Actualització automàtica
-            - Origen: ${{ steps.trigger-source.outputs.source }}
-            - Disparat per: ${{ steps.trigger-source.outputs.triggered_by }}
-            - Data: $(date -u +'%Y-%m-%d %H:%M UTC')
+            
+            Origen: ${{ github.event_name }}
+            ${{ github.event_name == 'repository_dispatch' && 'Disparat per: joandecorts (cron-job.org)' || github.event_name == 'workflow_dispatch' && format('Disparat manualment per: {0}', github.actor) || 'Programació interna GitHub' }}
+            Data: $(date -u +'%Y-%m-%d %H:%M UTC')
+            
+            SHA: ${{ github.sha }}
+          
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
       
-      # 8. REGISTRA L'EXECUCIÓ
-      - name: Log execution
+      # 8. MISSATGE FINAL DE CONFIRMACIÓ
+      - name: Confirmació final
         if: always()
         run: |
-          echo "📋 RESUM DE L'EXECUCIÓ"
-          echo "======================"
-          echo "Data: $(date)"
-          echo "Workflow: ${{ github.workflow }}"
-          echo "Origen: ${{ steps.trigger-source.outputs.source }}"
-          echo "Disparat per: ${{ steps.trigger-source.outputs.triggered_by }}"
-          echo "SHA: ${{ github.sha }}"
-          echo "Resultat: ${{ job.status }}"
+          echo ""
+          echo "========================================"
+          echo "✅ EXECUCIÓ COMPLETADA"
+          echo "========================================"
+          
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            echo "🌐 ORIGEN: cron-job.org"
+            echo "👤 DISPARADOR: joandecorts"
+            echo "🎯 ESTAT: Trigger extern rebut correctament"
+          else
+            echo "🌐 ORIGEN: ${{ github.event_name }}"
+          fi
+          
+          echo "🕐 FINALITZAT A: $(date '+%H:%M:%S')"
+          echo "📊 RUN ID: ${{ github.run_id }}"
+          echo "========================================"
