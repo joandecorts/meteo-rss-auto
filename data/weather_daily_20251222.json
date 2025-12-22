@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2025-12-22 22:37:44",
+    "generated_at": "2025-12-22 22:40:20",
     "timezone": "UTC",
     "note": "Les hores estan en UTC. Per hora local: +1h (hivern) o +2h (estiu)",
     "total_stations": 2
@@ -441,23 +441,45 @@
           "tn": 5.4,
           "hr": 94.0,
           "ppt": 0.0
+        },
+        {
+          "station_name": "Fornells de la Selva",
+          "date": "2025-12-22",
+          "period": "19:30 - 20:00",
+          "period_utc": "19:30 - 20:00",
+          "tm": 5.6,
+          "tx": 5.6,
+          "tn": 5.5,
+          "hr": 94.0,
+          "ppt": 0.0
+        },
+        {
+          "station_name": "Fornells de la Selva",
+          "date": "2025-12-22",
+          "period": "20:00 - 20:30",
+          "period_utc": "20:00 - 20:30",
+          "tm": 5.7,
+          "tx": 5.7,
+          "tn": 5.6,
+          "hr": 95.0,
+          "ppt": 0.0
         }
       ],
       "summary": {
         "station_name": "Fornells de la Selva",
         "date": "2025-12-22",
         "date_spanish": "22/12/2025",
-        "last_period": "19:00 - 19:30",
-        "last_period_utc": "19:00 - 19:30",
-        "updated_at": "22:37",
-        "total_periods": 39,
+        "last_period": "20:00 - 20:30",
+        "last_period_utc": "20:00 - 20:30",
+        "updated_at": "22:40",
+        "total_periods": 41,
         "max_temp": 10.0,
         "min_temp": 5.4,
         "total_rain": 22.900000000000002,
         "periods_with_data": {
-          "temp_max": 39,
-          "temp_min": 39,
-          "rain": 39
+          "temp_max": 41,
+          "temp_min": 41,
+          "rain": 41
         },
         "timezone_note": "Les hores estan en UTC (Temps Universal Coordinat). Per obtenir l'hora local, suma 1 hora (hivern) o 2 hores (estiu)."
       }
@@ -1100,7 +1122,7 @@
         "date_spanish": "22/12/2025",
         "last_period": "19:00 - 19:30",
         "last_period_utc": "19:00 - 19:30",
-        "updated_at": "22:37",
+        "updated_at": "22:40",
         "total_periods": 39,
         "max_temp": 9.5,
         "min_temp": 5.2,
