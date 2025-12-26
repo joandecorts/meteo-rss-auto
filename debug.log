@@ -1,4 +1,4 @@
-=== INICI: 2025-12-26 04:20:38 UTC ===
+=== INICI: 2025-12-26 04:25:37 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -21,22 +21,8 @@
 ============================================================
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
-📊 9 files trobades
-✅ Dades RECENTS trobades: 03:30 - 04:00
-🔍 Columnes disponibles: 11
-📊 Dades extretes:
-   • tm: 11.0
-   • tx: 11.1
-   • tn: 10.8
-   • hr: 100.0
-   • ppt: 3.8
-   • vvm: 13.0
-   • dvm: 57.0
-   • vvx: 33.8
-   • pm: 1011.1
-   • rs: 0.0
-✅ Girona actualitzada
+❌ Error consultant dades: HTTPSConnectionPool(host='www.meteo.cat', port=443): Read timed out. (read timeout=10)
+❌ Girona - sense dades
 ✅ Afegida al RSS: Fornells de la Selva
-✅ Afegida al RSS: Girona
 
-📊 Entrades RSS generades: 2
+📊 Entrades RSS generades: 1
