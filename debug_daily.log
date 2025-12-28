@@ -7,34 +7,34 @@
 2025-12-28 07:30:25 - 📡 Processant: Fornells de la Selva [UO]
 2025-12-28 07:30:25 - 
 🌐 Connectant a Fornells de la Selva...
-2025-12-28 07:30:26 - 📊 Total files trobades a la taula: 16
-2025-12-28 07:30:26 -    ✅ Període UTC: 00:00 - 00:30 | TX: 9.9 | TN: 9.8 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 00:30 - 01:00 | TX: 10.2 | TN: 9.9 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 01:00 - 01:30 | TX: 10.3 | TN: 10.2 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 01:30 - 02:00 | TX: 10.2 | TN: 10.0 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 02:00 - 02:30 | TX: 10.0 | TN: 9.5 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 02:30 - 03:00 | TX: 9.5 | TN: 9.2 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 03:00 - 03:30 | TX: 9.4 | TN: 8.8 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 03:30 - 04:00 | TX: 9.0 | TN: 8.4 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 04:00 - 04:30 | TX: 8.6 | TN: 8.0 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 04:30 - 05:00 | TX: 9.3 | TN: 8.3 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 05:00 - 05:30 | TX: 9.5 | TN: 8.3 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 05:30 - 06:00 | TX: 9.7 | TN: 9.5 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 06:00 - 06:30 | TX: 9.7 | TN: 9.7 | Pluja: 0.0
-2025-12-28 07:30:26 -    ✅ Període UTC: 06:30 - 07:00 | TX: 9.8 | TN: 9.4 | Pluja: 0.0
-2025-12-28 07:30:26 - 📈 Total períodes vàlids trobats: 14
-2025-12-28 07:30:26 - 📊 RESUM CALCULAT:
-2025-12-28 07:30:26 -    • Màxima del dia: 10.3°C
-2025-12-28 07:30:26 -    • Mínima del dia: 8.0°C
-2025-12-28 07:30:26 -    • Pluja acumulada: 0.0mm
-2025-12-28 07:30:26 -    • Últim període: 06:30 - 07:00 UTC
-2025-12-28 07:30:26 -    • Hora actualització: 07:30
-2025-12-28 07:30:26 - 💾 Dades guardades a data/UO_20251228.csv (14 registres)
-2025-12-28 07:30:26 - ✅ Fornells de la Selva: 14 períodes processats
-2025-12-28 07:30:26 - 
+2025-12-28 07:30:27 - 📊 Total files trobades a la taula: 16
+2025-12-28 07:30:27 -    ✅ Període UTC: 00:00 - 00:30 | TX: 9.9 | TN: 9.8 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 00:30 - 01:00 | TX: 10.2 | TN: 9.9 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 01:00 - 01:30 | TX: 10.3 | TN: 10.2 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 01:30 - 02:00 | TX: 10.2 | TN: 10.0 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 02:00 - 02:30 | TX: 10.0 | TN: 9.5 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 02:30 - 03:00 | TX: 9.5 | TN: 9.2 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 03:00 - 03:30 | TX: 9.4 | TN: 8.8 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 03:30 - 04:00 | TX: 9.0 | TN: 8.4 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 04:00 - 04:30 | TX: 8.6 | TN: 8.0 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 04:30 - 05:00 | TX: 9.3 | TN: 8.3 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 05:00 - 05:30 | TX: 9.5 | TN: 8.3 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 05:30 - 06:00 | TX: 9.7 | TN: 9.5 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 06:00 - 06:30 | TX: 9.7 | TN: 9.7 | Pluja: 0.0
+2025-12-28 07:30:27 -    ✅ Període UTC: 06:30 - 07:00 | TX: 9.8 | TN: 9.4 | Pluja: 0.0
+2025-12-28 07:30:27 - 📈 Total períodes vàlids trobats: 14
+2025-12-28 07:30:27 - 📊 RESUM CALCULAT:
+2025-12-28 07:30:27 -    • Màxima del dia: 10.3°C
+2025-12-28 07:30:27 -    • Mínima del dia: 8.0°C
+2025-12-28 07:30:27 -    • Pluja acumulada: 0.0mm
+2025-12-28 07:30:27 -    • Últim període: 06:30 - 07:00 UTC
+2025-12-28 07:30:27 -    • Hora actualització: 07:30
+2025-12-28 07:30:27 - 💾 Dades guardades a data/UO_20251228.csv (14 registres)
+2025-12-28 07:30:27 - ✅ Fornells de la Selva: 14 períodes processats
+2025-12-28 07:30:27 - 
 ==================================================
-2025-12-28 07:30:26 - 📡 Processant: Girona [XJ]
-2025-12-28 07:30:26 - 
+2025-12-28 07:30:27 - 📡 Processant: Girona [XJ]
+2025-12-28 07:30:27 - 
 🌐 Connectant a Girona...
 2025-12-28 07:30:28 - 📊 Total files trobades a la taula: 16
 2025-12-28 07:30:28 -    ✅ Període UTC: 00:00 - 00:30 | TX: 10.0 | TN: 9.9 | Pluja: 0.0
