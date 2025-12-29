@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2025-12-29 23:30:22",
+    "generated_at": "2025-12-29 23:35:17",
     "timezone": "UTC",
     "note": "Les hores estan en UTC. Per hora local: +1h (hivern) o +2h (estiu)",
     "total_stations": 2
@@ -526,7 +526,7 @@
         "date_spanish": "29/12/2025",
         "last_period": "22:30 - 23:00",
         "last_period_utc": "22:30 - 23:00",
-        "updated_at": "23:30",
+        "updated_at": "23:35",
         "total_periods": 46,
         "max_temp": 12.8,
         "min_temp": 3.5,
@@ -1289,7 +1289,7 @@
         "date_spanish": "29/12/2025",
         "last_period": "22:30 - 23:00",
         "last_period_utc": "22:30 - 23:00",
-        "updated_at": "23:30",
+        "updated_at": "23:35",
         "total_periods": 46,
         "max_temp": 13.6,
         "min_temp": 3.1,
