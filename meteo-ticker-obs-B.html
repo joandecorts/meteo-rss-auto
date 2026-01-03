@@ -125,7 +125,7 @@
                         // Vent (TOTES les dades)
                         .replace(/💨 Vent:\s*([0-9.]+)km\/h/g, '💨 Vent: <span class="wind">' + formatNumber('$1') + '<span class="unit">km/h</span></span>')
                         .replace(/🧭 Dir\.Vent:\s*([0-9.]+)°/g, '🧭 Dir.Vent: <span class="wind">' + formatNumber('$1') + '<span class="unit">°</span></span>')
-                        .replace(/💨 Vent Màx:\s*([0-9.]+)km\/h/g, '💨 Ràfega Màxima De Vent: <span class="wind">' + formatNumber('$1') + '<span class="unit">km/h</span></span>')
+                        .replace(/💨 Vent Màx:\s*([0-9.]+)km\/h/g, '💨 Ràfega Màxima de Vent: <span class="wind">' + formatNumber('$1') + '<span class="unit">km/h</span></span>')
                         
                         // Pressió i radiació (que faltaven)
                         .replace(/📊 Pressió:\s*([0-9.]+)hPa/g, '📊 Pressió: <span class="temp-avg">' + formatNumber('$1') + '<span class="unit">hPa</span></span>')
