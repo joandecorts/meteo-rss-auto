@@ -1,4 +1,4 @@
-=== INICI: 2026-01-11 05:38:29 UTC ===
+=== INICI: 2026-01-11 05:40:24 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -8,11 +8,11 @@
 📡 Processant: Fornells de la Selva [UO]
 🌐 Connectant a Fornells de la Selva...
 📊 12 files trobades
-✅ Dades RECENTS trobades: 04:30 - 05:00
+✅ Dades RECENTS trobades: 05:00 - 05:30
 🔍 Columnes disponibles: 6
 📊 Dades extretes:
-   • tm: -1.8
-   • tx: -1.7
+   • tm: -1.9
+   • tx: -1.6
    • tn: -2.1
    • hr: 96.0
    • ppt: 0.0
@@ -22,17 +22,17 @@
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
 📊 12 files trobades
-✅ Dades RECENTS trobades: 04:30 - 05:00
+✅ Dades RECENTS trobades: 05:00 - 05:30
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   • tm: -1.7
-   • tx: -1.5
-   • tn: -1.9
+   • tm: -1.9
+   • tx: -1.7
+   • tn: -2.0
    • hr: 100.0
    • ppt: 0.0
-   • vvm: 0.7
-   • dvm: 8.0
-   • vvx: 3.6
+   • vvm: 1.4
+   • dvm: 306.0
+   • vvx: 4.0
    • pm: 1023.5
    • rs: 0.0
 ✅ Girona actualitzada
