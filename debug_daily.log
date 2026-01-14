@@ -1,66 +1,66 @@
-=== INICI DAILY SCRAPER (UTC): 2026-01-14 01:00:32 ===
-2026-01-14 01:00:32 - ============================================================
-2026-01-14 01:00:32 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
-2026-01-14 01:00:32 - ============================================================
-2026-01-14 01:00:32 - 
+=== INICI DAILY SCRAPER (UTC): 2026-01-14 01:05:29 ===
+2026-01-14 01:05:29 - ============================================================
+2026-01-14 01:05:29 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
+2026-01-14 01:05:29 - ============================================================
+2026-01-14 01:05:29 - 
 ==================================================
-2026-01-14 01:00:32 - 📡 Processant: Fornells de la Selva [UO]
-2026-01-14 01:00:32 - 
+2026-01-14 01:05:29 - 📡 Processant: Fornells de la Selva [UO]
+2026-01-14 01:05:29 - 
 🌐 Connectant a Fornells de la Selva...
-2026-01-14 01:00:34 - 📊 Total files trobades a la taula: 3
-2026-01-14 01:00:34 -    ✅ Període UTC: 00:00 - 00:30 | TX: 5.5 | TN: 4.1 | Pluja: 0.0
-2026-01-14 01:00:34 - 📈 Total períodes vàlids trobats: 1
-2026-01-14 01:00:34 - 📊 RESUM CALCULAT:
-2026-01-14 01:00:34 -    • Màxima del dia: 5.5°C
-2026-01-14 01:00:34 -    • Mínima del dia: 4.1°C
-2026-01-14 01:00:34 -    • Pluja acumulada: 0.0mm
-2026-01-14 01:00:34 -    • Últim període: 00:00 - 00:30 UTC
-2026-01-14 01:00:34 -    • Hora actualització: 01:00
-2026-01-14 01:00:34 - 💾 Dades guardades a data/UO_20260114.csv (1 registres)
-2026-01-14 01:00:34 - ✅ Fornells de la Selva: 1 períodes processats
-2026-01-14 01:00:34 - 
+2026-01-14 01:05:31 - 📊 Total files trobades a la taula: 3
+2026-01-14 01:05:31 -    ✅ Període UTC: 00:00 - 00:30 | TX: 5.5 | TN: 4.1 | Pluja: 0.0
+2026-01-14 01:05:31 - 📈 Total períodes vàlids trobats: 1
+2026-01-14 01:05:31 - 📊 RESUM CALCULAT:
+2026-01-14 01:05:31 -    • Màxima del dia: 5.5°C
+2026-01-14 01:05:31 -    • Mínima del dia: 4.1°C
+2026-01-14 01:05:31 -    • Pluja acumulada: 0.0mm
+2026-01-14 01:05:31 -    • Últim període: 00:00 - 00:30 UTC
+2026-01-14 01:05:31 -    • Hora actualització: 01:05
+2026-01-14 01:05:31 - 💾 Dades guardades a data/UO_20260114.csv (1 registres)
+2026-01-14 01:05:31 - ✅ Fornells de la Selva: 1 períodes processats
+2026-01-14 01:05:31 - 
 ==================================================
-2026-01-14 01:00:34 - 📡 Processant: Girona [XJ]
-2026-01-14 01:00:34 - 
+2026-01-14 01:05:31 - 📡 Processant: Girona [XJ]
+2026-01-14 01:05:31 - 
 🌐 Connectant a Girona...
-2026-01-14 01:00:35 - 📊 Total files trobades a la taula: 3
-2026-01-14 01:00:35 -    ✅ Període UTC: 00:00 - 00:30 | TX: 4.2 | TN: 3.5 | Pluja: 0.0
-2026-01-14 01:00:35 - 📈 Total períodes vàlids trobats: 1
-2026-01-14 01:00:35 - 📊 RESUM CALCULAT:
-2026-01-14 01:00:35 -    • Màxima del dia: 4.2°C
-2026-01-14 01:00:35 -    • Mínima del dia: 3.5°C
-2026-01-14 01:00:35 -    • Pluja acumulada: 0.0mm
-2026-01-14 01:00:35 -    • Últim període: 00:00 - 00:30 UTC
-2026-01-14 01:00:35 -    • Hora actualització: 01:00
-2026-01-14 01:00:35 - 💾 Dades guardades a data/XJ_20260114.csv (1 registres)
-2026-01-14 01:00:35 - ✅ Girona: 1 períodes processats
-2026-01-14 01:00:35 - 💾 Dades guardades a data/weather_daily_20260114.json
-2026-01-14 01:00:35 - 💾 Dades guardades a data/weather_summary.json
-2026-01-14 01:00:35 - 
+2026-01-14 01:05:32 - 📊 Total files trobades a la taula: 3
+2026-01-14 01:05:32 -    ✅ Període UTC: 00:00 - 00:30 | TX: 4.2 | TN: 3.5 | Pluja: 0.0
+2026-01-14 01:05:32 - 📈 Total períodes vàlids trobats: 1
+2026-01-14 01:05:32 - 📊 RESUM CALCULAT:
+2026-01-14 01:05:32 -    • Màxima del dia: 4.2°C
+2026-01-14 01:05:32 -    • Mínima del dia: 3.5°C
+2026-01-14 01:05:32 -    • Pluja acumulada: 0.0mm
+2026-01-14 01:05:32 -    • Últim període: 00:00 - 00:30 UTC
+2026-01-14 01:05:32 -    • Hora actualització: 01:05
+2026-01-14 01:05:32 - 💾 Dades guardades a data/XJ_20260114.csv (1 registres)
+2026-01-14 01:05:32 - ✅ Girona: 1 períodes processats
+2026-01-14 01:05:32 - 💾 Dades guardades a data/weather_daily_20260114.json
+2026-01-14 01:05:32 - 💾 Dades guardades a data/weather_summary.json
+2026-01-14 01:05:32 - 
 ============================================================
-2026-01-14 01:00:35 - 📋 RESUM FINAL DEL DIA (UTC)
-2026-01-14 01:00:35 - ============================================================
-2026-01-14 01:00:35 - 
+2026-01-14 01:05:32 - 📋 RESUM FINAL DEL DIA (UTC)
+2026-01-14 01:05:32 - ============================================================
+2026-01-14 01:05:32 - 
 📍 Fornells de la Selva:
-2026-01-14 01:00:35 -    • Períodes: 1
-2026-01-14 01:00:35 -    • Màxima: 5.5°C
-2026-01-14 01:00:35 -    • Mínima: 4.1°C
-2026-01-14 01:00:35 -    • Pluja: 0.0mm
-2026-01-14 01:00:35 -    • Últim període: 00:00 - 00:30 UTC
-2026-01-14 01:00:35 -    • Actualització: 01:00
-2026-01-14 01:00:35 - 
+2026-01-14 01:05:32 -    • Períodes: 1
+2026-01-14 01:05:32 -    • Màxima: 5.5°C
+2026-01-14 01:05:32 -    • Mínima: 4.1°C
+2026-01-14 01:05:32 -    • Pluja: 0.0mm
+2026-01-14 01:05:32 -    • Últim període: 00:00 - 00:30 UTC
+2026-01-14 01:05:32 -    • Actualització: 01:05
+2026-01-14 01:05:32 - 
 📍 Girona:
-2026-01-14 01:00:35 -    • Períodes: 1
-2026-01-14 01:00:35 -    • Màxima: 4.2°C
-2026-01-14 01:00:35 -    • Mínima: 3.5°C
-2026-01-14 01:00:35 -    • Pluja: 0.0mm
-2026-01-14 01:00:35 -    • Últim període: 00:00 - 00:30 UTC
-2026-01-14 01:00:35 -    • Actualització: 01:00
-2026-01-14 01:00:35 - 
+2026-01-14 01:05:32 -    • Períodes: 1
+2026-01-14 01:05:32 -    • Màxima: 4.2°C
+2026-01-14 01:05:32 -    • Mínima: 3.5°C
+2026-01-14 01:05:32 -    • Pluja: 0.0mm
+2026-01-14 01:05:32 -    • Últim període: 00:00 - 00:30 UTC
+2026-01-14 01:05:32 -    • Actualització: 01:05
+2026-01-14 01:05:32 - 
 💾 Fitxers generats:
-2026-01-14 01:00:35 -    • data/weather_summary.json (per HTML)
-2026-01-14 01:00:35 -    • data/weather_daily_YYYYMMDD.json (complet)
-2026-01-14 01:00:35 -    • data/XX_YYYYMMDD.csv (per estació)
-2026-01-14 01:00:35 - 
+2026-01-14 01:05:32 -    • data/weather_summary.json (per HTML)
+2026-01-14 01:05:32 -    • data/weather_daily_YYYYMMDD.json (complet)
+2026-01-14 01:05:32 -    • data/XX_YYYYMMDD.csv (per estació)
+2026-01-14 01:05:32 - 
 ✅ PROCÉS COMPLETAT
-2026-01-14 01:00:35 - ============================================================
+2026-01-14 01:05:32 - ============================================================
