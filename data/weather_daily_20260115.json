@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2026-01-15 01:50:20",
+    "generated_at": "2026-01-15 01:55:16",
     "timezone": "UTC",
     "note": "Les hores estan en UTC. Per hora local: +1h (hivern) o +2h (estiu)",
     "total_stations": 2
@@ -53,7 +53,7 @@
         "date_spanish": "15/01/2026",
         "last_period": "01:00 - 01:30",
         "last_period_utc": "01:00 - 01:30",
-        "updated_at": "01:50",
+        "updated_at": "01:55",
         "total_periods": 3,
         "max_temp": 8.8,
         "min_temp": 6.7,
@@ -72,74 +72,8 @@
         "code": "XJ",
         "url": "https://www.meteo.cat/observacions/xema/dades?codi=XJ"
       },
-      "periods": [
-        {
-          "station_name": "Girona",
-          "date": "2026-01-15",
-          "period": "00:00 - 00:30",
-          "period_utc": "00:00 - 00:30",
-          "tm": 9.0,
-          "tx": 9.2,
-          "tn": 8.8,
-          "hr": 95.0,
-          "ppt": 0.0,
-          "vvm": 4.3,
-          "dvm": 259.0,
-          "vvx": 7.9,
-          "pm": 1019.4,
-          "rs": 0.0
-        },
-        {
-          "station_name": "Girona",
-          "date": "2026-01-15",
-          "period": "00:30 - 01:00",
-          "period_utc": "00:30 - 01:00",
-          "tm": 8.4,
-          "tx": 8.9,
-          "tn": 7.7,
-          "hr": 96.0,
-          "ppt": 0.0,
-          "vvm": 1.1,
-          "dvm": 249.0,
-          "vvx": 5.8,
-          "pm": 1019.2,
-          "rs": 0.0
-        },
-        {
-          "station_name": "Girona",
-          "date": "2026-01-15",
-          "period": "01:00 - 01:30",
-          "period_utc": "01:00 - 01:30",
-          "tm": 8.3,
-          "tx": 8.7,
-          "tn": 7.7,
-          "hr": 99.0,
-          "ppt": 0.0,
-          "vvm": 1.8,
-          "dvm": 260.0,
-          "vvx": 5.4,
-          "pm": 1019.0,
-          "rs": 0.0
-        }
-      ],
-      "summary": {
-        "station_name": "Girona",
-        "date": "2026-01-15",
-        "date_spanish": "15/01/2026",
-        "last_period": "01:00 - 01:30",
-        "last_period_utc": "01:00 - 01:30",
-        "updated_at": "01:50",
-        "total_periods": 3,
-        "max_temp": 9.2,
-        "min_temp": 7.7,
-        "total_rain": 0.0,
-        "periods_with_data": {
-          "temp_max": 3,
-          "temp_min": 3,
-          "rain": 3
-        },
-        "timezone_note": "Les hores estan en UTC (Temps Universal Coordinat). Per obtenir l'hora local, suma 1 hora (hivern) o 2 hores (estiu)."
-      }
+      "periods": [],
+      "summary": null
     }
   }
 }
