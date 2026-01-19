@@ -176,7 +176,11 @@ def create_rss_feed():
             'name': 'Girona', 
             'code': 'XJ',
             'url': 'https://www.meteo.cat/observacions/xema/dades?codi=XJ'
+        },    
         }
+            'name': 'Banyoles', 
+            'code': 'DJ',
+            'url': 'https://www.meteo.cat/observacions/xema/dades?codi=DJ'
     ]
     
     # 🕐 CORRECCIÓ DEFINITIVA: Utilitzar UTC per a les dates del RSS
