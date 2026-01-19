@@ -2,3 +2,4 @@ station_name,date,period,period_utc,tm,tx,tn,hr,ppt
 Fornells de la Selva,2026-01-19,00:00 - 00:30,00:00 - 00:30,9.7,9.8,9.6,98.0,0.0
 Fornells de la Selva,2026-01-19,00:30 - 01:00,00:30 - 01:00,9.8,9.8,9.8,97.0,0.0
 Fornells de la Selva,2026-01-19,01:00 - 01:30,01:00 - 01:30,9.8,9.8,9.7,97.0,0.0
+Fornells de la Selva,2026-01-19,01:30 - 02:00,01:30 - 02:00,9.8,9.8,9.8,97.0,0.0
