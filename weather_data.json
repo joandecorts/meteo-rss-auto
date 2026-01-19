@@ -1,4 +1,14 @@
 {
+  "UO": {
+    "station_name": "Fornells de la Selva",
+    "station_code": "UO",
+    "periode": "20:00 - 20:30",
+    "tm": 8.7,
+    "tx": 8.7,
+    "tn": 8.6,
+    "hr": 97.0,
+    "ppt": 1.5
+  },
   "XJ": {
     "station_name": "Girona",
     "station_code": "XJ",
