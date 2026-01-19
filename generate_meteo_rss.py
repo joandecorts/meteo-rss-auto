@@ -167,11 +167,11 @@ def create_rss_feed():
     write_log("=" * 60)
     
     stations = [
-        {
-            'name': 'Fornells de la Selva',
-            'code': 'UO',
-            'url': 'https://www.meteo.cat/observacions/xema/dades?codi=UO'
-        },
+        # {
+        #     'name': 'Fornells de la Selva',
+        #     'code': 'UO',
+        #     'url': 'https://www.meteo.cat/observacions/xema/dades?codi=UO'
+        # },
         {
             'name': 'Girona', 
             'code': 'XJ',
@@ -306,7 +306,7 @@ def create_rss_feed():
 <channel>
   <title>Dades Meteo Locals Completes</title>
   <link>https://www.meteo.cat</link>
-  <description>Dades meteorològiques en temps real - Estacions Girona i Fornells de la Selva / Real-time weather data - Girona and Fornells de la Selva stations</description>
+  <description>Dades meteorològiques en temps real - Estacions Girona / Real-time weather data - Girona station</description>
   <lastBuildDate>{utc_now.strftime("%a, %d %b %Y %H:%M:%S +0000")}</lastBuildDate>
 {chr(10).join(entrades)}
 </channel>
