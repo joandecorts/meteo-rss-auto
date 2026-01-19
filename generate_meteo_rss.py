@@ -172,12 +172,12 @@ def create_rss_feed():
             'code': 'UO',
             'url': 'https://www.meteo.cat/observacions/xema/dades?codi=UO'
         },
-        }
+        {
             'name': 'Girona', 
             'code': 'XJ',
             'url': 'https://www.meteo.cat/observacions/xema/dades?codi=XJ'
         },    
-        }
+        {
             'name': 'Banyoles', 
             'code': 'DJ',
             'url': 'https://www.meteo.cat/observacions/xema/dades?codi=DJ'
