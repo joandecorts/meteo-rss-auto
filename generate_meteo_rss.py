@@ -168,9 +168,9 @@ def create_rss_feed():
     
     stations = [
         {
-            #'name': 'Fornells de la Selva',
-            #'code': 'UO',
-            #'url': 'https://www.meteo.cat/observacions/xema/dades?codi=UO'
+            'name': 'Fornells de la Selva',
+            'code': 'UO',
+            'url': 'https://www.meteo.cat/observacions/xema/dades?codi=UO'
         },
         {
             'name': 'Girona', 
