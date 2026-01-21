@@ -1,0 +1,28 @@
+{
+  "metadata": {
+    "generated_at": "2026-01-21 00:00:36",
+    "timezone": "UTC",
+    "note": "Les hores estan en UTC. Per hora local: +1h (hivern) o +2h (estiu)",
+    "total_stations": 2
+  },
+  "stations": {
+    "UO": {
+      "info": {
+        "name": "Fornells de la Selva",
+        "code": "UO",
+        "url": "https://www.meteo.cat/observacions/xema/dades?codi=UO"
+      },
+      "periods": [],
+      "summary": null
+    },
+    "XJ": {
+      "info": {
+        "name": "Girona",
+        "code": "XJ",
+        "url": "https://www.meteo.cat/observacions/xema/dades?codi=XJ"
+      },
+      "periods": [],
+      "summary": null
+    }
+  }
+}
