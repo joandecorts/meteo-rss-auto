@@ -9,6 +9,21 @@
     "hr": 97.0,
     "ppt": 0.0
   },
+  "XJ": {
+    "station_name": "Girona",
+    "station_code": "XJ",
+    "periode": "01:00 - 01:30",
+    "tm": 8.6,
+    "tx": 8.7,
+    "tn": 8.4,
+    "hr": 100.0,
+    "ppt": 0.0,
+    "vvm": 0.7,
+    "dvm": 7.0,
+    "vvx": 3.6,
+    "pm": 1014.0,
+    "rs": 0.0
+  },
   "DJ": {
     "station_name": "Banyoles",
     "station_code": "DJ",
