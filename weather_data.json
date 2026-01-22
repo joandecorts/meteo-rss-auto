@@ -12,17 +12,17 @@
   "XJ": {
     "station_name": "Girona",
     "station_code": "XJ",
-    "periode": "12:30 - 13:00",
-    "tm": 10.3,
-    "tx": 10.6,
-    "tn": 10.1,
-    "hr": 82.0,
+    "periode": "13:00 - 13:30",
+    "tm": 10.9,
+    "tx": 11.2,
+    "tn": 10.6,
+    "hr": 77.0,
     "ppt": 0.0,
     "vvm": 6.5,
-    "dvm": 245.0,
-    "vvx": 11.9,
+    "dvm": 209.0,
+    "vvx": 11.5,
     "pm": 997.4,
-    "rs": 115.0
+    "rs": 193.0
   },
   "DJ": {
     "station_name": "Banyoles",
