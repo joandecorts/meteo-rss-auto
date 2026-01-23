@@ -1,4 +1,4 @@
-=== INICI: 2026-01-23 22:05:22 UTC ===
+=== INICI: 2026-01-23 22:10:26 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -8,13 +8,13 @@
 📡 Processant: Fornells de la Selva [UO]
 🌐 Connectant a Fornells de la Selva...
 📊 45 files trobades
-✅ Dades RECENTS trobades: 21:00 - 21:30
+✅ Dades RECENTS trobades: 21:30 - 22:00
 🔍 Columnes disponibles: 6
 📊 Dades extretes:
-   • tm: 5.4
-   • tx: 8.5
-   • tn: 4.9
-   • hr: 76.0
+   • tm: 4.1
+   • tx: 5.2
+   • tn: 3.7
+   • hr: 80.0
    • ppt: 0.0
 ✅ Fornells de la Selva actualitzada
 
@@ -22,18 +22,18 @@
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
 📊 45 files trobades
-✅ Dades RECENTS trobades: 21:00 - 21:30
+✅ Dades RECENTS trobades: 21:30 - 22:00
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   • tm: 3.9
-   • tx: 4.6
-   • tn: 3.5
+   • tm: 3.3
+   • tx: 3.7
+   • tn: 2.8
    • hr: 99.0
    • ppt: 0.0
    • vvm: 2.9
-   • dvm: 332.0
-   • vvx: 8.3
-   • pm: 997.7
+   • dvm: 168.0
+   • vvx: 7.2
+   • pm: 997.8
    • rs: 0.0
 ✅ Girona actualitzada
 
@@ -41,17 +41,17 @@
 📡 Processant: Banyoles [DJ]
 🌐 Connectant a Banyoles...
 📊 45 files trobades
-✅ Dades RECENTS trobades: 21:00 - 21:30
+✅ Dades RECENTS trobades: 21:30 - 22:00
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   • tm: 7.0
-   • tx: 7.3
-   • tn: 6.3
-   • hr: 84.0
+   • tm: 7.9
+   • tx: 8.5
+   • tn: 7.3
+   • hr: 65.0
    • ppt: 0.0
-   • vvm: 3.2
-   • dvm: 352.0
-   • vvx: 9.4
+   • vvm: 9.0
+   • dvm: 331.0
+   • vvx: 15.1
    • pm: 997.5
    • rs: 0.0
 ✅ Banyoles actualitzada
