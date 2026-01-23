@@ -1,4 +1,4 @@
-=== INICI: 2026-01-23 01:45:24 UTC ===
+=== INICI: 2026-01-23 01:50:21 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -40,23 +40,9 @@
 ============================================================
 📡 Processant: Banyoles [DJ]
 🌐 Connectant a Banyoles...
-📊 4 files trobades
-✅ Dades RECENTS trobades: 01:00 - 01:30
-🔍 Columnes disponibles: 11
-📊 Dades extretes:
-   • tm: 8.1
-   • tx: 8.4
-   • tn: 7.6
-   • hr: 100.0
-   • ppt: 0.0
-   • vvm: 11.5
-   • dvm: 168.0
-   • vvx: 17.3
-   • pm: 998.1
-   • rs: 0.0
-✅ Banyoles actualitzada
+❌ Error consultant dades: HTTPSConnectionPool(host='www.meteo.cat', port=443): Read timed out. (read timeout=10)
+❌ Banyoles - sense dades
 ✅ Afegida al RSS: Fornells de la Selva
 ✅ Afegida al RSS: Girona
-✅ Afegida al RSS: Banyoles
 
-📊 Entrades RSS generades: 3
+📊 Entrades RSS generades: 2
