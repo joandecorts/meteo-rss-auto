@@ -8,35 +8,5 @@
     "tn": 3.1,
     "hr": 89.0,
     "ppt": 0.0
-  },
-  "XJ": {
-    "station_name": "Girona",
-    "station_code": "XJ",
-    "periode": "06:30 - 07:00",
-    "tm": 2.4,
-    "tx": 2.8,
-    "tn": 2.3,
-    "hr": 99.0,
-    "ppt": 0.0,
-    "vvm": 2.2,
-    "dvm": 312.0,
-    "vvx": 6.1,
-    "pm": 994.7,
-    "rs": 0.0
-  },
-  "DJ": {
-    "station_name": "Banyoles",
-    "station_code": "DJ",
-    "periode": "06:30 - 07:00",
-    "tm": 4.9,
-    "tx": 5.2,
-    "tn": 4.8,
-    "hr": 74.0,
-    "ppt": 0.0,
-    "vvm": 6.5,
-    "dvm": 305.0,
-    "vvx": 11.2,
-    "pm": 994.5,
-    "rs": 0.0
   }
 }
