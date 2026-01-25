@@ -1,4 +1,4 @@
-=== INICI: 2026-01-25 00:35:19 UTC ===
+=== INICI: 2026-01-25 00:40:22 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -7,19 +7,56 @@
 ============================================================
 📡 Processant: Fornells de la Selva [UO]
 🌐 Connectant a Fornells de la Selva...
-❌ No s'ha trobat la taula
-❌ Fornells de la Selva - sense dades
+📊 2 files trobades
+✅ Dades RECENTS trobades: 00:00 - 00:30
+🔍 Columnes disponibles: 6
+📊 Dades extretes:
+   • tm: 3.4
+   • tx: 3.8
+   • tn: 3.1
+   • hr: 97.0
+   • ppt: 0.1
+✅ Fornells de la Selva actualitzada
 
 ============================================================
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
-❌ No s'ha trobat la taula
-❌ Girona - sense dades
+📊 2 files trobades
+✅ Dades RECENTS trobades: 00:00 - 00:30
+🔍 Columnes disponibles: 11
+📊 Dades extretes:
+   • tm: 3.7
+   • tx: 4.1
+   • tn: 3.4
+   • hr: 100.0
+   • ppt: 0.0
+   • vvm: 2.5
+   • dvm: 258.0
+   • vvx: 9.7
+   • pm: 1001.6
+   • rs: 0.0
+✅ Girona actualitzada
 
 ============================================================
 📡 Processant: Banyoles [DJ]
 🌐 Connectant a Banyoles...
-❌ No s'ha trobat la taula
-❌ Banyoles - sense dades
+📊 2 files trobades
+✅ Dades RECENTS trobades: 00:00 - 00:30
+🔍 Columnes disponibles: 11
+📊 Dades extretes:
+   • tm: 3.9
+   • tx: 4.0
+   • tn: 3.8
+   • hr: 100.0
+   • ppt: 0.0
+   • vvm: 3.2
+   • dvm: 5.0
+   • vvx: 8.6
+   • pm: 1001.5
+   • rs: 0.0
+✅ Banyoles actualitzada
+✅ Afegida al RSS: Fornells de la Selva
+✅ Afegida al RSS: Girona
+✅ Afegida al RSS: Banyoles
 
-📊 Entrades RSS generades: 0
+📊 Entrades RSS generades: 3
