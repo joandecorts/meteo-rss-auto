@@ -1,4 +1,4 @@
-=== INICI: 2026-01-24 23:55:20 UTC ===
+=== INICI: 2026-01-25 00:00:36 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -7,16 +7,8 @@
 ============================================================
 📡 Processant: Fornells de la Selva [UO]
 🌐 Connectant a Fornells de la Selva...
-📊 48 files trobades
-✅ Dades RECENTS trobades: 23:00 - 23:30
-🔍 Columnes disponibles: 6
-📊 Dades extretes:
-   • tm: 3.9
-   • tx: 4.0
-   • tn: 3.8
-   • hr: 97.0
-   • ppt: 0.0
-✅ Fornells de la Selva actualitzada
+❌ No s'ha trobat la taula
+❌ Fornells de la Selva - sense dades
 
 ============================================================
 📡 Processant: Girona [XJ]
@@ -40,23 +32,8 @@
 ============================================================
 📡 Processant: Banyoles [DJ]
 🌐 Connectant a Banyoles...
-📊 48 files trobades
-✅ Dades RECENTS trobades: 23:00 - 23:30
-🔍 Columnes disponibles: 11
-📊 Dades extretes:
-   • tm: 4.6
-   • tx: 4.7
-   • tn: 4.4
-   • hr: 100.0
-   • ppt: 0.0
-   • vvm: 5.8
-   • dvm: 10.0
-   • vvx: 10.8
-   • pm: 1000.7
-   • rs: 0.0
-✅ Banyoles actualitzada
-✅ Afegida al RSS: Fornells de la Selva
+❌ No s'ha trobat la taula
+❌ Banyoles - sense dades
 ✅ Afegida al RSS: Girona
-✅ Afegida al RSS: Banyoles
 
-📊 Entrades RSS generades: 3
+📊 Entrades RSS generades: 1
