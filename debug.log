@@ -1,4 +1,4 @@
-=== INICI: 2026-01-25 00:00:36 UTC ===
+=== INICI: 2026-01-25 00:05:21 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -13,27 +13,13 @@
 ============================================================
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
-📊 48 files trobades
-✅ Dades RECENTS trobades: 23:00 - 23:30
-🔍 Columnes disponibles: 11
-📊 Dades extretes:
-   • tm: 4.0
-   • tx: 4.3
-   • tn: 3.9
-   • hr: 100.0
-   • ppt: 0.0
-   • vvm: 2.5
-   • dvm: 166.0
-   • vvx: 6.1
-   • pm: 1001.1
-   • rs: 0.0
-✅ Girona actualitzada
+❌ No s'ha trobat la taula
+❌ Girona - sense dades
 
 ============================================================
 📡 Processant: Banyoles [DJ]
 🌐 Connectant a Banyoles...
 ❌ No s'ha trobat la taula
 ❌ Banyoles - sense dades
-✅ Afegida al RSS: Girona
 
-📊 Entrades RSS generades: 1
+📊 Entrades RSS generades: 0
