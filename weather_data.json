@@ -2,11 +2,11 @@
   "UO": {
     "station_name": "Fornells de la Selva",
     "station_code": "UO",
-    "periode": "21:30 - 22:00",
-    "tm": 9.6,
+    "periode": "22:00 - 22:30",
+    "tm": 9.8,
     "tx": 10.1,
-    "tn": 8.9,
-    "hr": 97.0,
+    "tn": 9.6,
+    "hr": 98.0,
     "ppt": 0.0
   },
   "XJ": {
@@ -27,16 +27,16 @@
   "DJ": {
     "station_name": "Banyoles",
     "station_code": "DJ",
-    "periode": "21:30 - 22:00",
+    "periode": "22:00 - 22:30",
     "tm": 9.3,
-    "tx": 9.7,
-    "tn": 9.1,
+    "tx": 9.3,
+    "tn": 9.2,
     "hr": 100.0,
     "ppt": 0.0,
-    "vvm": 6.5,
-    "dvm": 18.0,
-    "vvx": 13.3,
-    "pm": 992.6,
-    "rs": 0.0
+    "vvm": 8.6,
+    "dvm": 15.0,
+    "vvx": 14.8,
+    "pm": 992.9,
+    "rs": 1.0
   }
 }

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-01-27 21:35:27",
+  "generated_at": "2026-01-27 21:40:21",
   "date_spanish": "27/01/2026",
   "timezone": "UTC",
   "timezone_note": "Les hores estan en UTC. Per hora local: +1h (hivern) o +2h (estiu)",
@@ -8,17 +8,17 @@
       "station_name": "Fornells de la Selva",
       "date": "2026-01-27",
       "date_spanish": "27/01/2026",
-      "last_period": "20:30 - 21:00",
-      "last_period_utc": "20:30 - 21:00",
-      "updated_at": "21:35",
-      "total_periods": 42,
+      "last_period": "21:00 - 21:30",
+      "last_period_utc": "21:00 - 21:30",
+      "updated_at": "21:40",
+      "total_periods": 43,
       "max_temp": 16.1,
       "min_temp": 4.6,
       "total_rain": 2.0,
       "periods_with_data": {
-        "temp_max": 42,
-        "temp_min": 42,
-        "rain": 42
+        "temp_max": 43,
+        "temp_min": 43,
+        "rain": 43
       },
       "timezone_note": "Les hores estan en UTC (Temps Universal Coordinat). Per obtenir l'hora local, suma 1 hora (hivern) o 2 hores (estiu)."
     },
@@ -28,7 +28,7 @@
       "date_spanish": "27/01/2026",
       "last_period": "20:30 - 21:00",
       "last_period_utc": "20:30 - 21:00",
-      "updated_at": "21:35",
+      "updated_at": "21:40",
       "total_periods": 42,
       "max_temp": 17.0,
       "min_temp": 4.7,
