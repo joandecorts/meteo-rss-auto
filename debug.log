@@ -1,4 +1,4 @@
-=== INICI: 2026-01-28 17:10:22 UTC ===
+=== INICI: 2026-01-28 17:15:24 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -59,14 +59,66 @@
 ============================================================
 📡 Processant: Observatori Fabra [D5]
 🌐 Connectant a Observatori Fabra...
-❌ Error consultant dades: HTTPSConnectionPool(host='www.meteo.cat', port=443): Read timed out. (read timeout=10)
-❌ Observatori Fabra - sense dades
+📊 35 files trobades
+📋 Columnes detectades (11):
+   [0] PeríodeTU
+   [1] TM°C
+   [2] TX°C
+   [3] TN°C
+   [4] HRM%
+   [5] PPTmm
+   [6] VVM (10 m)km/h
+   [7] DVM (10 m)graus
+   [8] VVX (10 m)km/h
+   [9] PMhPa
+   [10] RSW/m2
+🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
+✅ Dades RECENTS trobades: 16:30 - 17:00
+📊 Dades extretes:
+   • tm: 7.0
+   • tx: 7.2
+   • tn: 6.8
+   • hr: 56.0
+   • ppt: 0.0
+   • vvm: 22.7
+   • dvm: 339.0
+   • vvx: 45.0
+   • pm: 993.9
+   • rs: 29.0
+✅ Observatori Fabra actualitzada
 
 ============================================================
 📡 Processant: Das - Aeròdrom [DP]
 🌐 Connectant a Das - Aeròdrom...
-❌ Error consultant dades: HTTPSConnectionPool(host='www.meteo.cat', port=443): Read timed out. (read timeout=10)
-❌ Das - Aeròdrom - sense dades
+📊 35 files trobades
+📋 Columnes detectades (12):
+   [0] PeríodeTU
+   [1] TM°C
+   [2] TX°C
+   [3] TN°C
+   [4] HRM%
+   [5] PPTmm
+   [6] GNcm
+   [7] VVM (10 m)km/h
+   [8] DVM (10 m)graus
+   [9] VVX (10 m)km/h
+   [10] PMhPa
+   [11] RSW/m2
+🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'gn': 6, 'vvm': 7, 'dvm': 8, 'vvx': 9, 'pm': 10, 'rs': 11}
+✅ Dades RECENTS trobades: 16:30 - 17:00
+📊 Dades extretes:
+   • tm: 2.0
+   • tx: 3.0
+   • tn: 1.5
+   • hr: 65.0
+   • ppt: 0.0
+   • gn: 5.0
+   • vvm: 10.1
+   • dvm: 238.0
+   • vvx: 16.6
+   • pm: 995.6
+   • rs: 16.0
+✅ Das - Aeròdrom actualitzada
 
 ============================================================
 📡 Processant: Malniu a 2.230 m [Z3]
@@ -131,7 +183,9 @@
 ✅ Banyoles actualitzada
 ✅ Afegida al RSS: Fornells de la Selva
 ✅ Afegida al RSS: Girona
+✅ Afegida al RSS: Observatori Fabra
+✅ Afegida al RSS: Das - Aeròdrom
 ✅ Afegida al RSS: Malniu a 2.230 m
 ✅ Afegida al RSS: Banyoles
 
-📊 Entrades RSS generades: 4
+📊 Entrades RSS generades: 6

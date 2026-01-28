@@ -24,6 +24,37 @@
     "pm": 993.5,
     "rs": 22.0
   },
+  "D5": {
+    "station_name": "Observatori Fabra",
+    "station_code": "D5",
+    "periode": "17:30 - 18:00",
+    "tm": 7.0,
+    "tx": 7.2,
+    "tn": 6.8,
+    "hr": 56.0,
+    "ppt": 0.0,
+    "vvm": 22.7,
+    "dvm": 339.0,
+    "vvx": 45.0,
+    "pm": 993.9,
+    "rs": 29.0
+  },
+  "DP": {
+    "station_name": "Das - Aeròdrom",
+    "station_code": "DP",
+    "periode": "17:30 - 18:00",
+    "tm": 2.0,
+    "tx": 3.0,
+    "tn": 1.5,
+    "hr": 65.0,
+    "ppt": 0.0,
+    "gn": 5.0,
+    "vvm": 10.1,
+    "dvm": 238.0,
+    "vvx": 16.6,
+    "pm": 995.6,
+    "rs": 16.0
+  },
   "Z3": {
     "station_name": "Malniu a 2.230 m",
     "station_code": "Z3",
