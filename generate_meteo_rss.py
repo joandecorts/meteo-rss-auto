@@ -16,7 +16,7 @@ def write_log(message):
         f.write(message + '\n')
 
 def scrape_meteocat_data(url, station_name):
-    """Extreu TOTES les dades disponibles de cada estació - VERSIÓ INTEL·LIGENT"""
+    """Extreu TOTES les dades disponibles de cada estació - VERSIÓ MILLORADA"""
     try:
         write_log(f"🌐 Connectant a {station_name}...")
         headers = {'User-Agent': 'Mozilla/5.0'}
@@ -33,6 +33,10 @@ def scrape_meteocat_data(url, station_name):
         rows = table.find_all('tr')
         write_log(f"📊 {len(rows)} files trobades")
         
+        if len(rows) < 2:
+            write_log("❌ Taula massa curta per tenir dades")
+            return None
+        
         # Primer, obtenim els noms de les columnes (capçaleres)
         headers_row = rows[0]
         columnes = []
@@ -40,34 +44,66 @@ def scrape_meteocat_data(url, station_name):
             text = cell.get_text(strip=True)
             columnes.append(text)
         
-        write_log(f"📋 Columnes detectades ({len(columnes)}): {', '.join(columnes)}")
+        write_log(f"📋 Columnes detectades ({len(columnes)}):")
+        for idx, col in enumerate(columnes):
+            write_log(f"   [{idx}] {col}")
         
-        # Mapeig de columnes a claus de dades
+        # Mapeig MILLORAT de columnes a claus de dades
         columna_mapping = {}
+        
         for idx, col_name in enumerate(columnes):
             col_name_lower = col_name.lower()
-            if 'tm' in col_name_lower and '°c' in col_name:
+            
+            # Període - sempre és la primera columna
+            if idx == 0:
+                columna_mapping['periode'] = idx
+                continue
+            
+            # Temperatura TM
+            if ('tm' in col_name_lower or 'mitjana' in col_name_lower) and ('°c' in col_name or 'c' in col_name_lower):
                 columna_mapping['tm'] = idx
-            elif 'tx' in col_name_lower and '°c' in col_name:
+            # Temperatura TX
+            elif ('tx' in col_name_lower or 'màxima' in col_name_lower or 'maxima' in col_name_lower) and ('°c' in col_name or 'c' in col_name_lower):
                 columna_mapping['tx'] = idx
-            elif 'tn' in col_name_lower and '°c' in col_name:
+            # Temperatura TN
+            elif ('tn' in col_name_lower or 'mínima' in col_name_lower or 'minima' in col_name_lower) and ('°c' in col_name or 'c' in col_name_lower):
                 columna_mapping['tn'] = idx
-            elif 'hrm' in col_name_lower or ('hr' in col_name_lower and '%' in col_name):
+            # Humitat
+            elif ('hrm' in col_name_lower or 'hr' in col_name_lower or 'humitat' in col_name_lower or 'humidity' in col_name_lower) and ('%' in col_name):
                 columna_mapping['hr'] = idx
-            elif 'ppt' in col_name_lower or ('mm' in col_name and ('prec' in col_name_lower or 'pluja' in col_name_lower)):
+            # Precipitació
+            elif ('ppt' in col_name_lower or 'precipitació' in col_name_lower or 'precipitacio' in col_name_lower or 
+                  'pluja' in col_name_lower or 'precipitation' in col_name_lower) and ('mm' in col_name):
                 columna_mapping['ppt'] = idx
-            elif 'gn' in col_name_lower or ('neu' in col_name_lower or 'snow' in col_name_lower or 'cm' in col_name):
+            # Gruix de neu (GN)
+            elif ('gn' in col_name_lower or 'neu' in col_name_lower or 'snow' in col_name_lower or 'gruix' in col_name_lower) and ('cm' in col_name):
                 columna_mapping['gn'] = idx
-            elif 'vvm' in col_name_lower or ('km/h' in col_name and 'vent' in col_name_lower):
+            # Vent mitjà (VVM)
+            elif ('vvm' in col_name_lower or ('vent' in col_name_lower and 'mitj' in col_name_lower) or 
+                  'wind' in col_name_lower) and ('km/h' in col_name or 'km' in col_name_lower):
                 columna_mapping['vvm'] = idx
-            elif 'dvm' in col_name_lower or ('graus' in col_name_lower or 'direcció' in col_name_lower):
+            # Direcció vent (DVM)
+            elif ('dvm' in col_name_lower or 'direcció' in col_name_lower or 'direccio' in col_name_lower or 
+                  'direction' in col_name_lower) and ('graus' in col_name_lower or '°' in col_name or 'degrees' in col_name_lower):
                 columna_mapping['dvm'] = idx
-            elif 'vvx' in col_name_lower:
+            # Vent màxim (VVX)
+            elif ('vvx' in col_name_lower or ('vent' in col_name_lower and 'màx' in col_name_lower) or 
+                  'max' in col_name_lower) and ('km/h' in col_name or 'km' in col_name_lower):
                 columna_mapping['vvx'] = idx
-            elif 'pm' in col_name_lower or 'pressió' in col_name_lower or 'hpa' in col_name:
+            # Pressió (PM)
+            elif ('pm' in col_name_lower or 'pressió' in col_name_lower or 'pressio' in col_name_lower or 
+                  'pressure' in col_name_lower) and ('hpa' in col_name_lower or 'hpa' in col_name):
                 columna_mapping['pm'] = idx
-            elif 'rs' in col_name_lower or 'w/m²' in col_name or 'radiació' in col_name_lower:
+            # Radiació solar (RS)
+            elif ('rs' in col_name_lower or 'radiació' in col_name_lower or 'radiacio' in col_name_lower or 
+                  'radiation' in col_name_lower) and ('w/m²' in col_name_lower or 'w/m2' in col_name_lower):
                 columna_mapping['rs'] = idx
+        
+        # Si no hem trobat algunes columnes bàsiques, fem un mapeig per posició
+        if 'tm' not in columna_mapping and len(columnes) > 1:
+            # Suposem que TM és la segona columna (índex 1) si conté °C
+            if len(columnes) > 1 and '°c' in columnes[1]:
+                columna_mapping['tm'] = 1
         
         write_log(f"🔍 Mapeig de columnes: {columna_mapping}")
         
@@ -75,7 +111,7 @@ def scrape_meteocat_data(url, station_name):
         for i in range(len(rows)-1, 0, -1):
             cells = rows[i].find_all(['td', 'th'])
             
-            if len(cells) < 3:
+            if len(cells) < 2:  # Almenys període i una dada
                 continue
                 
             periode = cells[0].get_text(strip=True)
@@ -88,11 +124,13 @@ def scrape_meteocat_data(url, station_name):
                     'periode': periode
                 }
                 
-                # Processem cada columna
+                # Processem cada columna mapejada
                 for key, col_idx in columna_mapping.items():
                     if col_idx < len(cells):
                         valor = cells[col_idx].get_text(strip=True)
-                        dades_extretes[key] = convertir_a_numero(valor)
+                        # No processem 'periode' ja que ja el tenim
+                        if key != 'periode':
+                            dades_extretes[key] = convertir_a_numero(valor)
                 
                 # Netegem les dades que no existeixen (valor None)
                 dades_finales = {k: v for k, v in dades_extretes.items() if v is not None}
@@ -103,7 +141,11 @@ def scrape_meteocat_data(url, station_name):
                     if key not in ['station_name', 'station_code', 'periode']:
                         write_log(f"   • {key}: {value}")
                 
-                return dades_finales
+                # Verifiquem que tenim dades suficients
+                if len([k for k in dades_finales.keys() if k not in ['station_name', 'station_code', 'periode']]) > 0:
+                    return dades_finales
+                else:
+                    write_log("⚠️  Dades insuficients, buscant més...")
         
         write_log("❌ No s'han trobat dades vàlides")
         return None
@@ -269,9 +311,12 @@ def create_rss_feed():
         # ✅ VERSIÓ CATALÀ - TEXT COMPLET (sense abreviatures)
         parts_cat = [
             f"🌤️ {dades['station_name']}",
-            f"Actualitzat: {display_time.strftime('%H:%M')}",
-            f"Període: {dades.get('periode', 'N/D')}"
+            f"Actualitzat: {display_time.strftime('%H:%M')}"
         ]
+        
+        # Afegir període si existeix
+        if 'periode' in dades and dades['periode']:
+            parts_cat.append(f"Període: {dades['periode']}")
         
         # Només afegim els camps que existeixen
         if 'tm' in dades and dades['tm'] is not None:
@@ -316,9 +361,12 @@ def create_rss_feed():
         # ✅ VERSIÓ ANGLÈS - TEXT COMPLET
         parts_en = [
             f"🌤️ {dades['station_name']}",
-            f"Updated: {display_time.strftime('%H:%M')}",
-            f"Period: {dades.get('periode', 'N/D')}"
+            f"Updated: {display_time.strftime('%H:%M')}"
         ]
+        
+        # Afegir període si existeix
+        if 'periode' in dades and dades['periode']:
+            parts_en.append(f"Period: {dades['periode']}")
         
         # Només afegim els camps que existeixen
         if 'tm' in dades and dades['tm'] is not None:
