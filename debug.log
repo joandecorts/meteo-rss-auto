@@ -1,4 +1,4 @@
-=== INICI: 2026-01-28 10:37:54 UTC ===
+=== INICI: 2026-01-28 10:40:22 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -8,13 +8,13 @@
 📡 Processant: Fornells de la Selva [UO]
 🌐 Connectant a Fornells de la Selva...
 📊 22 files trobades
-✅ Dades RECENTS trobades: 09:30 - 10:00
+✅ Dades RECENTS trobades: 10:00 - 10:30
 🔍 Columnes disponibles: 6
 📊 Dades extretes:
-   • tm: 8.0
-   • tx: 8.4
-   • tn: 7.8
-   • hr: 75.0
+   • tm: 9.3
+   • tx: 9.8
+   • tn: 8.5
+   • hr: 64.0
    • ppt: 0.0
 ✅ Fornells de la Selva actualitzada
 
@@ -22,76 +22,76 @@
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
 📊 22 files trobades
-✅ Dades RECENTS trobades: 09:30 - 10:00
+✅ Dades RECENTS trobades: 10:00 - 10:30
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   • tm: 8.8
-   • tx: 9.2
-   • tn: 8.3
-   • hr: 69.0
+   • tm: 9.8
+   • tx: 10.3
+   • tn: 9.2
+   • hr: 62.0
    • ppt: 0.0
-   • vvm: 1.8
-   • dvm: 247.0
-   • vvx: 5.8
-   • pm: 996.7
-   • rs: 207.0
+   • vvm: 2.9
+   • dvm: 350.0
+   • vvx: 12.6
+   • pm: 996.0
+   • rs: 369.0
 ✅ Girona actualitzada
 
 ============================================================
 📡 Processant: Observatori Fabra [D5]
 🌐 Connectant a Observatori Fabra...
 📊 22 files trobades
-✅ Dades RECENTS trobades: 09:30 - 10:00
+✅ Dades RECENTS trobades: 10:00 - 10:30
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   • tm: 6.0
+   • tm: 6.2
    • tx: 6.2
-   • tn: 5.8
-   • hr: 61.0
+   • tn: 6.1
+   • hr: 62.0
    • ppt: 0.0
-   • vvm: 16.2
-   • dvm: 265.0
+   • vvm: 19.8
+   • dvm: 242.0
    • vvx: 35.3
-   • pm: 996.3
-   • rs: 217.0
+   • pm: 996.7
+   • rs: 160.0
 ✅ Observatori Fabra actualitzada
 
 ============================================================
 📡 Processant: Malniu a 2.230 m [Z3]
 🌐 Connectant a Malniu a 2.230 m...
 📊 22 files trobades
-✅ Dades RECENTS trobades: 09:30 - 10:00
+✅ Dades RECENTS trobades: 10:00 - 10:30
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   • tm: -3.6
-   • tx: -2.2
-   • tn: -4.9
-   • hr: 63.0
+   • tm: -3.9
+   • tx: -2.6
+   • tn: -4.7
+   • hr: 60.0
    • ppt: 0.0
    • vvm: 130.0
-   • dvm: 1.4
-   • vvx: 264.0
-   • pm: 7.2
-   • rs: 109.0
+   • dvm: 1.8
+   • vvx: 302.0
+   • pm: 6.5
+   • rs: 96.0
 ✅ Malniu a 2.230 m actualitzada
 
 ============================================================
 📡 Processant: Banyoles [DJ]
 🌐 Connectant a Banyoles...
 📊 22 files trobades
-✅ Dades RECENTS trobades: 09:30 - 10:00
+✅ Dades RECENTS trobades: 10:00 - 10:30
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   • tm: 8.2
-   • tx: 8.6
-   • tn: 8.0
-   • hr: 81.0
+   • tm: 8.8
+   • tx: 9.1
+   • tn: 8.5
+   • hr: 74.0
    • ppt: 0.0
-   • vvm: 5.4
-   • dvm: 291.0
-   • vvx: 10.8
-   • pm: 996.6
-   • rs: 202.0
+   • vvm: 6.5
+   • dvm: 319.0
+   • vvx: 11.9
+   • pm: 996.0
+   • rs: 320.0
 ✅ Banyoles actualitzada
 ✅ Afegida al RSS: Fornells de la Selva
 ✅ Afegida al RSS: Girona
