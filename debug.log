@@ -1,4 +1,4 @@
-=== INICI: 2026-01-28 08:35:23 UTC ===
+=== INICI: 2026-01-28 08:40:24 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -8,13 +8,13 @@
 📡 Processant: Fornells de la Selva [UO]
 🌐 Connectant a Fornells de la Selva...
 📊 18 files trobades
-✅ Dades RECENTS trobades: 07:30 - 08:00
+✅ Dades RECENTS trobades: 08:00 - 08:30
 🔍 Columnes disponibles: 6
 📊 Dades extretes:
-   • tm: 4.8
-   • tx: 6.6
-   • tn: 3.1
-   • hr: 83.0
+   • tm: 6.6
+   • tx: 7.3
+   • tn: 5.8
+   • hr: 76.0
    • ppt: 0.0
 ✅ Fornells de la Selva actualitzada
 
@@ -22,57 +22,57 @@
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
 📊 18 files trobades
-✅ Dades RECENTS trobades: 07:30 - 08:00
+✅ Dades RECENTS trobades: 08:00 - 08:30
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   • tm: 7.1
+   • tm: 7.3
    • tx: 7.7
-   • tn: 6.5
-   • hr: 64.0
+   • tn: 7.1
+   • hr: 70.0
    • ppt: 0.0
-   • vvm: 3.6
-   • dvm: 228.0
-   • vvx: 7.9
-   • pm: 996.4
-   • rs: 74.0
+   • vvm: 4.3
+   • dvm: 342.0
+   • vvx: 13.7
+   • pm: 996.3
+   • rs: 150.0
 ✅ Girona actualitzada
 
 ============================================================
 📡 Processant: Observatori Fabra [D5]
 🌐 Connectant a Observatori Fabra...
 📊 18 files trobades
-✅ Dades RECENTS trobades: 07:30 - 08:00
+✅ Dades RECENTS trobades: 08:00 - 08:30
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
    • tm: 5.2
-   • tx: 5.3
+   • tx: 5.2
    • tn: 5.1
-   • hr: 62.0
+   • hr: 63.0
    • ppt: 0.0
-   • vvm: 14.0
-   • dvm: 335.0
-   • vvx: 44.3
-   • pm: 997.1
-   • rs: 38.0
+   • vvm: 4.3
+   • dvm: 256.0
+   • vvx: 42.1
+   • pm: 996.9
+   • rs: 83.0
 ✅ Observatori Fabra actualitzada
 
 ============================================================
 📡 Processant: Banyoles [DJ]
 🌐 Connectant a Banyoles...
 📊 18 files trobades
-✅ Dades RECENTS trobades: 07:30 - 08:00
+✅ Dades RECENTS trobades: 08:00 - 08:30
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
-   • tm: 4.9
-   • tx: 5.3
-   • tn: 4.5
+   • tm: 5.6
+   • tx: 6.1
+   • tn: 5.2
    • hr: 100.0
    • ppt: 0.0
-   • vvm: 2.2
-   • dvm: 79.0
-   • vvx: 6.5
+   • vvm: 5.0
+   • dvm: 352.0
+   • vvx: 11.2
    • pm: 996.4
-   • rs: 53.0
+   • rs: 132.0
 ✅ Banyoles actualitzada
 ✅ Afegida al RSS: Fornells de la Selva
 ✅ Afegida al RSS: Girona
