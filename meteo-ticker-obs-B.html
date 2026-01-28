@@ -107,7 +107,7 @@
                     // Extreure TOTES les dades del RSS
                     let displayText = catalaPart
                         // Mantenir tot el format original però amb números alineats
-                        .replace(/🌤️ (Fornells de la Selva|Girona|Observatori Fabra|Banyoles) \|/g, '🌤️ <span class="city-name">$1</span> |')
+                        .replace(/🌤️ (Fornells de la Selva|Girona|Observatori Fabra|Malniu (2.230 m)|Banyoles) \|/g, '🌤️ <span class="city-name">$1</span> |')
                         
                         // ACTUALITZAT I PERÍODE (mantenir text complet)
                         .replace(/Actualitzat:\s*([0-9:]+)/g, 'Actualitzat: <span class="text-white">$1</span>')
@@ -157,7 +157,7 @@
                     // Extreure VERSIÓ ANGLESA completa
                     let englishText = anglesPart
                         // Noms
-                        .replace(/🌤️ (Fornells de la Selva|Girona|Observatori Fabra|Banyoles) \|/g, '🌤️ <span class="city-name">$1</span> |')
+                        .replace(/🌤️ (Fornells de la Selva|Girona|Observatori Fabra|Malniu (2.230 m)|Banyoles) \|/g, '🌤️ <span class="city-name">$1</span> |')
                         
                         // Updated i Period
                         .replace(/Updated:\s*([0-9:]+)/g, 'Updated at: <span class="text-white">$1</span>')
