@@ -1,4 +1,4 @@
-=== INICI: 2026-01-28 10:15:23 UTC ===
+=== INICI: 2026-01-28 10:17:01 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -57,8 +57,8 @@
 ✅ Observatori Fabra actualitzada
 
 ============================================================
-📡 Processant: Malniu (2.230 m) [Z3]
-🌐 Connectant a Malniu (2.230 m)...
+📡 Processant: Malniu 2.230 m [Z3]
+🌐 Connectant a Malniu 2.230 m...
 📊 21 files trobades
 ✅ Dades RECENTS trobades: 09:30 - 10:00
 🔍 Columnes disponibles: 11
@@ -73,7 +73,7 @@
    • vvx: 264.0
    • pm: 7.2
    • rs: 109.0
-✅ Malniu (2.230 m) actualitzada
+✅ Malniu 2.230 m actualitzada
 
 ============================================================
 📡 Processant: Banyoles [DJ]
@@ -96,7 +96,7 @@
 ✅ Afegida al RSS: Fornells de la Selva
 ✅ Afegida al RSS: Girona
 ✅ Afegida al RSS: Observatori Fabra
-✅ Afegida al RSS: Malniu (2.230 m)
+✅ Afegida al RSS: Malniu 2.230 m
 ✅ Afegida al RSS: Banyoles
 
 📊 Entrades RSS generades: 5
