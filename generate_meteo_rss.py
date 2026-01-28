@@ -183,6 +183,11 @@ def create_rss_feed():
             'url': 'https://www.meteo.cat/observacions/xema/dades?codi=D5'
         },
         {
+            'name': 'Malniu (2.230 m)',
+            'code': 'Z3',
+            'url': 'https://www.meteo.cat/observacions/xema/dades?codi=Z3'
+        },
+        {
             'name': 'Banyoles', 
             'code': 'DJ',
             'url': 'https://www.meteo.cat/observacions/xema/dades?codi=DJ'
