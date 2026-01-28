@@ -1,4 +1,4 @@
-=== INICI: 2026-01-28 15:01:50 UTC ===
+=== INICI: 2026-01-28 15:10:29 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -18,13 +18,10 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5}
 ✅ Dades RECENTS trobades: 14:30 - 15:00
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 14:00 - 14:30
-📊 Dades extretes:
-   • tm: 9.8
-   • tx: 9.8
+   • tm: 9.9
+   • tx: 10.2
    • tn: 9.7
-   • hr: 64.0
+   • hr: 62.0
    • ppt: 0.0
 ✅ Fornells de la Selva actualitzada
 
@@ -47,19 +44,16 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
 ✅ Dades RECENTS trobades: 14:30 - 15:00
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 14:00 - 14:30
-📊 Dades extretes:
    • tm: 10.5
    • tx: 10.6
    • tn: 10.4
-   • hr: 52.0
+   • hr: 51.0
    • ppt: 0.0
-   • vvm: 5.8
-   • dvm: 261.0
-   • vvx: 13.3
-   • pm: 993.1
-   • rs: 137.0
+   • vvm: 6.1
+   • dvm: 249.0
+   • vvx: 14.8
+   • pm: 992.6
+   • rs: 130.0
 ✅ Girona actualitzada
 
 ============================================================
@@ -81,19 +75,16 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
 ✅ Dades RECENTS trobades: 14:30 - 15:00
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 14:00 - 14:30
-📊 Dades extretes:
-   • tm: 7.8
-   • tx: 8.2
-   • tn: 7.5
-   • hr: 62.0
+   • tm: 8.4
+   • tx: 8.9
+   • tn: 7.9
+   • hr: 61.0
    • ppt: 0.0
-   • vvm: 5.4
-   • dvm: 310.0
-   • vvx: 26.6
-   • pm: 993.1
-   • rs: 259.0
+   • vvm: 4.7
+   • dvm: 298.0
+   • vvx: 25.2
+   • pm: 992.5
+   • rs: 271.0
 ✅ Observatori Fabra actualitzada
 
 ============================================================
@@ -116,20 +107,17 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'gn': 6, 'vvm': 7, 'dvm': 8, 'vvx': 9, 'pm': 10, 'rs': 11}
 ✅ Dades RECENTS trobades: 14:30 - 15:00
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 14:00 - 14:30
-📊 Dades extretes:
-   • tm: 3.4
-   • tx: 4.1
-   • tn: 3.1
-   • hr: 65.0
+   • tm: 4.5
+   • tx: 6.0
+   • tn: 3.8
+   • hr: 61.0
    • ppt: 0.0
-   • gn: 5.0
-   • vvm: 6.1
-   • dvm: 56.0
-   • vvx: 10.1
-   • pm: 993.1
-   • rs: 313.0
+   • gn: 4.0
+   • vvm: 4.0
+   • dvm: 67.0
+   • vvx: 13.0
+   • pm: 992.7
+   • rs: 299.0
 ✅ Das - Aeròdrom actualitzada
 
 ============================================================
@@ -151,19 +139,16 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'gn': 6, 'vvm': 7, 'dvm': 8, 'vvx': 9, 'rs': 10}
 ✅ Dades RECENTS trobades: 14:30 - 15:00
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 14:00 - 14:30
-📊 Dades extretes:
-   • tm: -2.5
-   • tx: -1.9
-   • tn: -3.5
-   • hr: 75.0
+   • tm: -3.0
+   • tx: -2.3
+   • tn: -3.8
+   • hr: 78.0
    • ppt: 0.0
-   • gn: 129.0
-   • vvm: 1.8
-   • dvm: 248.0
-   • vvx: 7.9
-   • rs: 97.0
+   • gn: 130.0
+   • vvm: 1.1
+   • dvm: 193.0
+   • vvx: 5.0
+   • rs: 65.0
 ✅ Malniu a 2.230 m actualitzada
 
 ============================================================
@@ -185,19 +170,16 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
 ✅ Dades RECENTS trobades: 14:30 - 15:00
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 14:00 - 14:30
-📊 Dades extretes:
-   • tm: 9.9
-   • tx: 10.0
-   • tn: 9.8
-   • hr: 62.0
+   • tm: 10.0
+   • tx: 10.2
+   • tn: 9.9
+   • hr: 59.0
    • ppt: 0.0
-   • vvm: 7.2
-   • dvm: 207.0
-   • vvx: 13.7
-   • pm: 992.9
-   • rs: 171.0
+   • vvm: 6.1
+   • dvm: 297.0
+   • vvx: 12.2
+   • pm: 992.5
+   • rs: 159.0
 ✅ Banyoles actualitzada
 ✅ Afegida al RSS: Fornells de la Selva
 ✅ Afegida al RSS: Girona
