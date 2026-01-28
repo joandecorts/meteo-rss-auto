@@ -16,7 +16,7 @@ def write_log(message):
         f.write(message + '\n')
 
 def scrape_meteocat_data(url, station_name):
-    """Extreu TOTES les dades disponibles de cada estació - VERSIÓ SIMPLIFICADA"""
+    """Extreu TOTES les dades disponibles de cada estació - VERSIÓ INTEL·LIGENT"""
     try:
         write_log(f"🌐 Connectant a {station_name}...")
         headers = {'User-Agent': 'Mozilla/5.0'}
@@ -33,6 +33,44 @@ def scrape_meteocat_data(url, station_name):
         rows = table.find_all('tr')
         write_log(f"📊 {len(rows)} files trobades")
         
+        # Primer, obtenim els noms de les columnes (capçaleres)
+        headers_row = rows[0]
+        columnes = []
+        for cell in headers_row.find_all(['td', 'th']):
+            text = cell.get_text(strip=True)
+            columnes.append(text)
+        
+        write_log(f"📋 Columnes detectades ({len(columnes)}): {', '.join(columnes)}")
+        
+        # Mapeig de columnes a claus de dades
+        columna_mapping = {}
+        for idx, col_name in enumerate(columnes):
+            col_name_lower = col_name.lower()
+            if 'tm' in col_name_lower and '°c' in col_name:
+                columna_mapping['tm'] = idx
+            elif 'tx' in col_name_lower and '°c' in col_name:
+                columna_mapping['tx'] = idx
+            elif 'tn' in col_name_lower and '°c' in col_name:
+                columna_mapping['tn'] = idx
+            elif 'hrm' in col_name_lower or ('hr' in col_name_lower and '%' in col_name):
+                columna_mapping['hr'] = idx
+            elif 'ppt' in col_name_lower or ('mm' in col_name and ('prec' in col_name_lower or 'pluja' in col_name_lower)):
+                columna_mapping['ppt'] = idx
+            elif 'gn' in col_name_lower or ('neu' in col_name_lower or 'snow' in col_name_lower or 'cm' in col_name):
+                columna_mapping['gn'] = idx
+            elif 'vvm' in col_name_lower or ('km/h' in col_name and 'vent' in col_name_lower):
+                columna_mapping['vvm'] = idx
+            elif 'dvm' in col_name_lower or ('graus' in col_name_lower or 'direcció' in col_name_lower):
+                columna_mapping['dvm'] = idx
+            elif 'vvx' in col_name_lower:
+                columna_mapping['vvx'] = idx
+            elif 'pm' in col_name_lower or 'pressió' in col_name_lower or 'hpa' in col_name:
+                columna_mapping['pm'] = idx
+            elif 'rs' in col_name_lower or 'w/m²' in col_name or 'radiació' in col_name_lower:
+                columna_mapping['rs'] = idx
+        
+        write_log(f"🔍 Mapeig de columnes: {columna_mapping}")
+        
         # Busquem des del FINAL (dades més recents)
         for i in range(len(rows)-1, 0, -1):
             cells = rows[i].find_all(['td', 'th'])
@@ -43,38 +81,29 @@ def scrape_meteocat_data(url, station_name):
             periode = cells[0].get_text(strip=True)
             
             if re.match(r'\d{1,2}:\d{2}\s*-\s*\d{1,2}:\d{2}', periode):
-                tm = cells[1].get_text(strip=True)
-                if tm and tm not in ['(s/d)', '-', '']:
-                    write_log(f"✅ Dades RECENTS trobades: {periode}")
-                    write_log(f"🔍 Columnes disponibles: {len(cells)}")
-                    
-                    # Extracció de dades ADAPTATIVA - només les columnes que existeixen
-                    dades_extretes = {
-                        'station_name': station_name,
-                        'station_code': url.split('codi=')[1][:2] if 'codi=' in url else '',
-                        'periode': periode,
-                        'tm': convertir_a_numero(cells[1].get_text(strip=True)) if len(cells) > 1 else None,
-                        'tx': convertir_a_numero(cells[2].get_text(strip=True)) if len(cells) > 2 else None,
-                        'tn': convertir_a_numero(cells[3].get_text(strip=True)) if len(cells) > 3 else None,
-                        'hr': convertir_a_numero(cells[4].get_text(strip=True)) if len(cells) > 4 else None,
-                        'ppt': convertir_a_numero(cells[5].get_text(strip=True)) if len(cells) > 5 else None,
-                        'gn': convertir_a_numero(cells[6].get_text(strip=True)) if len(cells) > 6 else None,  # GRUIX DE NEU AFEGIT
-                        'vvm': convertir_a_numero(cells[7].get_text(strip=True)) if len(cells) > 7 else None,
-                        'dvm': convertir_a_numero(cells[8].get_text(strip=True)) if len(cells) > 8 else None,
-                        'vvx': convertir_a_numero(cells[9].get_text(strip=True)) if len(cells) > 9 else None,
-                        'pm': convertir_a_numero(cells[10].get_text(strip=True)) if len(cells) > 10 else None,
-                        'rs': convertir_a_numero(cells[11].get_text(strip=True)) if len(cells) > 11 else None
-                    }
-                    
-                    # Netegem les dades que no existeixen (valor None)
-                    dades_finales = {k: v for k, v in dades_extretes.items() if v is not None}
-                    
-                    write_log("📊 Dades extretes:")
-                    for key, value in dades_finales.items():
-                        if key not in ['station_name', 'station_code', 'periode']:
-                            write_log(f"   • {key}: {value}")
-                    
-                    return dades_finales
+                # Inicialitzem dades
+                dades_extretes = {
+                    'station_name': station_name,
+                    'station_code': url.split('codi=')[1][:2] if 'codi=' in url else '',
+                    'periode': periode
+                }
+                
+                # Processem cada columna
+                for key, col_idx in columna_mapping.items():
+                    if col_idx < len(cells):
+                        valor = cells[col_idx].get_text(strip=True)
+                        dades_extretes[key] = convertir_a_numero(valor)
+                
+                # Netegem les dades que no existeixen (valor None)
+                dades_finales = {k: v for k, v in dades_extretes.items() if v is not None}
+                
+                write_log(f"✅ Dades RECENTS trobades: {periode}")
+                write_log("📊 Dades extretes:")
+                for key, value in dades_finales.items():
+                    if key not in ['station_name', 'station_code', 'periode']:
+                        write_log(f"   • {key}: {value}")
+                
+                return dades_finales
         
         write_log("❌ No s'han trobat dades vàlides")
         return None
@@ -249,9 +278,9 @@ def create_rss_feed():
             f"🌧️ Precipitació: {dades['ppt']}mm"
         ]
         
-        # Afegir gruix de neu SOLAMENT si existeix
-        if 'gn' in dades and dades['gn'] is not None:
-            parts_cat.append(f"❄️ Neu: {dades['gn']}cm")
+        # Afegir gruix de neu SOLAMENT si existeix (només per estacions de muntanya)
+        if 'gn' in dades and dades['gn'] is not None and dades['gn'] != 0:
+            parts_cat.append(f"❄️ Gruix de neu: {dades['gn']}cm")
         
         # Afegim dades de vent SOLAMENT si existeixen
         if 'vvm' in dades and dades['vvm'] is not None:
@@ -285,9 +314,9 @@ def create_rss_feed():
             f"🌧️ Precipitation: {dades['ppt']}mm"
         ]
         
-        # Afegir gruix de neu SOLAMENT si existeix
-        if 'gn' in dades and dades['gn'] is not None:
-            parts_en.append(f"❄️ Snow: {dades['gn']}cm")
+        # Afegir gruix de neu SOLAMENT si existeix (només per estacions de muntanya)
+        if 'gn' in dades and dades['gn'] is not None and dades['gn'] != 0:
+            parts_en.append(f"❄️ Snow depth: {dades['gn']}cm")
         
         # Afegim dades de vent SOLAMENT si existeixen
         if 'vvm' in dades and dades['vvm'] is not None:
