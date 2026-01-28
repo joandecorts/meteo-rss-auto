@@ -176,7 +176,12 @@ def create_rss_feed():
             'name': 'Girona', 
             'code': 'XJ',
             'url': 'https://www.meteo.cat/observacions/xema/dades?codi=XJ'
-        },    
+        },   
+        {
+            'name': 'Observatori Fabra',
+            'code': 'D5',
+            'url': 'https://www.meteo.cat/observacions/xema/dades?codi=D5'
+        },
         {
             'name': 'Banyoles', 
             'code': 'DJ',

@@ -1,1 +1,17 @@
-{}
+{
+  "D5": {
+    "station_name": "Observatori Fabra",
+    "station_code": "D5",
+    "periode": "08:00 - 08:30",
+    "tm": 5.3,
+    "tx": 5.5,
+    "tn": 5.1,
+    "hr": 60.0,
+    "ppt": 0.0,
+    "vvm": 12.2,
+    "dvm": 336.0,
+    "vvx": 50.0,
+    "pm": 997.4,
+    "rs": 17.0
+  }
+}

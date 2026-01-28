@@ -1,4 +1,4 @@
-=== INICI: 2026-01-28 08:00:35 UTC ===
+=== INICI: 2026-01-28 08:04:26 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -17,9 +17,29 @@
 ❌ Girona - sense dades
 
 ============================================================
+📡 Processant: Observatori Fabra [D5]
+🌐 Connectant a Observatori Fabra...
+📊 17 files trobades
+✅ Dades RECENTS trobades: 07:00 - 07:30
+🔍 Columnes disponibles: 11
+📊 Dades extretes:
+   • tm: 5.3
+   • tx: 5.5
+   • tn: 5.1
+   • hr: 60.0
+   • ppt: 0.0
+   • vvm: 12.2
+   • dvm: 336.0
+   • vvx: 50.0
+   • pm: 997.4
+   • rs: 17.0
+✅ Observatori Fabra actualitzada
+
+============================================================
 📡 Processant: Banyoles [DJ]
 🌐 Connectant a Banyoles...
 ❌ No s'ha trobat la taula
 ❌ Banyoles - sense dades
+✅ Afegida al RSS: Observatori Fabra
 
-📊 Entrades RSS generades: 0
+📊 Entrades RSS generades: 1
