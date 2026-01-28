@@ -39,6 +39,21 @@
     "pm": 997.3,
     "rs": 118.0
   },
+  "Z3": {
+    "station_name": "Malniu (2.230 m)",
+    "station_code": "Z3",
+    "periode": "09:30 - 10:00",
+    "tm": -4.3,
+    "tx": -3.2,
+    "tn": -5.5,
+    "hr": 72.0,
+    "ppt": 0.0,
+    "vvm": 131.0,
+    "dvm": 2.9,
+    "vvx": 270.0,
+    "pm": 6.5,
+    "rs": 102.0
+  },
   "DJ": {
     "station_name": "Banyoles",
     "station_code": "DJ",

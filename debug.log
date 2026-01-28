@@ -1,4 +1,4 @@
-=== INICI: 2026-01-28 09:25:20 UTC ===
+=== INICI: 2026-01-28 09:30:29 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -7,7 +7,7 @@
 ============================================================
 📡 Processant: Fornells de la Selva [UO]
 🌐 Connectant a Fornells de la Selva...
-📊 19 files trobades
+📊 20 files trobades
 ✅ Dades RECENTS trobades: 08:30 - 09:00
 🔍 Columnes disponibles: 6
 📊 Dades extretes:
@@ -21,7 +21,7 @@
 ============================================================
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
-📊 19 files trobades
+📊 20 files trobades
 ✅ Dades RECENTS trobades: 08:30 - 09:00
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
@@ -40,7 +40,7 @@
 ============================================================
 📡 Processant: Observatori Fabra [D5]
 🌐 Connectant a Observatori Fabra...
-📊 19 files trobades
+📊 20 files trobades
 ✅ Dades RECENTS trobades: 08:30 - 09:00
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
@@ -57,9 +57,28 @@
 ✅ Observatori Fabra actualitzada
 
 ============================================================
+📡 Processant: Malniu (2.230 m) [Z3]
+🌐 Connectant a Malniu (2.230 m)...
+📊 20 files trobades
+✅ Dades RECENTS trobades: 08:30 - 09:00
+🔍 Columnes disponibles: 11
+📊 Dades extretes:
+   • tm: -4.3
+   • tx: -3.2
+   • tn: -5.5
+   • hr: 72.0
+   • ppt: 0.0
+   • vvm: 131.0
+   • dvm: 2.9
+   • vvx: 270.0
+   • pm: 6.5
+   • rs: 102.0
+✅ Malniu (2.230 m) actualitzada
+
+============================================================
 📡 Processant: Banyoles [DJ]
 🌐 Connectant a Banyoles...
-📊 19 files trobades
+📊 20 files trobades
 ✅ Dades RECENTS trobades: 08:30 - 09:00
 🔍 Columnes disponibles: 11
 📊 Dades extretes:
@@ -77,6 +96,7 @@
 ✅ Afegida al RSS: Fornells de la Selva
 ✅ Afegida al RSS: Girona
 ✅ Afegida al RSS: Observatori Fabra
+✅ Afegida al RSS: Malniu (2.230 m)
 ✅ Afegida al RSS: Banyoles
 
-📊 Entrades RSS generades: 4
+📊 Entrades RSS generades: 5
