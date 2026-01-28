@@ -58,11 +58,12 @@ def scrape_meteocat_data(url, station_name):
                         'tn': convertir_a_numero(cells[3].get_text(strip=True)) if len(cells) > 3 else None,
                         'hr': convertir_a_numero(cells[4].get_text(strip=True)) if len(cells) > 4 else None,
                         'ppt': convertir_a_numero(cells[5].get_text(strip=True)) if len(cells) > 5 else None,
-                        'vvm': convertir_a_numero(cells[6].get_text(strip=True)) if len(cells) > 6 else None,
-                        'dvm': convertir_a_numero(cells[7].get_text(strip=True)) if len(cells) > 7 else None,
-                        'vvx': convertir_a_numero(cells[8].get_text(strip=True)) if len(cells) > 8 else None,
-                        'pm': convertir_a_numero(cells[9].get_text(strip=True)) if len(cells) > 9 else None,
-                        'rs': convertir_a_numero(cells[10].get_text(strip=True)) if len(cells) > 10 else None
+                        'gn': convertir_a_numero(cells[6].get_text(strip=True)) if len(cells) > 6 else None,  # GRUIX DE NEU AFEGIT
+                        'vvm': convertir_a_numero(cells[7].get_text(strip=True)) if len(cells) > 7 else None,
+                        'dvm': convertir_a_numero(cells[8].get_text(strip=True)) if len(cells) > 8 else None,
+                        'vvx': convertir_a_numero(cells[9].get_text(strip=True)) if len(cells) > 9 else None,
+                        'pm': convertir_a_numero(cells[10].get_text(strip=True)) if len(cells) > 10 else None,
+                        'rs': convertir_a_numero(cells[11].get_text(strip=True)) if len(cells) > 11 else None
                     }
                     
                     # Netegem les dades que no existeixen (valor None)
@@ -248,6 +249,10 @@ def create_rss_feed():
             f"🌧️ Precipitació: {dades['ppt']}mm"
         ]
         
+        # Afegir gruix de neu SOLAMENT si existeix
+        if 'gn' in dades and dades['gn'] is not None:
+            parts_cat.append(f"❄️ Neu: {dades['gn']}cm")
+        
         # Afegim dades de vent SOLAMENT si existeixen
         if 'vvm' in dades and dades['vvm'] is not None:
             parts_cat.append(f"💨 Vent: {dades['vvm']}km/h")
@@ -279,6 +284,10 @@ def create_rss_feed():
             f"💧 Humidity: {dades['hr']}%",
             f"🌧️ Precipitation: {dades['ppt']}mm"
         ]
+        
+        # Afegir gruix de neu SOLAMENT si existeix
+        if 'gn' in dades and dades['gn'] is not None:
+            parts_en.append(f"❄️ Snow: {dades['gn']}cm")
         
         # Afegim dades de vent SOLAMENT si existeixen
         if 'vvm' in dades and dades['vvm'] is not None:
