@@ -270,15 +270,26 @@ def create_rss_feed():
         parts_cat = [
             f"🌤️ {dades['station_name']}",
             f"Actualitzat: {display_time.strftime('%H:%M')}",
-            f"Període: {dades.get('periode', 'N/D')}",
-            f"🌡️ Temp. Mitjana: {dades['tm']}°C",
-            f"🔥 Temp. Màxima: {dades['tx']}°C", 
-            f"❄️ Temp. Mínima: {dades['tn']}°C",
-            f"💧 Humitat: {dades['hr']}%",
-            f"🌧️ Precipitació: {dades['ppt']}mm"
+            f"Període: {dades.get('periode', 'N/D')}"
         ]
         
-        # Afegir gruix de neu SOLAMENT si existeix (només per estacions de muntanya)
+        # Només afegim els camps que existeixen
+        if 'tm' in dades and dades['tm'] is not None:
+            parts_cat.append(f"🌡️ Temp. Mitjana: {dades['tm']}°C")
+        
+        if 'tx' in dades and dades['tx'] is not None:
+            parts_cat.append(f"🔥 Temp. Màxima: {dades['tx']}°C")
+            
+        if 'tn' in dades and dades['tn'] is not None:
+            parts_cat.append(f"❄️ Temp. Mínima: {dades['tn']}°C")
+        
+        if 'hr' in dades and dades['hr'] is not None:
+            parts_cat.append(f"💧 Humitat: {dades['hr']}%")
+        
+        if 'ppt' in dades and dades['ppt'] is not None:
+            parts_cat.append(f"🌧️ Precipitació: {dades['ppt']}mm")
+        
+        # Afegir gruix de neu SOLAMENT si existeix
         if 'gn' in dades and dades['gn'] is not None and dades['gn'] != 0:
             parts_cat.append(f"❄️ Gruix de neu: {dades['gn']}cm")
         
@@ -306,15 +317,26 @@ def create_rss_feed():
         parts_en = [
             f"🌤️ {dades['station_name']}",
             f"Updated: {display_time.strftime('%H:%M')}",
-            f"Period: {dades.get('periode', 'N/D')}",
-            f"🌡️ Avg Temp: {dades['tm']}°C",
-            f"🔥 Max Temp: {dades['tx']}°C", 
-            f"❄️ Min Temp: {dades['tn']}°C",
-            f"💧 Humidity: {dades['hr']}%",
-            f"🌧️ Precipitation: {dades['ppt']}mm"
+            f"Period: {dades.get('periode', 'N/D')}"
         ]
         
-        # Afegir gruix de neu SOLAMENT si existeix (només per estacions de muntanya)
+        # Només afegim els camps que existeixen
+        if 'tm' in dades and dades['tm'] is not None:
+            parts_en.append(f"🌡️ Avg Temp: {dades['tm']}°C")
+        
+        if 'tx' in dades and dades['tx'] is not None:
+            parts_en.append(f"🔥 Max Temp: {dades['tx']}°C")
+            
+        if 'tn' in dades and dades['tn'] is not None:
+            parts_en.append(f"❄️ Min Temp: {dades['tn']}°C")
+        
+        if 'hr' in dades and dades['hr'] is not None:
+            parts_en.append(f"💧 Humidity: {dades['hr']}%")
+        
+        if 'ppt' in dades and dades['ppt'] is not None:
+            parts_en.append(f"🌧️ Precipitation: {dades['ppt']}mm")
+        
+        # Afegir gruix de neu SOLAMENT si existeix
         if 'gn' in dades and dades['gn'] is not None and dades['gn'] != 0:
             parts_en.append(f"❄️ Snow depth: {dades['gn']}cm")
         
