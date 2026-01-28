@@ -1,4 +1,4 @@
-=== INICI: 2026-01-28 06:20:26 UTC ===
+=== INICI: 2026-01-28 06:25:22 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -19,7 +19,7 @@
 ============================================================
 📡 Processant: Banyoles [DJ]
 🌐 Connectant a Banyoles...
-❌ Error consultant dades: HTTPSConnectionPool(host='www.meteo.cat', port=443): Read timed out. (read timeout=10)
+❌ No s'ha trobat la taula
 ❌ Banyoles - sense dades
 
 📊 Entrades RSS generades: 0
