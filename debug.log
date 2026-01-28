@@ -1,4 +1,4 @@
-=== INICI: 2026-01-28 14:35:24 UTC ===
+=== INICI: 2026-01-28 14:40:25 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -18,13 +18,10 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5}
 ✅ Dades RECENTS trobades: 14:00 - 14:30
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 13:30 - 14:00
-📊 Dades extretes:
-   • tm: 9.9
-   • tx: 10.0
-   • tn: 9.8
-   • hr: 60.0
+   • tm: 9.8
+   • tx: 9.8
+   • tn: 9.7
+   • hr: 64.0
    • ppt: 0.0
 ✅ Fornells de la Selva actualitzada
 
@@ -47,19 +44,16 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
 ✅ Dades RECENTS trobades: 14:00 - 14:30
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 13:30 - 14:00
-📊 Dades extretes:
-   • tm: 10.4
-   • tx: 10.5
-   • tn: 10.3
-   • hr: 53.0
+   • tm: 10.5
+   • tx: 10.6
+   • tn: 10.4
+   • hr: 52.0
    • ppt: 0.0
-   • vvm: 6.5
-   • dvm: 232.0
-   • vvx: 14.8
-   • pm: 993.5
-   • rs: 136.0
+   • vvm: 5.8
+   • dvm: 261.0
+   • vvx: 13.3
+   • pm: 993.1
+   • rs: 137.0
 ✅ Girona actualitzada
 
 ============================================================
@@ -81,19 +75,16 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
 ✅ Dades RECENTS trobades: 14:00 - 14:30
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 13:30 - 14:00
-📊 Dades extretes:
-   • tm: 7.6
+   • tm: 7.8
    • tx: 8.2
-   • tn: 6.8
-   • hr: 64.0
+   • tn: 7.5
+   • hr: 62.0
    • ppt: 0.0
    • vvm: 5.4
-   • dvm: 281.0
-   • vvx: 25.9
-   • pm: 993.5
-   • rs: 285.0
+   • dvm: 310.0
+   • vvx: 26.6
+   • pm: 993.1
+   • rs: 259.0
 ✅ Observatori Fabra actualitzada
 
 ============================================================
@@ -116,20 +107,17 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'gn': 6, 'vvm': 7, 'dvm': 8, 'vvx': 9, 'pm': 10, 'rs': 11}
 ✅ Dades RECENTS trobades: 14:00 - 14:30
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 13:30 - 14:00
-📊 Dades extretes:
-   • tm: 4.0
-   • tx: 5.5
-   • tn: 2.9
+   • tm: 3.4
+   • tx: 4.1
+   • tn: 3.1
    • hr: 65.0
    • ppt: 0.0
    • gn: 5.0
-   • vvm: 4.7
-   • dvm: 67.0
-   • vvx: 10.4
-   • pm: 993.0
-   • rs: 302.0
+   • vvm: 6.1
+   • dvm: 56.0
+   • vvx: 10.1
+   • pm: 993.1
+   • rs: 313.0
 ✅ Das - Aeròdrom actualitzada
 
 ============================================================
@@ -151,19 +139,16 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'gn': 6, 'vvm': 7, 'dvm': 8, 'vvx': 9, 'rs': 10}
 ✅ Dades RECENTS trobades: 14:00 - 14:30
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 13:30 - 14:00
-📊 Dades extretes:
-   • tm: -3.7
-   • tx: -3.0
-   • tn: -4.4
-   • hr: 80.0
+   • tm: -2.5
+   • tx: -1.9
+   • tn: -3.5
+   • hr: 75.0
    • ppt: 0.0
-   • gn: 130.0
-   • vvm: 1.4
-   • dvm: 146.0
-   • vvx: 7.6
-   • rs: 104.0
+   • gn: 129.0
+   • vvm: 1.8
+   • dvm: 248.0
+   • vvx: 7.9
+   • rs: 97.0
 ✅ Malniu a 2.230 m actualitzada
 
 ============================================================
@@ -185,19 +170,16 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
 ✅ Dades RECENTS trobades: 14:00 - 14:30
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 13:30 - 14:00
-📊 Dades extretes:
-   • tm: 9.8
+   • tm: 9.9
    • tx: 10.0
    • tn: 9.8
-   • hr: 65.0
+   • hr: 62.0
    • ppt: 0.0
-   • vvm: 11.5
-   • dvm: 191.0
-   • vvx: 19.1
-   • pm: 993.2
-   • rs: 193.0
+   • vvm: 7.2
+   • dvm: 207.0
+   • vvx: 13.7
+   • pm: 992.9
+   • rs: 171.0
 ✅ Banyoles actualitzada
 ✅ Afegida al RSS: Fornells de la Selva
 ✅ Afegida al RSS: Girona
