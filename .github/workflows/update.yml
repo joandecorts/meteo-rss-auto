@@ -4,12 +4,12 @@ on:
   # 1. DISPARAT MANUALMENT
   workflow_dispatch:
   
-  # 2. TODO AUTOMÀTIC A GITHUB
-  schedule:
-    - cron: "*/5 * * * *"      # 📡 RSS cada 5 minuts
-    - cron: "15,45 * * * *"    # 🌤️ HTMLs a hores:15 i :45
+  # 2. TODO AUTOMÀTIC A GITHUB (DESACTIVAT PER EVITAR CONFLICTES AMB CRON-JOB.ORG)
+  # schedule:
+  #   - cron: "*/5 * * * *"      # 📡 RSS cada 5 minuts (COMENTAT)
+  #   - cron: "15,45 * * * *"    # 🌤️ HTMLs a hores:15 i :45 (COMENTAT)
 
-  # 3. DISPARAT DES DE CRON-JOB.ORG
+  # 3. DISPARAT DES DE CRON-JOB.ORG (ÚNICA AUTOMATITZACIÓ ACTIVA)
   repository_dispatch:
     types: [trigger_update]
 
