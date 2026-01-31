@@ -1,4 +1,4 @@
-=== INICI: 2026-01-31 13:20:22 UTC ===
+=== INICI: 2026-01-31 13:50:24 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -7,7 +7,7 @@
 ============================================================
 📡 Processant: Fornells de la Selva [UO]
 🌐 Connectant a Fornells de la Selva...
-📊 27 files trobades
+📊 28 files trobades
 📋 Columnes detectades (6):
    [0] PeríodeTU
    [1] TM°C
@@ -16,19 +16,19 @@
    [4] HRM%
    [5] PPTmm
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5}
-✅ Dades RECENTS trobades: 12:30 - 13:00
+✅ Dades RECENTS trobades: 13:00 - 13:30
 📊 Dades extretes:
-   • tm: 14.6
-   • tx: 14.8
-   • tn: 14.2
-   • hr: 46.0
+   • tm: 14.7
+   • tx: 15.1
+   • tn: 14.5
+   • hr: 50.0
    • ppt: 0.0
 ✅ Fornells de la Selva actualitzada
 
 ============================================================
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
-📊 27 files trobades
+📊 28 files trobades
 📋 Columnes detectades (11):
    [0] PeríodeTU
    [1] TM°C
@@ -42,24 +42,24 @@
    [9] PMhPa
    [10] RSW/m2
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
-✅ Dades RECENTS trobades: 12:30 - 13:00
+✅ Dades RECENTS trobades: 13:00 - 13:30
 📊 Dades extretes:
-   • tm: 15.0
-   • tx: 15.5
-   • tn: 14.7
-   • hr: 43.0
+   • tm: 15.3
+   • tx: 15.6
+   • tn: 15.0
+   • hr: 42.0
    • ppt: 0.0
-   • vvm: 9.4
-   • dvm: 185.0
-   • vvx: 21.2
-   • pm: 1003.7
-   • rs: 534.0
+   • vvm: 10.8
+   • dvm: 181.0
+   • vvx: 26.6
+   • pm: 1004.0
+   • rs: 502.0
 ✅ Girona actualitzada
 
 ============================================================
 📡 Processant: Observatori Fabra [D5]
 🌐 Connectant a Observatori Fabra...
-📊 27 files trobades
+📊 28 files trobades
 📋 Columnes detectades (11):
    [0] PeríodeTU
    [1] TM°C
@@ -73,24 +73,24 @@
    [9] PMhPa
    [10] RSW/m2
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
-✅ Dades RECENTS trobades: 12:30 - 13:00
+✅ Dades RECENTS trobades: 13:00 - 13:30
 📊 Dades extretes:
-   • tm: 12.0
-   • tx: 12.3
-   • tn: 11.7
+   • tm: 12.2
+   • tx: 12.9
+   • tn: 11.8
    • hr: 51.0
    • ppt: 0.0
-   • vvm: 9.0
-   • dvm: 270.0
-   • vvx: 45.7
+   • vvm: 3.2
+   • dvm: 294.0
+   • vvx: 31.3
    • pm: 1003.6
-   • rs: 549.0
+   • rs: 518.0
 ✅ Observatori Fabra actualitzada
 
 ============================================================
 📡 Processant: Das - Aeròdrom [DP]
 🌐 Connectant a Das - Aeròdrom...
-📊 27 files trobades
+📊 28 files trobades
 📋 Columnes detectades (12):
    [0] PeríodeTU
    [1] TM°C
@@ -105,25 +105,25 @@
    [10] PMhPa
    [11] RSW/m2
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'gn': 6, 'vvm': 7, 'dvm': 8, 'vvx': 9, 'pm': 10, 'rs': 11}
-✅ Dades RECENTS trobades: 12:30 - 13:00
+✅ Dades RECENTS trobades: 13:00 - 13:30
 📊 Dades extretes:
-   • tm: 7.0
-   • tx: 7.4
-   • tn: 6.6
-   • hr: 45.0
+   • tm: 7.6
+   • tx: 8.2
+   • tn: 7.3
+   • hr: 42.0
    • ppt: 0.0
    • gn: 2.0
-   • vvm: 22.0
-   • dvm: 19.0
-   • vvx: 36.7
+   • vvm: 18.0
+   • dvm: 27.0
+   • vvx: 33.1
    • pm: 1003.6
-   • rs: 560.0
+   • rs: 562.0
 ✅ Das - Aeròdrom actualitzada
 
 ============================================================
 📡 Processant: Malniu a 2.230 m [Z3]
 🌐 Connectant a Malniu a 2.230 m...
-📊 27 files trobades
+📊 28 files trobades
 📋 Columnes detectades (11):
    [0] PeríodeTU
    [1] TM°C
@@ -137,24 +137,24 @@
    [9] VVX (6 m)km/h
    [10] RSW/m2
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'gn': 6, 'vvm': 7, 'dvm': 8, 'vvx': 9, 'rs': 10}
-✅ Dades RECENTS trobades: 12:30 - 13:00
+✅ Dades RECENTS trobades: 13:00 - 13:30
 📊 Dades extretes:
-   • tm: -3.2
-   • tx: -2.9
+   • tm: -3.1
+   • tx: -2.7
    • tn: -3.3
-   • hr: 57.0
+   • hr: 59.0
    • ppt: 0.0
    • gn: 116.0
-   • vvm: 9.0
-   • dvm: 314.0
-   • vvx: 37.1
-   • rs: 607.0
+   • vvm: 9.4
+   • dvm: 354.0
+   • vvx: 31.0
+   • rs: 577.0
 ✅ Malniu a 2.230 m actualitzada
 
 ============================================================
 📡 Processant: Banyoles [DJ]
 🌐 Connectant a Banyoles...
-📊 27 files trobades
+📊 28 files trobades
 📋 Columnes detectades (11):
    [0] PeríodeTU
    [1] TM°C
@@ -168,18 +168,18 @@
    [9] PMhPa
    [10] RSW/m2
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
-✅ Dades RECENTS trobades: 12:30 - 13:00
+✅ Dades RECENTS trobades: 13:00 - 13:30
 📊 Dades extretes:
-   • tm: 14.4
+   • tm: 14.5
    • tx: 14.8
-   • tn: 14.0
-   • hr: 49.0
+   • tn: 14.2
+   • hr: 47.0
    • ppt: 0.0
    • vvm: 16.6
-   • dvm: 184.0
-   • vvx: 27.4
-   • pm: 1003.2
-   • rs: 528.0
+   • dvm: 194.0
+   • vvx: 27.7
+   • pm: 1003.7
+   • rs: 504.0
 ✅ Banyoles actualitzada
 ✅ Afegida al RSS: Fornells de la Selva
 ✅ Afegida al RSS: Girona
