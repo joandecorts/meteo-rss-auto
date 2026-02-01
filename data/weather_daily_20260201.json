@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2026-02-01 08:50:18",
+    "generated_at": "2026-02-01 09:20:17",
     "timezone": "UTC",
     "note": "Les hores estan en UTC. Per hora local: +1h (hivern) o +2h (estiu)",
     "total_stations": 2
@@ -12,213 +12,8 @@
         "code": "UO",
         "url": "https://www.meteo.cat/observacions/xema/dades?codi=UO"
       },
-      "periods": [
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "00:00 - 00:30",
-          "period_utc": "00:00 - 00:30",
-          "tm": 2.0,
-          "tx": 2.4,
-          "tn": 1.4,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "00:30 - 01:00",
-          "period_utc": "00:30 - 01:00",
-          "tm": 1.9,
-          "tx": 2.4,
-          "tn": 1.7,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "01:00 - 01:30",
-          "period_utc": "01:00 - 01:30",
-          "tm": 2.2,
-          "tx": 2.5,
-          "tn": 1.8,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "01:30 - 02:00",
-          "period_utc": "01:30 - 02:00",
-          "tm": 1.7,
-          "tx": 2.1,
-          "tn": 1.4,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "02:00 - 02:30",
-          "period_utc": "02:00 - 02:30",
-          "tm": 1.4,
-          "tx": 1.7,
-          "tn": 0.8,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "02:30 - 03:00",
-          "period_utc": "02:30 - 03:00",
-          "tm": 1.0,
-          "tx": 1.5,
-          "tn": 0.7,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "03:00 - 03:30",
-          "period_utc": "03:00 - 03:30",
-          "tm": 0.9,
-          "tx": 1.5,
-          "tn": 0.6,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "03:30 - 04:00",
-          "period_utc": "03:30 - 04:00",
-          "tm": 0.6,
-          "tx": 0.9,
-          "tn": 0.3,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "04:00 - 04:30",
-          "period_utc": "04:00 - 04:30",
-          "tm": 0.4,
-          "tx": 0.6,
-          "tn": 0.1,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "04:30 - 05:00",
-          "period_utc": "04:30 - 05:00",
-          "tm": 0.3,
-          "tx": 0.5,
-          "tn": 0.1,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "05:00 - 05:30",
-          "period_utc": "05:00 - 05:30",
-          "tm": 0.2,
-          "tx": 0.6,
-          "tn": -0.1,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "05:30 - 06:00",
-          "period_utc": "05:30 - 06:00",
-          "tm": -0.1,
-          "tx": 0.1,
-          "tn": -0.2,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "06:00 - 06:30",
-          "period_utc": "06:00 - 06:30",
-          "tm": 0.3,
-          "tx": 0.6,
-          "tn": 0.0,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "06:30 - 07:00",
-          "period_utc": "06:30 - 07:00",
-          "tm": 0.3,
-          "tx": 0.8,
-          "tn": 0.0,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "07:00 - 07:30",
-          "period_utc": "07:00 - 07:30",
-          "tm": 0.9,
-          "tx": 1.1,
-          "tn": 0.8,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "07:30 - 08:00",
-          "period_utc": "07:30 - 08:00",
-          "tm": 1.2,
-          "tx": 1.4,
-          "tn": 1.0,
-          "hr": 97.0,
-          "ppt": 0.0
-        },
-        {
-          "station_name": "Fornells de la Selva",
-          "date": "2026-02-01",
-          "period": "08:00 - 08:30",
-          "period_utc": "08:00 - 08:30",
-          "tm": 1.9,
-          "tx": 2.4,
-          "tn": 1.5,
-          "hr": 97.0,
-          "ppt": 0.0
-        }
-      ],
-      "summary": {
-        "station_name": "Fornells de la Selva",
-        "date": "2026-02-01",
-        "date_spanish": "01/02/2026",
-        "last_period": "08:00 - 08:30",
-        "last_period_utc": "08:00 - 08:30",
-        "updated_at": "08:50",
-        "total_periods": 17,
-        "max_temp": 2.5,
-        "min_temp": -0.2,
-        "total_rain": 0.0,
-        "periods_with_data": {
-          "temp_max": 17,
-          "temp_min": 17,
-          "rain": 17
-        },
-        "timezone_note": "Les hores estan en UTC (Temps Universal Coordinat). Per obtenir l'hora local, suma 1 hora (hivern) o 2 hores (estiu)."
-      }
+      "periods": [],
+      "summary": null
     },
     "XJ": {
       "info": {
@@ -498,23 +293,39 @@
           "vvx": 2.9,
           "pm": 1012.7,
           "rs": 52.0
+        },
+        {
+          "station_name": "Girona",
+          "date": "2026-02-01",
+          "period": "08:30 - 09:00",
+          "period_utc": "08:30 - 09:00",
+          "tm": 3.4,
+          "tx": 4.0,
+          "tn": 3.0,
+          "hr": 100.0,
+          "ppt": 0.0,
+          "vvm": 0.7,
+          "dvm": 251.0,
+          "vvx": 2.5,
+          "pm": 1012.7,
+          "rs": 78.0
         }
       ],
       "summary": {
         "station_name": "Girona",
         "date": "2026-02-01",
         "date_spanish": "01/02/2026",
-        "last_period": "08:00 - 08:30",
-        "last_period_utc": "08:00 - 08:30",
-        "updated_at": "08:50",
-        "total_periods": 17,
-        "max_temp": 3.4,
+        "last_period": "08:30 - 09:00",
+        "last_period_utc": "08:30 - 09:00",
+        "updated_at": "09:20",
+        "total_periods": 18,
+        "max_temp": 4.0,
         "min_temp": -0.2,
         "total_rain": 0.0,
         "periods_with_data": {
-          "temp_max": 17,
-          "temp_min": 17,
-          "rain": 17
+          "temp_max": 18,
+          "temp_min": 18,
+          "rain": 18
         },
         "timezone_note": "Les hores estan en UTC (Temps Universal Coordinat). Per obtenir l'hora local, suma 1 hora (hivern) o 2 hores (estiu)."
       }
