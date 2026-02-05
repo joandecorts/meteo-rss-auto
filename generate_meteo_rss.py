@@ -240,36 +240,17 @@ def create_rss_feed():
     
     stations = [
         {
+            'name': 'Girona',
+            'code': 'XJ',
+            'url': 'https://www.meteo.cat/observacions/xema/dades?codi=XJ'
+        },
+        {
             'name': 'Fornells de la Selva',
             'code': 'UO',
             'url': 'https://www.meteo.cat/observacions/xema/dades?codi=UO'
-        },
-        {
-            'name': 'Girona', 
-            'code': 'XJ',
-            'url': 'https://www.meteo.cat/observacions/xema/dades?codi=XJ'
-       #  },   
-       #  {
-       #     'name': 'Observatori Fabra',
-       #     'code': 'D5',
-       #     'url': 'https://www.meteo.cat/observacions/xema/dades?codi=D5'
-       # },
-       # {
-       #     'name': 'Das - Aeròdrom',
-       #     'code': 'DP',
-       #     'url': 'https://www.meteo.cat/observacions/xema/dades?codi=DP'
-       # },
-       # {
-       #     'name': 'Malniu a 2.230 m',
-       #     'code': 'Z3',
-       #     'url': 'https://www.meteo.cat/observacions/xema/dades?codi=Z3'
-       # },
-       # {
-       #     'name': 'Banyoles', 
-       #     'code': 'DJ',
-       #     'url': 'https://www.meteo.cat/observacions/xema/dades?codi=DJ'
-         }
+        }
     ]
+
     
     # 🕐 CORRECCIÓ DEFINITIVA: Utilitzar UTC per a les dates del RSS
     # Això evita problemes amb futurs temps a GitHub Actions
