@@ -80,7 +80,7 @@ jobs:
       # 7. PUJA A GH-PAGES
       - uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.METEO_RSS_PAT }}
           publish_dir: .                # Puja TOT
           publish_branch: gh-pages      # A la branca gh-pages
           keep_files: false             # Neteja l'anterior
