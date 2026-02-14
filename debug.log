@@ -1,4 +1,4 @@
-=== INICI: 2026-02-14 03:20:24 UTC ===
+=== INICI: 2026-02-14 03:50:23 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -7,7 +7,7 @@
 ============================================================
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
-📊 7 files trobades
+📊 8 files trobades
 📋 Columnes detectades (11):
    [0] PeríodeTU
    [1] TM°C
@@ -21,17 +21,17 @@
    [9] PMhPa
    [10] RSW/m2
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
-✅ Dades RECENTS trobades: 02:30 - 03:00
+✅ Dades RECENTS trobades: 03:00 - 03:30
 📊 Dades extretes:
-   • tm: 7.3
-   • tx: 7.6
-   • tn: 7.0
+   • tm: 6.9
+   • tx: 7.1
+   • tn: 6.7
    • hr: 100.0
    • ppt: 0.0
-   • vvm: 0.4
-   • dvm: 211.0
-   • vvx: 4.0
-   • pm: 989.6
+   • vvm: 0.7
+   • dvm: 304.0
+   • vvx: 3.6
+   • pm: 989.9
    • rs: 0.0
 ✅ Girona actualitzada
 
