@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2026-02-14 06:50:18",
+    "generated_at": "2026-02-14 07:20:19",
     "timezone": "UTC",
     "note": "Les hores estan en UTC. Per hora local: +1h (hivern) o +2h (estiu)",
     "total_stations": 2
@@ -229,23 +229,39 @@
           "vvx": 6.1,
           "pm": 992.6,
           "rs": 0.0
+        },
+        {
+          "station_name": "Girona",
+          "date": "2026-02-14",
+          "period": "06:30 - 07:00",
+          "period_utc": "06:30 - 07:00",
+          "tm": 6.2,
+          "tx": 6.4,
+          "tn": 5.8,
+          "hr": 100.0,
+          "ppt": 0.0,
+          "vvm": 1.1,
+          "dvm": 314.0,
+          "vvx": 2.9,
+          "pm": 993.2,
+          "rs": 1.0
         }
       ],
       "summary": {
         "station_name": "Girona",
         "date": "2026-02-14",
         "date_spanish": "14/02/2026",
-        "last_period": "06:00 - 06:30",
-        "last_period_utc": "06:00 - 06:30",
-        "updated_at": "06:50",
-        "total_periods": 13,
+        "last_period": "06:30 - 07:00",
+        "last_period_utc": "06:30 - 07:00",
+        "updated_at": "07:20",
+        "total_periods": 14,
         "max_temp": 9.1,
-        "min_temp": 6.3,
+        "min_temp": 5.8,
         "total_rain": 0.1,
         "periods_with_data": {
-          "temp_max": 13,
-          "temp_min": 13,
-          "rain": 13
+          "temp_max": 14,
+          "temp_min": 14,
+          "rain": 14
         },
         "timezone_note": "Les hores estan en UTC (Temps Universal Coordinat). Per obtenir l'hora local, suma 1 hora (hivern) o 2 hores (estiu)."
       }
