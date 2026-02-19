@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2026-02-19 00:20:20",
+    "generated_at": "2026-02-19 00:50:18",
     "timezone": "UTC",
     "note": "Les hores estan en UTC. Per hora local: +1h (hivern) o +2h (estiu)",
     "total_stations": 2
@@ -21,8 +21,42 @@
         "code": "XJ",
         "url": "https://www.meteo.cat/observacions/xema/dades?codi=XJ"
       },
-      "periods": [],
-      "summary": null
+      "periods": [
+        {
+          "station_name": "Girona",
+          "date": "2026-02-19",
+          "period": "00:00 - 00:30",
+          "period_utc": "00:00 - 00:30",
+          "tm": 10.5,
+          "tx": 11.3,
+          "tn": 10.2,
+          "hr": 69.0,
+          "ppt": 0.0,
+          "vvm": 3.6,
+          "dvm": 57.0,
+          "vvx": 9.4,
+          "pm": 1006.8,
+          "rs": 0.0
+        }
+      ],
+      "summary": {
+        "station_name": "Girona",
+        "date": "2026-02-19",
+        "date_spanish": "19/02/2026",
+        "last_period": "00:00 - 00:30",
+        "last_period_utc": "00:00 - 00:30",
+        "updated_at": "00:50",
+        "total_periods": 1,
+        "max_temp": 11.3,
+        "min_temp": 10.2,
+        "total_rain": 0.0,
+        "periods_with_data": {
+          "temp_max": 1,
+          "temp_min": 1,
+          "rain": 1
+        },
+        "timezone_note": "Les hores estan en UTC (Temps Universal Coordinat). Per obtenir l'hora local, suma 1 hora (hivern) o 2 hores (estiu)."
+      }
     }
   }
 }
