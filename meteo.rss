@@ -4,7 +4,12 @@
   <title>Dades Meteo Locals Completes</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estacions Girona / Real-time weather data - Girona station</description>
-  <lastBuildDate>Fri, 27 Feb 2026 00:20:27 +0000</lastBuildDate>
-
+  <lastBuildDate>Fri, 27 Feb 2026 00:50:25 +0000</lastBuildDate>
+  <item>
+    <title>🌤️ Girona | Actualitzat: 01:50 | Període: 01:00 - 01:30 | 🌡️ Temp. Mitjana: 10.2°C | 🔥 Temp. Màxima: 10.2°C | ❄️ Temp. Mínima: 10.2°C | 💧 Humitat: 97.0% | 🌧️ Precipitació: 0.0mm | 💨 Vent: 3.2km/h | 🧭 Dir.Vent: 270.0° | 💨 Vent Màx: 5.4km/h | 📊 Pressió: 1026.8hPa | ☀️ Radiació: 0.0W/m² || 🌤️ Girona | Updated: 01:50 | Period: 01:00 - 01:30 | 🌡️ Avg Temp: 10.2°C | 🔥 Max Temp: 10.2°C | ❄️ Min Temp: 10.2°C | 💧 Humidity: 97.0% | 🌧️ Precipitation: 0.0mm | 💨 Wind: 3.2km/h | 🧭 Wind Dir: 270.0° | 💨 Max Wind: 5.4km/h | 📊 Pressure: 1026.8hPa | ☀️ Radiation: 0.0W/m²</title>
+    <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
+    <description>Dades meteorològiques de Girona / Weather data from Girona - Actualitzat el 27/02/2026 a les 01:50 / Updated on 27/02/2026 at 01:50</description>
+    <pubDate>Fri, 27 Feb 2026 00:50:25 +0000</pubDate>
+  </item>
 </channel>
 </rss>
