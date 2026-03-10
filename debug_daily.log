@@ -1,74 +1,76 @@
-=== INICI DAILY SCRAPER (UTC): 2026-03-10 02:50:25 ===
-2026-03-10 02:50:25 - ============================================================
-2026-03-10 02:50:25 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
-2026-03-10 02:50:25 - ============================================================
-2026-03-10 02:50:25 - 
+=== INICI DAILY SCRAPER (UTC): 2026-03-10 03:20:19 ===
+2026-03-10 03:20:19 - ============================================================
+2026-03-10 03:20:19 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
+2026-03-10 03:20:19 - ============================================================
+2026-03-10 03:20:19 - 
 ==================================================
-2026-03-10 02:50:25 - 📡 Processant: Fornells de la Selva [UO]
-2026-03-10 02:50:25 - 
+2026-03-10 03:20:19 - 📡 Processant: Fornells de la Selva [UO]
+2026-03-10 03:20:19 - 
 🌐 Connectant a Fornells de la Selva...
-2026-03-10 02:50:26 - 📊 Total files trobades a la taula: 6
-2026-03-10 02:50:26 -    ✅ Període UTC: 00:00 - 00:30 | TX: 5.4 | TN: 4.8 | Pluja: 0.0
-2026-03-10 02:50:26 -    ✅ Període UTC: 00:30 - 01:00 | TX: 5.0 | TN: 4.6 | Pluja: 0.0
-2026-03-10 02:50:26 -    ✅ Període UTC: 01:00 - 01:30 | TX: 4.8 | TN: 4.4 | Pluja: 0.0
-2026-03-10 02:50:26 -    ✅ Període UTC: 01:30 - 02:00 | TX: 4.5 | TN: 4.3 | Pluja: 0.0
-2026-03-10 02:50:26 -    ✅ Període UTC: 02:00 - 02:30 | TX: 5.3 | TN: 4.6 | Pluja: 0.0
-2026-03-10 02:50:26 - 📈 Total períodes vàlids trobats: 5
-2026-03-10 02:50:26 - 📊 RESUM CALCULAT:
-2026-03-10 02:50:26 -    • Màxima del dia: 5.4°C
-2026-03-10 02:50:26 -    • Mínima del dia: 4.3°C
-2026-03-10 02:50:26 -    • Pluja acumulada: 0.0mm
-2026-03-10 02:50:26 -    • Últim període: 02:00 - 02:30 UTC
-2026-03-10 02:50:26 -    • Hora actualització: 02:50
-2026-03-10 02:50:26 - 💾 Dades guardades a data/UO_20260310.csv (5 registres)
-2026-03-10 02:50:26 - ✅ Fornells de la Selva: 5 períodes processats
-2026-03-10 02:50:26 - 
+2026-03-10 03:20:21 - 📊 Total files trobades a la taula: 7
+2026-03-10 03:20:21 -    ✅ Període UTC: 00:00 - 00:30 | TX: 5.4 | TN: 4.8 | Pluja: 0.0
+2026-03-10 03:20:21 -    ✅ Període UTC: 00:30 - 01:00 | TX: 5.0 | TN: 4.6 | Pluja: 0.0
+2026-03-10 03:20:21 -    ✅ Període UTC: 01:00 - 01:30 | TX: 4.8 | TN: 4.4 | Pluja: 0.0
+2026-03-10 03:20:21 -    ✅ Període UTC: 01:30 - 02:00 | TX: 4.5 | TN: 4.3 | Pluja: 0.0
+2026-03-10 03:20:21 -    ✅ Període UTC: 02:00 - 02:30 | TX: 5.3 | TN: 4.6 | Pluja: 0.0
+2026-03-10 03:20:21 -    ✅ Període UTC: 02:30 - 03:00 | TX: 5.6 | TN: 5.2 | Pluja: 0.0
+2026-03-10 03:20:21 - 📈 Total períodes vàlids trobats: 6
+2026-03-10 03:20:21 - 📊 RESUM CALCULAT:
+2026-03-10 03:20:21 -    • Màxima del dia: 5.6°C
+2026-03-10 03:20:21 -    • Mínima del dia: 4.3°C
+2026-03-10 03:20:21 -    • Pluja acumulada: 0.0mm
+2026-03-10 03:20:21 -    • Últim període: 02:30 - 03:00 UTC
+2026-03-10 03:20:21 -    • Hora actualització: 03:20
+2026-03-10 03:20:21 - 💾 Dades guardades a data/UO_20260310.csv (6 registres)
+2026-03-10 03:20:21 - ✅ Fornells de la Selva: 6 períodes processats
+2026-03-10 03:20:21 - 
 ==================================================
-2026-03-10 02:50:26 - 📡 Processant: Girona [XJ]
-2026-03-10 02:50:26 - 
+2026-03-10 03:20:21 - 📡 Processant: Girona [XJ]
+2026-03-10 03:20:21 - 
 🌐 Connectant a Girona...
-2026-03-10 02:50:28 - 📊 Total files trobades a la taula: 6
-2026-03-10 02:50:28 -    ✅ Període UTC: 00:00 - 00:30 | TX: 5.3 | TN: 5.1 | Pluja: 0.0
-2026-03-10 02:50:28 -    ✅ Període UTC: 00:30 - 01:00 | TX: 5.3 | TN: 4.7 | Pluja: 0.0
-2026-03-10 02:50:28 -    ✅ Període UTC: 01:00 - 01:30 | TX: 4.9 | TN: 4.6 | Pluja: 0.0
-2026-03-10 02:50:28 -    ✅ Període UTC: 01:30 - 02:00 | TX: 5.1 | TN: 4.7 | Pluja: 0.0
-2026-03-10 02:50:28 -    ✅ Període UTC: 02:00 - 02:30 | TX: 5.6 | TN: 5.2 | Pluja: 0.1
-2026-03-10 02:50:28 - 📈 Total períodes vàlids trobats: 5
-2026-03-10 02:50:28 - 📊 RESUM CALCULAT:
-2026-03-10 02:50:28 -    • Màxima del dia: 5.6°C
-2026-03-10 02:50:28 -    • Mínima del dia: 4.6°C
-2026-03-10 02:50:28 -    • Pluja acumulada: 0.1mm
-2026-03-10 02:50:28 -    • Últim període: 02:00 - 02:30 UTC
-2026-03-10 02:50:28 -    • Hora actualització: 02:50
-2026-03-10 02:50:28 - 💾 Dades guardades a data/XJ_20260310.csv (5 registres)
-2026-03-10 02:50:28 - ✅ Girona: 5 períodes processats
-2026-03-10 02:50:28 - 💾 Dades guardades a data/weather_daily_20260310.json
-2026-03-10 02:50:28 - 💾 Dades guardades a data/weather_summary.json
-2026-03-10 02:50:28 - 
+2026-03-10 03:20:22 - 📊 Total files trobades a la taula: 7
+2026-03-10 03:20:22 -    ✅ Període UTC: 00:00 - 00:30 | TX: 5.3 | TN: 5.1 | Pluja: 0.0
+2026-03-10 03:20:22 -    ✅ Període UTC: 00:30 - 01:00 | TX: 5.3 | TN: 4.7 | Pluja: 0.0
+2026-03-10 03:20:22 -    ✅ Període UTC: 01:00 - 01:30 | TX: 4.9 | TN: 4.6 | Pluja: 0.0
+2026-03-10 03:20:22 -    ✅ Període UTC: 01:30 - 02:00 | TX: 5.1 | TN: 4.7 | Pluja: 0.0
+2026-03-10 03:20:22 -    ✅ Període UTC: 02:00 - 02:30 | TX: 5.6 | TN: 5.2 | Pluja: 0.1
+2026-03-10 03:20:22 -    ✅ Període UTC: 02:30 - 03:00 | TX: 6.1 | TN: 5.5 | Pluja: 0.0
+2026-03-10 03:20:22 - 📈 Total períodes vàlids trobats: 6
+2026-03-10 03:20:22 - 📊 RESUM CALCULAT:
+2026-03-10 03:20:22 -    • Màxima del dia: 6.1°C
+2026-03-10 03:20:22 -    • Mínima del dia: 4.6°C
+2026-03-10 03:20:22 -    • Pluja acumulada: 0.1mm
+2026-03-10 03:20:22 -    • Últim període: 02:30 - 03:00 UTC
+2026-03-10 03:20:22 -    • Hora actualització: 03:20
+2026-03-10 03:20:22 - 💾 Dades guardades a data/XJ_20260310.csv (6 registres)
+2026-03-10 03:20:22 - ✅ Girona: 6 períodes processats
+2026-03-10 03:20:22 - 💾 Dades guardades a data/weather_daily_20260310.json
+2026-03-10 03:20:22 - 💾 Dades guardades a data/weather_summary.json
+2026-03-10 03:20:22 - 
 ============================================================
-2026-03-10 02:50:28 - 📋 RESUM FINAL DEL DIA (UTC)
-2026-03-10 02:50:28 - ============================================================
-2026-03-10 02:50:28 - 
+2026-03-10 03:20:22 - 📋 RESUM FINAL DEL DIA (UTC)
+2026-03-10 03:20:22 - ============================================================
+2026-03-10 03:20:22 - 
 📍 Fornells de la Selva:
-2026-03-10 02:50:28 -    • Períodes: 5
-2026-03-10 02:50:28 -    • Màxima: 5.4°C
-2026-03-10 02:50:28 -    • Mínima: 4.3°C
-2026-03-10 02:50:28 -    • Pluja: 0.0mm
-2026-03-10 02:50:28 -    • Últim període: 02:00 - 02:30 UTC
-2026-03-10 02:50:28 -    • Actualització: 02:50
-2026-03-10 02:50:28 - 
+2026-03-10 03:20:22 -    • Períodes: 6
+2026-03-10 03:20:22 -    • Màxima: 5.6°C
+2026-03-10 03:20:22 -    • Mínima: 4.3°C
+2026-03-10 03:20:22 -    • Pluja: 0.0mm
+2026-03-10 03:20:22 -    • Últim període: 02:30 - 03:00 UTC
+2026-03-10 03:20:22 -    • Actualització: 03:20
+2026-03-10 03:20:22 - 
 📍 Girona:
-2026-03-10 02:50:28 -    • Períodes: 5
-2026-03-10 02:50:28 -    • Màxima: 5.6°C
-2026-03-10 02:50:28 -    • Mínima: 4.6°C
-2026-03-10 02:50:28 -    • Pluja: 0.1mm
-2026-03-10 02:50:28 -    • Últim període: 02:00 - 02:30 UTC
-2026-03-10 02:50:28 -    • Actualització: 02:50
-2026-03-10 02:50:28 - 
+2026-03-10 03:20:22 -    • Períodes: 6
+2026-03-10 03:20:22 -    • Màxima: 6.1°C
+2026-03-10 03:20:22 -    • Mínima: 4.6°C
+2026-03-10 03:20:22 -    • Pluja: 0.1mm
+2026-03-10 03:20:22 -    • Últim període: 02:30 - 03:00 UTC
+2026-03-10 03:20:22 -    • Actualització: 03:20
+2026-03-10 03:20:22 - 
 💾 Fitxers generats:
-2026-03-10 02:50:28 -    • data/weather_summary.json (per HTML)
-2026-03-10 02:50:28 -    • data/weather_daily_YYYYMMDD.json (complet)
-2026-03-10 02:50:28 -    • data/XX_YYYYMMDD.csv (per estació)
-2026-03-10 02:50:28 - 
+2026-03-10 03:20:22 -    • data/weather_summary.json (per HTML)
+2026-03-10 03:20:22 -    • data/weather_daily_YYYYMMDD.json (complet)
+2026-03-10 03:20:22 -    • data/XX_YYYYMMDD.csv (per estació)
+2026-03-10 03:20:22 - 
 ✅ PROCÉS COMPLETAT
-2026-03-10 02:50:28 - ============================================================
+2026-03-10 03:20:22 - ============================================================
