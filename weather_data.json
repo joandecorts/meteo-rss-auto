@@ -2,15 +2,15 @@
   "XJ": {
     "station_name": "Girona",
     "station_code": "XJ",
-    "periode": "05:30 - 06:00",
-    "tm": 6.6,
-    "tx": 6.7,
-    "tn": 6.4,
+    "periode": "06:00 - 06:30",
+    "tm": 6.1,
+    "tx": 6.4,
+    "tn": 5.9,
     "hr": 100.0,
     "ppt": 0.0,
-    "vvm": 0.0,
+    "vvm": 0.4,
     "dvm": 285.0,
-    "vvx": 2.2,
+    "vvx": 2.5,
     "pm": 1025.3,
     "rs": 0.0
   }
