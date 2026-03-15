@@ -1,4 +1,4 @@
-=== INICI: 2026-03-14 23:50:23 UTC ===
+=== INICI: 2026-03-15 00:20:24 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -7,149 +7,13 @@
 ============================================================
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
-📊 48 files trobades
-📋 Columnes detectades (11):
-   [0] PeríodeTU
-   [1] TM°C
-   [2] TX°C
-   [3] TN°C
-   [4] HRM%
-   [5] PPTmm
-   [6] VVM (10 m)km/h
-   [7] DVM (10 m)graus
-   [8] VVX (10 m)km/h
-   [9] PMhPa
-   [10] RSW/m2
-🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
-✅ Dades RECENTS trobades: 23:00 - 23:30
-📊 Dades extretes:
-   • tm: 1.8
-   • tx: 2.0
-   • tn: 1.6
-   • hr: 100.0
-   • ppt: 0.0
-   • vvm: 1.4
-   • dvm: 283.0
-   • vvx: 7.6
-   • pm: 1006.6
-   • rs: 0.0
-✅ Girona actualitzada
+❌ No s'ha trobat la taula
+❌ Girona - sense dades
 
 ============================================================
 📡 Processant: Fornells de la Selva [UO]
 🌐 Connectant a Fornells de la Selva...
-📊 48 files trobades
-📋 Columnes detectades (5):
-   [0] PeríodeTU
-   [1] TM°C
-   [2] TX°C
-   [3] TN°C
-   [4] HRM%
-🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4}
-✅ Dades RECENTS trobades: 23:00 - 23:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 22:30 - 23:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 22:00 - 22:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 21:30 - 22:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 21:00 - 21:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 20:30 - 21:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 20:00 - 20:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 19:30 - 20:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 19:00 - 19:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 18:30 - 19:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 18:00 - 18:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 17:30 - 18:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 17:00 - 17:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 16:30 - 17:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 16:00 - 16:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 15:30 - 16:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 15:00 - 15:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 14:30 - 15:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 14:00 - 14:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 13:30 - 14:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 13:00 - 13:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 12:30 - 13:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 12:00 - 12:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 11:30 - 12:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 11:00 - 11:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 10:30 - 11:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 10:00 - 10:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 09:30 - 10:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 09:00 - 09:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 08:30 - 09:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 08:00 - 08:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 07:30 - 08:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 07:00 - 07:30
-📊 Dades extretes:
-   • tm: 9.3
-   • tx: 10.0
-   • tn: 9.0
-   • hr: 92.0
-✅ Fornells de la Selva actualitzada
-✅ Afegida al RSS: Girona
-✅ Afegida al RSS: Fornells de la Selva
+❌ No s'ha trobat la taula
+❌ Fornells de la Selva - sense dades
 
-📊 Entrades RSS generades: 2
+📊 Entrades RSS generades: 0
