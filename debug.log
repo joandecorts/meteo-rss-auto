@@ -1,4 +1,4 @@
-=== INICI: 2026-03-18 11:20:27 UTC ===
+=== INICI: 2026-03-18 11:50:29 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -7,7 +7,7 @@
 ============================================================
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
-📊 23 files trobades
+📊 24 files trobades
 📋 Columnes detectades (11):
    [0] PeríodeTU
    [1] TM°C
@@ -21,24 +21,24 @@
    [9] PMhPa
    [10] RSW/m2
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
-✅ Dades RECENTS trobades: 10:30 - 11:00
+✅ Dades RECENTS trobades: 11:00 - 11:30
 📊 Dades extretes:
-   • tm: 17.1
-   • tx: 17.6
-   • tn: 16.7
-   • hr: 42.0
+   • tm: 18.0
+   • tx: 18.4
+   • tn: 17.6
+   • hr: 43.0
    • ppt: 0.0
-   • vvm: 5.4
-   • dvm: 42.0
-   • vvx: 15.1
-   • pm: 1011.1
-   • rs: 748.0
+   • vvm: 6.8
+   • dvm: 52.0
+   • vvx: 16.9
+   • pm: 1010.8
+   • rs: 779.0
 ✅ Girona actualitzada
 
 ============================================================
 📡 Processant: Fornells de la Selva [UO]
 🌐 Connectant a Fornells de la Selva...
-📊 23 files trobades
+📊 24 files trobades
 📋 Columnes detectades (6):
    [0] PeríodeTU
    [1] TM°C
@@ -47,27 +47,12 @@
    [4] HRM%
    [5] PPTmm
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5}
-✅ Dades RECENTS trobades: 10:30 - 11:00
+✅ Dades RECENTS trobades: 11:00 - 11:30
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 10:00 - 10:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 09:30 - 10:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 09:00 - 09:30
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 08:30 - 09:00
-📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 08:00 - 08:30
-📊 Dades extretes:
-   • tm: 9.8
-   • tx: 10.9
-   • tn: 9.0
-   • hr: 92.0
+   • tm: 17.5
+   • tx: 17.9
+   • tn: 16.9
+   • hr: 50.0
    • ppt: 0.0
 ✅ Fornells de la Selva actualitzada
 ✅ Afegida al RSS: Girona
