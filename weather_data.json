@@ -17,11 +17,11 @@
   "UO": {
     "station_name": "Fornells de la Selva",
     "station_code": "UO",
-    "periode": "10:30 - 11:00",
-    "tm": 12.5,
-    "tx": 13.4,
-    "tn": 11.8,
-    "hr": 41.0,
+    "periode": "11:00 - 11:30",
+    "tm": 13.4,
+    "tx": 13.8,
+    "tn": 13.1,
+    "hr": 37.0,
     "ppt": 0.0
   }
 }
