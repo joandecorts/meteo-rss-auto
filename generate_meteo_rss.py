@@ -164,7 +164,7 @@ def convertir_a_numero(text, default=None):
         return None
 
 def convertir_hora_tu_a_local(hora_tu_str):
-    """Converteix hora TU (UTC) a hora local (CET = UTC+1) - VERSIÓ MILLORADA"""
+    """Converteix hora TU (UTC) a hora local (CET/CEST) - VERSIÓ AMB HORARI D'ESTIU"""
     if not hora_tu_str:
         return hora_tu_str
     
@@ -181,6 +181,14 @@ def convertir_hora_tu_a_local(hora_tu_str):
         if len(parts) != 2:
             return hora_tu_str
         
+        # Obtenir la data actual en UTC per saber si és CET o CEST
+        utc_now = datetime.now(pytz.utc)
+        local_tz = pytz.timezone('Europe/Madrid')
+        local_now = utc_now.astimezone(local_tz)
+        
+        # Calcular offset de l'hora local respecte UTC (en hores)
+        offset_hours = int(local_now.utcoffset().total_seconds() / 3600)
+        
         def convertir_hora(hora):
             hora = hora.strip()
             if ':' in hora:
@@ -192,8 +200,8 @@ def convertir_hora_tu_a_local(hora_tu_str):
                     h = int(h_str)
                     m = int(m_str) if m_str.isdigit() else 0
                     
-                    # Sumar 1 hora per CET (UTC+1)
-                    h_local = h + 1
+                    # Sumar l'offset actual (1 per CET, 2 per CEST)
+                    h_local = h + offset_hours
                     if h_local >= 24:
                         h_local -= 24
                     
