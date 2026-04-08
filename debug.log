@@ -1,4 +1,4 @@
-=== INICI: 2026-04-08 13:50:30 UTC ===
+=== INICI: 2026-04-08 14:20:30 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -7,7 +7,7 @@
 ============================================================
 📡 Processant: Girona [XJ]
 🌐 Connectant a Girona...
-📊 28 files trobades
+📊 29 files trobades
 📋 Columnes detectades (11):
    [0] PeríodeTU
    [1] TM°C
@@ -21,24 +21,24 @@
    [9] PMhPa
    [10] RSW/m2
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
-✅ Dades RECENTS trobades: 13:00 - 13:30
+✅ Dades RECENTS trobades: 13:30 - 14:00
 📊 Dades extretes:
-   • tm: 22.9
-   • tx: 23.2
-   • tn: 22.6
-   • hr: 55.0
+   • tm: 23.1
+   • tx: 23.3
+   • tn: 22.8
+   • hr: 54.0
    • ppt: 0.0
-   • vvm: 9.7
-   • dvm: 21.0
-   • vvx: 18.0
-   • pm: 1019.5
-   • rs: 819.0
+   • vvm: 10.1
+   • dvm: 39.0
+   • vvx: 19.4
+   • pm: 1019.3
+   • rs: 771.0
 ✅ Girona actualitzada
 
 ============================================================
 📡 Processant: Fornells de la Selva [UO]
 🌐 Connectant a Fornells de la Selva...
-📊 28 files trobades
+📊 29 files trobades
 📋 Columnes detectades (6):
    [0] PeríodeTU
    [1] TM°C
@@ -47,12 +47,12 @@
    [4] HRM%
    [5] PPTmm
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5}
-✅ Dades RECENTS trobades: 13:00 - 13:30
+✅ Dades RECENTS trobades: 13:30 - 14:00
 📊 Dades extretes:
-   • tm: 25.4
-   • tx: 25.7
-   • tn: 25.1
-   • hr: 47.0
+   • tm: 25.1
+   • tx: 25.5
+   • tn: 24.9
+   • hr: 45.0
    • ppt: 0.0
 ✅ Fornells de la Selva actualitzada
 ✅ Afegida al RSS: Girona
