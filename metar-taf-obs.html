@@ -146,18 +146,26 @@ updateClock();
   }
 
   function render(data){
-    var p0 = pages[0];
-    var p1 = pages[1];
-    var p2 = pages[2];
+  var p0 = pages[0];
+  var p1 = pages[1];
+  var p2 = pages[2];
 
-    p0.innerHTML = "<h2>Dades actuals en brut</h2>";
-    p1.innerHTML = "<h2>Dades actuals (lectura visual)</h2>";
-    p2.innerHTML = "<h2>TAF en brut</h2>";
+  p0.innerHTML = "<h2>Dades actuals en brut</h2>";
+  p1.innerHTML = "<h2>Dades actuals (lectura visual)</h2>";
+  p2.innerHTML = "<h2>TAF en brut</h2>";
 
-    for(var i=0;i<data.airports.length;i++){
-      var a = data.airports[i];
-      var f = a.metar.fields || {};
+  for(var i=0;i<data.airports.length;i++){
+    var a = data.airports[i];
+    var f = a.metar.fields || {};
+    // ... aquí hi tens els p0.innerHTML += ... p1.innerHTML += ... p2.innerHTML += ...
+  }
 
+  // ✅ AQUÍ, JUST A SOTA DEL FOR:
+  show(0);
+
+  // ✅ I SI LA ROTACIÓ ENCARA NO ARRANCA ENLLOC:
+  // setTimeout(rotate, 9000);
+}
       /* PÀGINA 1 — BRUT */
       p0.innerHTML +=
         "<div class='section'><strong>"+esc(a.name)+"</strong>"+
