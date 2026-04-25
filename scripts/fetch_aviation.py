@@ -128,4 +128,4 @@ for a in AIRPORTS:
 
 with open("data/aviation.json", "w", encoding="utf-8") as f:
     json.dump(output, f, indent=2, ensure_ascii=False)
-``
+
