@@ -13,23 +13,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout gh-pages
+      # 1️⃣ Checkout del codi font (main)
+      - name: Checkout main
         uses: actions/checkout@v4
         with:
-          ref: gh-pages
+          ref: main
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Run fetch script
+      - name: Generate aviation.json
         run: |
-          mkdir -p data
+          mkdir -p out
           python scripts/fetch_aviation.py
+
+      # 2️⃣ Checkout de gh-pages A SOBRE
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Copy data to gh-pages
+        run: |
+          mkdir -p gh-pages/data
+          cp data/aviation.json gh-pages/data/aviation.json
 
       - name: Commit and push
         run: |
+          cd gh-pages
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/aviation.json
