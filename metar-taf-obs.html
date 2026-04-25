@@ -5,114 +5,166 @@
 <title>METAR / TAF · OBS</title>
 
 <style>
-  body{
-    margin:0;
-    padding:32px;
-    height:100vh;
-    box-sizing:border-box;
-    color:#fff;
-    font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-    background:
-      radial-gradient(900px 500px at 15% 20%, #2fb8ff55 0%, transparent 60%),
-      radial-gradient(800px 500px at 85% 30%, #38e1c055 0%, transparent 60%),
-      linear-gradient(160deg,#0b5ed7,#0a3a66);
-    overflow:hidden;
-  }
+body{
+  margin:0;
+  padding:32px;
+  height:100vh;
+  box-sizing:border-box;
+  color:#fff;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background:
+    radial-gradient(900px 500px at 15% 20%, #2fb8ff55 0%, transparent 60%),
+    radial-gradient(800px 500px at 85% 30%, #38e1c055 0%, transparent 60%),
+    linear-gradient(160deg,#0b5ed7,#0a3a66);
+  overflow:hidden;
+}
 
-  h1{margin:0 0 18px;font-size:36px;font-weight:900}
+h1{
+  margin:0 0 18px 0;
+  font-size:36px;
+  font-weight:900;
+}
 
-  #clock{
-    position:fixed;top:20px;right:24px;
-    font-family:monospace;font-size:14px;
-    background:rgba(0,0,0,.2);
-    padding:8px 12px;border-radius:999px;
-    user-select:none;
-  }
+#clock{
+  position:fixed;
+  top:20px;
+  right:24px;
+  font-family:monospace;
+  font-size:14px;
+  background:rgba(0,0,0,.25);
+  padding:8px 12px;
+  border-radius:999px;
+  user-select:none;
+}
 
-  .slides{position:relative;height:calc(100% - 150px)}
-  .slide{position:absolute;inset:0;opacity:0;transition:opacity 1s}
-  .slide.active{opacity:1}
+/* Slides */
+.slides{
+  position:relative;
+  height:calc(100% - 160px);
+}
+.slide{
+  position:absolute;
+  inset:0;
+  opacity:0;
+  transition:opacity 1s;
+}
+.slide.active{
+  opacity:1;
+}
 
-  .grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:24px;height:100%
-  }
+/* Layout */
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  height:100%;
+}
 
-  .panel{
-    background:rgba(255,255,255,.12);
-    border-radius:20px;
-    padding:20px;
-    box-sizing:border-box;
-  }
+.panel{
+  background:rgba(255,255,255,.12);
+  border-radius:20px;
+  padding:20px;
+  box-sizing:border-box;
+}
 
-  .airport{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px;
-  }
+.airport{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
 
-  .name{font-size:22px;font-weight:800}
-  .icao{font-family:monospace;font-size:13px;opacity:.8}
+.name{
+  font-size:22px;
+  font-weight:800;
+}
+.icao{
+  font-family:monospace;
+  font-size:13px;
+  opacity:.8;
+}
 
-  .badge{
-    padding:6px 14px;
-    border-radius:999px;
-    font-weight:800;
-  }
-  .VFR{background:#2ee59d;color:#003d26}
-  .MVFR{background:#ffd166;color:#4a3500}
-  .IFR{background:#ff6b6b;color:#4a0000}
-  .LIFR{background:#c77dff;color:#2f003d}
+.badge{
+  padding:6px 14px;
+  border-radius:999px;
+  font-weight:800;
+}
+.VFR{background:#2ee59d;color:#003d26}
+.MVFR{background:#ffd166;color:#4a3500}
+.IFR{background:#ff6b6b;color:#4a0000}
+.LIFR{background:#c77dff;color:#2f003d}
+.TAF{background:#ffffff33}
 
-  .kpis{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:10px;margin:12px 0
-  }
+.kpis{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:10px;
+  margin:12px 0;
+}
 
-  .kpi{background:rgba(0,0,0,.25);padding:10px;border-radius:12px}
-  .kpi .label{font-size:12px;opacity:.8}
-  .kpi .value{font-size:18px;font-weight:900;font-family:monospace}
+.kpi{
+  background:rgba(0,0,0,.25);
+  padding:10px;
+  border-radius:12px;
+}
+.kpi .label{
+  font-size:12px;
+  opacity:.8;
+}
+.kpi .value{
+  font-size:18px;
+  font-weight:900;
+  font-family:monospace;
+}
 
-  pre{margin:0;font-family:monospace;font-size:14px;white-space:pre-wrap}
+pre{
+  margin:0;
+  font-family:monospace;
+  font-size:14px;
+  white-space:pre-wrap;
+}
 
-  footer{
-    margin-top:16px;font-size:12px;opacity:.85;
-    display:flex;justify-content:space-between;
-    font-family:monospace
-  }
+footer{
+  margin-top:16px;
+  font-size:12px;
+  opacity:.85;
+  display:flex;
+  justify-content:space-between;
+  font-family:monospace;
+}
 </style>
 </head>
 
 <body>
+
 <h1>METAR / TAF · Catalunya</h1>
 <div id="clock">—</div>
 
 <div class="slides">
+
   <!-- 1️⃣ METAR BRUT -->
-  <div class="slide active" id="slide-metar-raw">
-    <div class="grid" id="grid-metar-raw"></div>
+  <div class="slide active" id="s1">
+    <div class="grid" id="metar-raw"></div>
   </div>
 
   <!-- 2️⃣ METAR VISUAL -->
-  <div class="slide" id="slide-metar-visual">
-    <div class="grid" id="grid-metar-visual"></div>
+  <div class="slide" id="s2">
+    <div class="grid" id="metar-visual"></div>
   </div>
 
   <!-- 3️⃣ TAF BRUT -->
-  <div class="slide" id="slide-taf-raw">
-    <div class="grid" id="grid-taf-raw"></div>
+  <div class="slide" id="s3">
+    <div class="grid" id="taf-raw"></div>
   </div>
 
-  <!-- 4️⃣ PREVISIÓ VISUAL (placeholder) -->
-  <div class="slide" id="slide-forecast">
+  <!-- 4️⃣ PREVISIÓ VISUAL (PENDENT) -->
+  <div class="slide" id="s4">
     <div class="panel">
-      <h2>Previsió visual (pendent)</h2>
-      <p>Aquesta pàgina es construirà a partir del TAF.</p>
+      <h2>Previsió visual</h2>
+      <p>Aquesta pàgina es construirà a partir del TAF (pendent).</p>
     </div>
   </div>
+
 </div>
 
 <footer>
@@ -121,81 +173,97 @@
 </footer>
 
 <script>
-/* ---------- Rellotge ---------- */
-function pad(n){return String(n).padStart(2,"0")}
+/* ===== Rellotge ===== */
+function pad(n){return (n<10?"0":"")+n;}
 function formatDateCA(d){
   var m=["gener","febrer","març","abril","maig","juny","juliol","agost","setembre","octubre","novembre","desembre"];
   return pad(d.getDate())+" "+m[d.getMonth()]+" de "+d.getFullYear();
 }
-function tick(){
+function updateClock(){
   var d=new Date();
   var tz=-d.getTimezoneOffset(),s=tz>=0?"+":"-";
-  document.getElementById("clock").textContent=
+  document.getElementById("clock").innerText=
     formatDateCA(d)+" · "+
     pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds())+
     " · GMT"+s+pad(Math.floor(Math.abs(tz)/60))+":"+pad(Math.abs(tz)%60);
 }
-setInterval(tick,1000);tick();
+setInterval(updateClock,1000);
+updateClock();
 
-/* ---------- Slides ---------- */
+/* ===== Slides ===== */
 var slides=[
-  "slide-metar-raw",
-  "slide-metar-visual",
-  "slide-taf-raw",
-  "slide-forecast"
-].map(id=>document.getElementById(id));
-
-var i=0;
+  document.getElementById("s1"),
+  document.getElementById("s2"),
+  document.getElementById("s3"),
+  document.getElementById("s4")
+];
+var idx=0;
 function rotate(){
-  slides[i].classList.remove("active");
-  i=(i+1)%slides.length;
-  slides[i].classList.add("active");
+  slides[idx].classList.remove("active");
+  idx=(idx+1)%slides.length;
+  slides[idx].classList.add("active");
   setTimeout(rotate,10000);
 }
 setTimeout(rotate,10000);
 
-/* ---------- Helpers ---------- */
-function ktToKmh(k){return Math.round(k*1.852)}
+/* ===== Helpers ===== */
+function ktToKmh(k){return Math.round(k*1.852);}
 function wind(w){
   if(!w)return "—";
   return w.dir+"° "+w.speed_kt+" kt ("+ktToKmh(w.speed_kt)+" km/h)";
 }
-function vis(v){return v==null?"—":(v>=10000?"10 km+":v+" m")}
-function ceil(c){return c==null?"Cap":c+" ft"}
-function cat(c){return c==="MVFR"||c==="IFR"||c==="LIFR"?c:"VFR"}
+function vis(v){
+  if(v===null||v===undefined)return "—";
+  return v>=10000?"10 km+":v+" m";
+}
+function ceiling(c){
+  return c===null?"Cap":c+" ft";
+}
+function cat(c){
+  return(c==="MVFR"||c==="IFR"||c==="LIFR")?c:"VFR";
+}
 
-/* ---------- Render ---------- */
-fetch("data/aviation.json",{cache:"no-store"})
- .then(r=>r.json())
- .then(j=>{
-  j.airports.forEach(a=>{
-    var f=a.metar.fields||{},c=cat(f.category);
+/* ===== Carrega dades ===== */
+function load(){
+  var r=new XMLHttpRequest();
+  r.open("GET","data/aviation.json",true);
+  r.onreadystatechange=function(){
+    if(r.readyState===4&&r.status===200){
+      var j=JSON.parse(r.responseText);
+      for(var i=0;i<j.airports.length;i++){
+        var a=j.airports[i];
+        var f=a.metar.fields||{};
+        var c=cat(f.category);
 
-    document.getElementById("grid-metar-raw").innerHTML+=
-      '<div class="panel"><div class="airport">'+
-      '<div><div class="name">'+a.name+'</div><div class="icao">'+a.icao+
-      ' · METAR '+a.metar.issued+'</div></div>'+
-      '<div class="badge '+c+'">'+c+'</div></div><pre>'+a.metar.raw+'</pre></div>';
+        document.getElementById("metar-raw").innerHTML+=
+          '<div class="panel"><div class="airport"><div>'+
+          '<div class="name">'+a.name+'</div>'+
+          '<div class="icao">'+a.icao+' · METAR '+a.metar.issued+'</div></div>'+
+          '<div class="badge '+c+'">'+c+'</div></div>'+
+          '<pre>'+a.metar.raw+'</pre></div>';
 
-    document.getElementById("grid-metar-visual").innerHTML+=
-      '<div class="panel"><div class="airport">'+
-      '<div class="name">'+a.name+'</div>'+
-      '<div class="badge '+c+'">'+c+'</div></div>'+
-      '<div class="kpis">'+
-      '<div class="kpi"><div class="label">Vent</div><div class="value">'+wind(f.wind)+'</div></div>'+
-      '<div class="kpi"><div class="label">Visibilitat</div><div class="value">'+vis(f.visibility_m)+'</div></div>'+
-      '<div class="kpi"><div class="label">Sostre</div><div class="value">'+ceil(f.ceiling_ft)+'</div></div>'+
-      '<div class="kpi"><div class="label">QNH</div><div class="value">'+(f.qnh_hpa?"Q"+f.qnh_hpa:"—")+'</div></div>'+
-      '</div></div>';
+        document.getElementById("metar-visual").innerHTML+=
+          '<div class="panel"><div class="airport"><div class="name">'+a.name+'</div>'+
+          '<div class="badge '+c+'">'+c+'</div></div>'+
+          '<div class="kpis">'+
+          '<div class="kpi"><div class="label">Vent</div><div class="value">'+wind(f.wind)+'</div></div>'+
+          '<div class="kpi"><div class="label">Visibilitat</div><div class="value">'+vis(f.visibility_m)+'</div></div>'+
+          '<div class="kpi"><div class="label">Sostre</div><div class="value">'+ceiling(f.ceiling_ft)+'</div></div>'+
+          '<div class="kpi"><div class="label">QNH</div><div class="value">'+(f.qnh_hpa?"Q"+f.qnh_hpa:"—")+'</div></div>'+
+          '</div></div>';
 
-    document.getElementById("grid-taf-raw").innerHTML+=
-      '<div class="panel"><div class="airport">'+
-      '<div class="name">'+a.name+'</div>'+
-      '<div class="icao">'+a.icao+' · TAF '+a.taf.issued+'</div></div>'+
-      '<pre>'+a.taf.raw+'</pre></div>';
-  });
- });
+        document.getElementById("taf-raw").innerHTML+=
+          '<div class="panel"><div class="airport"><div class="name">'+a.name+'</div>'+
+          '<div class="icao">'+a.icao+' · TAF '+a.taf.issued+'</div></div>'+
+          '<pre>'+a.taf.raw+'</pre></div>';
+      }
+    }
+  };
+  r.send();
+}
+load();
 </script>
+
 </body>
 </html>
 ``
