@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout del codi font (main)
+      # 1️⃣ Checkout del codi font
       - name: Checkout main
         uses: actions/checkout@v4
         with:
@@ -26,21 +26,23 @@ jobs:
 
       - name: Generate aviation.json
         run: |
-          mkdir -p out
+          mkdir -p data
           python scripts/fetch_aviation.py
 
-      # 2️⃣ Checkout de gh-pages A SOBRE
+      # 2️⃣ Checkout gh-pages A PART
       - name: Checkout gh-pages
         uses: actions/checkout@v4
         with:
           ref: gh-pages
           path: gh-pages
 
-      - name: Copy data to gh-pages
+      # 3️⃣ Copiar NOMÉS el JSON
+      - name: Update JSON in gh-pages
         run: |
           mkdir -p gh-pages/data
           cp data/aviation.json gh-pages/data/aviation.json
 
+      # 4️⃣ Commit mínim
       - name: Commit and push
         run: |
           cd gh-pages
