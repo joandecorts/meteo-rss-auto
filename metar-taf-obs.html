@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>METAR / TAF · OBS</title>
+
+  <style>
+    :root{
+      --text:#fff;
+      --muted:rgba(255,255,255,.82);
+      --panel:rgba(255,255,255,.12);
+      --panel2:rgba(0,0,0,.22);
+
+      --vfr:#2ee59d;  --vfrText:#003d26;
+      --mvfr:#ffd166; --mvfrText:#4a3500;
+      --ifr:#ff6b6b;  --ifrText:#4a0000;
+      --lifr:#c77dff; --lifrText:#2f003d;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --ui: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    }
+
+    body{
+      margin:0;
+      padding:32px;
+      height:100vh;
+      box-sizing:border-box;
+      color:var(--text);
+      font-family:var(--ui);
+      background:
+        radial-gradient(900px 500px at 15% 20%, #2fb8ff55 0%, transparent 60%),
+        radial-gradient(800px 500px at 85% 30%, #38e1c055 0%, transparent 60%),
+        linear-gradient(160deg, #0b5ed7, #0a3a66);
+      overflow:hidden;
+    }
+
+    h1{
+      margin:0 0 18px 0;
+      font-size:36px;
+      font-weight:900;
+    }
+
+    /* Rellotge (fallback ORIGINAL) */
+    #output{
+      position:fixed;
+      top:22px;
+      right:26px;
+      font-family:monospace;
+      font-size:14px;
+      color:#ffffff;
+      white-space:nowrap;
+      user-select:none;
+      background:rgba(0,0,0,.15);
+      border:1px solid rgba(255,255,255,.16);
+      padding:8px 12px;
+      border-radius:999px;
+    }
+
+    .slides{
+      position:relative;
+      height:calc(100% - 140px);
+    }
+    .slide{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition:opacity 1s ease;
+    }
+    .slide.active{opacity:1;}
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+      height:100%;
+    }
+
+    .panel{
+      background:var(--panel);
+      border-radius:24px;
+      padding:24px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      overflow:hidden;
+    }
+
+    .airport{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+    }
+
+    .name{font-size:22px;font-weight:800;}
+    .icao{font-family:var(--mono);opacity:.8;font-size:13px;}
+
+    .badge{
+      padding:7px 14px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:14px;
+    }
+    .badge.VFR{background:var(--vfr);color:var(--vfrText);}
+    .badge.MVFR{background:var(--mvfr);color:var(--mvfrText);}
+    .badge.IFR{background:var(--ifr);color:var(--ifrText);}
+    .badge.LIFR{background:var(--lifr);color:var(--lifrText);}
+
+    .kpis{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+
+    .kpi{background:var(--panel2);padding:10px;border-radius:14px;}
+    .kpi .label{font-size:12px;opacity:.8;}
+    .kpi .value{font-size:20px;font-weight:900;font-family:var(--mono);}
+
+    pre{
+      margin:0;
+      font-family:var(--mono);
+      font-size:14px;
+      white-space:pre-wrap;
+    }
+
+    footer{
+      margin-top:18px;
+      font-size:12px;
+      opacity:.85;
+      display:flex;
+      justify-content:space-between;
+      font-family:var(--mono);
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>METAR / TAF · Catalunya</h1>
+
+<!-- RELLOTGE -->
+<div id="output"></div>
+
+<div class="slides">
+
+  <section class="slide active" id="slide-raw">
+    <div class="grid" id="grid-raw"></div>
+  </section>
+
+  <section class="slide" id="slide-public">
+    <div class="grid" id="grid-public"></div>
+  </section>
+
+  <section class="slide" id="slide-taf">
+    <div class="grid" id="grid-taf"></div>
+  </section>
+
+</div>
+
+<footer>
+  <div>Font de dades: NOAA / NWS · tgftp.nws.noaa.gov</div>
+  <div>Projecte personal de caràcter experimental · No fer servir per a ús operatiu</div>
+</footer>
+
+<!-- ===== RELLOTGE TAL QUAL (EN ANGLÈS) ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script>
+  var output = document.getElementById("output");
+  function updateClock(){
+    output.innerText = moment().format('LL LTS [GMT]ZZ');
+  }
+  setInterval(updateClock,1000);
+  updateClock();
+</script>
+
+<!-- ===== CODI ORIGINAL QUE JA FUNCIONAVA ===== -->
+<script>
+  const slides = [
+    document.getElementById("slide-raw"),
+    document.getElementById("slide-public"),
+    document.getElementById("slide-taf")
+  ];
+  let slideIndex = 0;
+  const slideDurations = [9000,10000,11000];
+
+  function rotate(){
+    slides[slideIndex].classList.remove("active");
+    slideIndex=(slideIndex+1)%slides.length;
+    slides[slideIndex].classList.add("active");
+    setTimeout(rotate,slideDurations[slideIndex]);
+  }
+  setTimeout(rotate,slideDurations[0]);
+
+  function catClass(cat){
+    const c=(cat||"VFR").toUpperCase();
+    if(["VFR","MVFR","IFR","LIFR"].includes(c)) return c;
+    return "VFR";
+  }
+
+  function fmtWind(w){
+    if(!w) return "—";
+    return `${w.dir}° ${w.speed_kt} kt`;
+  }
+
+  function fmtVis(m){
+    if(m==null) return "—";
+    if(m>=10000) return "10 km+";
+    return `${m} m`;
+  }
+
+  function fmtCeiling(ft){
+    if(ft==null) return "Cap";
+    return `${ft} ft`;
+  }
+
+  async function loadAndRender(){
+    const r=await fetch("data/aviation.json",{cache:"no-store"});
+    const data=await r.json();
+
+    const rawGrid=document.getElementById("grid-raw");
+    const pubGrid=document.getElementById("grid-public");
+    const tafGrid=document.getElementById("grid-taf");
+
+    rawGrid.innerHTML="";
+    pubGrid.innerHTML="";
+    tafGrid.innerHTML="";
+
+    (data.airports||[]).forEach(a=>{
+      const f=(a.metar&&a.metar.fields)?a.metar.fields:{};
+      const cat=catClass(f.category);
+
+      rawGrid.insertAdjacentHTML("beforeend",`
+        <div class="panel">
+          <div class="airport">
+            <div>
+              <div class="name">${a.name}</div>
+              <div class="icao">${a.icao}</div>
+            </div>
+            <div class="badge ${cat}">${cat}</div>
+          </div>
+          <pre>${a.metar.raw}</pre>
+        </div>
+      `);
+
+      pubGrid.insertAdjacentHTML("beforeend",`
+        <div class="panel">
+          <div class="airport">
+            <div class="name">${a.name}</div>
+            <div class="badge ${cat}">${cat}</div>
+          </div>
+          <div class="kpis">
+            <div class="kpi"><div class="label">Vent</div><div class="value">${fmtWind(f.wind)}</div></div>
+            <div class="kpi"><div class="label">Visibilitat</div><div class="value">${fmtVis(f.visibility_m)}</div></div>
+            <div class="kpi"><div class="label">Sostre</div><div class="value">${fmtCeiling(f.ceiling_ft)}</div></div>
+          </div>
+        </div>
+      `);
+
+      tafGrid.insertAdjacentHTML("beforeend",`
+        <div class="panel">
+          <div class="airport">
+            <div class="name">${a.name}</div>
+            <div class="badge ${cat}">TAF</div>
+          </div>
+          <pre>${a.taf.raw}</pre>
+        </div>
+      `);
+    });
+  }
+
+  loadAndRender();
+  setInterval(loadAndRender,60000);
+</script>
+
+</body>
+</html>
