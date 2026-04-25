@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>METAR Catalunya</title>
+
 <style>
     body {
         background: #004080;
@@ -27,32 +28,40 @@
     }
 </style>
 </head>
+
 <body>
 
 <h1>METAR Catalunya</h1>
 
 <div class="box">
     <div class="airport">Girona–Costa Brava (LEGE)</div>
-    <div id="lege">Carregant…</div>
+    <div id="lege">Carregant METAR…</div>
 </div>
 
 <div class="box">
     <div class="airport">Barcelona–El Prat (LEBL)</div>
-    <div id="lebl">Carregant…</div>
+    <div id="lebl">Carregant METAR…</div>
 </div>
 
 <script>
-async function carregaMETAR(codi, desti) {
-    const url = `https://tgftp.nws.noaa.gov/data/observations/metar/stations/${codi}.TXT`;
-    const proxy = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+async function carregaMETAR(codi, elementId) {
+    const metarUrl =
+        `https://tgftp.nws.noaa.gov/data/observations/metar/stations/${codi}.TXT`;
+
+    const proxy =
+        `https://corsproxy.io/?${encodeURIComponent(metarUrl)}`;
 
     try {
-        const r = await fetch(proxy);
-        const t = await r.text();
-        document.getElementById(desti).textContent =
-            t.split("\n").slice(1).join(" ").trim();
-    } catch {
-        document.getElementById(desti).textContent = "No es poden carregar dades";
+        const resposta = await fetch(proxy);
+        const text = await resposta.text();
+
+        const linies = text.trim().split("\n");
+        const metar = linies.slice(1).join(" ");
+
+        document.getElementById(elementId).textContent = metar;
+    } catch (e) {
+        document.getElementById(elementId).textContent =
+            "No s'han pogut carregar dades METAR";
     }
 }
 
