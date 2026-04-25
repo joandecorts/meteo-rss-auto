@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<title>METAR OBS</title>
+
+<style>
+  body {
+    margin: 0;
+    padding: 12px;
+    background: #004080;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    color: white;
+  }
+
+  h1 {
+    font-family: system-ui, Arial, sans-serif;
+    font-size: 20px;
+    margin: 0 0 10px 0;
+    text-align: center;
+  }
+
+  .card {
+    background: #002a55;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .title {
+    font-family: system-ui, Arial, sans-serif;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  iframe {
+    width: 100%;
+    height: 60px;
+    border: 0;
+    background: #002a55;
+    color: white;
+  }
+</style>
+</head>
+
+<body>
+
+<h1>METAR Catalunya</h1>
+
+<div class="card">
+  <div class="title">Girona – Costa Brava (LEGE)</div>
+  <iframe 
+    src="https://tgftp.nws.noaa.gov/data/observations/metar/stations/LEGE.TXT"
+    sandbox>
+  </iframe>
+</div>
+
+<div class="card">
+  <div class="title">Barcelona – El Prat (LEBL)</div>
+  <iframe 
+    src="https://tgftp.nws.noaa.gov/data/observations/metar/stations/LEBL.TXT"
+    sandbox>
+  </iframe>
+</div>
+
+</body>
+</html>
