@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>METAR / TAF · OBS</title>
+
+  <style>
+    :root{
+      --text:#fff;
+      --muted:rgba(255,255,255,.82);
+      --panel:rgba(255,255,255,.12);
+      --panel2:rgba(0,0,0,.22);
+
+      --vfr:#2ee59d;  --vfrText:#003d26;
+      --mvfr:#ffd166; --mvfrText:#4a3500;
+      --ifr:#ff6b6b;  --ifrText:#4a0000;
+      --lifr:#c77dff; --lifrText:#2f003d;
+
+      --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      --ui: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    body{
+      margin:0;
+      padding:32px;
+      height:100vh;
+      box-sizing:border-box;
+      color:var(--text);
+      font-family:var(--ui);
+
+      background:
+        radial-gradient(900px 500px at 15% 20%, #2fb8ff55 0%, transparent 60%),
+        radial-gradient(800px 500px at 85% 30%, #38e1c055 0%, transparent 60%),
+        linear-gradient(160deg, #0b5ed7, #0a3a66);
+
+      overflow:hidden;
+    }
+
+    header{
+      margin-bottom:18px;
+    }
+
+    h1{
+      margin:0;
+      font-size:36px;
+      font-weight:900;
+      letter-spacing:.2px;
+    }
+
+    /* Rellotge (moment) - fix, no es mou */
+    #output{
+      position:fixed;
+      top:22px;
+      right:26px;
+      font-family:var(--mono);
+      font-size:14px;
+      color:var(--muted);
+      letter-spacing:.2px;
+      font-variant-numeric: tabular-nums;
+      user-select:none;
+      background:rgba(0,0,0,.15);
+      border:1px solid rgba(255,255,255,.16);
+      padding:8px 10px;
+      border-radius:999px;
+      backdrop-filter: blur(4px);
+      white-space:nowrap;
+    }
+
+    .slides{
+      position:relative;
+      height:calc(100% - 140px);
+    }
+    .slide{
+      position:absolute;
+      inset:0;
+      opacity:0;
+      transition:opacity 1s ease;
+    }
+    .slide.active{ opacity:1; }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:24px;
+      height:100%;
+    }
+
+    .panel{
+      background:var(--panel);
+      border-radius:24px;
+      padding:24px;
+      box-sizing:border-box;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      overflow:hidden;
+    }
+
+    .airport{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+    }
+    .name{
+      font-size:22px;
+      font-weight:800;
+      line-height:1.15;
+    }
+    .icao{
+      font-family:var(--mono);
+      opacity:.8;
+      margin-top:3px;
+      font-size:13px;
+    }
+
+    .badge{
+      padding:7px 14px;
+      border-radius:999px;
+      font-weight:900;
+      font-size:14px;
+      white-space:nowrap;
+    }
+    .badge.VFR  { background:var(--vfr);  color:var(--vfrText); }
+    .badge.MVFR { background:var(--mvfr); color:var(--mvfrText); }
+    .badge.IFR  { background:var(--ifr);  color:var(--ifrText); }
+    .badge.LIFR { background:var(--lifr); color:var(--lifrText); }
+    .badge.TAF  { background:rgba(255,255,255,.20); color:#fff; }
+
+    .kpis{
+      display:grid;
+      grid-template-columns:repeat(4, 1fr);
+      gap:12px;
+    }
+    .kpi{
+      background:var(--panel2);
+      border-radius:14px;
+      padding:10px;
+    }
+    .kpi .label{
+      font-size:12px;
+      opacity:.82;
+      font-weight:700;
+    }
+    .kpi .value{
+      margin-top:6px;
+      font-size:20px;
+      font-weight:900;
+      font-family:var(--mono);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .box{
+      background:var(--panel2);
+      border-radius:14px;
+      padding:12px;
+      overflow:hidden;
+    }
+    .box h3{
+      margin:0 0 8px 0;
+      font-size:13px;
+      opacity:.82;
+      font-weight:800;
+    }
+
+    pre{
+      margin:0;
+      font-family:var(--mono);
+      font-size:14px;
+      line-height:1.25;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    /* Slide públic general */
+    .public p{
+      font-size:20px;
+      line-height:1.45;
+      margin:0;
+    }
+    .public .bigline{
+      font-size:22px;
+      font-weight:900;
+      margin-bottom:6px;
+    }
+
+    /* Slide TAF (auto-scroll per JS) */
+    .scrollbox{
+      position:relative;
+      height:260px;
+      overflow:hidden;
+      border-radius:12px;
+    }
+    .scrollbox pre{
+      position:relative;
+      will-change:transform;
+    }
+
+    footer{
+      margin-top:18px;
+      font-size:12px;
+      opacity:.88;
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      font-family:var(--mono);
+      user-select:none;
+    }
+
+    @media (max-width: 1100px){
+      body{ padding:22px; }
+      h1{ font-size:28px; }
+      .grid{ grid-template-columns:1fr; }
+      .slides{ height:calc(100% - 160px); }
+      #output{ top:14px; right:14px; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>METAR / TAF · Catalunya</h1>
+  </header>
+
+  <!-- RELLOTGE -->
+  <div id="output"></div>
+
+  <div class="slides">
+    <!-- SLIDE 1: RAW + KPIs -->
+    <section class="slide active" id="slide-raw">
+      <div class="grid" id="grid-raw"></div>
+    </section>
+
+    <!-- SLIDE 2: PÚBLIC GENERAL -->
+    <section class="slide" id="slide-public">
+      <div class="grid" id="grid-public"></div>
+    </section>
+
+    <!-- SLIDE 3: TAF DETALLAT -->
+    <section class="slide" id="slide-taf">
+      <div class="grid" id="grid-taf"></div>
+    </section>
+  </div>
+
+  <footer>
+    <div>Font de dades: NOAA / NWS · tgftp.nws.noaa.gov</div>
+    <div>Projecte personal de caràcter experimental · No fer servir per a ús operatiu</div>
+  </footer>
+
+  <!-- ===== RELLOTGE TAL QUAL (EN ANGLÈS) ===== -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script>
+    var output = document.getElementById("output");
+    function updateClock() {
+      output.innerText = moment().format('LL LTS [GMT]ZZ');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+
+  <!-- ===== OVERLAY (ES5) ===== -->
+  <script>
+    /* --------- SLIDES ROTATION (arrenca després de pintar) --------- */
+    var slides = [
+      document.getElementById("slide-raw"),
+      document.getElementById("slide-public"),
+      document.getElementById("slide-taf")
+    ];
+    var slideDurations = [9000, 10000, 11000];
+    var slideIndex = 0;
+    var rotationStarted = false;
+
+    function rotateSlides(){
+      slides[slideIndex].classList.remove("active");
+      slideIndex = (slideIndex + 1) % slides.length;
+      slides[slideIndex].classList.add("active");
+      setTimeout(rotateSlides, slideDurations[slideIndex]);
+    }
+
+    /* --------- HELPERS --------- */
+    function safe(v, fallback){
+      return (v === 0 || v) ? v : fallback;
+    }
+
+    function catClass(cat){
+      var c = (cat || "VFR").toUpperCase();
+      return (c === "MVFR" || c === "IFR" || c === "LIFR" || c === "VFR") ? c : "VFR";
+    }
+
+    function fmtWind(w){
+      if(!w) return "—";
+      var gust = w.gust_kt ? (" G" + w.gust_kt) : "";
+      return w.dir + "° " + w.speed_kt + " kt" + gust;
+    }
+
+    function fmtVis(m){
+      if(m === null || m === undefined) return "—";
+      if(m >= 10000) return "10 km+";
+      return m + " m";
+    }
+
+    function fmtCeiling(ft){
+      if(ft === null || ft === undefined) return "Cap";
+      return ft + " ft";
+    }
+
+    function escapeHtml(s){
+      if(s === null || s === undefined) return "";
+      return String(s)
+        .replace(/&/g,"&amp;")
+        .replace(/</g,"&lt;")
+        .replace(/>/g,"&gt;");
+    }
+
+    /* --------- RENDER --------- */
+    function renderAll(data){
+      var rawGrid = document.getElementById("grid-raw");
+      var pubGrid = document.getElementById("grid-public");
+      var tafGrid = document.getElementById("grid-taf");
+
+      rawGrid.innerHTML = "";
+      pubGrid.innerHTML = "";
+      tafGrid.innerHTML = "";
+
+      var airports = data && data.airports ? data.airports : [];
+      for(var i=0; i<airports.length; i++){
+        var a = airports[i];
+        var metar = a.metar || {};
+        var taf = a.taf || {};
+        var f = metar.fields || {};
+        var cat = catClass(f.category);
+        var wind = fmtWind(f.wind);
+
+        /* SLIDE 1: RAW + KPIs + RAW METAR/TAF */
+        rawGrid.insertAdjacentHTML("beforeend",
+          '<div class="panel">' +
+            '<div class="airport">' +
+              '<div>' +
+                '<div class="name">' + escapeHtml(a.name || a.icao) + '</div>' +
+                '<div class="icao">' + escapeHtml(a.icao || "") +
+                  ' · METAR ' + escapeHtml(safe(metar.issued,"—")) +
+                  ' · TAF ' + escapeHtml(safe(taf.issued,"—")) +
+                '</div>' +
+              '</div>' +
+              '<div class="badge ' + cat + '">' + cat + '</div>' +
+            '</div>' +
+
+            '<div class="kpis">' +
+              '<div class="kpi"><div class="label">Vent</div><div class="value">' + escapeHtml(wind) + '</div></div>' +
+              '<div class="kpi"><div class="label">Visibilitat</div><div class="value">' + escapeHtml(fmtVis(f.visibility_m)) + '</div></div>' +
+              '<div class="kpi"><div class="label">Sostre</div><div class="value">' + escapeHtml(fmtCeiling(f.ceiling_ft)) + '</div></div>' +
+              '<div class="kpi"><div class="label">QNH</div><div class="value">' + escapeHtml(f.qnh_hpa ? ("Q"+f.qnh_hpa) : "—") + '</div></div>' +
+            '</div>' +
+
+            '<div class="box"><h3>RAW METAR</h3><pre>' + escapeHtml(safe(metar.raw,"—")) + '</pre></div>' +
+            '<div class="box"><h3>RAW TAF</h3><pre>' + escapeHtml(safe(taf.raw,"—")) + '</pre></div>' +
+          '</div>'
+        );
+
+        /* SLIDE 2: PÚBLIC GENERAL (visual) */
+        var visPublic = (f.visibility_m === null || f.visibility_m === undefined) ? "—"
+          : (f.visibility_m >= 10000 ? "molt bona (10 km+)" : (f.visibility_m + " m"));
+        var sostrePublic = (f.ceiling_ft === null || f.ceiling_ft === undefined) ? "sense sostre" : (f.ceiling_ft + " ft");
+        var tempPublic = (f.temp_c === null || f.temp_c === undefined) ? "—" : (f.temp_c + " °C");
+        var qnhPublic  = (f.qnh_hpa === null || f.qnh_hpa === undefined) ? "—" : (f.qnh_hpa + " hPa");
+
+        pubGrid.insertAdjacentHTML("beforeend",
+          '<div class="panel public">' +
+            '<div class="airport">' +
+              '<div>' +
+                '<div class="name">' + escapeHtml(a.name || a.icao) + '</div>' +
+                '<div class="icao">' + escapeHtml(a.icao || "") + '</div>' +
+              '</div>' +
+              '<div class="badge ' + cat + '">' + cat + '</div>' +
+            '</div>' +
+            '<div class="box">' +
+              '<div class="bigline">☀️ Estat general: <b>' + cat + '</b></div>' +
+              '<p>🌬️ Vent: <b>' + escapeHtml(wind) + '</b></p>' +
+              '<p>👁️ Visibilitat: <b>' + escapeHtml(visPublic) + '</b></p>' +
+              '<p>🌥️ Sostre: <b>' + escapeHtml(sostrePublic) + '</b></p>' +
+              '<p>🌡️ Temperatura: <b>' + escapeHtml(tempPublic) + '</b></p>' +
+              '<p>⬇️ Pressió: <b>' + escapeHtml(qnhPublic) + '</b></p>' +
+              '<p>✈️ Informació divulgativa (no operativa)</p>' +
+            '</div>' +
+          '</div>'
+        );
+
+        /* SLIDE 3: TAF DETALLAT */
+        tafGrid.insertAdjacentHTML("beforeend",
+          '<div class="panel">' +
+            '<div class="airport">' +
+              '<div>' +
+                '<div class="name">' + escapeHtml(a.name || a.icao) + '</div>' +
+                '<div class="icao">' + escapeHtml(a.icao || "") + ' · TAF ' + escapeHtml(safe(taf.issued,"—")) + '</div>' +
+              '</div>' +
+              '<div class="badge TAF">TAF</div>' +
+            '</div>' +
+            '<div class="box">' +
+              '<h3>Previsió TAF (RAW)</h3>' +
+              '<div class="scrollbox"><pre>' + escapeHtml(safe(taf.raw,"—")) + '</pre></div>' +
+            '</div>' +
+            '<div class="box">' +
+              '<h3>METAR actual (RAW)</h3>' +
+              '<pre>' + escapeHtml(safe(metar.raw,"—")) + '</pre>' +
+            '</div>' +
+          '</div>'
+        );
+      }
+
+      startAutoScroll();
+      if(!rotationStarted){
+        rotationStarted = true;
+        setTimeout(rotateSlides, slideDurations[0]);
+      }
+    }
+
+    /* --------- AUTO-SCROLL TAF (ES5, suau, ping-pong) --------- */
+    var scrollItems = [];
+    var rafId = null;
+
+    function startAutoScroll(){
+      // reinicia llista
+      scrollItems = [];
+      if(rafId) { cancelAnimationFrame(rafId); rafId = null; }
+
+      var boxes = document.querySelectorAll(".scrollbox");
+      for(var i=0; i<boxes.length; i++){
+        var box = boxes[i];
+        var pre = box.getElementsByTagName("pre")[0];
+        if(!pre) continue;
+
+        var dist = pre.scrollHeight - box.clientHeight;
+        if(dist > 10){
+          // durada proporcional (12..45s)
+          var dur = dist / 20;
+          if(dur < 12) dur = 12;
+          if(dur > 45) dur = 45;
+
+          scrollItems.push({
+            pre: pre,
