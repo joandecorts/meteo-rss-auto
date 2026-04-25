@@ -1,20 +1,190 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>METAR/TAF OBS</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>METAR / TAF OBS</title>
+
   <style>
-    :root{
-      --bg1:#041a3a;
-      --bg2:#071f4d;
-      --card:rgba(255,255,255,.07);
-      --stroke:rgba(255,255,255,.10);
-      --text:#ffffff;
-      --muted:rgba(255,255,255,.78);
-      --vfr:#2ee59d;
-      --mvfr:#ffd166;
-      --ifr:#ff6b6b;
-      --lifr:#c77dff;
-      --mono: ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-      --ui: system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+    body {
+      margin: 0;
+      padding: 30px;
+      height: 100vh;
+      background: linear-gradient(160deg, #041a3a, #071f4d);
+      color: #ffffff;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      margin: 0 0 20px 0;
+      font-size: 36px;
+      font-weight: 900;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      height: calc(100% - 110px);
+    }
+
+    .panel {
+      background: rgba(255,255,255,0.08);
+      border-radius: 20px;
+      padding: 22px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .airport {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .name {
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .icao {
+      font-family: monospace;
+      opacity: .8;
+    }
+
+    .category {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .VFR  { background:#2ee59d; color:#003d26; }
+    .MVFR { background:#ffd166; color:#4a3500; }
+    .IFR  { background:#ff6b6b; color:#4a0000; }
+    .LIFR { background:#c77dff; color:#2f003d; }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+
+    .kpi {
+      background: rgba(0,0,0,.25);
+      border-radius: 14px;
+      padding: 10px;
+    }
+
+    .kpi .label {
+      font-size: 12px;
+      opacity: .8;
+      font-weight: 700;
+    }
+
+    .kpi .value {
+      margin-top: 6px;
+      font-size: 18px;
+      font-weight: 900;
+      font-family: monospace;
+    }
+
+    .raw {
+      background: rgba(0,0,0,.25);
+      border-radius: 14px;
+      padding: 12px;
+    }
+
+    .raw h3 {
+      margin: 0 0 8px 0;
+      font-size: 13px;
+      opacity: .8;
+    }
+
+    pre {
+      margin: 0;
+      font-family: monospace;
+      font-size: 14px;
+      line-height: 1.25;
+      white-space: pre-wrap;
+    }
+
+    footer {
+      margin-top: 20px;
+      font-size: 12px;
+      opacity: .75;
+      display: flex;
+      justify-content: space-between;
+      font-family: monospace;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>METAR / TAF · Catalunya</h1>
+
+<div class="grid" id="grid"></div>
+
+<footer>
+  <div>Font: NOAA · tgftp.nws.noaa.gov</div>
+  <div id="updated">—</div>
+</footer>
+
+<script>
+fetch("data/aviation.json", { cache: "no-store" })
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById("updated").textContent =
+      "Actualitzat (UTC): " + (data.generated_at_utc || "—");
+
+    const grid = document.getElementById("grid");
+
+    data.airports.forEach(a => {
+      const f = a.metar.fields || {};
+      const cat = f.category || "VFR";
+
+      const wind = f.wind
+        ? `${f.wind.dir}${f.wind.speed_kt} kt`
+        : "—";
+
+      const html = `
+        <div class="panel">
+          <div class="airport">
+            <div>
+              <div class="name">${a.name}</div>
+              <div class="icao">${a.icao}</div>
+            </div>
+            <div class="category ${cat}">${cat}</div>
+          </div>
+
+          <div class="kpis">
+            <div class="kpi"><div class="label">Vent</div><div class="value">${wind}</div></div>
+            <div class="kpi"><div class="label">Visibilitat</div><div class="value">${f.visibility_m >= 10000 ? "10 km+" : (f.visibility_m || "—")}</div></div>
+            <div class="kpi"><div class="label">Ceiling</div><div class="value">${f.ceiling_ft ? f.ceiling_ft + " ft" : "—"}</div></div>
+            <div class="kpi"><div class="label">QNH</div><div class="value">${f.qnh_hpa ? "Q" + f.qnh_hpa : "—"}</div></div>
+          </div>
+
+          <div class="raw">
+            <h3>RAW METAR</h3>
+            <pre>${a.metar.raw || "—"}</pre>
+          </div>
+
+          <div class="raw">
+            <h3>RAW TAF</h3>
+            <pre>${a.taf.raw || "—"}</pre>
+          </div>
+        </div>
+      `;
+
+      grid.insertAdjacentHTML("beforeend", html);
+    });
+  });
+</script>
+
+</body>
+</html>
+``
