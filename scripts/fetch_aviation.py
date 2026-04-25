@@ -1,3 +1,5 @@
+import os
+os.makedirs("data", exist_ok=True)
 import json
 import re
 from datetime import datetime, timezone
