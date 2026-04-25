@@ -1,4 +1,4 @@
-name: Update METAR/TAF (NOAA) -> gh-pages
+name: Update METAR / TAF (NOAA)
 
 on:
   workflow_dispatch:
@@ -9,36 +9,26 @@ permissions:
   contents: write
 
 jobs:
-  build:
+  update:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout gh-pages
         uses: actions/checkout@v4
         with:
           ref: gh-pages
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
-      - name: Ensure folders
+      - name: Run fetch script
         run: |
           mkdir -p data
-          mkdir -p scripts
-
-      # Copiem l'script dins gh-pages (o bé el pots tenir ja a gh-pages)
-      - name: Add/Update script
-        run: |
-          cat > scripts/fetch_aviation.py <<'PY'
-          (ENGANXA AQUÍ EL PYTHON SENCER DE DALT)
-          PY
-
-      - name: Generate aviation.json
-        run: |
           python scripts/fetch_aviation.py
 
-      - name: Commit & push if changed
+      - name: Commit and push
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
