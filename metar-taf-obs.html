@@ -38,7 +38,6 @@
       overflow:hidden;
     }
 
-    /* Header estàtic */
     header{
       position:relative;
       display:flex;
@@ -55,7 +54,7 @@
       letter-spacing:.2px;
     }
 
-    /* Rellotge fix a dalt dreta (no es mou) */
+    /* Rellotge fix a dalt dreta (no es mou amb les slides) */
     #clock{
       position:fixed;
       top:22px;
@@ -73,7 +72,6 @@
       backdrop-filter: blur(4px);
     }
 
-    /* Zona slides */
     .slides{
       position:relative;
       height:calc(100% - 140px);
@@ -133,6 +131,7 @@
     .badge.MVFR { background:var(--mvfr); color:var(--mvfrText); }
     .badge.IFR  { background:var(--ifr);  color:var(--ifrText); }
     .badge.LIFR { background:var(--lifr); color:var(--lifrText); }
+    .badge.TAF  { background:rgba(255,255,255,.22); color:#fff; }
 
     .kpis{
       display:grid;
@@ -178,7 +177,6 @@
       word-break:break-word;
     }
 
-    /* Slide públic general */
     .public p{
       font-size:20px;
       line-height:1.45;
@@ -190,10 +188,9 @@
       margin-bottom:6px;
     }
 
-    /* Slide TAF (amb auto-scroll si cal) */
     .scrollbox{
       position:relative;
-      height:260px;              /* pots ajustar-ho */
+      height:260px;
       overflow:hidden;
       border-radius:12px;
     }
@@ -217,7 +214,6 @@
       user-select:none;
     }
 
-    /* Responsive bàsic */
     @media (max-width: 1100px){
       body{ padding:22px; }
       h1{ font-size:28px; }
@@ -246,7 +242,7 @@
       <div class="grid" id="grid-public"></div>
     </section>
 
-    <!-- SLIDE 3: TAF DETALLAT (amb auto-scroll) -->
+    <!-- SLIDE 3: TAF DETALLAT -->
     <section class="slide" id="slide-taf">
       <div class="grid" id="grid-taf"></div>
     </section>
@@ -254,23 +250,36 @@
 
   <footer>
     <div>Font de dades: NOAA / NWS · tgftp.nws.noaa.gov</div>
-    <div>Projecte personal de caràcter experimental · No fer servir per a ús operatiu</div>
+    <div>Informació divulgativa contrastada, però no utilitzar per ús operatiu</div>
   </footer>
 
 <script>
-  // ---------- Rellotge (fix) ----------
+  // ---------- Helpers bàsics ----------
   function pad2(n){ return String(n).padStart(2,'0'); }
   function tzOffset(){
-    const m = -new Date().getTimezoneOffset(); // minuts east
+    const m = -new Date().getTimezoneOffset();
     const sign = m >= 0 ? "+" : "-";
     const abs = Math.abs(m);
     return `GMT${sign}${pad2(Math.floor(abs/60))}:${pad2(abs%60)}`;
   }
+
+  // Data en català controlada: "25 abril de 2026" (no "del 2026")
+  function formatDateCA(d){
+    const months = [
+      "gener","febrer","març","abril","maig","juny",
+      "juliol","agost","setembre","octubre","novembre","desembre"
+    ];
+    const day = pad2(d.getDate());
+    const month = months[d.getMonth()];
+    const year = d.getFullYear();
+    return `${day} ${month} de ${year}`;
+  }
+
   function updateClock(){
     const d = new Date();
-    const date = d.toLocaleDateString('ca-ES', { year:'numeric', month:'long', day:'2-digit' });
     const time = `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
-    document.getElementById('clock').textContent = `${date} · ${time} · ${tzOffset()}`;
+    document.getElementById('clock').textContent =
+      `${formatDateCA(d)} · ${time} · ${tzOffset()}`;
   }
   setInterval(updateClock, 1000);
   updateClock();
@@ -282,9 +291,8 @@
     document.getElementById("slide-taf"),
   ];
   let slideIndex = 0;
-
-  // Temps per slide (ms): ajustables fàcilment
   const slideDurations = [9000, 10000, 11000];
+
   function rotate(){
     slides[slideIndex].classList.remove("active");
     slideIndex = (slideIndex + 1) % slides.length;
@@ -293,26 +301,41 @@
   }
   setTimeout(rotate, slideDurations[0]);
 
-  // ---------- Helpers de format ----------
+  // ---------- Format METAR ----------
   function catClass(cat){
     const c = (cat || "VFR").toUpperCase();
     if(["VFR","MVFR","IFR","LIFR"].includes(c)) return c;
     return "VFR";
   }
+
+  function ktToKmh(kt){
+    if(kt == null) return null;
+    return Math.round(kt * 1.852);
+  }
+
+  // Vent: mostra kt i km/h
   function fmtWind(w){
     if(!w) return "—";
-    const gust = w.gust_kt ? ` G${w.gust_kt}` : "";
-    return `${w.dir}° ${w.speed_kt} kt${gust}`;
+    const kmh = ktToKmh(w.speed_kt);
+    if(w.gust_kt){
+      const kmhG = ktToKmh(w.gust_kt);
+      return `${w.dir}° ${w.speed_kt}G${w.gust_kt} kt (${kmh}–${kmhG} km/h)`;
+    }
+    return `${w.dir}° ${w.speed_kt} kt (${kmh} km/h)`;
   }
+
   function fmtVis(m){
     if(m == null) return "—";
     if(m >= 10000) return "10 km+";
     return `${m} m`;
   }
+
+  // Ceiling: si és null -> "Cap"
   function fmtCeiling(ft){
-    if(ft == null) return "Cap";     // aquí traiem el guionet
+    if(ft == null) return "Cap";
     return `${ft} ft`;
   }
+
   function safe(v, fallback="—"){
     return (v === 0 || v) ? v : fallback;
   }
@@ -322,9 +345,9 @@
     const r = await fetch("data/aviation.json", { cache: "no-store" });
     const data = await r.json();
 
-    const rawGrid    = document.getElementById("grid-raw");
-    const pubGrid    = document.getElementById("grid-public");
-    const tafGrid    = document.getElementById("grid-taf");
+    const rawGrid = document.getElementById("grid-raw");
+    const pubGrid = document.getElementById("grid-public");
+    const tafGrid = document.getElementById("grid-taf");
 
     rawGrid.innerHTML = "";
     pubGrid.innerHTML = "";
@@ -368,76 +391,4 @@
       // ----- SLIDE 2 (PÚBLIC GENERAL) -----
       const visPublic = (f.visibility_m == null) ? "—" : (f.visibility_m >= 10000 ? "molt bona (10 km+)" : `${f.visibility_m} m`);
       const sostrePublic = (f.ceiling_ft == null) ? "sense sostre" : `${f.ceiling_ft} ft`;
-      const tempPublic = (f.temp_c == null) ? "—" : `${f.temp_c} °C`;
-      const qnhPublic  = (f.qnh_hpa == null) ? "—" : `${f.qnh_hpa} hPa`;
-
-      pubGrid.insertAdjacentHTML("beforeend", `
-        <div class="panel public">
-          <div class="airport">
-            <div>
-              <div class="name">${a.name || a.icao}</div>
-              <div class="icao">${a.icao || ""}</div>
-            </div>
-            <div class="badge ${cat}">${cat}</div>
-          </div>
-
-          <div class="box">
-            <div class="bigline">☀️ Estat general: <b>${cat}</b></div>
-            <p>🌬️ Vent: <b>${wind}</b></p>
-            <p>👁️ Visibilitat: <b>${visPublic}</b></p>
-            <p>🌥️ Sostre: <b>${sostrePublic}</b></p>
-            <p>🌡️ Temperatura: <b>${tempPublic}</b></p>
-            <p>⬇️ Pressió: <b>${qnhPublic}</b></p>
-            <p>✈️ Informació divulgativa (no operativa)</p>
-          </div>
-        </div>
-      `);
-
-      // ----- SLIDE 3 (TAF DETALLAT) -----
-      const tafRaw = a.taf?.raw || "—";
-      tafGrid.insertAdjacentHTML("beforeend", `
-        <div class="panel">
-          <div class="airport">
-            <div>
-              <div class="name">${a.name || a.icao}</div>
-              <div class="icao">${a.icao || ""} · TAF ${safe(a.taf?.issued, "—")}</div>
-            </div>
-            <div class="badge ${cat}">TAF</div>
-          </div>
-
-          <div class="box">
-            <h3>Previsió TAF (RAW)</h3>
-            <div class="scrollbox" data-scrollbox="1">
-              <pre>${tafRaw}</pre>
-            </div>
-          </div>
-
-          <div class="box">
-            <h3>METAR actual (RAW)</h3>
-            <pre>${a.metar?.raw || "—"}</pre>
-          </div>
-        </div>
-      `);
-    });
-
-    // Auto-scroll només si el text és més alt que la caixa (TAF slide)
-    document.querySelectorAll(".scrollbox").forEach(box => {
-      const pre = box.querySelector("pre");
-      const dist = pre.scrollHeight - box.clientHeight;
-      if(dist > 10){
-        pre.style.setProperty("--scroll-dist", dist + "px");
-        // Durada proporcional (més text -> més lent)
-        const dur = Math.min(45, Math.max(12, dist / 20));
-        pre.style.animation = `tafscroll ${dur}s linear infinite alternate`;
-      } else {
-        pre.style.animation = "none";
-      }
-    });
-  }
-
-  // Carrega inicial + refresc periòdic per si el JSON es va actualitzant
-  loadAndRender();
-  setInterval(loadAndRender, 60_000);
-</script>
-</body>
-</html>
+      const tempPublic = (f.temp_c == null) ? "—" : `${f
