@@ -1,0 +1,125 @@
+<script>
+  /* ========= Rellotge ========= */
+  function pad2(n){ return String(n).padStart(2,"0"); }
+  function tzOffset(){
+    var m = -new Date().getTimezoneOffset();
+    var sign = m >= 0 ? "+" : "-";
+    var abs = Math.abs(m);
+    return "GMT" + sign + pad2(Math.floor(abs/60)) + ":" + pad2(abs%60);
+  }
+  function formatDateCA(d){
+    var months = ["gener","febrer","març","abril","maig","juny","juliol","agost","setembre","octubre","novembre","desembre"];
+    return pad2(d.getDate()) + " " + months[d.getMonth()] + " de " + d.getFullYear();
+  }
+  function updateClock(){
+    var d = new Date();
+    document.getElementById("clock").textContent =
+      formatDateCA(d) + " · " +
+      pad2(d.getHours()) + ":" + pad2(d.getMinutes()) + ":" + pad2(d.getSeconds()) +
+      " · " + tzOffset();
+  }
+  setInterval(updateClock, 1000);
+  updateClock();
+
+  /* ========= Slides ========= */
+  var slides = [
+    document.getElementById("slide-raw"),
+    document.getElementById("slide-public"),
+    document.getElementById("slide-taf")
+  ];
+  var slideIndex = 0;
+  var slideDurations = [9000, 10000, 11000];
+
+  function rotate(){
+    slides[slideIndex].classList.remove("active");
+    slideIndex = (slideIndex + 1) % slides.length;
+    slides[slideIndex].classList.add("active");
+    setTimeout(rotate, slideDurations[slideIndex]);
+  }
+  setTimeout(rotate, slideDurations[0]);
+
+  /* ========= Helpers ========= */
+  function ktToKmh(kt){
+    return Math.round(kt * 1.852);
+  }
+
+  function fmtWind(w){
+    if(!w) return "—";
+    var kmh = ktToKmh(w.speed_kt);
+    if(w.gust_kt){
+      return w.dir + "° " + w.speed_kt + "G" + w.gust_kt +
+        " kt (" + kmh + "–" + ktToKmh(w.gust_kt) + " km/h)";
+    }
+    return w.dir + "° " + w.speed_kt + " kt (" + kmh + " km/h)";
+  }
+
+  function fmtVis(v){
+    if(v === null) return "—";
+    if(v >= 10000) return "10 km+";
+    return v + " m";
+  }
+
+  function fmtCeiling(c){
+    return (c === null) ? "Cap" : (c + " ft");
+  }
+
+  function catClass(c){
+    if(c==="MVFR"||c==="IFR"||c==="LIFR") return c;
+    return "VFR";
+  }
+
+  /* ========= Render ========= */
+  function loadAndRender(){
+    fetch("data/aviation.json", { cache: "no-store" })
+      .then(function(r){ return r.json(); })
+      .then(function(data){
+
+        var rawGrid = document.getElementById("grid-raw");
+        var pubGrid = document.getElementById("grid-public");
+        var tafGrid = document.getElementById("grid-taf");
+
+        rawGrid.innerHTML = "";
+        pubGrid.innerHTML = "";
+        tafGrid.innerHTML = "";
+
+        data.airports.forEach(function(a){
+
+          var metar = a.metar || {};
+          var taf   = a.taf   || {};
+          var f     = metar.fields || {};
+          var cat   = catClass(f.category);
+          var wind  = fmtWind(f.wind);
+
+          /* SLIDE RAW */
+          rawGrid.innerHTML +=
+            '<div class="panel">' +
+              '<div class="airport">' +
+                '<div><div class="name">'+a.name+'</div>' +
+                '<div class="icao">'+a.icao+' · METAR '+(metar.issued||"—")+'</div></div>' +
+                '<div class="badge '+cat+'">'+cat+'</div>' +
+              '</div>' +
+              '<div class="kpis">' +
+                '<div class="kpi"><div class="label">Vent</div><div class="value">'+wind+'</div></div>' +
+                '<div class="kpi"><div class="label">Visibilitat</div><div class="value">'+fmtVis(f.visibility_m)+'</div></div>' +
+                '<div class="kpi"><div class="label">Sostre</div><div class="value">'+fmtCeiling(f.ceiling_ft)+'</div></div>' +
+                '<div class="kpi"><div class="label">QNH</div><div class="value">'+(f.qnh_hpa?("Q"+f.qnh_hpa):"—")+'</div></div>' +
+              '</div>' +
+            '</div>';
+
+          /* SLIDE TAF */
+          tafGrid.innerHTML +=
+            '<div class="panel">' +
+              '<div class="airport">' +
+                '<div><div class="name">'+a.name+'</div>' +
+                '<div class="icao">'+a.icao+' · TAF '+(taf.issued||"—")+'</div></div>' +
+                '<div class="badge TAF">TAF</div>' +
+              '</div>' +
+              '<div class="box"><pre>'+(taf.raw||"—")+'</pre></div>' +
+            '</div>';
+        });
+      });
+  }
+
+  loadAndRender();
+  setInterval(loadAndRender, 60000);
+</script>
