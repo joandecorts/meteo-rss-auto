@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<title>METAR / TAF · Overlay</title>
+
+<style>
+body{
+  margin:0;
+  padding:24px;
+  background:#0a3a66;
+  color:#fff;
+  font-family:system-ui, Arial;
+}
+
+h1{margin:0 0 16px 0}
+
+#output{
+  position:fixed;
+  top:16px;
+  right:16px;
+  font-family:monospace;
+  font-size:14px;
+  padding:8px 12px;
+  background:rgba(0,0,0,.4);
+  border-radius:999px;
+  white-space:nowrap;
+}
+
+.page{display:none}
+.page.active{display:block}
+
+.section{
+  margin-bottom:24px;
+  padding:16px;
+  background:rgba(255,255,255,.12);
+  border-radius:12px;
+}
+
+pre{
+  font-family:monospace;
+  white-space:pre-wrap;
+  margin:0;
+}
+.kpis{
+  display:flex;
+  gap:16px;
+  margin-top:8px;
+}
+.kpi{
+  background:rgba(0,0,0,.25);
+  padding:10px;
+  border-radius:8px;
+  min-width:120px;
+}
+.kpi .label{font-size:12px;opacity:.8}
+.kpi .value{font-size:18px;font-weight:700}
+
+footer{
+  margin-top:12px;
+  font-size:12px;
+  opacity:.8;
+}
+</style>
+</head>
+
+<body>
+
+<h1>METAR / TAF · Catalunya</h1>
+<div id="output"></div>
+
+<div id="pages">
+  <!-- 1️⃣ DADES ACTUALS EN BRUT -->
+  <div class="page active" id="page-0"></div>
+
+  <!-- 2️⃣ DADES ACTUALS EN VISUAL -->
+  <div class="page" id="page-1"></div>
+
+  <!-- 3️⃣ TAF EN BRUT -->
+  <div class="page" id="page-2"></div>
+
+  <!-- 4️⃣ PREVISIÓ VISUAL (pendent) -->
+  <div class="page" id="page-3">
+    <div class="section">
+      <h2>Previsió visual</h2>
+      <p>(A construir amb calma sobre el TAF)</p>
+    </div>
+  </div>
+</div>
+
+<footer>
+  Font: NOAA / NWS · tgftp.nws.noaa.gov
+</footer>
+
+<!-- RELLOTGE TAL QUAL -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+<script>
+var output = document.getElementById("output");
+function updateClock(){
+  output.innerText = moment().format('LL LTS [GMT]ZZ');
+}
+setInterval(updateClock,1000);
+updateClock();
+</script>
+
+<!-- JS BASE + ROTACIÓ ES5 -->
+<script>
+(function(){
+
+  var pages = [
+    document.getElementById("page-0"),
+    document.getElementById("page-1"),
+    document.getElementById("page-2"),
+    document.getElementById("page-3")
+  ];
+  var cur = 0;
+
+  function show(n){
+    for(var i=0;i<pages.length;i++) pages[i].className="page";
+    pages[n].className="page active";
+  }
+
+  function rotate(){
+    cur = (cur+1)%pages.length;
+    show(cur);
+    setTimeout(rotate, 9000);
+  }
+
+  function esc(t){
+    return String(t||"")
+      .replace(/&/g,"&amp;")
+      .replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;");
+  }
+
+  function load(){
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET","data/aviation.json",true);
+    xhr.onreadystatechange=function(){
+      if(xhr.readyState===4 && xhr.status===200){
+        render(JSON.parse(xhr.responseText));
+        setTimeout(rotate,9000);
+      }
+    };
+    xhr.send(null);
+  }
+
+  function render(data){
+    var p0 = pages[0];
+    var p1 = pages[1];
+    var p2 = pages[2];
+
+    p0.innerHTML = "<h2>Dades actuals en brut</h2>";
+    p1.innerHTML = "<h2>Dades actuals (lectura visual)</h2>";
+    p2.innerHTML = "<h2>TAF en brut</h2>";
+
+    for(var i=0;i<data.airports.length;i++){
+      var a = data.airports[i];
+      var f = a.metar.fields || {};
+
+      /* PÀGINA 1 — BRUT */
+      p0.innerHTML +=
+        "<div class='section'><strong>"+esc(a.name)+"</strong>"+
+        "<pre>"+esc(a.metar.raw)+"</pre></div>";
+
+      /* PÀGINA 2 — VISUAL */
+      p1.innerHTML +=
+        "<div class='section'><strong>"+esc(a.name)+"</strong>"+
+        "<div class='kpis'>"+
+          "<div class='kpi'><div class='label'>Vent</div><div class='value'>"+
+          (f.wind ? f.wind.speed_kt+" kt" : "—")+"</div></div>"+
+          "<div class='kpi'><div class='label'>Visibilitat</div><div class='value'>"+
+          (f.visibility_m>=10000?"10 km+":f.visibility_m+" m")+"</div></div>"+
+          "<div class='kpi'><div class='label'>QNH</div><div class='value'>"+
+          (f.qnh_hpa?f.qnh_hpa+" hPa":"—")+"</div></div>"+
+        "</div></div>";
+
+      /* PÀGINA 3 — TAF */
+      p2.innerHTML +=
+        "<div class='section'><strong>"+esc(a.name)+"</strong>"+
+        "<pre>"+esc(a.taf.raw)+"</pre></div>";
+    }
+  }
+
+  load();
+
+})();
+</script>
+
+</body>
+</html>
