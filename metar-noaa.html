@@ -1,65 +1,24 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-    <meta charset="UTF-8">
-    <title>METAR Catalunya</title>
-    <style>
-        body {
-            background: #004080;
-            color: white;
-            font-family: monospace;
-            padding: 20px;
-        }
-        h1 {
-            text-align: center;
-        }
-        .metar {
-            background: #002a55;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 8px;
-            font-size: 16px;
-        }
-        .airport {
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-family: Arial, sans-serif;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Test fetch</title>
 </head>
 <body>
 
-<h1>METAR Catalunya</h1>
-
-<div class="metar">
-    <div class="airport">Girona–Costa Brava (LEGE)</div>
-    <div id="lege">Carregant…</div>
-</div>
-
-<div class="metar">
-    <div class="airport">Barcelona–El Prat (LEBL)</div>
-    <div id="lebl">Carregant…</div>
-</div>
+<h2 id="res">Provant…</h2>
 
 <script>
-async function carregaMETAR(codi, elementId) {
-    try {
-        const url = `https://aviationweather.gov/api/data/metar?ids=${codi}&format=json`;
-        const resposta = await fetch(url);
-        const dades = await resposta.json();
-
-        if (dades.length > 0) {
-            document.getElementById(elementId).textContent = dades[0].rawOb;
-        } else {
-            document.getElementById(elementId).textContent = "Sense dades";
-        }
-    } catch (error) {
-        document.getElementById(elementId).textContent = "Error carregant METAR";
-    }
-}
-
-carregaMETAR("LEGE", "lege");
-carregaMETAR("LEBL", "lebl");
+fetch("https://httpbin.org/get")
+  .then(r => r.json())
+  .then(d => {
+      document.getElementById("res").textContent =
+        "FETCH FUNCIONA ✅";
+  })
+  .catch(e => {
+      document.getElementById("res").textContent =
+        "FETCH BLOQUEJAT ❌";
+  });
 </script>
 
 </body>
