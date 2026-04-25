@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Fallback amb rellotge</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: url('carta.jpeg') center center / cover no-repeat;
+    }
+
+    #output {
+      position: absolute;
+      left: 50%;
+      top: 55%;
+      transform: translate(-50%, -50%);
+      font-family: monospace;
+      font-size: 30px;
+      color: #ffffff; /* blanc pur */
+      text-align: center;
+      white-space: nowrap;
+      user-select: none;
+
+      /* Eliminació TOTAL de qualsevol marc o fons */
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      box-shadow: none !important;
+      outline: none !important;
+      text-shadow: none !important;
+    }
+  </style>
+</head>
+<body translate="no">
+  <div id="output"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+  <script>
+    var output = document.getElementById("output");
+    function updateClock() {
+      output.innerText = moment().format('LL LTS [GMT]ZZ');
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+  </script>
+</body>
+</html>
