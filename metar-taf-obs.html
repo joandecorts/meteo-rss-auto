@@ -1,125 +1,141 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<title>METAR / TAF · OBS</title>
+
+<style>
+  body{
+    margin:0;
+    padding:32px;
+    height:100vh;
+    box-sizing:border-box;
+    color:#fff;
+    font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+    background:
+      radial-gradient(900px 500px at 15% 20%, #2fb8ff55 0%, transparent 60%),
+      radial-gradient(800px 500px at 85% 30%, #38e1c055 0%, transparent 60%),
+      linear-gradient(160deg,#0b5ed7,#0a3a66);
+    overflow:hidden;
+  }
+  h1{margin:0 0 18px;font-size:36px;font-weight:900}
+  #clock{
+    position:fixed;top:20px;right:24px;
+    font-family:monospace;font-size:14px;
+    background:rgba(0,0,0,.2);
+    padding:8px 12px;border-radius:999px
+  }
+  .slides{position:relative;height:calc(100% - 150px)}
+  .slide{position:absolute;inset:0;opacity:0;transition:opacity 1s}
+  .slide.active{opacity:1}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;height:100%}
+  .panel{background:rgba(255,255,255,.12);border-radius:20px;padding:20px}
+  .airport{display:flex;justify-content:space-between;align-items:center}
+  .name{font-size:22px;font-weight:800}
+  .icao{font-family:monospace;font-size:13px;opacity:.8}
+  .badge{padding:6px 14px;border-radius:999px;font-weight:800}
+  .badge.VFR{background:#2ee59d;color:#003d26}
+  .badge.MVFR{background:#ffd166;color:#4a3500}
+  .badge.IFR{background:#ff6b6b;color:#4a0000}
+  .badge.LIFR{background:#c77dff;color:#2f003d}
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:12px 0}
+  .kpi{background:rgba(0,0,0,.25);padding:10px;border-radius:12px}
+  .kpi .label{font-size:12px;opacity:.8}
+  .kpi .value{font-size:18px;font-weight:900;font-family:monospace}
+  pre{margin:0;font-family:monospace;font-size:14px;white-space:pre-wrap}
+  footer{
+    margin-top:16px;font-size:12px;opacity:.85;
+    display:flex;justify-content:space-between;
+    font-family:monospace
+  }
+</style>
+</head>
+
+<body>
+<h1>METAR / TAF · Catalunya</h1>
+<div id="clock">—</div>
+
+<div class="slides">
+  <div class="slide active" id="slide-raw"><div class="grid" id="grid-raw"></div></div>
+  <div class="slide" id="slide-public"><div class="grid" id="grid-public"></div></div>
+  <div class="slide" id="slide-taf"><div class="grid" id="grid-taf"></div></div>
+</div>
+
+<footer>
+  <div>Font de dades: NOAA / NWS · tgftp.nws.noaa.gov</div>
+  <div>Informació divulgativa contrastada, però no utilitzar per ús operatiu</div>
+</footer>
+
 <script>
-  /* ========= Rellotge ========= */
-  function pad2(n){ return String(n).padStart(2,"0"); }
-  function tzOffset(){
-    var m = -new Date().getTimezoneOffset();
-    var sign = m >= 0 ? "+" : "-";
-    var abs = Math.abs(m);
-    return "GMT" + sign + pad2(Math.floor(abs/60)) + ":" + pad2(abs%60);
-  }
-  function formatDateCA(d){
-    var months = ["gener","febrer","març","abril","maig","juny","juliol","agost","setembre","octubre","novembre","desembre"];
-    return pad2(d.getDate()) + " " + months[d.getMonth()] + " de " + d.getFullYear();
-  }
-  function updateClock(){
-    var d = new Date();
-    document.getElementById("clock").textContent =
-      formatDateCA(d) + " · " +
-      pad2(d.getHours()) + ":" + pad2(d.getMinutes()) + ":" + pad2(d.getSeconds()) +
-      " · " + tzOffset();
-  }
-  setInterval(updateClock, 1000);
-  updateClock();
+/* ================= CLOCK ================= */
+function pad(n){return String(n).padStart(2,"0")}
+function formatDateCA(d){
+  var m=["gener","febrer","març","abril","maig","juny","juliol","agost","setembre","octubre","novembre","desembre"];
+  return pad(d.getDate())+" "+m[d.getMonth()]+" de "+d.getFullYear();
+}
+function tz(){
+  var o=-new Date().getTimezoneOffset(),s=o>=0?"+":"-";
+  return "GMT"+s+pad(Math.floor(Math.abs(o)/60))+":"+pad(Math.abs(o)%60);
+}
+function tick(){
+  var d=new Date();
+  document.getElementById("clock").textContent=
+    formatDateCA(d)+" · "+pad(d.getHours())+":"+pad(d.getMinutes())+":"+pad(d.getSeconds())+" · "+tz();
+}
+setInterval(tick,1000);tick();
 
-  /* ========= Slides ========= */
-  var slides = [
-    document.getElementById("slide-raw"),
-    document.getElementById("slide-public"),
-    document.getElementById("slide-taf")
-  ];
-  var slideIndex = 0;
-  var slideDurations = [9000, 10000, 11000];
+/* ================= SLIDES ================= */
+var slides=[document.getElementById("slide-raw"),document.getElementById("slide-public"),document.getElementById("slide-taf")];
+var idx=0,dur=[9000,10000,11000];
+function rot(){
+  slides[idx].classList.remove("active");
+  idx=(idx+1)%slides.length;
+  slides[idx].classList.add("active");
+  setTimeout(rot,dur[idx]);
+}
+setTimeout(rot,dur[0]);
 
-  function rotate(){
-    slides[slideIndex].classList.remove("active");
-    slideIndex = (slideIndex + 1) % slides.length;
-    slides[slideIndex].classList.add("active");
-    setTimeout(rotate, slideDurations[slideIndex]);
-  }
-  setTimeout(rotate, slideDurations[0]);
+/* ================= HELPERS ================= */
+function ktToKmh(k){return Math.round(k*1.852)}
+function windFmt(w){
+  if(!w)return "—";
+  return w.dir+"° "+w.speed_kt+" kt ("+ktToKmh(w.speed_kt)+" km/h)";
+}
+function vis(v){return v==null?"—":(v>=10000?"10 km+":v+" m")}
+function ceil(c){return c==null?"Cap":c+" ft"}
+function cat(c){return c==="MVFR"||c==="IFR"||c==="LIFR"?c:"VFR"}
 
-  /* ========= Helpers ========= */
-  function ktToKmh(kt){
-    return Math.round(kt * 1.852);
-  }
-
-  function fmtWind(w){
-    if(!w) return "—";
-    var kmh = ktToKmh(w.speed_kt);
-    if(w.gust_kt){
-      return w.dir + "° " + w.speed_kt + "G" + w.gust_kt +
-        " kt (" + kmh + "–" + ktToKmh(w.gust_kt) + " km/h)";
-    }
-    return w.dir + "° " + w.speed_kt + " kt (" + kmh + " km/h)";
-  }
-
-  function fmtVis(v){
-    if(v === null) return "—";
-    if(v >= 10000) return "10 km+";
-    return v + " m";
-  }
-
-  function fmtCeiling(c){
-    return (c === null) ? "Cap" : (c + " ft");
-  }
-
-  function catClass(c){
-    if(c==="MVFR"||c==="IFR"||c==="LIFR") return c;
-    return "VFR";
-  }
-
-  /* ========= Render ========= */
-  function loadAndRender(){
-    fetch("data/aviation.json", { cache: "no-store" })
-      .then(function(r){ return r.json(); })
-      .then(function(data){
-
-        var rawGrid = document.getElementById("grid-raw");
-        var pubGrid = document.getElementById("grid-public");
-        var tafGrid = document.getElementById("grid-taf");
-
-        rawGrid.innerHTML = "";
-        pubGrid.innerHTML = "";
-        tafGrid.innerHTML = "";
-
-        data.airports.forEach(function(a){
-
-          var metar = a.metar || {};
-          var taf   = a.taf   || {};
-          var f     = metar.fields || {};
-          var cat   = catClass(f.category);
-          var wind  = fmtWind(f.wind);
-
-          /* SLIDE RAW */
-          rawGrid.innerHTML +=
-            '<div class="panel">' +
-              '<div class="airport">' +
-                '<div><div class="name">'+a.name+'</div>' +
-                '<div class="icao">'+a.icao+' · METAR '+(metar.issued||"—")+'</div></div>' +
-                '<div class="badge '+cat+'">'+cat+'</div>' +
-              '</div>' +
-              '<div class="kpis">' +
-                '<div class="kpi"><div class="label">Vent</div><div class="value">'+wind+'</div></div>' +
-                '<div class="kpi"><div class="label">Visibilitat</div><div class="value">'+fmtVis(f.visibility_m)+'</div></div>' +
-                '<div class="kpi"><div class="label">Sostre</div><div class="value">'+fmtCeiling(f.ceiling_ft)+'</div></div>' +
-                '<div class="kpi"><div class="label">QNH</div><div class="value">'+(f.qnh_hpa?("Q"+f.qnh_hpa):"—")+'</div></div>' +
-              '</div>' +
-            '</div>';
-
-          /* SLIDE TAF */
-          tafGrid.innerHTML +=
-            '<div class="panel">' +
-              '<div class="airport">' +
-                '<div><div class="name">'+a.name+'</div>' +
-                '<div class="icao">'+a.icao+' · TAF '+(taf.issued||"—")+'</div></div>' +
-                '<div class="badge TAF">TAF</div>' +
-              '</div>' +
-              '<div class="box"><pre>'+(taf.raw||"—")+'</pre></div>' +
-            '</div>';
-        });
-      });
-  }
-
-  loadAndRender();
-  setInterval(loadAndRender, 60000);
+/* ================= RENDER ================= */
+function render(){
+  fetch("data/aviation.json",{cache:"no-store"})
+   .then(r=>r.json())
+   .then(j=>{
+     var gr=document.getElementById("grid-raw");
+     var gp=document.getElementById("grid-public");
+     var gt=document.getElementById("grid-taf");
+     gr.innerHTML=gp.innerHTML=gt.innerHTML="";
+     j.airports.forEach(a=>{
+       var f=a.metar.fields||{},c=cat(f.category);
+       gr.innerHTML+=
+        '<div class="panel"><div class="airport"><div><div class="name">'+a.name+
+        '</div><div class="icao">'+a.icao+' · METAR '+a.metar.issued+
+        '</div></div><div class="badge '+c+'">'+c+'</div></div>'+
+        '<div class="kpis">'+
+        '<div class="kpi"><div class="label">Vent</div><div class="value">'+windFmt(f.wind)+'</div></div>'+
+        '<div class="kpi"><div class="label">Visibilitat</div><div class="value">'+vis(f.visibility_m)+'</div></div>'+
+        '<div class="kpi"><div class="label">Sostre</div><div class="value">'+ceil(f.ceiling_ft)+'</div></div>'+
+        '<div class="kpi"><div class="label">QNH</div><div class="value">'+(f.qnh_hpa?"Q"+f.qnh_hpa:"—")+'</div></div>'+
+        '</div><pre>'+a.metar.raw+'</pre></div>';
+       gt.innerHTML+=
+        '<div class="panel"><div class="airport"><div><div class="name">'+a.name+
+        '</div><div class="icao">'+a.icao+' · TAF '+a.taf.issued+
+        '</div></div><div class="badge">TAF</div></div><pre>'+a.taf.raw+'</pre></div>';
+     });
+   });
+}
+render();
+setInterval(render,60000);
 </script>
+</body>
+</html>
+``
