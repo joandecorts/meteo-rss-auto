@@ -2,7 +2,7 @@
 <html lang="ca">
 <head>
 <meta charset="UTF-8">
-<title>METAR / TAF · TEST BASE</title>
+<title>METAR / TAF · ROTACIÓ BASE</title>
 
 <style>
 body{
@@ -14,6 +14,14 @@ body{
 }
 
 h1{margin-top:0}
+
+.page{
+  display:none;
+}
+
+.page.active{
+  display:block;
+}
 
 .section{
   margin-bottom:28px;
@@ -37,20 +45,25 @@ pre{
   padding:8px 12px;
   background:rgba(0,0,0,.4);
   border-radius:999px;
+  white-space:nowrap;
 }
 </style>
 </head>
 
 <body>
 
-<h1>METAR / TAF · Catalunya (TEST BASE)</h1>
+<h1>METAR / TAF · Catalunya</h1>
 
-<!-- Rellotge TAL QUAL -->
+<!-- Rellotge tal qual -->
 <div id="output"></div>
 
-<div id="content"></div>
+<div id="pages">
+  <div class="page active" id="page-0"></div>
+  <div class="page" id="page-1"></div>
+  <div class="page" id="page-2"></div>
+</div>
 
-<!-- Moment.js (TAL QUAL) -->
+<!-- Moment.js TAL QUAL -->
 https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.jsscript>
 <script>
   var output = document.getElementById("output");
@@ -61,36 +74,29 @@ https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.jsscript>
   updateClock();
 </script>
 
-<!-- JS MINIMAL ES5 -->
+<!-- JS ES5 + ROTACIÓ -->
 <script>
 (function(){
 
-  var container = document.getElementById("content");
+  var pages = [
+    document.getElementById("page-0"),
+    document.getElementById("page-1"),
+    document.getElementById("page-2")
+  ];
 
-  function load(){
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET","data/aviation.json",true);
-    xhr.onreadystatechange = function(){
-      if(xhr.readyState === 4){
-        if(xhr.status !== 200){
-          container.innerHTML =
-            "<div class='section'>❌ No s'ha pogut carregar aviation.json</div>";
-          return;
-        }
+  var current = 0;
 
-        var data;
-        try{
-          data = JSON.parse(xhr.responseText);
-        }catch(e){
-          container.innerHTML =
-            "<div class='section'>❌ JSON invàlid</div>";
-          return;
-        }
+  function showPage(n){
+    for(var i=0;i<pages.length;i++){
+      pages[i].className = "page";
+    }
+    pages[n].className = "page active";
+  }
 
-        render(data);
-      }
-    };
-    xhr.send(null);
+  function rotate(){
+    current = (current + 1) % pages.length;
+    showPage(current);
+    setTimeout(rotate, 8000);
   }
 
   function esc(t){
@@ -101,27 +107,50 @@ https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.jsscript>
   }
 
   function render(data){
-    container.innerHTML = "";
+    var p0 = pages[0];
+    var p1 = pages[1];
+    var p2 = pages[2];
 
-    if(!data.airports || !data.airports.length){
-      container.innerHTML =
-        "<div class='section'>❌ aviation.json sense aeroports</div>";
-      return;
-    }
+    p0.innerHTML = "<h2>Dades en brut (METAR/TAF)</h2>";
+    p1.innerHTML = "<h2>Dades actuals (lectura fàcil)</h2>";
+    p2.innerHTML = "<h2>Previsió TAF</h2>";
 
     for(var i=0;i<data.airports.length;i++){
       var a = data.airports[i];
 
-      container.innerHTML +=
-        "<div class='section'>" +
-          "<h3>"+esc(a.name)+" ("+esc(a.icao)+")</h3>" +
-          "<strong>METAR</strong><pre>"+esc(a.metar.raw)+"</pre>" +
-          "<strong>TAF</strong><pre>"+esc(a.taf.raw)+"</pre>" +
-        "</div>";
+      p0.innerHTML +=
+        "<div class='section'><strong>"+esc(a.name)+"</strong>"+
+        "<pre>"+esc(a.metar.raw)+"</pre>"+
+        "<pre>"+esc(a.taf.raw)+"</pre></div>";
+
+      p1.innerHTML +=
+        "<div class='section'><strong>"+esc(a.name)+"</strong>"+
+        "<div>Vent: "+esc(a.metar.fields.wind ? a.metar.fields.wind.speed_kt+" kt" : "—")+"</div>"+
+        "<div>Visibilitat: "+esc(a.metar.fields.visibility_m)+" m</div></div>";
+
+      p2.innerHTML +=
+        "<div class='section'><strong>"+esc(a.name)+"</strong>"+
+        "<pre>"+esc(a.taf.raw)+"</pre></div>";
     }
+
+    // arrenca rotació quan ja tenim dades
+    setTimeout(rotate, 8000);
+  }
+
+  function load(){
+    var xhr = new XMLHttpRequest();
+    xhr.open("GET","data/aviation.json",true);
+    xhr.onreadystatechange = function(){
+      if(xhr.readyState === 4 && xhr.status === 200){
+        var data = JSON.parse(xhr.responseText);
+        render(data);
+      }
+    };
+    xhr.send(null);
   }
 
   load();
+
 })();
 </script>
 
