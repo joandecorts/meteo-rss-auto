@@ -1,0 +1,57 @@
+name: Update METAR / TAF (NOAA)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/10 * * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout del codi font
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Generate aviation.json
+        run: |
+          mkdir -p data
+          python scripts/fetch_aviation.py
+
+      # 2️⃣ Checkout gh-pages A PART
+      - name: Checkout gh-pages
+        uses: actions/checkout@v4
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      # 3️⃣ Copiar NOMÉS el JSON
+      - name: Update JSON in gh-pages
+        run: |
+          mkdir -p gh-pages/data
+          cp data/aviation.json gh-pages/data/aviation.json
+
+      # 4️⃣ Commit mínim
+      - name: Commit and push
+        run: |
+          cd gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/aviation.json
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "Update aviation METAR/TAF data"
+            git push
+          fi
