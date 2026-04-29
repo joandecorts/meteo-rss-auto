@@ -1,36 +1,36 @@
-=== INICI DAILY SCRAPER (UTC): 2026-04-29 17:20:26 ===
-2026-04-29 17:20:26 - ============================================================
-2026-04-29 17:20:26 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
-2026-04-29 17:20:26 - ============================================================
-2026-04-29 17:20:26 - 
+=== INICI DAILY SCRAPER (UTC): 2026-04-29 17:50:27 ===
+2026-04-29 17:50:27 - ============================================================
+2026-04-29 17:50:27 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
+2026-04-29 17:50:27 - ============================================================
+2026-04-29 17:50:27 - 
 ==================================================
-2026-04-29 17:20:26 - 📡 Processant: Fornells de la Selva [UO]
-2026-04-29 17:20:26 - 
+2026-04-29 17:50:27 - 📡 Processant: Fornells de la Selva [UO]
+2026-04-29 17:50:27 - 
 🌐 Connectant a Fornells de la Selva...
-2026-04-29 17:20:26 - ❌ Error consultant dades completes: 500 Server Error: Domain Not Found for url: https://www.meteo.cat/observacions/xema/dades?codi=UO
-2026-04-29 17:20:26 - ❌ Fornells de la Selva: No s'han pogut obtenir dades
-2026-04-29 17:20:26 - 
+2026-04-29 17:50:27 - ❌ Error consultant dades completes: 500 Server Error: Domain Not Found for url: https://www.meteo.cat/observacions/xema/dades?codi=UO
+2026-04-29 17:50:27 - ❌ Fornells de la Selva: No s'han pogut obtenir dades
+2026-04-29 17:50:27 - 
 ==================================================
-2026-04-29 17:20:26 - 📡 Processant: Girona [XJ]
-2026-04-29 17:20:26 - 
+2026-04-29 17:50:27 - 📡 Processant: Girona [XJ]
+2026-04-29 17:50:27 - 
 🌐 Connectant a Girona...
-2026-04-29 17:20:26 - ❌ Error consultant dades completes: 500 Server Error: Domain Not Found for url: https://www.meteo.cat/observacions/xema/dades?codi=XJ
-2026-04-29 17:20:26 - ❌ Girona: No s'han pogut obtenir dades
-2026-04-29 17:20:26 - 💾 Dades guardades a data/weather_daily_20260429.json
-2026-04-29 17:20:26 - 💾 Dades guardades a data/weather_summary.json
-2026-04-29 17:20:26 - 
+2026-04-29 17:50:27 - ❌ Error consultant dades completes: 500 Server Error: Domain Not Found for url: https://www.meteo.cat/observacions/xema/dades?codi=XJ
+2026-04-29 17:50:27 - ❌ Girona: No s'han pogut obtenir dades
+2026-04-29 17:50:27 - 💾 Dades guardades a data/weather_daily_20260429.json
+2026-04-29 17:50:27 - 💾 Dades guardades a data/weather_summary.json
+2026-04-29 17:50:27 - 
 ============================================================
-2026-04-29 17:20:26 - 📋 RESUM FINAL DEL DIA (UTC)
-2026-04-29 17:20:26 - ============================================================
-2026-04-29 17:20:26 - 
+2026-04-29 17:50:27 - 📋 RESUM FINAL DEL DIA (UTC)
+2026-04-29 17:50:27 - ============================================================
+2026-04-29 17:50:27 - 
 ⚠️  UO: Sense dades
-2026-04-29 17:20:26 - 
+2026-04-29 17:50:27 - 
 ⚠️  XJ: Sense dades
-2026-04-29 17:20:26 - 
+2026-04-29 17:50:27 - 
 💾 Fitxers generats:
-2026-04-29 17:20:26 -    • data/weather_summary.json (per HTML)
-2026-04-29 17:20:26 -    • data/weather_daily_YYYYMMDD.json (complet)
-2026-04-29 17:20:26 -    • data/XX_YYYYMMDD.csv (per estació)
-2026-04-29 17:20:26 - 
+2026-04-29 17:50:27 -    • data/weather_summary.json (per HTML)
+2026-04-29 17:50:27 -    • data/weather_daily_YYYYMMDD.json (complet)
+2026-04-29 17:50:27 -    • data/XX_YYYYMMDD.csv (per estació)
+2026-04-29 17:50:27 - 
 ✅ PROCÉS COMPLETAT
-2026-04-29 17:20:26 - ============================================================
+2026-04-29 17:50:27 - ============================================================
