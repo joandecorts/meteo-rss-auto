@@ -1,72 +1,74 @@
-=== INICI DAILY SCRAPER (UTC): 2026-06-14 02:20:38 ===
-2026-06-14 02:20:38 - ============================================================
-2026-06-14 02:20:38 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
-2026-06-14 02:20:38 - ============================================================
-2026-06-14 02:20:38 - 
+=== INICI DAILY SCRAPER (UTC): 2026-06-14 02:50:34 ===
+2026-06-14 02:50:34 - ============================================================
+2026-06-14 02:50:34 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
+2026-06-14 02:50:34 - ============================================================
+2026-06-14 02:50:34 - 
 ==================================================
-2026-06-14 02:20:38 - 📡 Processant: Fornells de la Selva [UO]
-2026-06-14 02:20:38 - 
+2026-06-14 02:50:34 - 📡 Processant: Fornells de la Selva [UO]
+2026-06-14 02:50:34 - 
 🌐 Connectant a Fornells de la Selva...
-2026-06-14 02:20:40 - 📊 Total files trobades a la taula: 5
-2026-06-14 02:20:40 -    ✅ Període UTC: 00:00 - 00:30 | TX: 13.8 | TN: 13.5 | Pluja: 0.0
-2026-06-14 02:20:40 -    ✅ Període UTC: 00:30 - 01:00 | TX: 13.7 | TN: 13.2 | Pluja: 0.0
-2026-06-14 02:20:40 -    ✅ Període UTC: 01:00 - 01:30 | TX: 13.4 | TN: 12.9 | Pluja: 0.0
-2026-06-14 02:20:40 -    ✅ Període UTC: 01:30 - 02:00 | TX: 13.5 | TN: 12.9 | Pluja: 0.0
-2026-06-14 02:20:40 - 📈 Total períodes vàlids trobats: 4
-2026-06-14 02:20:40 - 📊 RESUM CALCULAT:
-2026-06-14 02:20:40 -    • Màxima del dia: 13.8°C
-2026-06-14 02:20:40 -    • Mínima del dia: 12.9°C
-2026-06-14 02:20:40 -    • Pluja acumulada: 0.0mm
-2026-06-14 02:20:40 -    • Últim període: 01:30 - 02:00 UTC
-2026-06-14 02:20:40 -    • Hora actualització: 02:20
-2026-06-14 02:20:40 - 💾 Dades guardades a data/UO_20260614.csv (4 registres)
-2026-06-14 02:20:40 - ✅ Fornells de la Selva: 4 períodes processats
-2026-06-14 02:20:40 - 
+2026-06-14 02:50:35 - 📊 Total files trobades a la taula: 6
+2026-06-14 02:50:35 -    ✅ Període UTC: 00:00 - 00:30 | TX: 13.8 | TN: 13.5 | Pluja: 0.0
+2026-06-14 02:50:35 -    ✅ Període UTC: 00:30 - 01:00 | TX: 13.7 | TN: 13.2 | Pluja: 0.0
+2026-06-14 02:50:35 -    ✅ Període UTC: 01:00 - 01:30 | TX: 13.4 | TN: 12.9 | Pluja: 0.0
+2026-06-14 02:50:35 -    ✅ Període UTC: 01:30 - 02:00 | TX: 13.5 | TN: 12.9 | Pluja: 0.0
+2026-06-14 02:50:35 -    ✅ Període UTC: 02:00 - 02:30 | TX: 13.2 | TN: 12.4 | Pluja: 0.0
+2026-06-14 02:50:35 - 📈 Total períodes vàlids trobats: 5
+2026-06-14 02:50:35 - 📊 RESUM CALCULAT:
+2026-06-14 02:50:35 -    • Màxima del dia: 13.8°C
+2026-06-14 02:50:35 -    • Mínima del dia: 12.4°C
+2026-06-14 02:50:35 -    • Pluja acumulada: 0.0mm
+2026-06-14 02:50:35 -    • Últim període: 02:00 - 02:30 UTC
+2026-06-14 02:50:35 -    • Hora actualització: 02:50
+2026-06-14 02:50:35 - 💾 Dades guardades a data/UO_20260614.csv (5 registres)
+2026-06-14 02:50:35 - ✅ Fornells de la Selva: 5 períodes processats
+2026-06-14 02:50:35 - 
 ==================================================
-2026-06-14 02:20:40 - 📡 Processant: Girona [XJ]
-2026-06-14 02:20:40 - 
+2026-06-14 02:50:35 - 📡 Processant: Girona [XJ]
+2026-06-14 02:50:35 - 
 🌐 Connectant a Girona...
-2026-06-14 02:20:41 - 📊 Total files trobades a la taula: 5
-2026-06-14 02:20:41 -    ✅ Període UTC: 00:00 - 00:30 | TX: 15.2 | TN: 14.9 | Pluja: 0.0
-2026-06-14 02:20:41 -    ✅ Període UTC: 00:30 - 01:00 | TX: 14.8 | TN: 14.7 | Pluja: 0.0
-2026-06-14 02:20:41 -    ✅ Període UTC: 01:00 - 01:30 | TX: 14.7 | TN: 14.5 | Pluja: 0.0
-2026-06-14 02:20:41 -    ✅ Període UTC: 01:30 - 02:00 | TX: 14.5 | TN: 14.0 | Pluja: 0.0
-2026-06-14 02:20:41 - 📈 Total períodes vàlids trobats: 4
-2026-06-14 02:20:41 - 📊 RESUM CALCULAT:
-2026-06-14 02:20:41 -    • Màxima del dia: 15.2°C
-2026-06-14 02:20:41 -    • Mínima del dia: 14.0°C
-2026-06-14 02:20:41 -    • Pluja acumulada: 0.0mm
-2026-06-14 02:20:41 -    • Últim període: 01:30 - 02:00 UTC
-2026-06-14 02:20:41 -    • Hora actualització: 02:20
-2026-06-14 02:20:41 - 💾 Dades guardades a data/XJ_20260614.csv (4 registres)
-2026-06-14 02:20:41 - ✅ Girona: 4 períodes processats
-2026-06-14 02:20:41 - 💾 Dades guardades a data/weather_daily_20260614.json
-2026-06-14 02:20:41 - 💾 Dades guardades a data/weather_summary.json
-2026-06-14 02:20:41 - 
+2026-06-14 02:50:37 - 📊 Total files trobades a la taula: 6
+2026-06-14 02:50:37 -    ✅ Període UTC: 00:00 - 00:30 | TX: 15.2 | TN: 14.9 | Pluja: 0.0
+2026-06-14 02:50:37 -    ✅ Període UTC: 00:30 - 01:00 | TX: 14.8 | TN: 14.7 | Pluja: 0.0
+2026-06-14 02:50:37 -    ✅ Període UTC: 01:00 - 01:30 | TX: 14.7 | TN: 14.5 | Pluja: 0.0
+2026-06-14 02:50:37 -    ✅ Període UTC: 01:30 - 02:00 | TX: 14.5 | TN: 14.0 | Pluja: 0.0
+2026-06-14 02:50:37 -    ✅ Període UTC: 02:00 - 02:30 | TX: 14.0 | TN: 13.5 | Pluja: 0.0
+2026-06-14 02:50:37 - 📈 Total períodes vàlids trobats: 5
+2026-06-14 02:50:37 - 📊 RESUM CALCULAT:
+2026-06-14 02:50:37 -    • Màxima del dia: 15.2°C
+2026-06-14 02:50:37 -    • Mínima del dia: 13.5°C
+2026-06-14 02:50:37 -    • Pluja acumulada: 0.0mm
+2026-06-14 02:50:37 -    • Últim període: 02:00 - 02:30 UTC
+2026-06-14 02:50:37 -    • Hora actualització: 02:50
+2026-06-14 02:50:37 - 💾 Dades guardades a data/XJ_20260614.csv (5 registres)
+2026-06-14 02:50:37 - ✅ Girona: 5 períodes processats
+2026-06-14 02:50:37 - 💾 Dades guardades a data/weather_daily_20260614.json
+2026-06-14 02:50:37 - 💾 Dades guardades a data/weather_summary.json
+2026-06-14 02:50:37 - 
 ============================================================
-2026-06-14 02:20:41 - 📋 RESUM FINAL DEL DIA (UTC)
-2026-06-14 02:20:41 - ============================================================
-2026-06-14 02:20:41 - 
+2026-06-14 02:50:37 - 📋 RESUM FINAL DEL DIA (UTC)
+2026-06-14 02:50:37 - ============================================================
+2026-06-14 02:50:37 - 
 📍 Fornells de la Selva:
-2026-06-14 02:20:41 -    • Períodes: 4
-2026-06-14 02:20:41 -    • Màxima: 13.8°C
-2026-06-14 02:20:41 -    • Mínima: 12.9°C
-2026-06-14 02:20:41 -    • Pluja: 0.0mm
-2026-06-14 02:20:41 -    • Últim període: 01:30 - 02:00 UTC
-2026-06-14 02:20:41 -    • Actualització: 02:20
-2026-06-14 02:20:41 - 
+2026-06-14 02:50:37 -    • Períodes: 5
+2026-06-14 02:50:37 -    • Màxima: 13.8°C
+2026-06-14 02:50:37 -    • Mínima: 12.4°C
+2026-06-14 02:50:37 -    • Pluja: 0.0mm
+2026-06-14 02:50:37 -    • Últim període: 02:00 - 02:30 UTC
+2026-06-14 02:50:37 -    • Actualització: 02:50
+2026-06-14 02:50:37 - 
 📍 Girona:
-2026-06-14 02:20:41 -    • Períodes: 4
-2026-06-14 02:20:41 -    • Màxima: 15.2°C
-2026-06-14 02:20:41 -    • Mínima: 14.0°C
-2026-06-14 02:20:41 -    • Pluja: 0.0mm
-2026-06-14 02:20:41 -    • Últim període: 01:30 - 02:00 UTC
-2026-06-14 02:20:41 -    • Actualització: 02:20
-2026-06-14 02:20:41 - 
+2026-06-14 02:50:37 -    • Períodes: 5
+2026-06-14 02:50:37 -    • Màxima: 15.2°C
+2026-06-14 02:50:37 -    • Mínima: 13.5°C
+2026-06-14 02:50:37 -    • Pluja: 0.0mm
+2026-06-14 02:50:37 -    • Últim període: 02:00 - 02:30 UTC
+2026-06-14 02:50:37 -    • Actualització: 02:50
+2026-06-14 02:50:37 - 
 💾 Fitxers generats:
-2026-06-14 02:20:41 -    • data/weather_summary.json (per HTML)
-2026-06-14 02:20:41 -    • data/weather_daily_YYYYMMDD.json (complet)
-2026-06-14 02:20:41 -    • data/XX_YYYYMMDD.csv (per estació)
-2026-06-14 02:20:41 - 
+2026-06-14 02:50:37 -    • data/weather_summary.json (per HTML)
+2026-06-14 02:50:37 -    • data/weather_daily_YYYYMMDD.json (complet)
+2026-06-14 02:50:37 -    • data/XX_YYYYMMDD.csv (per estació)
+2026-06-14 02:50:37 - 
 ✅ PROCÉS COMPLETAT
-2026-06-14 02:20:41 - ============================================================
+2026-06-14 02:50:37 - ============================================================
