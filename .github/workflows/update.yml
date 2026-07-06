@@ -19,7 +19,7 @@ jobs:
     
     steps:
       # 1. DESCARREGA REPOSITORI
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       
       # 2. IDENTIFICA ORIGEN DEL TRIGGER
       - name: Identificar origen de l'execució
@@ -52,7 +52,7 @@ jobs:
           echo "SHA: ${{ github.sha }}"
       
       # 3. CONFIGURA PYTHON
-      - uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
       
