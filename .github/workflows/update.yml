@@ -3,7 +3,7 @@ name: Update Meteo RSS
 on:
   # 1. DISPARAT MANUALMENT
   workflow_dispatch:
-  
+
   # 2. TODO AUTOMÀTIC A GITHUB (DESACTIVAT PER EVITAR CONFLICTES AMB CRON-JOB.ORG)
   # schedule:
   #   - cron: "*/5 * * * *"      # 📡 RSS cada 5 minuts (COMENTAT)
@@ -13,20 +13,32 @@ on:
   repository_dispatch:
     types: [trigger_update]
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
 jobs:
   update:
     runs-on: ubuntu-latest
-    
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
     steps:
       # 1. DESCARREGA REPOSITORI
       - uses: actions/checkout@v4
-      
+
       # 2. IDENTIFICA ORIGEN DEL TRIGGER
       - name: Identificar origen de l'execució
         run: |
           echo "🔍 ANALITZANT ORIGEN DE L'EXECUCIÓ"
           echo "====================================="
-          
+
           if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
             echo "🚀 AQUESTA EXECUCIÓ VE DE CRON-JOB.ORG"
             echo "👤 Disparat per: joandecorts"
@@ -42,7 +54,7 @@ jobs:
           else
             echo "❓ ORIGEN DESCONEGUT: ${{ github.event_name }}"
           fi
-          
+
           echo ""
           echo "📊 RESUM DEL TRIGGER:"
           echo "--------------------"
@@ -50,55 +62,59 @@ jobs:
           echo "Workflow: ${{ github.workflow }}"
           echo "Run ID: ${{ github.run_id }}"
           echo "SHA: ${{ github.sha }}"
-      
+
       # 3. CONFIGURA PYTHON
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-      
+
       # 4. INSTAL·LA LLIBRERIES
       - run: pip install requests beautifulsoup4 pytz lxml
-      
+
       # 5. EXECUTA ELS SCRIPTS (tot cada vegada)
       - run: python daily_weather_scraper.py
       - run: python generate_fullscreen_html.py
       - run: python generate_meteo_rss.py
-      
+
       # 6. VERIFICA (opcional)
       - name: Mostra arxius generats
         run: |
           echo "✅ Última actualització: $(date '+%H:%M:%S')"
-          
-          # Afegim missatge específic si ve de cron-job.org
+
           if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
             echo "🎯 ORIGEN CONFIRMAT: cron-job.org via joandecorts"
           fi
-          
+
           echo "📁 Arxius:"
           ls -la *.html *.rss 2>/dev/null || echo "No s'han generat arxius"
-      
-      # 7. PUJA A GH-PAGES
-      - uses: peaceiris/actions-gh-pages@v3
+
+      # 7. PREPARA CARPETA PÚBLICA PER A GITHUB PAGES
+      - name: Preparar _site
+        run: |
+          rm -rf _site
+          mkdir -p _site
+          rsync -av ./ _site/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '_site' \
+            --exclude '__pycache__' \
+            --exclude '*.pyc'
+          touch _site/.nojekyll
+          echo "📦 Contingut preparat per publicar:"
+          find _site -maxdepth 2 -type f | sort | sed 's#^_site/##' | head -100
+
+      # 8. CONFIGURA I PUBLICA DIRECTAMENT AMB GITHUB PAGES ACTIONS
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.METEO_RSS_PAT }}
-          publish_dir: .                # Puja TOT
-          publish_branch: gh-pages      # A la branca gh-pages
-          keep_files: false             # Neteja l'anterior
-          
-          # Missatge de commit més informatiu
-          commit_message: |
-            🤖 Actualització automàtica
-            
-            Origen: ${{ github.event_name }}
-            ${{ github.event_name == 'repository_dispatch' && 'Disparat per: joandecorts (cron-job.org)' || github.event_name == 'workflow_dispatch' && format('Disparat manualment per: {0}', github.actor) || 'Programació interna GitHub' }}
-            Data: $(date -u +'%Y-%m-%d %H:%M UTC')
-            
-            SHA: ${{ github.sha }}
-          
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-      
-      # 8. MISSATGE FINAL DE CONFIRMACIÓ
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      # 9. MISSATGE FINAL DE CONFIRMACIÓ
       - name: Confirmació final
         if: always()
         run: |
@@ -106,7 +122,7 @@ jobs:
           echo "========================================"
           echo "✅ EXECUCIÓ COMPLETADA"
           echo "========================================"
-          
+
           if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
             echo "🌐 ORIGEN: cron-job.org"
             echo "👤 DISPARADOR: joandecorts"
@@ -114,7 +130,7 @@ jobs:
           else
             echo "🌐 ORIGEN: ${{ github.event_name }}"
           fi
-          
+
           echo "🕐 FINALITZAT A: $(date '+%H:%M:%S')"
           echo "📊 RUN ID: ${{ github.run_id }}"
           echo "========================================"
