@@ -4,7 +4,18 @@
   <title>Dades Meteo Locals Completes</title>
   <link>https://www.meteo.cat</link>
   <description>Dades meteorològiques en temps real - Estacions Girona / Real-time weather data - Girona station</description>
-  <lastBuildDate>Thu, 09 Jul 2026 00:12:25 +0000</lastBuildDate>
-
+  <lastBuildDate>Thu, 09 Jul 2026 00:42:26 +0000</lastBuildDate>
+  <item>
+    <title>🌤️ Girona | Actualitzat: 02:42 | Període: 02:00 - 02:30 | 🌡️ Temp. Mitjana: 18.3°C | 🔥 Temp. Màxima: 18.5°C | ❄️ Temp. Mínima: 18.0°C | 💧 Humitat: 70.0% | 🌧️ Precipitació: 0.0mm | 💨 Vent: 1.4km/h | 🧭 Dir.Vent: 275.0° | 💨 Vent Màx: 4.7km/h | 📊 Pressió: 1013.7hPa | ☀️ Radiació: 0.0W/m² || 🌤️ Girona | Updated: 02:42 | Period: 02:00 - 02:30 | 🌡️ Avg Temp: 18.3°C | 🔥 Max Temp: 18.5°C | ❄️ Min Temp: 18.0°C | 💧 Humidity: 70.0% | 🌧️ Precipitation: 0.0mm | 💨 Wind: 1.4km/h | 🧭 Wind Dir: 275.0° | 💨 Max Wind: 4.7km/h | 📊 Pressure: 1013.7hPa | ☀️ Radiation: 0.0W/m²</title>
+    <link>https://www.meteo.cat/observacions/xema/dades?codi=XJ</link>
+    <description>Dades meteorològiques de Girona / Weather data from Girona - Actualitzat el 09/07/2026 a les 02:42 / Updated on 09/07/2026 at 02:42</description>
+    <pubDate>Thu, 09 Jul 2026 00:42:26 +0000</pubDate>
+  </item>
+  <item>
+    <title>🌤️ Fornells de la Selva | Actualitzat: 02:42 | Període: 02:00 - 02:30 | 🌡️ Temp. Mitjana: 18.7°C | 🔥 Temp. Màxima: 19.7°C | ❄️ Temp. Mínima: 18.3°C | 💧 Humitat: 58.0% | 🌧️ Precipitació: 0.0mm || 🌤️ Fornells de la Selva | Updated: 02:42 | Period: 02:00 - 02:30 | 🌡️ Avg Temp: 18.7°C | 🔥 Max Temp: 19.7°C | ❄️ Min Temp: 18.3°C | 💧 Humidity: 58.0% | 🌧️ Precipitation: 0.0mm</title>
+    <link>https://www.meteo.cat/observacions/xema/dades?codi=UO</link>
+    <description>Dades meteorològiques de Fornells de la Selva / Weather data from Fornells de la Selva - Actualitzat el 09/07/2026 a les 02:42 / Updated on 09/07/2026 at 02:42</description>
+    <pubDate>Thu, 09 Jul 2026 00:42:26 +0000</pubDate>
+  </item>
 </channel>
 </rss>
