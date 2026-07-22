@@ -1,76 +1,78 @@
-=== INICI DAILY SCRAPER (UTC): 2026-07-22 03:12:16 ===
-2026-07-22 03:12:16 - ============================================================
-2026-07-22 03:12:16 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
-2026-07-22 03:12:16 - ============================================================
-2026-07-22 03:12:16 - 
+=== INICI DAILY SCRAPER (UTC): 2026-07-22 03:42:17 ===
+2026-07-22 03:42:17 - ============================================================
+2026-07-22 03:42:17 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
+2026-07-22 03:42:17 - ============================================================
+2026-07-22 03:42:17 - 
 ==================================================
-2026-07-22 03:12:16 - 📡 Processant: Fornells de la Selva [UO]
-2026-07-22 03:12:16 - 
+2026-07-22 03:42:17 - 📡 Processant: Fornells de la Selva [UO]
+2026-07-22 03:42:17 - 
 🌐 Connectant a Fornells de la Selva...
-2026-07-22 03:12:18 - 📊 Total files trobades a la taula: 7
-2026-07-22 03:12:18 -    ✅ Període UTC: 00:00 - 00:30 | TX: 24.7 | TN: 22.6 | Pluja: 0.0
-2026-07-22 03:12:18 -    ✅ Període UTC: 00:30 - 01:00 | TX: 23.0 | TN: 22.1 | Pluja: 0.0
-2026-07-22 03:12:18 -    ✅ Període UTC: 01:00 - 01:30 | TX: 24.0 | TN: 22.1 | Pluja: 0.0
-2026-07-22 03:12:18 -    ✅ Període UTC: 01:30 - 02:00 | TX: 22.4 | TN: 21.5 | Pluja: 0.0
-2026-07-22 03:12:18 -    ✅ Període UTC: 02:00 - 02:30 | TX: 22.4 | TN: 20.6 | Pluja: 0.0
-2026-07-22 03:12:18 -    ✅ Període UTC: 02:30 - 03:00 | TX: 20.9 | TN: 20.2 | Pluja: 0.0
-2026-07-22 03:12:18 - 📈 Total períodes vàlids trobats: 6
-2026-07-22 03:12:18 - 📊 RESUM CALCULAT:
-2026-07-22 03:12:18 -    • Màxima del dia: 24.7°C
-2026-07-22 03:12:18 -    • Mínima del dia: 20.2°C
-2026-07-22 03:12:18 -    • Pluja acumulada: 0.0mm
-2026-07-22 03:12:18 -    • Últim període: 02:30 - 03:00 UTC
-2026-07-22 03:12:18 -    • Hora actualització: 03:12
-2026-07-22 03:12:18 - 💾 Dades guardades a data/UO_20260722.csv (6 registres)
-2026-07-22 03:12:18 - ✅ Fornells de la Selva: 6 períodes processats
-2026-07-22 03:12:18 - 
+2026-07-22 03:42:19 - 📊 Total files trobades a la taula: 8
+2026-07-22 03:42:19 -    ✅ Període UTC: 00:00 - 00:30 | TX: 24.7 | TN: 22.6 | Pluja: 0.0
+2026-07-22 03:42:19 -    ✅ Període UTC: 00:30 - 01:00 | TX: 23.0 | TN: 22.1 | Pluja: 0.0
+2026-07-22 03:42:19 -    ✅ Període UTC: 01:00 - 01:30 | TX: 24.0 | TN: 22.1 | Pluja: 0.0
+2026-07-22 03:42:19 -    ✅ Període UTC: 01:30 - 02:00 | TX: 22.4 | TN: 21.5 | Pluja: 0.0
+2026-07-22 03:42:19 -    ✅ Període UTC: 02:00 - 02:30 | TX: 22.4 | TN: 20.6 | Pluja: 0.0
+2026-07-22 03:42:19 -    ✅ Període UTC: 02:30 - 03:00 | TX: 20.9 | TN: 20.2 | Pluja: 0.0
+2026-07-22 03:42:19 -    ✅ Període UTC: 03:00 - 03:30 | TX: 20.2 | TN: 19.2 | Pluja: 0.0
+2026-07-22 03:42:19 - 📈 Total períodes vàlids trobats: 7
+2026-07-22 03:42:19 - 📊 RESUM CALCULAT:
+2026-07-22 03:42:19 -    • Màxima del dia: 24.7°C
+2026-07-22 03:42:19 -    • Mínima del dia: 19.2°C
+2026-07-22 03:42:19 -    • Pluja acumulada: 0.0mm
+2026-07-22 03:42:19 -    • Últim període: 03:00 - 03:30 UTC
+2026-07-22 03:42:19 -    • Hora actualització: 03:42
+2026-07-22 03:42:19 - 💾 Dades guardades a data/UO_20260722.csv (7 registres)
+2026-07-22 03:42:19 - ✅ Fornells de la Selva: 7 períodes processats
+2026-07-22 03:42:19 - 
 ==================================================
-2026-07-22 03:12:18 - 📡 Processant: Girona [XJ]
-2026-07-22 03:12:18 - 
+2026-07-22 03:42:19 - 📡 Processant: Girona [XJ]
+2026-07-22 03:42:19 - 
 🌐 Connectant a Girona...
-2026-07-22 03:12:19 - 📊 Total files trobades a la taula: 7
-2026-07-22 03:12:19 -    ✅ Període UTC: 00:00 - 00:30 | TX: 24.4 | TN: 23.4 | Pluja: 0.0
-2026-07-22 03:12:19 -    ✅ Període UTC: 00:30 - 01:00 | TX: 25.0 | TN: 23.2 | Pluja: 0.0
-2026-07-22 03:12:19 -    ✅ Període UTC: 01:00 - 01:30 | TX: 25.1 | TN: 22.9 | Pluja: 0.0
-2026-07-22 03:12:19 -    ✅ Període UTC: 01:30 - 02:00 | TX: 22.8 | TN: 21.2 | Pluja: 0.0
-2026-07-22 03:12:19 -    ✅ Període UTC: 02:00 - 02:30 | TX: 21.2 | TN: 20.2 | Pluja: 0.0
-2026-07-22 03:12:19 -    ✅ Període UTC: 02:30 - 03:00 | TX: 20.1 | TN: 19.4 | Pluja: 0.0
-2026-07-22 03:12:19 - 📈 Total períodes vàlids trobats: 6
-2026-07-22 03:12:19 - 📊 RESUM CALCULAT:
-2026-07-22 03:12:19 -    • Màxima del dia: 25.1°C
-2026-07-22 03:12:19 -    • Mínima del dia: 19.4°C
-2026-07-22 03:12:19 -    • Pluja acumulada: 0.0mm
-2026-07-22 03:12:19 -    • Últim període: 02:30 - 03:00 UTC
-2026-07-22 03:12:19 -    • Hora actualització: 03:12
-2026-07-22 03:12:19 - 💾 Dades guardades a data/XJ_20260722.csv (6 registres)
-2026-07-22 03:12:19 - ✅ Girona: 6 períodes processats
-2026-07-22 03:12:19 - 💾 Dades guardades a data/weather_daily_20260722.json
-2026-07-22 03:12:19 - 💾 Dades guardades a data/weather_summary.json
-2026-07-22 03:12:19 - 
+2026-07-22 03:42:21 - 📊 Total files trobades a la taula: 8
+2026-07-22 03:42:21 -    ✅ Període UTC: 00:00 - 00:30 | TX: 24.4 | TN: 23.4 | Pluja: 0.0
+2026-07-22 03:42:21 -    ✅ Període UTC: 00:30 - 01:00 | TX: 25.0 | TN: 23.2 | Pluja: 0.0
+2026-07-22 03:42:21 -    ✅ Període UTC: 01:00 - 01:30 | TX: 25.1 | TN: 22.9 | Pluja: 0.0
+2026-07-22 03:42:21 -    ✅ Període UTC: 01:30 - 02:00 | TX: 22.8 | TN: 21.2 | Pluja: 0.0
+2026-07-22 03:42:21 -    ✅ Període UTC: 02:00 - 02:30 | TX: 21.2 | TN: 20.2 | Pluja: 0.0
+2026-07-22 03:42:21 -    ✅ Període UTC: 02:30 - 03:00 | TX: 20.1 | TN: 19.4 | Pluja: 0.0
+2026-07-22 03:42:21 -    ✅ Període UTC: 03:00 - 03:30 | TX: 19.4 | TN: 18.8 | Pluja: 0.0
+2026-07-22 03:42:21 - 📈 Total períodes vàlids trobats: 7
+2026-07-22 03:42:21 - 📊 RESUM CALCULAT:
+2026-07-22 03:42:21 -    • Màxima del dia: 25.1°C
+2026-07-22 03:42:21 -    • Mínima del dia: 18.8°C
+2026-07-22 03:42:21 -    • Pluja acumulada: 0.0mm
+2026-07-22 03:42:21 -    • Últim període: 03:00 - 03:30 UTC
+2026-07-22 03:42:21 -    • Hora actualització: 03:42
+2026-07-22 03:42:21 - 💾 Dades guardades a data/XJ_20260722.csv (7 registres)
+2026-07-22 03:42:21 - ✅ Girona: 7 períodes processats
+2026-07-22 03:42:21 - 💾 Dades guardades a data/weather_daily_20260722.json
+2026-07-22 03:42:21 - 💾 Dades guardades a data/weather_summary.json
+2026-07-22 03:42:21 - 
 ============================================================
-2026-07-22 03:12:19 - 📋 RESUM FINAL DEL DIA (UTC)
-2026-07-22 03:12:19 - ============================================================
-2026-07-22 03:12:19 - 
+2026-07-22 03:42:21 - 📋 RESUM FINAL DEL DIA (UTC)
+2026-07-22 03:42:21 - ============================================================
+2026-07-22 03:42:21 - 
 📍 Fornells de la Selva:
-2026-07-22 03:12:19 -    • Períodes: 6
-2026-07-22 03:12:19 -    • Màxima: 24.7°C
-2026-07-22 03:12:19 -    • Mínima: 20.2°C
-2026-07-22 03:12:19 -    • Pluja: 0.0mm
-2026-07-22 03:12:19 -    • Últim període: 02:30 - 03:00 UTC
-2026-07-22 03:12:19 -    • Actualització: 03:12
-2026-07-22 03:12:19 - 
+2026-07-22 03:42:21 -    • Períodes: 7
+2026-07-22 03:42:21 -    • Màxima: 24.7°C
+2026-07-22 03:42:21 -    • Mínima: 19.2°C
+2026-07-22 03:42:21 -    • Pluja: 0.0mm
+2026-07-22 03:42:21 -    • Últim període: 03:00 - 03:30 UTC
+2026-07-22 03:42:21 -    • Actualització: 03:42
+2026-07-22 03:42:21 - 
 📍 Girona:
-2026-07-22 03:12:19 -    • Períodes: 6
-2026-07-22 03:12:19 -    • Màxima: 25.1°C
-2026-07-22 03:12:19 -    • Mínima: 19.4°C
-2026-07-22 03:12:19 -    • Pluja: 0.0mm
-2026-07-22 03:12:19 -    • Últim període: 02:30 - 03:00 UTC
-2026-07-22 03:12:19 -    • Actualització: 03:12
-2026-07-22 03:12:19 - 
+2026-07-22 03:42:21 -    • Períodes: 7
+2026-07-22 03:42:21 -    • Màxima: 25.1°C
+2026-07-22 03:42:21 -    • Mínima: 18.8°C
+2026-07-22 03:42:21 -    • Pluja: 0.0mm
+2026-07-22 03:42:21 -    • Últim període: 03:00 - 03:30 UTC
+2026-07-22 03:42:21 -    • Actualització: 03:42
+2026-07-22 03:42:21 - 
 💾 Fitxers generats:
-2026-07-22 03:12:19 -    • data/weather_summary.json (per HTML)
-2026-07-22 03:12:19 -    • data/weather_daily_YYYYMMDD.json (complet)
-2026-07-22 03:12:19 -    • data/XX_YYYYMMDD.csv (per estació)
-2026-07-22 03:12:19 - 
+2026-07-22 03:42:21 -    • data/weather_summary.json (per HTML)
+2026-07-22 03:42:21 -    • data/weather_daily_YYYYMMDD.json (complet)
+2026-07-22 03:42:21 -    • data/XX_YYYYMMDD.csv (per estació)
+2026-07-22 03:42:21 - 
 ✅ PROCÉS COMPLETAT
-2026-07-22 03:12:19 - ============================================================
+2026-07-22 03:42:21 - ============================================================
