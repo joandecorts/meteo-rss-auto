@@ -1,4 +1,4 @@
-=== INICI: 2026-08-26 17:02:42 UTC ===
+=== INICI: 2026-08-26 17:27:51 UTC ===
 
 🚀 GENERADOR RSS METEOCAT - DEFINITIU
 ============================================================
@@ -23,19 +23,16 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5, 'vvm': 6, 'dvm': 7, 'vvx': 8, 'pm': 9, 'rs': 10}
 ✅ Dades RECENTS trobades: 16:30 - 17:00
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 16:00 - 16:30
-📊 Dades extretes:
-   • tm: 31.0
-   • tx: 31.3
-   • tn: 30.8
-   • hr: 43.0
+   • tm: 30.9
+   • tx: 31.1
+   • tn: 30.6
+   • hr: 42.0
    • ppt: 0.0
-   • vvm: 10.8
-   • dvm: 174.0
-   • vvx: 27.7
-   • pm: 1010.9
-   • rs: 307.0
+   • vvm: 9.4
+   • dvm: 187.0
+   • vvx: 23.8
+   • pm: 1010.7
+   • rs: 213.0
 ✅ Girona actualitzada
 
 ============================================================
@@ -52,13 +49,10 @@
 🔍 Mapeig de columnes: {'periode': 0, 'tm': 1, 'tx': 2, 'tn': 3, 'hr': 4, 'ppt': 5}
 ✅ Dades RECENTS trobades: 16:30 - 17:00
 📊 Dades extretes:
-⚠️  Dades insuficients, buscant més...
-✅ Dades RECENTS trobades: 16:00 - 16:30
-📊 Dades extretes:
-   • tm: 31.1
-   • tx: 31.6
-   • tn: 30.8
-   • hr: 45.0
+   • tm: 30.9
+   • tx: 31.3
+   • tn: 30.5
+   • hr: 47.0
    • ppt: 0.0
 ✅ Fornells de la Selva actualitzada
 ✅ Afegida al RSS: Girona
