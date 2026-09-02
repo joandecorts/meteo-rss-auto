@@ -2,26 +2,26 @@
   "XJ": {
     "station_name": "Girona",
     "station_code": "XJ",
-    "periode": "06:30 - 07:00",
-    "tm": 16.4,
-    "tx": 16.5,
-    "tn": 16.3,
+    "periode": "07:00 - 07:30",
+    "tm": 16.2,
+    "tx": 16.4,
+    "tn": 16.1,
     "hr": 100.0,
     "ppt": 0.0,
     "vvm": 0.4,
     "dvm": 1.0,
     "vvx": 2.2,
-    "pm": 1019.8,
-    "rs": 0.0
+    "pm": 1019.9,
+    "rs": 5.0
   },
   "UO": {
     "station_name": "Fornells de la Selva",
     "station_code": "UO",
-    "periode": "06:30 - 07:00",
-    "tm": 16.2,
-    "tx": 16.4,
-    "tn": 16.0,
-    "hr": 95.0,
+    "periode": "07:00 - 07:30",
+    "tm": 16.0,
+    "tx": 16.1,
+    "tn": 15.6,
+    "hr": 96.0,
     "ppt": 0.0
   }
 }
