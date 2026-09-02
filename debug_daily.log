@@ -1,36 +1,66 @@
-=== INICI DAILY SCRAPER (UTC): 2026-09-02 00:12:27 ===
-2026-09-02 00:12:27 - ============================================================
-2026-09-02 00:12:27 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
-2026-09-02 00:12:27 - ============================================================
-2026-09-02 00:12:27 - 
+=== INICI DAILY SCRAPER (UTC): 2026-09-02 00:42:31 ===
+2026-09-02 00:42:31 - ============================================================
+2026-09-02 00:42:31 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
+2026-09-02 00:42:31 - ============================================================
+2026-09-02 00:42:31 - 
 ==================================================
-2026-09-02 00:12:27 - 📡 Processant: Fornells de la Selva [UO]
-2026-09-02 00:12:27 - 
+2026-09-02 00:42:31 - 📡 Processant: Fornells de la Selva [UO]
+2026-09-02 00:42:31 - 
 🌐 Connectant a Fornells de la Selva...
-2026-09-02 00:12:29 - ❌ No s'ha trobat la taula tblperiode
-2026-09-02 00:12:29 - ❌ Fornells de la Selva: No s'han pogut obtenir dades
-2026-09-02 00:12:29 - 
+2026-09-02 00:42:33 - 📊 Total files trobades a la taula: 2
+2026-09-02 00:42:33 -    ✅ Període UTC: 00:00 - 00:30 | TX: 19.0 | TN: 18.4 | Pluja: 0.0
+2026-09-02 00:42:33 - 📈 Total períodes vàlids trobats: 1
+2026-09-02 00:42:33 - 📊 RESUM CALCULAT:
+2026-09-02 00:42:33 -    • Màxima del dia: 19.0°C
+2026-09-02 00:42:33 -    • Mínima del dia: 18.4°C
+2026-09-02 00:42:33 -    • Pluja acumulada: 0.0mm
+2026-09-02 00:42:33 -    • Últim període: 00:00 - 00:30 UTC
+2026-09-02 00:42:33 -    • Hora actualització: 00:42
+2026-09-02 00:42:33 - 💾 Dades guardades a data/UO_20260902.csv (1 registres)
+2026-09-02 00:42:33 - ✅ Fornells de la Selva: 1 períodes processats
+2026-09-02 00:42:33 - 
 ==================================================
-2026-09-02 00:12:29 - 📡 Processant: Girona [XJ]
-2026-09-02 00:12:29 - 
+2026-09-02 00:42:33 - 📡 Processant: Girona [XJ]
+2026-09-02 00:42:33 - 
 🌐 Connectant a Girona...
-2026-09-02 00:12:30 - ❌ No s'ha trobat la taula tblperiode
-2026-09-02 00:12:30 - ❌ Girona: No s'han pogut obtenir dades
-2026-09-02 00:12:30 - 💾 Dades guardades a data/weather_daily_20260902.json
-2026-09-02 00:12:30 - 💾 Dades guardades a data/weather_summary.json
-2026-09-02 00:12:30 - 
+2026-09-02 00:42:34 - 📊 Total files trobades a la taula: 2
+2026-09-02 00:42:34 -    ✅ Període UTC: 00:00 - 00:30 | TX: 18.8 | TN: 18.4 | Pluja: 0.0
+2026-09-02 00:42:34 - 📈 Total períodes vàlids trobats: 1
+2026-09-02 00:42:34 - 📊 RESUM CALCULAT:
+2026-09-02 00:42:34 -    • Màxima del dia: 18.8°C
+2026-09-02 00:42:34 -    • Mínima del dia: 18.4°C
+2026-09-02 00:42:34 -    • Pluja acumulada: 0.0mm
+2026-09-02 00:42:34 -    • Últim període: 00:00 - 00:30 UTC
+2026-09-02 00:42:34 -    • Hora actualització: 00:42
+2026-09-02 00:42:34 - 💾 Dades guardades a data/XJ_20260902.csv (1 registres)
+2026-09-02 00:42:34 - ✅ Girona: 1 períodes processats
+2026-09-02 00:42:34 - 💾 Dades guardades a data/weather_daily_20260902.json
+2026-09-02 00:42:34 - 💾 Dades guardades a data/weather_summary.json
+2026-09-02 00:42:34 - 
 ============================================================
-2026-09-02 00:12:30 - 📋 RESUM FINAL DEL DIA (UTC)
-2026-09-02 00:12:30 - ============================================================
-2026-09-02 00:12:30 - 
-⚠️  UO: Sense dades
-2026-09-02 00:12:30 - 
-⚠️  XJ: Sense dades
-2026-09-02 00:12:30 - 
+2026-09-02 00:42:34 - 📋 RESUM FINAL DEL DIA (UTC)
+2026-09-02 00:42:34 - ============================================================
+2026-09-02 00:42:34 - 
+📍 Fornells de la Selva:
+2026-09-02 00:42:34 -    • Períodes: 1
+2026-09-02 00:42:34 -    • Màxima: 19.0°C
+2026-09-02 00:42:34 -    • Mínima: 18.4°C
+2026-09-02 00:42:34 -    • Pluja: 0.0mm
+2026-09-02 00:42:34 -    • Últim període: 00:00 - 00:30 UTC
+2026-09-02 00:42:34 -    • Actualització: 00:42
+2026-09-02 00:42:34 - 
+📍 Girona:
+2026-09-02 00:42:34 -    • Períodes: 1
+2026-09-02 00:42:34 -    • Màxima: 18.8°C
+2026-09-02 00:42:34 -    • Mínima: 18.4°C
+2026-09-02 00:42:34 -    • Pluja: 0.0mm
+2026-09-02 00:42:34 -    • Últim període: 00:00 - 00:30 UTC
+2026-09-02 00:42:34 -    • Actualització: 00:42
+2026-09-02 00:42:34 - 
 💾 Fitxers generats:
-2026-09-02 00:12:30 -    • data/weather_summary.json (per HTML)
-2026-09-02 00:12:30 -    • data/weather_daily_YYYYMMDD.json (complet)
-2026-09-02 00:12:30 -    • data/XX_YYYYMMDD.csv (per estació)
-2026-09-02 00:12:30 - 
+2026-09-02 00:42:34 -    • data/weather_summary.json (per HTML)
+2026-09-02 00:42:34 -    • data/weather_daily_YYYYMMDD.json (complet)
+2026-09-02 00:42:34 -    • data/XX_YYYYMMDD.csv (per estació)
+2026-09-02 00:42:34 - 
 ✅ PROCÉS COMPLETAT
-2026-09-02 00:12:30 - ============================================================
+2026-09-02 00:42:34 - ============================================================
