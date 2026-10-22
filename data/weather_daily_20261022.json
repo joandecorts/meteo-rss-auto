@@ -1,6 +1,6 @@
 {
   "metadata": {
-    "generated_at": "2026-10-22 14:42:27",
+    "generated_at": "2026-10-22 15:12:29",
     "timezone": "UTC",
     "note": "Les hores estan en UTC. Per hora local: +1h (hivern) o +2h (estiu)",
     "total_stations": 2
@@ -331,23 +331,34 @@
           "tn": 17.9,
           "hr": 67.0,
           "ppt": 0.0
+        },
+        {
+          "station_name": "Fornells de la Selva",
+          "date": "2026-10-22",
+          "period": "14:30 - 15:00",
+          "period_utc": "14:30 - 15:00",
+          "tm": 17.6,
+          "tx": 17.9,
+          "tn": 17.2,
+          "hr": 67.0,
+          "ppt": 0.0
         }
       ],
       "summary": {
         "station_name": "Fornells de la Selva",
         "date": "2026-10-22",
         "date_spanish": "22/10/2026",
-        "last_period": "14:00 - 14:30",
-        "last_period_utc": "14:00 - 14:30",
-        "updated_at": "14:42",
-        "total_periods": 29,
+        "last_period": "14:30 - 15:00",
+        "last_period_utc": "14:30 - 15:00",
+        "updated_at": "15:12",
+        "total_periods": 30,
         "max_temp": 19.1,
         "min_temp": 9.4,
         "total_rain": 0.0,
         "periods_with_data": {
-          "temp_max": 29,
-          "temp_min": 29,
-          "rain": 29
+          "temp_max": 30,
+          "temp_min": 30,
+          "rain": 30
         },
         "timezone_note": "Les hores estan en UTC (Temps Universal Coordinat). Per obtenir l'hora local, suma 1 hora (hivern) o 2 hores (estiu)."
       }
@@ -822,23 +833,39 @@
           "vvx": 28.8,
           "pm": 1022.5,
           "rs": 352.0
+        },
+        {
+          "station_name": "Girona",
+          "date": "2026-10-22",
+          "period": "14:30 - 15:00",
+          "period_utc": "14:30 - 15:00",
+          "tm": 17.8,
+          "tx": 18.2,
+          "tn": 17.5,
+          "hr": 65.0,
+          "ppt": 0.0,
+          "vvm": 11.9,
+          "dvm": 178.0,
+          "vvx": 29.2,
+          "pm": 1022.4,
+          "rs": 259.0
         }
       ],
       "summary": {
         "station_name": "Girona",
         "date": "2026-10-22",
         "date_spanish": "22/10/2026",
-        "last_period": "14:00 - 14:30",
-        "last_period_utc": "14:00 - 14:30",
-        "updated_at": "14:42",
-        "total_periods": 29,
+        "last_period": "14:30 - 15:00",
+        "last_period_utc": "14:30 - 15:00",
+        "updated_at": "15:12",
+        "total_periods": 30,
         "max_temp": 19.1,
         "min_temp": 9.8,
         "total_rain": 0.1,
         "periods_with_data": {
-          "temp_max": 29,
-          "temp_min": 29,
-          "rain": 29
+          "temp_max": 30,
+          "temp_min": 30,
+          "rain": 30
         },
         "timezone_note": "Les hores estan en UTC (Temps Universal Coordinat). Per obtenir l'hora local, suma 1 hora (hivern) o 2 hores (estiu)."
       }
