@@ -1,36 +1,36 @@
-=== INICI DAILY SCRAPER (UTC): 2026-10-25 00:12:23 ===
-2026-10-25 00:12:23 - ============================================================
-2026-10-25 00:12:23 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
-2026-10-25 00:12:23 - ============================================================
-2026-10-25 00:12:23 - 
+=== INICI DAILY SCRAPER (UTC): 2026-10-25 00:42:20 ===
+2026-10-25 00:42:20 - ============================================================
+2026-10-25 00:42:20 - 🌤️  DAILY WEATHER SCRAPER - VERSIÓ UTC
+2026-10-25 00:42:20 - ============================================================
+2026-10-25 00:42:20 - 
 ==================================================
-2026-10-25 00:12:23 - 📡 Processant: Fornells de la Selva [UO]
-2026-10-25 00:12:23 - 
+2026-10-25 00:42:20 - 📡 Processant: Fornells de la Selva [UO]
+2026-10-25 00:42:20 - 
 🌐 Connectant a Fornells de la Selva...
-2026-10-25 00:12:25 - ❌ No s'ha trobat la taula tblperiode
-2026-10-25 00:12:25 - ❌ Fornells de la Selva: No s'han pogut obtenir dades
-2026-10-25 00:12:25 - 
+2026-10-25 00:42:22 - ❌ No s'ha trobat la taula tblperiode
+2026-10-25 00:42:22 - ❌ Fornells de la Selva: No s'han pogut obtenir dades
+2026-10-25 00:42:22 - 
 ==================================================
-2026-10-25 00:12:25 - 📡 Processant: Girona [XJ]
-2026-10-25 00:12:25 - 
+2026-10-25 00:42:22 - 📡 Processant: Girona [XJ]
+2026-10-25 00:42:22 - 
 🌐 Connectant a Girona...
-2026-10-25 00:12:27 - ❌ No s'ha trobat la taula tblperiode
-2026-10-25 00:12:27 - ❌ Girona: No s'han pogut obtenir dades
-2026-10-25 00:12:27 - 💾 Dades guardades a data/weather_daily_20261025.json
-2026-10-25 00:12:27 - 💾 Dades guardades a data/weather_summary.json
-2026-10-25 00:12:27 - 
+2026-10-25 00:42:23 - ❌ No s'ha trobat la taula tblperiode
+2026-10-25 00:42:23 - ❌ Girona: No s'han pogut obtenir dades
+2026-10-25 00:42:23 - 💾 Dades guardades a data/weather_daily_20261025.json
+2026-10-25 00:42:23 - 💾 Dades guardades a data/weather_summary.json
+2026-10-25 00:42:23 - 
 ============================================================
-2026-10-25 00:12:27 - 📋 RESUM FINAL DEL DIA (UTC)
-2026-10-25 00:12:27 - ============================================================
-2026-10-25 00:12:27 - 
+2026-10-25 00:42:23 - 📋 RESUM FINAL DEL DIA (UTC)
+2026-10-25 00:42:23 - ============================================================
+2026-10-25 00:42:23 - 
 ⚠️  UO: Sense dades
-2026-10-25 00:12:27 - 
+2026-10-25 00:42:23 - 
 ⚠️  XJ: Sense dades
-2026-10-25 00:12:27 - 
+2026-10-25 00:42:23 - 
 💾 Fitxers generats:
-2026-10-25 00:12:27 -    • data/weather_summary.json (per HTML)
-2026-10-25 00:12:27 -    • data/weather_daily_YYYYMMDD.json (complet)
-2026-10-25 00:12:27 -    • data/XX_YYYYMMDD.csv (per estació)
-2026-10-25 00:12:27 - 
+2026-10-25 00:42:23 -    • data/weather_summary.json (per HTML)
+2026-10-25 00:42:23 -    • data/weather_daily_YYYYMMDD.json (complet)
+2026-10-25 00:42:23 -    • data/XX_YYYYMMDD.csv (per estació)
+2026-10-25 00:42:23 - 
 ✅ PROCÉS COMPLETAT
-2026-10-25 00:12:27 - ============================================================
+2026-10-25 00:42:23 - ============================================================
